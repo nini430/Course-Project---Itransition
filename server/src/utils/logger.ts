@@ -14,6 +14,6 @@ const log=logger({
         pid:false
     },
     timestamp:()=>`,"time":"${dayjs().format()}"`
-})
+});
 
 export default log;
