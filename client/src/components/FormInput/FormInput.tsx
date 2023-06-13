@@ -1,8 +1,15 @@
+import React from "react";
 import StyledInput from "../StyledFormInput"
 
-const FormInput = () => {
+interface IFormInputProps {
+   type?:string;
+   placeholder?:string;
+   name?:string;
+}
+
+const FormInput: React.FC<IFormInputProps> = ({type,placeholder,name}) => {
   return (
-    <StyledInput />
+    <StyledInput type={type} placeholder={placeholder} name={name} />
   )
 }
 

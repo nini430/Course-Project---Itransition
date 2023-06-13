@@ -18,4 +18,11 @@ const AuthForm = styled(({isX, isMob, isD,isXS,...props}:any)=><div {...props}/>
   flex-direction:column;
 `;
 
-export { AuthContainer, AuthForm };
+const LngContainer=styled.div`
+  position:absolute;
+  top:20%;
+  right:20%;
+  
+`
+
+export { AuthContainer, AuthForm, LngContainer };

@@ -1,0 +1,10 @@
+{
+    "auth":{
+        "register":"Register",
+        "login":"Login"
+    },
+    "lang":{
+        "en":"English",
+        "geo":"Georgian"
+    }
+}
