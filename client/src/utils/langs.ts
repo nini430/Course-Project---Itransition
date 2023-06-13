@@ -1,4 +1,6 @@
-const languages=[
+import { LngInput } from "../types/lng";
+
+const languages:LngInput[]=[
     {
         name:'en',
         abbr:'en'
