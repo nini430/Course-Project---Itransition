@@ -1,0 +1,25 @@
+{
+  "name": "crs-prjct",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nini430/Course-Project---Itransition.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nini430/Course-Project---Itransition/issues"
+  },
+  "homepage": "https://github.com/nini430/Course-Project---Itransition#readme",
+  "dependencies": {
+    "npx": "^10.2.2",
+    "tsc": "^2.0.4",
+    "typescript": "^5.1.3"
+  }
+}
