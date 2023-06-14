@@ -12,7 +12,7 @@ body {
 }
 
 a {
-    color:black;
+    color:inherit;
 }
 
 .MuiMenu-paper {

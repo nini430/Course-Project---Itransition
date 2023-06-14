@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { useFormik } from 'formik';
 
-import { AuthContainer, AuthForm, ErrorMessage } from './AuthStyles';
+import { AuthContainer, AuthForm, ErrorMessage, PropertyContainer } from './AuthStyles';
 import StyledInput from '../../components/FormInput/FormInput';
 import FormButton from '../../components/FormButton/FormButton';
 import LanguageDropDown from '../../components/LanguageDropDown/LanguageDropDown';
@@ -14,6 +14,8 @@ import {
   registerValidationSchema,
   registerValues,
 } from '../../formik-validation/register';
+import ModeSwitch from '../../components/ModeSwitch/ModeSwitch';
+import { useAppSelector } from '../../store/store';
 
 const Register = () => {
   const {
@@ -33,23 +35,29 @@ const Register = () => {
   });
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const { t } = useTranslation();
+  const {mode}=useAppSelector(state=>state.common);
   const isDesktopOrLaptop = useMediaQuery({ minWidth: 1224 });
   const isBigScreen = useMediaQuery({ minWidth: 1824 });
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
   const isExtraSmallDevice = useMediaQuery({ maxWidth: 500 });
   return (
     <>
-      <LanguageDropDown
+    <PropertyContainer>
+    <ModeSwitch/>
+    <LanguageDropDown
         open={isDropDownOpen}
         onOpen={() => setIsDropDownOpen(true)}
         onClose={() => setIsDropDownOpen(false)}
       />
+    </PropertyContainer>
+      
       <AuthContainer>
         <AuthForm
           isXS={isExtraSmallDevice}
           isX={isBigScreen}
           isMob={isTabletOrMobile}
           isD={isDesktopOrLaptop}
+          mode={mode}
         >
           <Typography sx={{ alignSelf: 'center', fontSize: 20 }}>
             {t('auth.register')}
@@ -72,6 +80,7 @@ const Register = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               error={!!(errors.firstName && touched.firstName)}
+              mode={mode}
             />
           {errors.firstName && touched.firstName && <ErrorMessage>{errors.firstName}</ErrorMessage> }  
           </FormGroup>
@@ -84,6 +93,7 @@ const Register = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               error={!!(errors.lastName && touched.lastName)}
+              mode={mode}
             />
              {errors.lastName && touched.lastName && <ErrorMessage>{errors.lastName}</ErrorMessage> }
           </FormGroup>
@@ -96,6 +106,7 @@ const Register = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               error={!!(errors.email && touched.email)}
+              mode={mode}
             />
              {errors.email && touched.email && <ErrorMessage>{errors.email}</ErrorMessage> }
           </FormGroup>
@@ -108,6 +119,7 @@ const Register = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               error={!!(errors.password && touched.password)}
+              mode={mode}
             />
              {errors.password && touched.password && <ErrorMessage>{errors.password}</ErrorMessage> }
           </FormGroup>
@@ -120,16 +132,17 @@ const Register = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               error={!!(errors.confirmPassword && touched.confirmPassword)}
+              mode={mode}
             />
              {errors.confirmPassword && touched.confirmPassword && <ErrorMessage>{errors.confirmPassword}</ErrorMessage> }
           </FormGroup>
           <FormButton onSubmit={handleSubmit} type="submit" disabled={!dirty || Object.values(errors).length>0 } variant="contained" text="Sign Up" />
           <Typography
-            sx={{ alignSelf: 'center', my: '10px', color: 'primary.main' }}
+            sx={{ alignSelf: 'center', my: '10px' }}
           >
-            Already A member?{' '}
+          Already A member? {' '}
             <Link to="/login">
-              <span>Sign In</span>
+              Sign In
             </Link>
           </Typography>
         </AuthForm>

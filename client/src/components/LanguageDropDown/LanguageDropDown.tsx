@@ -51,10 +51,7 @@ const LanguageDropDown: React.FC<ILanguageDropDownProps> = ({open,onClose,onOpen
 }
 
 const DropDownWrapper=styled(({isXs,...props}:any)=><div {...props}/>)`
-    align-self:end;
-    position:absolute;
-    right:100px;
-    margin-top:100px;
+    
     .lngWrap {
         display:flex;
         align-items:center;

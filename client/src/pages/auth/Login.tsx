@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { useFormik } from 'formik';
 
-import { AuthContainer, AuthForm, ErrorMessage } from './AuthStyles';
+import { AuthContainer, AuthForm, ErrorMessage, PropertyContainer } from './AuthStyles';
 import FormButton from '../../components/FormButton/FormButton';
 import LanguageDropDown from '../../components/LanguageDropDown/LanguageDropDown';
 import StyledInput from '../../components/FormInput/FormInput'
@@ -14,6 +14,8 @@ import {
   loginValidationSchema,
   loginValues,
 } from '../../formik-validation/login';
+import ModeSwitch from '../../components/ModeSwitch/ModeSwitch';
+import { useAppSelector } from '../../store/store';
 
 const Login = () => {
   const {
@@ -31,6 +33,7 @@ const Login = () => {
       console.log('submit');
     },
   });
+  const {mode}=useAppSelector(state=>state.common);
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const { t } = useTranslation();
   const isDesktopOrLaptop = useMediaQuery({ minWidth: 1224 });
@@ -39,17 +42,23 @@ const Login = () => {
   const isExtraSmallDevice = useMediaQuery({ maxWidth: 500 });
   return (
     <>
+     
+      <PropertyContainer>
+      <ModeSwitch/>
       <LanguageDropDown
         open={isDropDownOpen}
         onOpen={() => setIsDropDownOpen(true)}
         onClose={() => setIsDropDownOpen(false)}
       />
+      </PropertyContainer>
+     
       <AuthContainer>
         <AuthForm
           isXS={isExtraSmallDevice}
           isX={isBigScreen}
           isMob={isTabletOrMobile}
           isD={isDesktopOrLaptop}
+          mode={mode}
         >
           <Typography sx={{ alignSelf: 'center', fontSize: 20 }}>
             {t('auth.login')}
@@ -72,6 +81,7 @@ const Login = () => {
               name="email"
               placeholder="E-mail"
               type="email"
+              mode={mode}
             />
             {touched.email && errors.email && (
               <ErrorMessage>{errors.email}</ErrorMessage>
@@ -86,6 +96,7 @@ const Login = () => {
               name="password"
               placeholder="Password"
               type="password"
+              mode={mode}
             />
             {touched.password && errors.password && (
               <ErrorMessage>{errors.password}</ErrorMessage>
@@ -93,11 +104,11 @@ const Login = () => {
           </FormGroup>
           <FormButton  type="submit" onSubmit={handleSubmit} disabled={!dirty || Object.values(errors).length>0} variant="contained" text="Sign In" />
           <Typography
-            sx={{ alignSelf: 'center', my: '10px', color: 'primary.main' }}
+            sx={{ alignSelf: 'center', my: '10px' }}
           >
             Not have an account?{' '}
             <Link to="/register">
-              <span>Sign Up</span>
+              Sign Up
             </Link>
           </Typography>
         </AuthForm>

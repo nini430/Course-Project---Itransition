@@ -10,7 +10,7 @@ interface IFormButtonProps {
 
 const FormButton: React.FC<IFormButtonProps> = ({text,variant, onSubmit, disabled, type}) => {
   return (
-    <LoadingButton  disabled={disabled} type={type}  onSubmit={onSubmit}  variant={variant} fullWidth>{text}</LoadingButton>
+    <LoadingButton color='primary'  disabled={disabled} type={type}  onSubmit={onSubmit}  variant={variant} fullWidth>{text}</LoadingButton>
   )
 }
 

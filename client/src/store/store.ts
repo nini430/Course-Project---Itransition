@@ -1,8 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
+import commonReducer from './commonReducer';
 
 const store = configureStore({
-  reducer:{}
+  reducer:{
+    common:commonReducer
+  }
 });
 
 type RootState = ReturnType<typeof store.getState>
