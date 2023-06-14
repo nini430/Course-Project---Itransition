@@ -6,6 +6,7 @@ import Login from './pages/auth/Login';
 import './utils/i18next';
 import { useAppSelector } from './store/store';
 import { darkTheme, lightTheme } from './utils/theme';
+import MainPage from './pages/MainPage';
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
     <div className={`theme-${mode}`}>
       <ThemeProvider  theme={theme}>
       <Routes>
+      <Route path="/" element={<MainPage/>}/>
       <Route path="/register" element={<Register/>}/>
       <Route path="/login" element={<Login/>}/>
     </Routes>
