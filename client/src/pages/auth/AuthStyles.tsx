@@ -10,7 +10,7 @@ const AuthContainer = styled.div`
 
 `;
 const AuthForm = styled(({isX, isMob, isD,isXS,...props}:any)=><div {...props}/>)`
-  width: ${({isX,isMob,isD,isXS})=>isX?'800px':isMob?'500px':isXS?'90%':'500px'};
+  width: ${({isX,isMob,isD,isXS})=>isX?'700px':isMob?'500px':isXS?'90%':'400px'};
   height:auto;
   padding:20px;
   background-color: white;
@@ -33,4 +33,10 @@ display:flex;
 
 `
 
-export { AuthContainer, AuthForm, LngContainer, AuthWrapper };
+const ErrorMessage=styled.span`
+  color:red;
+  font-size:12px;
+  margin-top:5px;
+`
+
+export { AuthContainer, AuthForm, LngContainer, AuthWrapper, ErrorMessage };

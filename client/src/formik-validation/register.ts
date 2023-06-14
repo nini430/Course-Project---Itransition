@@ -12,11 +12,11 @@ const registerValues:RegisterValues={
 }
 
 const registerValidationSchema:ObjectSchema<RegisterValues>=object({
-    firstName:string().required('First Name is required'),
-    lastName: string().required(),
-    email:string().required().matches(/^[\w.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,'Enter Valid E-mail'),
-    password:string().required(),
-    confirmPassword:string().required()
+    firstName:string().required('first_name_required'),
+    lastName: string().required('last_name_required'),
+    email:string().required('email_required').matches(/^[\w.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,'valid_email'),
+    password:string().required('password_required'),
+    confirmPassword:string().required('confirm_password_required')
 });
 
 export {registerValues, registerValidationSchema};

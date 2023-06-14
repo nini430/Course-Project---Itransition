@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import {Button} from '@mui/material'
+import {LoadingButton} from '@mui/lab'
 
-const FormStyledButton=styled(Button)`
+const FormStyledButton=styled(LoadingButton)`
     padding:15px;
     border-radius:10px;
 `
