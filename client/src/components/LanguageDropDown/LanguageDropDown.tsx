@@ -1,15 +1,13 @@
-import {MenuItem,Button} from '@mui/material'
+import {MenuItem,Button,Menu} from '@mui/material'
 import {KeyboardArrowDown} from '@mui/icons-material'
 import styled from 'styled-components'
 import jsCookie from 'js-cookie';
 import i18n from 'i18next'
 
-import StyledMenu from "./StyledLanguageDropDown"
 import languages from '../../utils/langs'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { LngInput } from '../../types/lng';
-import React, { Dispatch, SetStateAction } from 'react';
 
 interface ILanguageDropDownProps {
     open:boolean;
@@ -31,7 +29,7 @@ const LanguageDropDown: React.FC<ILanguageDropDownProps> = ({open,onClose,onOpen
         </div>
     
     </Button>
-    <StyledMenu className='menu' elevation={0} transformOrigin={{vertical:"top",horizontal:'right'}} anchorOrigin={{horizontal:'right',vertical:'top'}}  onClose={onClose} open={open}>
+    <Menu className='menu' elevation={0} transformOrigin={{vertical:"top",horizontal:'right'}} anchorOrigin={{horizontal:'right',vertical:'top'}}  onClose={onClose} open={open}>
        {languages.map(lang=>(
         <MenuItem onClick={()=>{
           i18n.changeLanguage(lang.abbr)
@@ -42,7 +40,7 @@ const LanguageDropDown: React.FC<ILanguageDropDownProps> = ({open,onClose,onOpen
         {t(`lang.${lang.name}`)}
         </MenuItem>
        ))}
-    </StyledMenu>
+    </Menu>
     
     
     </DropDownWrapper>

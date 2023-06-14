@@ -7,9 +7,9 @@ import { useState } from 'react';
 import { useFormik } from 'formik';
 
 import { AuthContainer, AuthForm, ErrorMessage } from './AuthStyles';
-import StyledInput from '../../components/FormInput/StyledFormInput';
 import FormButton from '../../components/FormButton/FormButton';
 import LanguageDropDown from '../../components/LanguageDropDown/LanguageDropDown';
+import StyledInput from '../../components/FormInput/FormInput'
 import {
   loginValidationSchema,
   loginValues,

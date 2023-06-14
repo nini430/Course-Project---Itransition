@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useFormik } from 'formik';
 
 import { AuthContainer, AuthForm, ErrorMessage } from './AuthStyles';
-import StyledInput from '../../components/FormInput/StyledFormInput';
+import StyledInput from '../../components/FormInput/FormInput';
 import FormButton from '../../components/FormButton/FormButton';
 import LanguageDropDown from '../../components/LanguageDropDown/LanguageDropDown';
 import {
@@ -71,7 +71,7 @@ const Register = () => {
               value={values.firstName}
               onChange={handleChange}
               onBlur={handleBlur}
-              error={errors.firstName && touched.firstName}
+              error={!!(errors.firstName && touched.firstName)}
             />
           {errors.firstName && touched.firstName && <ErrorMessage>{errors.firstName}</ErrorMessage> }  
           </FormGroup>
@@ -83,7 +83,7 @@ const Register = () => {
               value={values.lastName}
               onChange={handleChange}
               onBlur={handleBlur}
-              error={errors.lastName && touched.lastName}
+              error={!!(errors.lastName && touched.lastName)}
             />
              {errors.lastName && touched.lastName && <ErrorMessage>{errors.lastName}</ErrorMessage> }
           </FormGroup>
@@ -95,7 +95,7 @@ const Register = () => {
               value={values.email}
               onChange={handleChange}
               onBlur={handleBlur}
-              error={errors.email && touched.email}
+              error={!!(errors.email && touched.email)}
             />
              {errors.email && touched.email && <ErrorMessage>{errors.email}</ErrorMessage> }
           </FormGroup>
@@ -107,7 +107,7 @@ const Register = () => {
               value={values.password}
               onChange={handleChange}
               onBlur={handleBlur}
-              error={errors.password && touched.password}
+              error={!!(errors.password && touched.password)}
             />
              {errors.password && touched.password && <ErrorMessage>{errors.password}</ErrorMessage> }
           </FormGroup>
@@ -119,7 +119,7 @@ const Register = () => {
               value={values.confirmPassword}
               onChange={handleChange}
               onBlur={handleBlur}
-              error={errors.confirmPassword && touched.confirmPassword}
+              error={!!(errors.confirmPassword && touched.confirmPassword)}
             />
              {errors.confirmPassword && touched.confirmPassword && <ErrorMessage>{errors.confirmPassword}</ErrorMessage> }
           </FormGroup>

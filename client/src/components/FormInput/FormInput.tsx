@@ -1,5 +1,6 @@
-import React from 'react';
-import StyledInput from './StyledFormInput';
+import {TextField} from '@mui/material'
+import {FocusEventHandler,ChangeEventHandler} from 'react';
+
 
 interface IFormInputProps {
   type?: string;
@@ -7,12 +8,12 @@ interface IFormInputProps {
   name?: string;
   error:boolean;
   value:string;
-  onChange:()=>void;
-  onBlur:()=>void;
+  onBlur:FocusEventHandler<HTMLInputElement>
+  onChange:ChangeEventHandler<HTMLInputElement>
 }
 
 const FormInput: React.FC<IFormInputProps> = ({ type, placeholder, name,error,value,onChange, onBlur }) => {
-  return <StyledInput onBlur={onBlur} value={value} onChange={onChange} error={error}  type={type} placeholder={placeholder} name={name} />;
+  return <TextField onBlur={onBlur} value={value} onChange={onChange} error={error}  type={type} placeholder={placeholder} name={name} />;
 };
 
 export default FormInput;
