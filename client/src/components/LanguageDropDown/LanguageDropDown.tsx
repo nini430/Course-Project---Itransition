@@ -8,6 +8,8 @@ import languages from '../../utils/langs'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { LngInput } from '../../types/lng';
+import Eng from '../../assets/uk.png'
+import Geo from '../../assets/ge.png'
 
 interface ILanguageDropDownProps {
     open:boolean;
@@ -24,7 +26,7 @@ const LanguageDropDown: React.FC<ILanguageDropDownProps> = ({open,onClose,onOpen
     <DropDownWrapper isXs={isExtraSmall}>
         <Button onClick={onOpen}  variant="contained" color="inherit" endIcon={<KeyboardArrowDown/>}>
         <div className="lngWrap">
-        <div  className={`flag-icon flag-icon-${cookie==='en'?'gb':'ge'}`}/>
+        <img width={25} height="auto" src={cookie==='en'?Eng:Geo} alt="" />
       {!isExtraSmall && <span>{t(`lang.${selectedLang?.name}`)}</span> }
         </div>
     
@@ -36,7 +38,7 @@ const LanguageDropDown: React.FC<ILanguageDropDownProps> = ({open,onClose,onOpen
           onClose();
 
         }} sx={{display:'flex',alignItems:'center',gap:'10px'}}>
-        <div className={`flag-icon flag-icon-${lang.abbr==='en'?'gb':'ge'}`}/>
+        <img width={25} height="auto" src={lang.abbr==='en'?Eng:Geo} alt="" />
         {t(`lang.${lang.name}`)}
         </MenuItem>
        ))}
