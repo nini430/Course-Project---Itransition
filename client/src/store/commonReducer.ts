@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { CommonInitialState } from '../types/common';
 
 const initialState: CommonInitialState = {
-  mode: 'light',
+  mode: (localStorage.getItem('mode') as 'light'|'dark') || 'light'
 };
 
 const commonReducer = createSlice({
@@ -11,6 +11,7 @@ const commonReducer = createSlice({
   reducers: {
     changeTheme(state) {
       state.mode = state.mode === 'light' ? 'dark' : 'light';
+      localStorage.setItem('mode',state.mode)
     },
   },
 });

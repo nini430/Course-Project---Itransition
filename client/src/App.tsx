@@ -12,12 +12,15 @@ function App() {
   const {mode}=useAppSelector(state=>state.common);
   const theme=useMemo(()=>mode==='dark'?darkTheme:lightTheme,[mode]);
   return (
-    <ThemeProvider theme={theme}>
+    <div className={`theme-${mode}`}>
+      <ThemeProvider  theme={theme}>
       <Routes>
       <Route path="/register" element={<Register/>}/>
       <Route path="/login" element={<Login/>}/>
     </Routes>
     </ThemeProvider>
+    </div>
+    
     
   )
 }

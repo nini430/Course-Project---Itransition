@@ -7,7 +7,6 @@
 }
 
 body {
-    background-color: #F5F6F7;
     font-family:'Raleway',sans-serif;
 }
 
@@ -20,4 +19,12 @@ a {
  width:148px !important;
  top:142.5px !important;
  left:calc(100vw - 100px - 148px) !important;
+}
+
+.theme-light {
+    background:#f5f6f7;
+}
+
+.theme-dark {
+    background:#746b6b;
 }
