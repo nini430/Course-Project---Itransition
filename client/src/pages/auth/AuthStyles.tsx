@@ -47,7 +47,7 @@ const PropertyContainer = styled.div`
   align-self: end;
   position: absolute;
   right: 100px;
-  margin-top: 100px;
+  margin-top:50px;
 `;
 
 export {

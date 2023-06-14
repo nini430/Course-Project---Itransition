@@ -79,12 +79,12 @@ const Login = () => {
               onChange={handleChange}
               error={!!(touched.email && errors.email)}
               name="email"
-              placeholder="E-mail"
+              placeholder={t('auth.email') as string}
               type="email"
               mode={mode}
             />
             {touched.email && errors.email && (
-              <ErrorMessage>{errors.email}</ErrorMessage>
+              <ErrorMessage>{t(`auth.${errors.email}`)}</ErrorMessage>
             )}
           </FormGroup>
           <FormGroup sx={{ marginBottom: 2 }}>
@@ -94,21 +94,21 @@ const Login = () => {
               onChange={handleChange}
               error={!!(errors.password && touched.password)}
               name="password"
-              placeholder="Password"
+              placeholder={t('auth.password') as string}
               type="password"
               mode={mode}
             />
             {touched.password && errors.password && (
-              <ErrorMessage>{errors.password}</ErrorMessage>
+              <ErrorMessage>{t(`auth.${errors.password}`)}</ErrorMessage>
             )}
           </FormGroup>
-          <FormButton  type="submit" onSubmit={handleSubmit} disabled={!dirty || Object.values(errors).length>0} variant="contained" text="Sign In" />
+          <FormButton  type="submit" onSubmit={handleSubmit} disabled={!dirty || Object.values(errors).length>0} variant="contained" text={t('auth.login')} />
           <Typography
             sx={{ alignSelf: 'center', my: '10px' }}
           >
-            Not have an account?{' '}
+            {t('auth.not_account')}{' '}
             <Link to="/register">
-              Sign Up
+              {t('auth.register')}
             </Link>
           </Typography>
         </AuthForm>

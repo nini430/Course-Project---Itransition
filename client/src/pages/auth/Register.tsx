@@ -74,7 +74,7 @@ const Register = () => {
           <FormGroup sx={{ marginBottom: 2 }}>
             <StyledInput
               name="firstName"
-              placeholder="First Name"
+              placeholder={t('auth.firstName') as string}
               type="text"
               value={values.firstName}
               onChange={handleChange}
@@ -82,12 +82,12 @@ const Register = () => {
               error={!!(errors.firstName && touched.firstName)}
               mode={mode}
             />
-          {errors.firstName && touched.firstName && <ErrorMessage>{errors.firstName}</ErrorMessage> }  
+          {errors.firstName && touched.firstName && <ErrorMessage>{t(`auth.${errors.firstName}`)}</ErrorMessage> }  
           </FormGroup>
           <FormGroup sx={{ marginBottom: 2 }}>
             <StyledInput
               name="lastName"
-              placeholder="Last Name"
+              placeholder={t('auth.lastName') as string}
               type="text"
               value={values.lastName}
               onChange={handleChange}
@@ -95,12 +95,12 @@ const Register = () => {
               error={!!(errors.lastName && touched.lastName)}
               mode={mode}
             />
-             {errors.lastName && touched.lastName && <ErrorMessage>{errors.lastName}</ErrorMessage> }
+             {errors.lastName && touched.lastName && <ErrorMessage>{t(`auth.${errors.lastName}`)}</ErrorMessage> }
           </FormGroup>
           <FormGroup sx={{ marginBottom: 2 }}>
             <StyledInput
               name="email"
-              placeholder="E-mail"
+              placeholder={t('auth.email') as string}
               type="email"
               value={values.email}
               onChange={handleChange}
@@ -108,12 +108,12 @@ const Register = () => {
               error={!!(errors.email && touched.email)}
               mode={mode}
             />
-             {errors.email && touched.email && <ErrorMessage>{errors.email}</ErrorMessage> }
+             {errors.email && touched.email && <ErrorMessage>{t(`auth.${errors.email}`)}</ErrorMessage> }
           </FormGroup>
           <FormGroup sx={{ marginBottom: 2 }}>
             <StyledInput
               name="password"
-              placeholder="Password"
+              placeholder={t('auth.password') as string}
               type="password"
               value={values.password}
               onChange={handleChange}
@@ -121,12 +121,12 @@ const Register = () => {
               error={!!(errors.password && touched.password)}
               mode={mode}
             />
-             {errors.password && touched.password && <ErrorMessage>{errors.password}</ErrorMessage> }
+             {errors.password && touched.password && <ErrorMessage>{t(`auth.${errors.password}`)}</ErrorMessage> }
           </FormGroup>
           <FormGroup sx={{ marginBottom: 2 }}>
             <StyledInput
               name="confirmPassword"
-              placeholder="Confirm Password"
+              placeholder={t('auth.confirm_password') as string}
               type="password"
               value={values.confirmPassword}
               onChange={handleChange}
@@ -134,15 +134,15 @@ const Register = () => {
               error={!!(errors.confirmPassword && touched.confirmPassword)}
               mode={mode}
             />
-             {errors.confirmPassword && touched.confirmPassword && <ErrorMessage>{errors.confirmPassword}</ErrorMessage> }
+             {errors.confirmPassword && touched.confirmPassword && <ErrorMessage>{t(`auth.${errors.confirmPassword}`)}</ErrorMessage> }
           </FormGroup>
-          <FormButton onSubmit={handleSubmit} type="submit" disabled={!dirty || Object.values(errors).length>0 } variant="contained" text="Sign Up" />
+          <FormButton onSubmit={handleSubmit} type="submit" disabled={!dirty || Object.values(errors).length>0 } variant="contained" text={t('auth.register')} />
           <Typography
             sx={{ alignSelf: 'center', my: '10px' }}
           >
-          Already A member? {' '}
+         {t('auth.already_member')}{' '}
             <Link to="/login">
-              Sign In
+              {t('auth.login')}
             </Link>
           </Typography>
         </AuthForm>
