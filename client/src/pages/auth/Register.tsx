@@ -3,14 +3,34 @@ import { PersonPin } from '@mui/icons-material';
 import { useMediaQuery } from 'react-responsive';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
+import { useFormik } from 'formik';
 
-import { AuthContainer, AuthForm } from './AuthStyles';
+import { AuthContainer, AuthForm, ErrorMessage } from './AuthStyles';
 import StyledInput from '../../components/FormInput/StyledFormInput';
 import FormButton from '../../components/FormButton/FormButton';
 import LanguageDropDown from '../../components/LanguageDropDown/LanguageDropDown';
-import { useState } from 'react';
+import {
+  registerValidationSchema,
+  registerValues,
+} from '../../formik-validation/register';
 
 const Register = () => {
+  const {
+    values,
+    errors,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    dirty,
+    touched,
+  } = useFormik({
+    initialValues: registerValues,
+    validationSchema: registerValidationSchema,
+    onSubmit: () => {
+      console.log('submit');
+    },
+  });
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const { t } = useTranslation();
   const isDesktopOrLaptop = useMediaQuery({ minWidth: 1224 });
@@ -48,29 +68,62 @@ const Register = () => {
               name="firstName"
               placeholder="First Name"
               type="text"
+              value={values.firstName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={errors.firstName && touched.firstName}
             />
+          {errors.firstName && touched.firstName && <ErrorMessage>{errors.firstName}</ErrorMessage> }  
           </FormGroup>
           <FormGroup sx={{ marginBottom: 2 }}>
-            <StyledInput name="lastName" placeholder="Last Name" type="text" />
+            <StyledInput
+              name="lastName"
+              placeholder="Last Name"
+              type="text"
+              value={values.lastName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={errors.lastName && touched.lastName}
+            />
+             {errors.lastName && touched.lastName && <ErrorMessage>{errors.lastName}</ErrorMessage> }
           </FormGroup>
           <FormGroup sx={{ marginBottom: 2 }}>
-            <StyledInput name="email" placeholder="E-mail" type="email" />
+            <StyledInput
+              name="email"
+              placeholder="E-mail"
+              type="email"
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={errors.email && touched.email}
+            />
+             {errors.email && touched.email && <ErrorMessage>{errors.email}</ErrorMessage> }
           </FormGroup>
           <FormGroup sx={{ marginBottom: 2 }}>
             <StyledInput
               name="password"
               placeholder="Password"
               type="password"
+              value={values.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={errors.password && touched.password}
             />
+             {errors.password && touched.password && <ErrorMessage>{errors.password}</ErrorMessage> }
           </FormGroup>
           <FormGroup sx={{ marginBottom: 2 }}>
             <StyledInput
               name="confirmPassword"
               placeholder="Confirm Password"
               type="password"
+              value={values.confirmPassword}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={errors.confirmPassword && touched.confirmPassword}
             />
+             {errors.confirmPassword && touched.confirmPassword && <ErrorMessage>{errors.confirmPassword}</ErrorMessage> }
           </FormGroup>
-          <FormButton variant="contained" text="Sign Up" />
+          <FormButton onSubmit={handleSubmit} type="submit" disabled={!dirty || Object.values(errors).length>0 } variant="contained" text="Sign Up" />
           <Typography
             sx={{ alignSelf: 'center', my: '10px', color: 'primary.main' }}
           >
