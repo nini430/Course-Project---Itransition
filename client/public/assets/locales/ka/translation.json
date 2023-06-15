@@ -15,10 +15,13 @@
     "first_name_required": "შეიყვანეთ სახელი-ს ველი",
     "last_name_required": "შეიყვანეთ გვარი-ს ველი",
     "confirm_password_required": "გაიმეორეთ პაროლი",
-    "passwords_must_match": "პაროლი არ ემთხვევა"
+    "passwords_must_match": "პაროლი არ ემთხვევა",
+    "sign_in":"ავტორიზაცია"
   },
   "nav": {
-    "search": "ძიება..."
+    "search": "ძიება...",
+    "parameters":"პარამეტრები",
+     "log_out":"გამოსვლა"
   },
   "lang": {
     "en": "ინგლისური",

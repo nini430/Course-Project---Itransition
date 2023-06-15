@@ -1,19 +1,20 @@
 import styled from 'styled-components'
-import LanguageDropDown from '../LanguageDropDown/LanguageDropDown'
+import LanguageDropDown from '../LanguageDropDown/LanguagePicker'
 import { useState } from 'react'
 import Logo from '../Logo/Logo';
 import SearchInput from '../SearchInput/SearchInput';
 import ModeSwitch from '../ModeSwitch/ModeSwitch';
+import NavUser from '../NavUser/NavUser';
 
 const NavBar = () => {
-    const [isSidebarOpen,setIsSidebarOpen]=useState(false);
   return (
     <NavbarContainer>
         <Logo/>
         <SearchInput/>
         <RightContainer>
             <ModeSwitch/>
-        <LanguageDropDown onOpen={()=>setIsSidebarOpen(true)} open={isSidebarOpen} onClose={()=>setIsSidebarOpen(false)}/>
+        <LanguageDropDown />
+        <NavUser/>
         </RightContainer>
        
     </NavbarContainer>
@@ -21,8 +22,6 @@ const NavBar = () => {
 }
 
 const NavbarContainer=styled.div`
-    position:sticky;
-    top:0;
     width:100vw;
     height:80px; 
     border-bottom:1px solid gray;
@@ -35,7 +34,7 @@ const NavbarContainer=styled.div`
 const RightContainer=styled.div`
     display:flex;
     align-items:center;
-    gap:20px;
+    gap:50px;
 `
 
 export default NavBar

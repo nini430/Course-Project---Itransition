@@ -30,6 +30,13 @@ const lightTheme = createTheme({
           fill:'black'
         }
       }
+    },
+    MuiButton:{
+      styleOverrides:{
+        root:{
+          color:'#000'
+        }
+      }
     }
   }
   
@@ -65,6 +72,13 @@ const darkTheme = createTheme({
       styleOverrides:{
         root:{
           fill:'#fff'
+        }
+      }
+    },
+    MuiButton:{
+      styleOverrides:{
+        root:{
+          color:'#fff'
         }
       }
     }
