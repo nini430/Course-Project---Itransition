@@ -10,7 +10,7 @@ const AuthContainer = styled.div`
   align-items: center;
 `;
 const AuthForm = styled(({ isX, isMob, isD, isXS, mode, ...props }: any) => (
-  <div {...props} />
+  <form {...props} />
 ))`
   width: ${({ isX, isMob, isD, isXS }) =>
     isX ? '700px' : isMob ? '500px' : isXS ? '90%' : '400px'};

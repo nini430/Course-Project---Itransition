@@ -1,9 +1,10 @@
 import { Divider, Typography, FormGroup } from '@mui/material';
 import { PersonPin } from '@mui/icons-material';
 import { useMediaQuery } from 'react-responsive';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
+import {Toaster,toast} from 'react-hot-toast'
 
 import { AuthContainer, AuthForm, ErrorMessage } from './AuthStyles';
 import StyledInput from '../../components/FormInput/FormInput';
@@ -12,9 +13,13 @@ import {
   registerValidationSchema,
   registerValues,
 } from '../../formik-validation/register';
-import { useAppSelector } from '../../store/store';
+import { useAppDispatch, useAppSelector } from '../../store/store';
+import { registerUser } from '../../store/authReducer';
+import toastOptions from '../../utils/toastOptions';
 
 const Register = () => {
+  const dispatch=useAppDispatch();
+  const navigate=useNavigate();
   const {
     values,
     errors,
@@ -26,12 +31,18 @@ const Register = () => {
   } = useFormik({
     initialValues: registerValues,
     validationSchema: registerValidationSchema,
-    onSubmit: () => {
-      console.log('submit');
+    onSubmit: (values) => {
+        dispatch(registerUser({input:values,onSuccess:()=>{
+          toast.success(t('auth.register_success'),toastOptions)
+          setTimeout(()=>{
+            navigate('/login');
+          },2000);  
+        }}))
     },
   });
   const { t } = useTranslation();
   const {mode}=useAppSelector(state=>state.common);
+  const {registerLoading}=useAppSelector(state=>state.auth);
   const isDesktopOrLaptop = useMediaQuery({ minWidth: 1224 });
   const isBigScreen = useMediaQuery({ minWidth: 1824 });
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
@@ -39,12 +50,17 @@ const Register = () => {
   return (
     <>
       <AuthContainer>
+        <Toaster/>
         <AuthForm
           isXS={isExtraSmallDevice}
           isX={isBigScreen}
           isMob={isTabletOrMobile}
           isD={isDesktopOrLaptop}
           mode={mode}
+          onSubmit={(e:SubmitEvent)=>{
+            e.preventDefault();
+            handleSubmit();
+          }}
         >
           <Typography sx={{ alignSelf: 'center', fontSize: 20 }}>
             {t('auth.register')}
@@ -123,7 +139,7 @@ const Register = () => {
             />
              {errors.confirmPassword && touched.confirmPassword && <ErrorMessage>{t(`auth.${errors.confirmPassword}`)}</ErrorMessage> }
           </FormGroup>
-          <FormButton onSubmit={handleSubmit} type="submit" disabled={!dirty || Object.values(errors).length>0 } variant="contained" text={t('auth.register')} />
+          <FormButton loading={registerLoading}  type="submit" disabled={!dirty || Object.values(errors).length>0 } variant="contained" text={t('auth.register')} />
           <Typography
             sx={{ alignSelf: 'center', my: '10px' }}
           >

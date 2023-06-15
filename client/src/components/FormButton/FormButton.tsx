@@ -1,17 +1,32 @@
-import {LoadingButton} from '@mui/lab'
+import { LoadingButton } from '@mui/lab';
 
 interface IFormButtonProps {
-    text:string;
-    variant:"contained" | 'outlined';
-    disabled:boolean;
-    onSubmit:()=>void;
-    type?:"button"|"submit"|"reset";
+  text: string;
+  variant: 'contained' | 'outlined';
+  disabled: boolean;
+  type?: 'button' | 'submit' | 'reset';
+  loading: boolean;
 }
 
-const FormButton: React.FC<IFormButtonProps> = ({text,variant, onSubmit, disabled, type}) => {
+const FormButton: React.FC<IFormButtonProps> = ({
+  text,
+  variant,
+  disabled,
+  type,
+  loading,
+}) => {
   return (
-    <LoadingButton color='primary'  disabled={disabled} type={type}  onSubmit={onSubmit}  variant={variant} fullWidth>{text}</LoadingButton>
-  )
-}
+    <LoadingButton
+      loading={loading}
+      color="primary"
+      disabled={disabled}
+      type={type}
+      variant={variant}
+      fullWidth
+    >
+      {text}
+    </LoadingButton>
+  );
+};
 
-export default FormButton
+export default FormButton;
