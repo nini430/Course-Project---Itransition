@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import http from 'http';
-import config from 'config'
 import io from 'socket.io'
 
 import app from './app'
