@@ -33,7 +33,7 @@ const LanguageDropDown: React.FC<ILanguageDropDownProps> = ({open,onClose,onOpen
     </Button>
     <Menu className='menu' elevation={0} transformOrigin={{vertical:"top",horizontal:'right'}} anchorOrigin={{horizontal:'right',vertical:'top'}}  onClose={onClose} open={open}>
        {languages.map(lang=>(
-        <MenuItem onClick={()=>{
+        <MenuItem key={lang.abbr} onClick={()=>{
           i18n.changeLanguage(lang.abbr)
           onClose();
 

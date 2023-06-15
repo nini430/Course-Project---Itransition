@@ -1,10 +1,11 @@
+import { useEffect } from 'react';
 import { Divider, Typography, FormGroup } from '@mui/material';
 import { PersonPin } from '@mui/icons-material';
 import { useMediaQuery } from 'react-responsive';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
-import {Toaster,toast} from 'react-hot-toast'
+import { Toaster, toast } from 'react-hot-toast';
 
 import { AuthContainer, AuthForm, ErrorMessage } from './AuthStyles';
 import StyledInput from '../../components/FormInput/FormInput';
@@ -18,8 +19,8 @@ import { registerUser } from '../../store/authReducer';
 import toastOptions from '../../utils/toastOptions';
 
 const Register = () => {
-  const dispatch=useAppDispatch();
-  const navigate=useNavigate();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const {
     values,
     errors,
@@ -32,32 +33,45 @@ const Register = () => {
     initialValues: registerValues,
     validationSchema: registerValidationSchema,
     onSubmit: (values) => {
-        dispatch(registerUser({input:values,onSuccess:()=>{
-          toast.success(t('auth.register_success'),toastOptions)
-          setTimeout(()=>{
-            navigate('/login');
-          },2000);  
-        }}))
+      dispatch(
+        registerUser({
+          input: values,
+          onSuccess: () => {
+            toast.success(t('auth.register_success'), toastOptions);
+            setTimeout(() => {
+              navigate('/login');
+            }, 2000);
+          },
+        })
+      );
     },
   });
   const { t } = useTranslation();
-  const {mode}=useAppSelector(state=>state.common);
-  const {registerLoading}=useAppSelector(state=>state.auth);
+  const { mode } = useAppSelector((state) => state.common);
+  const { authedUser } = useAppSelector((state) => state.auth);
+  const userExists = authedUser || localStorage.getItem('authed_user');
+  const { registerLoading } = useAppSelector((state) => state.auth);
   const isDesktopOrLaptop = useMediaQuery({ minWidth: 1224 });
   const isBigScreen = useMediaQuery({ minWidth: 1824 });
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
   const isExtraSmallDevice = useMediaQuery({ maxWidth: 500 });
+
+  useEffect(()=>{
+    if(userExists) {
+      navigate('/');
+    }
+  },[userExists,navigate]);
   return (
     <>
       <AuthContainer>
-        <Toaster/>
+        <Toaster />
         <AuthForm
           isXS={isExtraSmallDevice}
           isX={isBigScreen}
           isMob={isTabletOrMobile}
           isD={isDesktopOrLaptop}
           mode={mode}
-          onSubmit={(e:SubmitEvent)=>{
+          onSubmit={(e: SubmitEvent) => {
             e.preventDefault();
             handleSubmit();
           }}
@@ -85,7 +99,9 @@ const Register = () => {
               error={!!(errors.firstName && touched.firstName)}
               mode={mode}
             />
-          {errors.firstName && touched.firstName && <ErrorMessage>{t(`auth.${errors.firstName}`)}</ErrorMessage> }  
+            {errors.firstName && touched.firstName && (
+              <ErrorMessage>{t(`auth.${errors.firstName}`)}</ErrorMessage>
+            )}
           </FormGroup>
           <FormGroup sx={{ marginBottom: 2 }}>
             <StyledInput
@@ -98,7 +114,9 @@ const Register = () => {
               error={!!(errors.lastName && touched.lastName)}
               mode={mode}
             />
-             {errors.lastName && touched.lastName && <ErrorMessage>{t(`auth.${errors.lastName}`)}</ErrorMessage> }
+            {errors.lastName && touched.lastName && (
+              <ErrorMessage>{t(`auth.${errors.lastName}`)}</ErrorMessage>
+            )}
           </FormGroup>
           <FormGroup sx={{ marginBottom: 2 }}>
             <StyledInput
@@ -111,7 +129,9 @@ const Register = () => {
               error={!!(errors.email && touched.email)}
               mode={mode}
             />
-             {errors.email && touched.email && <ErrorMessage>{t(`auth.${errors.email}`)}</ErrorMessage> }
+            {errors.email && touched.email && (
+              <ErrorMessage>{t(`auth.${errors.email}`)}</ErrorMessage>
+            )}
           </FormGroup>
           <FormGroup sx={{ marginBottom: 2 }}>
             <StyledInput
@@ -124,7 +144,9 @@ const Register = () => {
               error={!!(errors.password && touched.password)}
               mode={mode}
             />
-             {errors.password && touched.password && <ErrorMessage>{t(`auth.${errors.password}`)}</ErrorMessage> }
+            {errors.password && touched.password && (
+              <ErrorMessage>{t(`auth.${errors.password}`)}</ErrorMessage>
+            )}
           </FormGroup>
           <FormGroup sx={{ marginBottom: 2 }}>
             <StyledInput
@@ -137,16 +159,20 @@ const Register = () => {
               error={!!(errors.confirmPassword && touched.confirmPassword)}
               mode={mode}
             />
-             {errors.confirmPassword && touched.confirmPassword && <ErrorMessage>{t(`auth.${errors.confirmPassword}`)}</ErrorMessage> }
+            {errors.confirmPassword && touched.confirmPassword && (
+              <ErrorMessage>{t(`auth.${errors.confirmPassword}`)}</ErrorMessage>
+            )}
           </FormGroup>
-          <FormButton loading={registerLoading}  type="submit" disabled={!dirty || Object.values(errors).length>0 } variant="contained" text={t('auth.register')} />
-          <Typography
-            sx={{ alignSelf: 'center', my: '10px' }}
-          >
-         {t('auth.already_member')}{' '}
-            <Link to="/login">
-              {t('auth.login')}
-            </Link>
+          <FormButton
+            loading={registerLoading}
+            type="submit"
+            disabled={!dirty || Object.values(errors).length > 0}
+            variant="contained"
+            text={t('auth.register')}
+          />
+          <Typography sx={{ alignSelf: 'center', my: '10px' }}>
+            {t('auth.already_member')}{' '}
+            <Link to="/login">{t('auth.login')}</Link>
           </Typography>
         </AuthForm>
       </AuthContainer>

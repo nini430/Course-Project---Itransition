@@ -1,7 +1,8 @@
+import {useEffect} from 'react';
 import { Divider, Typography, FormGroup } from '@mui/material';
 import { LockClockRounded } from '@mui/icons-material';
 import { useMediaQuery } from 'react-responsive';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 
@@ -12,9 +13,19 @@ import {
   loginValidationSchema,
   loginValues,
 } from '../../formik-validation/login';
-import { useAppSelector } from '../../store/store';
+import { useAppDispatch, useAppSelector } from '../../store/store';
+import { loginUser } from '../../store/authReducer';
 
 const Login = () => {
+  const {authedUser}=useAppSelector(state=>state.auth);
+  const userExists=authedUser || localStorage.getItem('authed_user');
+  const dispatch=useAppDispatch();
+  const navigate=useNavigate();
+  useEffect(()=>{
+    if(userExists) {
+      navigate('/');
+    }
+  },[userExists,navigate]);
   const {
     values,
     errors,
@@ -26,16 +37,20 @@ const Login = () => {
   } = useFormik({
     initialValues: loginValues,
     validationSchema: loginValidationSchema,
-    onSubmit: () => {
-      console.log('submit');
+    onSubmit: (values) => {
+      dispatch(loginUser({input:values,onSuccess:()=>{
+        navigate('/');
+      }}))
     },
   });
   const {mode}=useAppSelector(state=>state.common);
+  const {loginLoading}=useAppSelector(state=>state.auth);
   const { t } = useTranslation();
   const isDesktopOrLaptop = useMediaQuery({ minWidth: 1224 });
   const isBigScreen = useMediaQuery({ minWidth: 1824 });
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
   const isExtraSmallDevice = useMediaQuery({ maxWidth: 500 });
+
   return (
     <>
 
@@ -46,6 +61,10 @@ const Login = () => {
           isMob={isTabletOrMobile}
           isD={isDesktopOrLaptop}
           mode={mode}
+          onSubmit={(e:SubmitEvent)=>{
+            e.preventDefault();
+            handleSubmit();
+          }}
         >
           <Typography sx={{ alignSelf: 'center', fontSize: 20 }}>
             {t('auth.login')}
@@ -89,7 +108,7 @@ const Login = () => {
               <ErrorMessage>{t(`auth.${errors.password}`)}</ErrorMessage>
             )}
           </FormGroup>
-          <FormButton  type="submit" onSubmit={handleSubmit} disabled={!dirty || Object.values(errors).length>0} variant="contained" text={t('auth.login')} />
+          <FormButton loading={loginLoading}  type="submit"  disabled={!dirty || Object.values(errors).length>0} variant="contained" text={t('auth.login')} />
           <Typography
             sx={{ alignSelf: 'center', my: '10px' }}
           >
