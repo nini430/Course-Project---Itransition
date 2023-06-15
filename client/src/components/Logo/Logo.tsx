@@ -7,7 +7,7 @@ import SiteLogo from '../../assets/logo.jpg'
 const Logo = () => {
   return (
     <Link to="/">
-    <LogoImg width={70} height="auto" src={SiteLogo} alt="" />
+    <LogoImg width={60} height="auto" src={SiteLogo} alt="" />
     </Link>
     
   )

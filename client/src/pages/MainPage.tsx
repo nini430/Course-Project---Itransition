@@ -40,7 +40,6 @@ const MainPageContainer=styled.div`
     display:flex;
     flex-direction: column;
     padding:40px;
-    width:100vw;
     min-height:calc(100vh - 80px);
     gap:40px;
 `

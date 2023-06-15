@@ -1,5 +1,6 @@
 import {useMemo} from 'react'
-import {Routes,Route, Navigate} from 'react-router-dom';
+import {Routes,Route} from 'react-router-dom';
+import {useMediaQuery} from 'react-responsive'
 import {ThemeProvider} from '@mui/material'
 import Register from './pages/auth/Register';
 import Login from './pages/auth/Login';
