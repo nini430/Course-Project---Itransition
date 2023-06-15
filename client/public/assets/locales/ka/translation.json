@@ -1,24 +1,27 @@
 {
-    "auth":{
-        "register":"რეგისტრაცია",
-        "login":"ავტორიზაცია",
-        "not_account":"ჯერ არ შეგიქმნიათ ექაუნთი?",
-        "email":"ელექტრონული ფოსტა",
-        "password":"პაროლი",
-        "firstName":"სახელი",
-        "lastName":"გვარი",
-        "confirm_password":"გაიმეორეთ პაროლი",
-        "already_member":"უკვე გაქვთ ექაუნთი?",
-        "email_required":"შეიყვანეთ ელექტრონული ფოსტის ველი",
-        "password_required":"შეიყვანეთ პაროლის ველი",
-        "valid_email":"ელექტრონული ფოსტის ფორმატი არასწორია",
-        "first_name_required":"შეიყვანეთ სახელი-ს ველი",
-        "last_name_required":"შეიყვანეთ გვარი-ს ველი",
-        "confirm_password_required":"გაიმეორეთ პაროლი",
-        "passwords_must_match":"პაროლი არ ემთხვევა"
-    },
-    "lang":{
-        "en":"ინგლისური",
-        "geo":"ქართული"
-    }
+  "auth": {
+    "register": "რეგისტრაცია",
+    "login": "ავტორიზაცია",
+    "not_account": "ჯერ არ შეგიქმნიათ ექაუნთი?",
+    "email": "ელექტრონული ფოსტა",
+    "password": "პაროლი",
+    "firstName": "სახელი",
+    "lastName": "გვარი",
+    "confirm_password": "გაიმეორეთ პაროლი",
+    "already_member": "უკვე გაქვთ ექაუნთი?",
+    "email_required": "შეიყვანეთ ელექტრონული ფოსტის ველი",
+    "password_required": "შეიყვანეთ პაროლის ველი",
+    "valid_email": "ელექტრონული ფოსტის ფორმატი არასწორია",
+    "first_name_required": "შეიყვანეთ სახელი-ს ველი",
+    "last_name_required": "შეიყვანეთ გვარი-ს ველი",
+    "confirm_password_required": "გაიმეორეთ პაროლი",
+    "passwords_must_match": "პაროლი არ ემთხვევა"
+  },
+  "nav": {
+    "search": "ძიება..."
+  },
+  "lang": {
+    "en": "ინგლისური",
+    "geo": "ქართული"
+  }
 }

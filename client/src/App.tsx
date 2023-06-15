@@ -7,6 +7,7 @@ import './utils/i18next';
 import { useAppSelector } from './store/store';
 import { darkTheme, lightTheme } from './utils/theme';
 import MainPage from './pages/MainPage';
+import NavBar from './components/NavBar/NavBar';
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
   return (
     <div className={`theme-${mode}`}>
       <ThemeProvider  theme={theme}>
+        <NavBar/>
       <Routes>
       <Route path="/" element={<MainPage/>}/>
       <Route path="/register" element={<Register/>}/>

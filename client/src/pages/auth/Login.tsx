@@ -3,18 +3,15 @@ import { LockClockRounded } from '@mui/icons-material';
 import { useMediaQuery } from 'react-responsive';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
 import { useFormik } from 'formik';
 
-import { AuthContainer, AuthForm, ErrorMessage, PropertyContainer } from './AuthStyles';
+import { AuthContainer, AuthForm, ErrorMessage} from './AuthStyles';
 import FormButton from '../../components/FormButton/FormButton';
-import LanguageDropDown from '../../components/LanguageDropDown/LanguageDropDown';
 import StyledInput from '../../components/FormInput/FormInput'
 import {
   loginValidationSchema,
   loginValues,
 } from '../../formik-validation/login';
-import ModeSwitch from '../../components/ModeSwitch/ModeSwitch';
 import { useAppSelector } from '../../store/store';
 
 const Login = () => {
@@ -34,7 +31,6 @@ const Login = () => {
     },
   });
   const {mode}=useAppSelector(state=>state.common);
-  const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const { t } = useTranslation();
   const isDesktopOrLaptop = useMediaQuery({ minWidth: 1224 });
   const isBigScreen = useMediaQuery({ minWidth: 1824 });
@@ -42,16 +38,7 @@ const Login = () => {
   const isExtraSmallDevice = useMediaQuery({ maxWidth: 500 });
   return (
     <>
-     
-      <PropertyContainer>
-      <ModeSwitch/>
-      <LanguageDropDown
-        open={isDropDownOpen}
-        onOpen={() => setIsDropDownOpen(true)}
-        onClose={() => setIsDropDownOpen(false)}
-      />
-      </PropertyContainer>
-     
+
       <AuthContainer>
         <AuthForm
           isXS={isExtraSmallDevice}

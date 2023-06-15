@@ -3,18 +3,15 @@ import { PersonPin } from '@mui/icons-material';
 import { useMediaQuery } from 'react-responsive';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
 import { useFormik } from 'formik';
 
-import { AuthContainer, AuthForm, ErrorMessage, PropertyContainer } from './AuthStyles';
+import { AuthContainer, AuthForm, ErrorMessage } from './AuthStyles';
 import StyledInput from '../../components/FormInput/FormInput';
 import FormButton from '../../components/FormButton/FormButton';
-import LanguageDropDown from '../../components/LanguageDropDown/LanguageDropDown';
 import {
   registerValidationSchema,
   registerValues,
 } from '../../formik-validation/register';
-import ModeSwitch from '../../components/ModeSwitch/ModeSwitch';
 import { useAppSelector } from '../../store/store';
 
 const Register = () => {
@@ -33,7 +30,6 @@ const Register = () => {
       console.log('submit');
     },
   });
-  const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const { t } = useTranslation();
   const {mode}=useAppSelector(state=>state.common);
   const isDesktopOrLaptop = useMediaQuery({ minWidth: 1224 });
@@ -42,15 +38,6 @@ const Register = () => {
   const isExtraSmallDevice = useMediaQuery({ maxWidth: 500 });
   return (
     <>
-    <PropertyContainer>
-    <ModeSwitch/>
-    <LanguageDropDown
-        open={isDropDownOpen}
-        onOpen={() => setIsDropDownOpen(true)}
-        onClose={() => setIsDropDownOpen(false)}
-      />
-    </PropertyContainer>
-      
       <AuthContainer>
         <AuthForm
           isXS={isExtraSmallDevice}

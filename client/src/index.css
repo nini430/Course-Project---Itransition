@@ -17,8 +17,8 @@ a {
 .MuiMenu-paper {
     position:absolute !important;
  width:148px !important;
- top:100px !important;
- left:calc(100vw - 100px - 148px) !important;
+ top:68px !important;
+ right:10px !important;
 }
 
 .theme-light {

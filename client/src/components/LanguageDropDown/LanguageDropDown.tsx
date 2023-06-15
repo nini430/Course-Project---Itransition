@@ -1,4 +1,4 @@
-import {MenuItem,Button,Menu} from '@mui/material'
+import {MenuItem,Button,Menu, Typography} from '@mui/material'
 import {KeyboardArrowDown} from '@mui/icons-material'
 import styled from 'styled-components'
 import jsCookie from 'js-cookie';
@@ -27,7 +27,7 @@ const LanguageDropDown: React.FC<ILanguageDropDownProps> = ({open,onClose,onOpen
         <Button onClick={onOpen}  variant="contained" color="inherit" endIcon={<KeyboardArrowDown/>}>
         <div className="lngWrap">
         <img width={25} height="auto" src={cookie==='en'?Eng:Geo} alt="" />
-      {!isExtraSmall && <span>{t(`lang.${selectedLang?.name}`)}</span> }
+      {!isExtraSmall && <Typography>{t(`lang.${selectedLang?.name}`)}</Typography> }
         </div>
     
     </Button>
@@ -39,7 +39,10 @@ const LanguageDropDown: React.FC<ILanguageDropDownProps> = ({open,onClose,onOpen
 
         }} sx={{display:'flex',alignItems:'center',gap:'10px'}}>
         <img width={25} height="auto" src={lang.abbr==='en'?Eng:Geo} alt="" />
+        <Typography>
         {t(`lang.${lang.name}`)}
+        </Typography>
+       
         </MenuItem>
        ))}
     </Menu>

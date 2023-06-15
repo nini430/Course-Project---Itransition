@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const AuthContainer = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 80px);
   padding: 0px 10px;
   display: flex;
   justify-content: center;
