@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {Card, CardContent, Typography,CardActions} from '@mui/material'
+import {Card, CardContent, Typography,CardActions, Button} from '@mui/material'
 
 import Avatar from '../../assets/avatar.png'
 
@@ -20,6 +20,9 @@ const Item = () => {
         </AuthorContainer>
 
         </CardContent>
+        <CardActions>
+          <Button sx={{border:'1px solid gray'}}>View more</Button>
+        </CardActions>
     </ItemContainer>
   )
 }

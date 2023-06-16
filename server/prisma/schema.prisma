@@ -17,6 +17,78 @@ model User {
   email     String @unique
   password String
   role Role @default(BASIC)
+  collections Collection[]
+}
+
+model Collection {
+  id String @id @default(uuid())
+  name String
+  topic CollectionTopic
+  description String
+  image String?
+  authorId String
+  author User @relation(fields: [authorId], references: [id])
+  items Item[]
+}
+
+model Item {
+  id String @id @default(uuid())
+  name String
+  tags String
+  collectionId String
+  collection Collection @relation(fields: [collectionId],references: [id])
+  integerItems IntegerField[]
+  stringItems StringField[]
+  multilineItems MultilineTextField[]
+  booleancheckboxItems BooleanCheckboxField[]
+  dateItems DateField[]
+}
+
+model IntegerField {
+  id String @id @default(uuid())
+  name String
+  value String
+  itemId String
+  item Item @relation(fields: [itemId],references: [id])
+}
+
+model StringField {
+  id String @id @default(uuid())
+  name String
+  value String
+  itemId String
+  item Item @relation(fields: [itemId], references: [id])
+}
+
+model MultilineTextField {
+  id String @id @default(uuid())
+  name String
+  value String
+  itemId String
+  item Item @relation(fields: [itemId],references: [id])
+}
+
+model BooleanCheckboxField {
+  id String @id @default(uuid())
+  name String
+  value String
+  itemId String
+  item Item @relation(fields: [itemId],references: [id])
+}
+
+model DateField {
+  id String @id @default(uuid())
+  name String
+  value String
+  itemId String
+  item Item @relation(fields: [itemId],references: [id])
+}
+
+enum CollectionTopic {
+  BOOKS
+  CHOCOLATES
+  WHISKEYS
+  WATCHES
 }
 
 enum Role {
