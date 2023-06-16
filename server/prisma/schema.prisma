@@ -85,10 +85,10 @@ model DateField {
 }
 
 enum CollectionTopic {
-  BOOKS
-  CHOCOLATES
-  WHISKEYS
-  WATCHES
+  books
+  chocolates
+  whiskeys
+  watches
 }
 
 enum Role {

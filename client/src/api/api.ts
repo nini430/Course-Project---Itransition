@@ -7,6 +7,9 @@ const apiUrls = {
   test: {
     test: '/test',
   },
+  collection:{
+    topics:`/collection/topics`
+  }
 };
 
 export default apiUrls;

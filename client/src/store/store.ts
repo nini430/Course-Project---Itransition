@@ -1,12 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
+
 import commonReducer from './commonReducer';
 import authReducer from './authReducer';
+import collectionReducer from './collectionReducer';
 
 const store = configureStore({
   reducer:{
     common:commonReducer,
-    auth:authReducer
+    auth:authReducer,
+    collection:collectionReducer
   },
   middleware:getDefaultMiddleware=>getDefaultMiddleware({
     serializableCheck:false
