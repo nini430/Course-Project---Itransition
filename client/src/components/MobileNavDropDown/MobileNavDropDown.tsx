@@ -39,6 +39,7 @@ const Container=styled(({mode,...rest}:any)=><div {...rest} />)`
    align-items: center;
    border-bottom: 1px solid;
    border-color: gray;
+   z-index:99;
    
 `
 
