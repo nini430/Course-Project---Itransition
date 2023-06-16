@@ -56,7 +56,7 @@ const Login = () => {
 
       <AuthContainer>
         <AuthForm
-          isXS={isExtraSmallDevice}
+         S={isExtraSmallDevice}
           isX={isBigScreen}
           isMob={isTabletOrMobile}
           isD={isDesktopOrLaptop}

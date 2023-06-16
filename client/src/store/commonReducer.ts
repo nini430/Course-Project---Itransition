@@ -1,12 +1,18 @@
-import jsCookie from 'js-cookie'
-import { createSlice } from '@reduxjs/toolkit';
+import jsCookie from 'js-cookie';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { CommonInitialState } from '../types/common';
-
+import axiosApiInstance from '../axios';
+import apiUrls from '../api/api';
 
 const initialState: CommonInitialState = {
-  mode: (localStorage.getItem('mode') as 'light'|'dark') || 'light',
-  lang:(jsCookie.get('i18next') as 'en'|'ka') || 'en' 
+  mode: (localStorage.getItem('mode') as 'light' | 'dark') || 'light',
+  lang: (jsCookie.get('i18next') as 'en' | 'ka') || 'en',
 };
+
+export const testAuthedRoute = createAsyncThunk('/test', async () => {
+  const response = await axiosApiInstance.get(apiUrls.test.test);
+  console.log(response.data);
+});
 
 const commonReducer = createSlice({
   name: 'common',
@@ -14,11 +20,11 @@ const commonReducer = createSlice({
   reducers: {
     changeTheme(state) {
       state.mode = state.mode === 'light' ? 'dark' : 'light';
-      localStorage.setItem('mode',state.mode)
+      localStorage.setItem('mode', state.mode);
     },
     changeLang(state) {
-      state.lang= state.lang==='en'?'ka':'en';
-    }
+      state.lang = state.lang === 'en' ? 'ka' : 'en';
+    },
   },
 });
 

@@ -1,13 +1,17 @@
-import { Divider, Typography } from '@mui/material';
+import { Button, Divider, Typography } from '@mui/material';
+import {AddCircle} from '@mui/icons-material'
 import styled from 'styled-components';
 
-import { useAppSelector } from '../store/store';
+import { useAppDispatch, useAppSelector } from '../store/store';
 import { useNavigate } from 'react-router-dom';
 import Collection from '../components/Collection/Collection';
 import Item from '../components/Item/Item';
 import TagCloudComponent from '../components/TagCloud/TagCloud';
+import Empty from '../components/Empty/Empty';
+import { testAuthedRoute } from '../store/commonReducer';
 
 const MainPage = () => {
+  const dispatch=useAppDispatch();
   const navigate = useNavigate();
   const { authedUser } = useAppSelector((state) => state.auth);
   const userExists = authedUser || localStorage.getItem('authed_user');
@@ -20,6 +24,7 @@ const MainPage = () => {
           Latest items
         </Typography>
         <Divider />
+        <StyledButton onClick={()=>dispatch(testAuthedRoute())} startIcon={<AddCircle/>} sx={{alignSelf:'flex-start',border:'1px solid gray'}}>Add Item</StyledButton>
         <CardWrapper>
           <Item/>
           <Item/>
@@ -27,12 +32,14 @@ const MainPage = () => {
           <Item/>
           <Item/>
         </CardWrapper>
+        {/* <Empty message="No Collections yet"/> */}
       </CardContainer>
       <CardContainer>
         <Typography sx={{ fontWeight: 300, fontStyle: 'italic' }} variant="h4">
           Top 5 Largest Collection
         </Typography>
         <Divider />
+        <StyledButton startIcon={<AddCircle/>} sx={{alignSelf:'flex-start',border:'1px solid gray'}}>Add  Collection</StyledButton>
         <CardWrapper>
           <Collection />
           <Collection />
@@ -66,4 +73,13 @@ const CardWrapper = styled.div`
   gap: 20px;
   flex-wrap: wrap;
 `;
+
+const StyledButton=styled(Button)`
+  border:1px solid gray;
+  transition:all 0.3s ease !important;
+
+  &:hover {
+    transform:scale(1.05) !important;
+  }
+`
 export default MainPage;

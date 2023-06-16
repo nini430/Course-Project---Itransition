@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
 import { StatusCodes } from 'http-status-codes';
 import asyncHandler from 'express-async-handler';
 import {
@@ -69,7 +70,6 @@ const loginUser = asyncHandler(
       process.env.JWT_ACCESS_TOKEN_SECRET as string,
       process.env.JWT_ACCESS_TOKEN_EXPIRE_MIN as string
     );
-
     const refreshToken = generateJwt(
       user.id,
       process.env.JWT_REFRESH_TOKEN_SECRET as string,
@@ -84,4 +84,44 @@ const loginUser = asyncHandler(
   }
 );
 
-export { registerUser, loginUser };
+const generateRefreshToken = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const refreshToken = req.headers.authorization?.split(' ')[1];
+    if (!refreshToken) {
+      return next(
+        new ErrorResponse(
+          errorMessages.unauthenticated,
+          StatusCodes.UNAUTHORIZED
+        )
+      );
+    }
+
+    try {
+      const tokenInfo = jwt.verify(
+        refreshToken,
+        process.env.JWT_REFRESH_TOKEN_SECRET as string
+      ) as { id: string };
+      console.log(tokenInfo);
+      if (tokenInfo.id) {
+        const accessToken = generateJwt(
+          tokenInfo.id,
+          process.env.JWT_ACCESS_TOKEN_SECRET as string,
+          process.env.JWT_ACCESS_TOKEN_EXPIRE_MIN as string
+        );
+        return res.status(StatusCodes.OK).json({ success: true, accessToken });
+      }
+    } catch (err: any) {
+      console.log(err);
+      return next(
+        new ErrorResponse(
+          err.name === 'TokenExpiredError'
+            ? errorMessages.tokenExpired
+            : errorMessages.unauthenticated,
+          StatusCodes.UNAUTHORIZED
+        )
+      );
+    }
+  }
+);
+
+export { registerUser, loginUser, generateRefreshToken };

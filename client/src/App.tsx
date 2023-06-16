@@ -9,6 +9,7 @@ import { useAppSelector } from './store/store';
 import { darkTheme, lightTheme } from './utils/theme';
 import MainPage from './pages/MainPage';
 import NavBar from './components/NavBar/NavBar';
+import AddCollection from './pages/collection/AddCollection';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
       <Route path="/" element={<MainPage/>}/>
       <Route path="/register" element={<Register/>}/>
       <Route path="/login" element={<Login/>}/>
+      <Route path="/add-collection" element={<AddCollection/>}/>
     </Routes>
     </ThemeProvider>
     </div>

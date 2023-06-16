@@ -15,6 +15,8 @@ const initialState: AuthInitialState = {
   loginLoading: false,
 };
 
+
+
 export const registerUser = createAsyncThunk(
   '/auth/register',
   async ({
@@ -48,10 +50,23 @@ export const loginUser= createAsyncThunk('/auth/login',async({input,onSuccess}:{
     }
 })
 
+export const generateRefreshToken=createAsyncThunk('auth/refresh-token',async(_,thunkApi)=>{
+   try{
+    const response=await axiosApiInstance.post(apiUrls.auth.refreshToken);
+    return response.data;
+   }catch(err) {
+    return thunkApi.rejectWithValue(err);
+   }
+});
+
 const authReducer = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    clearUser(state) {
+      state.authedUser=null;
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(registerUser.pending, (state) => {
       state.registerLoading = true;
@@ -76,5 +91,7 @@ const authReducer = createSlice({
     });
   },
 });
+
+export const {clearUser}=authReducer.actions;
 
 export default authReducer.reducer;
