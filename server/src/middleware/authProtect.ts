@@ -15,7 +15,7 @@ const authProtect = asyncHandler(
         new ErrorResponse(
           errorMessages.unauthenticated,
           StatusCodes.UNAUTHORIZED
-        )
+        ) 
       );
     }
     try {

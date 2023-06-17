@@ -59,6 +59,15 @@ export const generateRefreshToken=createAsyncThunk('auth/refresh-token',async(_,
    }
 });
 
+export const logoutUser=createAsyncThunk('auth/logout',async(_,thunkApi)=>{
+  try{
+    const response=await axiosApiInstance.get(apiUrls.auth.logout);
+    return response.data;
+  }catch(err) {
+    return thunkApi.rejectWithValue(err);
+  }
+})
+
 const authReducer = createSlice({
   name: 'auth',
   initialState,
@@ -88,6 +97,9 @@ const authReducer = createSlice({
     builder.addCase(loginUser.rejected,(state,action:any)=>{
       state.loginLoading=false;
       toast.error(action.payload.message.error,toastOptions);
+    });
+    builder.addCase(logoutUser.fulfilled,(state)=>{
+      state.authedUser=null;
     });
   },
 });

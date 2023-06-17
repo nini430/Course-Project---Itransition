@@ -5,8 +5,11 @@ import { Settings, Logout } from '@mui/icons-material';
 
 import AvatarImg from '../../assets/avatar.png';
 import { useTranslation } from 'react-i18next';
+import { useAppDispatch } from '../../store/store';
+import { logoutUser } from '../../store/authReducer';
 
 const NavUser = () => {
+  const dispatch=useAppDispatch();
     const {t}=useTranslation();
   const [anchorEl,setAnchorEl]=useState<any>(null);
   const handleAnchorClick=(e:React.MouseEvent<HTMLButtonElement>)=>{
@@ -26,7 +29,7 @@ const NavUser = () => {
           <Settings />
         {t('nav.parameters')}
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={()=>dispatch(logoutUser())}>
           <Logout />
           {t('nav.log_out')}
         </MenuItem>

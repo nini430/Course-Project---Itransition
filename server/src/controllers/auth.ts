@@ -124,4 +124,9 @@ const generateRefreshToken = asyncHandler(
   }
 );
 
-export { registerUser, loginUser, generateRefreshToken };
+const logoutUser=asyncHandler(async(req:Request & {user:any},res:Response,next:NextFunction)=>{
+    req.user=null;
+    return res.status(StatusCodes.OK).json({success:true,data:'logged_out'});
+});
+
+export { registerUser, loginUser, generateRefreshToken, logoutUser };

@@ -41,8 +41,14 @@ axiosApiInstance.interceptors.response.use(
       localStorage.setItem('authed_user', JSON.stringify(response.data.user));
     }
 
-    if(request.url===apiUrls.auth.refreshToken) {
-       localStorage.setItem('access_token',response.data.accessToken);
+    if (request.url === apiUrls.auth.refreshToken) {
+      localStorage.setItem('access_token', response.data.accessToken);
+    }
+    if (request.url === apiUrls.auth.logout) {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      localStorage.removeItem('authed_user');
+      window.location.href='/login';
     }
     return response;
   },
@@ -56,24 +62,24 @@ axiosApiInstance.interceptors.response.use(
       originalRequest.url !== apiUrls.auth.register &&
       originalRequest.url !== apiUrls.auth.refreshToken
     ) {
-      try{
-        originalRequest._isRetry=true;
+      try {
+        originalRequest._isRetry = true;
         await axiosApiInstance.post(apiUrls.auth.refreshToken);
         return axiosApiInstance(originalRequest);
-      }catch(err) {
+      } catch (err) {
         store.dispatch(clearUser());
         localStorage.removeItem('authed_user');
         removeTokens();
-        window.location.href='/';
+        window.location.href = '/';
         return Promise.reject(err);
       }
     }
 
-    if(originalRequest?.url===apiUrls.auth.refreshToken) {
+    if (originalRequest?.url === apiUrls.auth.refreshToken) {
       store.dispatch(clearUser());
-       removeTokens();
-       localStorage.removeItem('authed_user');
-       window.location.href='/';
+      removeTokens();
+      localStorage.removeItem('authed_user');
+      window.location.href = '/';
     }
     const errorMessage = err.response?.data;
     err.message = errorMessage as any;

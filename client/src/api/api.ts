@@ -3,6 +3,7 @@ const apiUrls = {
     register: `/auth/register`,
     login: `/auth/login`,
     refreshToken: `/auth/refresh-token`,
+    logout:`/auth/logout`
   },
   test: {
     test: '/test',
