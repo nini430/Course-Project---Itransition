@@ -5,6 +5,7 @@ import { useMediaQuery } from 'react-responsive';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
+import {Toaster} from 'react-hot-toast'
 
 import { AuthContainer, AuthForm, ErrorMessage } from './AuthStyles';
 import FormButton from '../../components/FormButton/FormButton';
@@ -60,6 +61,7 @@ const Login = () => {
   return (
     <>
       <AuthContainer>
+        <Toaster/>
         <AuthForm
           S={isExtraSmallDevice}
           isX={isBigScreen}
