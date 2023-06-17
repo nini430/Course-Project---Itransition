@@ -11,7 +11,7 @@ const MobileNavDropDown = () => {
     const {mode}=useAppSelector(state=>state.common);
     const {t}=useTranslation();
   return (
-    <Container mode={mode}>
+      <Container   mode={mode}>
         <ModeSwitch/>
         <LanguagePicker/>
         <IconButton>
@@ -25,10 +25,11 @@ const MobileNavDropDown = () => {
         </IconButton>
 
     </Container>
+    
   )
 }
 
-const Container=styled(({mode,...rest}:any)=><div {...rest} />)`
+const Container=styled(({mode,...rest}:any)=><div id='mobile-navbar-dropdown' {...rest} />)`
     width:100%;
     position:absolute;
    top:80px;

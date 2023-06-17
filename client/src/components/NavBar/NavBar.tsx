@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
-import {useState} from 'react'
+import {useState,useEffect} from 'react'
 import {useMediaQuery} from 'react-responsive'
 import {Button, IconButton} from '@mui/material'
 import {Menu,MenuOpen} from '@mui/icons-material'
@@ -20,12 +20,24 @@ const NavBar = () => {
   const userExists=authedUser || localStorage.getItem('authed_user');
   const [dropdownOpen,setDropdownOpen]=useState(false);
   const isExtraSmallDevice = useMediaQuery({ maxWidth: 500 });
+  useEffect(()=>{
+    const handleClickOutside=(e:any)=>{
+      console.log(e.target);
+      if(!e.target.closest('#mobile-navbar-dropdown') && !e.target.closest('#nav-dropdown-button')) {
+          setDropdownOpen(false);
+      }
+    }
+    document.addEventListener('click',handleClickOutside);
+    return ()=>{
+      document.removeEventListener('click',handleClickOutside);
+    }
+  },[]);
   if(isExtraSmallDevice) {
     return (
       <NavbarContainer>
-       {dropdownOpen && <MobileNavDropDown/> } 
-        <IconButton onClick={()=>setDropdownOpen(prev=>!prev)}>
-          {dropdownOpen ? <MenuOpen/> : <Menu/>}
+       {dropdownOpen && <MobileNavDropDown /> } 
+        <IconButton id="nav-dropdown-button" onClick={()=>setDropdownOpen(prev=>!prev)}>
+          {dropdownOpen ? <MenuOpen sx={{pointerEvents:"none"}}/> : <Menu sx={{pointerEvents:'none'}}/>}
         </IconButton>
         <SearchInput/>
          <Logo/>
