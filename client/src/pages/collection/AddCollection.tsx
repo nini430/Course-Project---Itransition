@@ -55,7 +55,7 @@ const AddCollection = () => {
       }
       dispatch(
         addCollection({
-          input: {...values,image:imgToUpload as string},
+          input: { ...values, image: imgToUpload as string },
           onSuccess: () => {
             toast.success(t('collection_created', toastOptions));
             setTimeout(() => {
@@ -72,6 +72,7 @@ const AddCollection = () => {
       setUploadImg(acceptedFiles[0]);
     },
   });
+
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -152,7 +153,7 @@ const AddCollection = () => {
         </FormGroup>
         <FormGroup sx={{ mb: 2 }}>
           <Typography>Image (optional)</Typography>
-          <ImageUploadContainer {...getRootProps()} mode={mode}>
+          <ImageUploadContainer isDragActive={isDragActive} {...getRootProps()} mode={mode}>
             {uploadImg ? (
               <ImageContainer>
                 <img
@@ -229,11 +230,18 @@ const CollectionForm = styled(({ mode, ...rest }: any) => <form {...rest} />)`
   border-radius: 10px;
 `;
 
-const ImageUploadContainer = styled(({ mode, ...props }: any) => (
+const ImageUploadContainer = styled(({ mode, isDragActive, ...props }: any) => (
   <div {...props} />
 ))`
   width: 100%;
-  background-color: ${({ mode }) => (mode === 'dark' ? '#252121' : 'white')};
+  background-color: ${({ mode, isDragActive }) =>
+    mode === 'dark'
+      ? isDragActive
+        ? '#606060'
+        : 'rgb(31, 28, 28)'
+      : isDragActive
+      ? 'rgba(166, 154, 154, 0.1)'
+      : 'white'};
   height: 250px;
   border: 1px dashed gray;
   display: flex;

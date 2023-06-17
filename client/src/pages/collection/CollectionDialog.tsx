@@ -19,6 +19,7 @@ interface ICollectionDialogProps {
 }
 
 const CollectionDialog = ({ open, onClose }: ICollectionDialogProps) => {
+  const [accordionValues,setAccordionValues]=useState({});
   const [integerFieldCount, setIntegerFieldCount] = useState(1);
   const [stringFieldCount, setStringFieldCount] = useState(1);
   const [multilineFieldCount, setMultilineFieldCount] = useState(1);
@@ -34,30 +35,45 @@ const CollectionDialog = ({ open, onClose }: ICollectionDialogProps) => {
             field={integerFieldCount}
             placeholderText="Integer Text Field"
             summaryMessage="Integer Fields"
+            accordionValues={accordionValues}
+            setAccordionValues={setAccordionValues}
+            name='integerfield'
           />
           <CollectionAccordion
            setField={()=>setStringFieldCount(prev=>prev+1)}
            field={stringFieldCount}
            placeholderText='String Text Field'
            summaryMessage='String Text Fields'
+           accordionValues={accordionValues}
+           setAccordionValues={setAccordionValues}
+           name='stringfield'
             />
           <CollectionAccordion
           setField={()=>setMultilineFieldCount(prev=>prev+1)}
           field={multilineFieldCount}
           placeholderText='Multiline Text Field'
           summaryMessage='Multiline Text Fields'
+          accordionValues={accordionValues}
+          setAccordionValues={setAccordionValues}
+          name='multilinetextfield'
            />
           <CollectionAccordion
           setField={()=>setCheckboxFieldCount(prev=>prev+1)}
           field={checkboxFieldCount}
           placeholderText='Checkbox  Field'
           summaryMessage='Checkbox Fields'
+          accordionValues={accordionValues}
+          setAccordionValues={setAccordionValues}
+          name='booleancheckboxfield'
            />
           <CollectionAccordion
           setField={()=>setDateFieldCount(prev=>prev+1)}
           field={dateFieldCount}
           placeholderText='Date Text Field'
           summaryMessage='Date Fields'
+          accordionValues={accordionValues}
+          setAccordionValues={setAccordionValues}
+          name='datefield'
            />
         </ConfigurationContainer>
       </DialogContent>

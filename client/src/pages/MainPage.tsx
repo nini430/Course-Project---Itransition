@@ -1,7 +1,9 @@
 import { Button, Divider, Typography } from '@mui/material';
 import {AddCircle} from '@mui/icons-material'
 import styled from 'styled-components';
+import {Link} from 'react-router-dom'
 
+import {useState} from 'react';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import { useNavigate } from 'react-router-dom';
 import Collection from '../components/Collection/Collection';
@@ -39,7 +41,10 @@ const MainPage = () => {
           Top 5 Largest Collection
         </Typography>
         <Divider />
+        <Link to='/add-collection'>
         <StyledButton startIcon={<AddCircle/>} sx={{alignSelf:'flex-start',border:'1px solid gray'}}>Add  Collection</StyledButton>
+        </Link>
+        
         <CardWrapper>
           <Collection />
           <Collection />
