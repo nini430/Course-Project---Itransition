@@ -8,7 +8,6 @@ const Item = () => {
     <ItemContainer>
         <CardContent sx={{flexDirection:'column',alignItems:'center',display:'flex',gap:'5px'}}>
         <Typography variant='h6'>Dankin Chocolate</Typography>
-        <ItemImg  src="https://img.b2b.trade/95779be8-33ae-4278-9064-e46608202b14/-/smart_resize/500x500/-/quality/lightest/-/format/webp/"/>
         <Typography sx={{color:'gray'}}>Collection: Chocolates</Typography>
         <AuthorContainer>
         <Typography sx={{color:'gray'}}>Author:</Typography>
@@ -39,10 +38,6 @@ const ItemContainer=styled(Card)`
     &:hover {
         transform:scale(1.05);
     }
-`
-
-const ItemImg=styled.img`
-   width:100px; 
 `
 
 const AuthorContainer=styled.div`

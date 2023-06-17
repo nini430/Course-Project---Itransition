@@ -29,6 +29,11 @@ model Collection {
   authorId String
   author User @relation(fields: [authorId], references: [id])
   items Item[]
+  integerItems IntegerField[]
+  stringItems StringField[]
+  multilineItems MultilineTextField[]
+  booleancheckboxItems BooleanCheckboxField[]
+  dateItems DateField[]
 }
 
 model Item {
@@ -48,8 +53,10 @@ model IntegerField {
   id String @id @default(uuid())
   name String
   value String
+  collectionId String
   itemId String
-  item Item @relation(fields: [itemId],references: [id])
+  item Item? @relation(fields: [itemId],references: [id])
+  collection Collection @relation(fields: [collectionId],references: [id])
 }
 
 model StringField {
@@ -57,7 +64,9 @@ model StringField {
   name String
   value String
   itemId String
-  item Item @relation(fields: [itemId], references: [id])
+  collectionId String
+  item Item? @relation(fields: [itemId], references: [id])
+  collection Collection @relation(fields: [collectionId],references: [id])
 }
 
 model MultilineTextField {
@@ -65,7 +74,9 @@ model MultilineTextField {
   name String
   value String
   itemId String
-  item Item @relation(fields: [itemId],references: [id])
+  collectionId String
+  item Item? @relation(fields: [itemId],references: [id])
+  collection Collection @relation(fields: [collectionId],references: [id])
 }
 
 model BooleanCheckboxField {
@@ -73,7 +84,9 @@ model BooleanCheckboxField {
   name String
   value String
   itemId String
+  collectionId String
   item Item @relation(fields: [itemId],references: [id])
+  collection Collection @relation(fields: [collectionId],references: [id])
 }
 
 model DateField {
@@ -81,7 +94,9 @@ model DateField {
   name String
   value String
   itemId String
+  collectionId String
   item Item @relation(fields: [itemId],references: [id])
+  collection Collection @relation(fields: [collectionId],references: [id])
 }
 
 enum CollectionTopic {

@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { CollectionInitialState } from '../types/collection';
+import { CollectionInitialState, CollectionValues } from '../types/collection';
 import axiosApiInstance from '../axios';
 import apiUrls from '../api/api';
 
 const initialState: CollectionInitialState = {
   collectionTopics: [],
   topicsLoading: false,
+  addCollectionLoading: false,
 };
 
 export const getCollectionTopics = createAsyncThunk(
@@ -16,6 +17,26 @@ export const getCollectionTopics = createAsyncThunk(
         apiUrls.collection.topics
       );
       return response.data.data;
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
+export const addCollection = createAsyncThunk(
+  '/collection/add',
+  async (
+    { input, onSuccess }: { input: CollectionValues; onSuccess: VoidFunction },
+    thunkApi
+  ) => {
+    try {
+      const response = await axiosApiInstance.post(
+        apiUrls.collection.add,
+        input
+      );
+      console.log(response.data);
+      onSuccess && onSuccess();
+      return response.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
     }
@@ -36,6 +57,15 @@ const collectionReducer = createSlice({
     });
     builder.addCase(getCollectionTopics.rejected, (state) => {
       state.topicsLoading = false;
+    });
+    builder.addCase(addCollection.pending, (state) => {
+      state.addCollectionLoading = true;
+    });
+    builder.addCase(addCollection.fulfilled, (state, action) => {
+      state.addCollectionLoading = false;
+    });
+    builder.addCase(addCollection.rejected, (state, action) => {
+      state.addCollectionLoading = false;
     });
   },
 });

@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import { useEffect, useState } from 'react';
 import { Divider, Typography, FormGroup } from '@mui/material';
 import { LockClockRounded } from '@mui/icons-material';
 import { useMediaQuery } from 'react-responsive';
@@ -6,9 +6,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 
-import { AuthContainer, AuthForm, ErrorMessage} from './AuthStyles';
+import { AuthContainer, AuthForm, ErrorMessage } from './AuthStyles';
 import FormButton from '../../components/FormButton/FormButton';
-import StyledInput from '../../components/FormInput/FormInput'
+import StyledInput from '../../components/FormInput/FormInput';
 import {
   loginValidationSchema,
   loginValues,
@@ -17,15 +17,16 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import { loginUser } from '../../store/authReducer';
 
 const Login = () => {
-  const {authedUser}=useAppSelector(state=>state.auth);
-  const userExists=authedUser || localStorage.getItem('authed_user');
-  const dispatch=useAppDispatch();
-  const navigate=useNavigate();
-  useEffect(()=>{
-    if(userExists) {
+  const [passType,setPassType]=useState<'text'|'password'>('password')
+  const { authedUser } = useAppSelector((state) => state.auth);
+  const userExists = authedUser || localStorage.getItem('authed_user');
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (userExists) {
       navigate('/');
     }
-  },[userExists,navigate]);
+  }, [userExists, navigate]);
   const {
     values,
     errors,
@@ -38,13 +39,18 @@ const Login = () => {
     initialValues: loginValues,
     validationSchema: loginValidationSchema,
     onSubmit: (values) => {
-      dispatch(loginUser({input:values,onSuccess:()=>{
-        navigate('/');
-      }}))
+      dispatch(
+        loginUser({
+          input: values,
+          onSuccess: () => {
+            navigate('/');
+          },
+        })
+      );
     },
   });
-  const {mode}=useAppSelector(state=>state.common);
-  const {loginLoading}=useAppSelector(state=>state.auth);
+  const { mode } = useAppSelector((state) => state.common);
+  const { loginLoading } = useAppSelector((state) => state.auth);
   const { t } = useTranslation();
   const isDesktopOrLaptop = useMediaQuery({ minWidth: 1224 });
   const isBigScreen = useMediaQuery({ minWidth: 1824 });
@@ -53,15 +59,14 @@ const Login = () => {
 
   return (
     <>
-
       <AuthContainer>
         <AuthForm
-         S={isExtraSmallDevice}
+          S={isExtraSmallDevice}
           isX={isBigScreen}
           isMob={isTabletOrMobile}
           isD={isDesktopOrLaptop}
           mode={mode}
-          onSubmit={(e:SubmitEvent)=>{
+          onSubmit={(e: SubmitEvent) => {
             e.preventDefault();
             handleSubmit();
           }}
@@ -101,21 +106,24 @@ const Login = () => {
               error={!!(errors.password && touched.password)}
               name="password"
               placeholder={t('auth.password') as string}
-              type="password"
+              type={passType}
+              toggleType={()=>setPassType(passType==='password'?'text':'password')}
               mode={mode}
             />
             {touched.password && errors.password && (
               <ErrorMessage>{t(`auth.${errors.password}`)}</ErrorMessage>
             )}
           </FormGroup>
-          <FormButton loading={loginLoading}  type="submit"  disabled={!dirty || Object.values(errors).length>0} variant="contained" text={t('auth.login')} />
-          <Typography
-            sx={{ alignSelf: 'center', my: '10px' }}
-          >
+          <FormButton
+            loading={loginLoading}
+            type="submit"
+            disabled={!dirty || Object.values(errors).length > 0}
+            variant="contained"
+            text={t('auth.login')}
+          />
+          <Typography sx={{ alignSelf: 'center', my: '10px' }}>
             {t('auth.not_account')}{' '}
-            <Link to="/register">
-              {t('auth.register')}
-            </Link>
+            <Link to="/register">{t('auth.register')}</Link>
           </Typography>
         </AuthForm>
       </AuthContainer>

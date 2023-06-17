@@ -8,7 +8,8 @@ const apiUrls = {
     test: '/test',
   },
   collection:{
-    topics:`/collection/topics`
+    topics:`/collection/topics`,
+    add:'/collection'
   }
 };
 

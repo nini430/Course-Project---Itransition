@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Divider, Typography, FormGroup } from '@mui/material';
 import { PersonPin } from '@mui/icons-material';
 import { useMediaQuery } from 'react-responsive';
@@ -19,6 +19,8 @@ import { registerUser } from '../../store/authReducer';
 import toastOptions from '../../utils/toastOptions';
 
 const Register = () => {
+  const [passType,setPassType]=useState<'text'|'password'>('password');
+  const [confirmPassType,setConfirmPassType]=useState<'text'|'password'>('password');
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const {
@@ -137,7 +139,8 @@ const Register = () => {
             <StyledInput
               name="password"
               placeholder={t('auth.password') as string}
-              type="password"
+              type={passType}
+              toggleType={()=>setPassType(passType==='password'?'text':'password')}
               value={values.password}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -152,7 +155,8 @@ const Register = () => {
             <StyledInput
               name="confirmPassword"
               placeholder={t('auth.confirm_password') as string}
-              type="password"
+              type={confirmPassType}
+              toggleType={()=>setConfirmPassType(confirmPassType==='password'?'text':'password')}
               value={values.confirmPassword}
               onChange={handleChange}
               onBlur={handleBlur}

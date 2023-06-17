@@ -1,5 +1,5 @@
 import express from 'express'
-import { getCollectionTopics } from '../controllers/collection';
+import { addCollectionHandler, getCollectionTopics } from '../controllers/collection';
 import authProtect from '../middleware/authProtect';
 
 const router=express.Router();
@@ -7,6 +7,8 @@ const router=express.Router();
 router.use(authProtect);
 
 router.get('/topics',getCollectionTopics);
+router.post('/',addCollectionHandler);
 
 export default router;
 
+  

@@ -4,6 +4,7 @@ import ErrorResponse from '../utils/errorResponse';
 import errorMessages from '../utils/errorMessages';
 
 const errorHandler=(err:any,req:Request,res:Response,next:NextFunction)=>{
+    console.log(err);
     let errors={...err};
     errors.message=err.message;
 
