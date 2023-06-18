@@ -36,8 +36,11 @@ const CollectionAccordion = ({
       <AccordionDetails>
         {Array.from({ length: field }, (_, i) => i + 1).map((item: any) => (
           <Input
+          defaultValue={JSON.parse(JSON.stringify(accordionValues)).name?.[name+item]||''}
             onChange={(e) =>
-              setAccordionValues(
+              {
+
+                setAccordionValues(
                 accordionValues[name]
                   ? {
                       ...accordionValues,
@@ -51,6 +54,9 @@ const CollectionAccordion = ({
                       [name]: { [name + item]: e.target.value },
                     }
               )
+            }
+          
+              
             }
             key={item}
             sx={{ p: 1 }}

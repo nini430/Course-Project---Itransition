@@ -26,13 +26,14 @@ export const getCollectionTopics = createAsyncThunk(
 export const addCollection = createAsyncThunk(
   '/collection/add',
   async (
-    { input, onSuccess }: { input: CollectionValues; onSuccess: VoidFunction },
+    { input, onSuccess, configs }: { input: CollectionValues; configs:any; onSuccess: VoidFunction },
     thunkApi
   ) => {
     try {
       const response = await axiosApiInstance.post(
         apiUrls.collection.add,
-        input
+        {input,
+        configs}
       );
       console.log(response.data);
       onSuccess && onSuccess();
@@ -42,6 +43,7 @@ export const addCollection = createAsyncThunk(
     }
   }
 );
+
 
 const collectionReducer = createSlice({
   name: 'collection',

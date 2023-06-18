@@ -11,92 +11,87 @@ datasource db {
 }
 
 model User {
-  id        String @id @default(uuid())
-  firstName String
-  lastName  String
-  email     String @unique
-  password String
-  role Role @default(BASIC)
+  id          String       @id @default(uuid())
+  firstName   String
+  lastName    String
+  email       String       @unique
+  password    String
+  role        Role         @default(BASIC)
   collections Collection[]
 }
 
 model Collection {
-  id String @id @default(uuid())
-  name String
-  topic CollectionTopic
-  description String
-  image String?
-  authorId String
-  author User @relation(fields: [authorId], references: [id])
-  items Item[]
-  integerItems IntegerField[]
-  stringItems StringField[]
-  multilineItems MultilineTextField[]
+  id                   String                 @id @default(uuid())
+  name                 String
+  topic                CollectionTopic
+  description          String
+  image                String?
+  authorId             String
+  author               User                   @relation(fields: [authorId], references: [id])
+  items                Item[]
+  integerItems         IntegerField[]
+  stringItems          StringField[]
+  multilineItems       MultilineTextField[]
   booleancheckboxItems BooleanCheckboxField[]
-  dateItems DateField[]
+  dateItems            DateField[]
 }
 
 model Item {
-  id String @id @default(uuid())
-  name String
-  tags String
-  collectionId String
-  collection Collection @relation(fields: [collectionId],references: [id])
-  integerItems IntegerField[]
-  stringItems StringField[]
-  multilineItems MultilineTextField[]
-  booleancheckboxItems BooleanCheckboxField[]
-  dateItems DateField[]
+  id                        String     @id @default(uuid())
+  name                      String
+  tags                      String
+  collectionId              String
+  collection                Collection @relation(fields: [collectionId], references: [id])
+  integerFieldOne           Json
+  integerFieldTwo           Json
+  integerFieldThree         Json
+  stringFieldOne            Json
+  stringFieldTwo            Json
+  stringFieldThree          Json
+  dateFieldOne              Json
+  dateFieldTwo              Json
+  dateFieldThree            Json
+  multilineFieldOne         Json
+  multilineFieldTwo         Json
+  multilineFieldThree       Json
+  booleanCheckboxFieldOne   Json
+  booleanCheckboxFieldTwo   Json
+  booleanCheckboxFieldThree Json
 }
 
 model IntegerField {
-  id String @id @default(uuid())
-  name String
-  value String
+  id           String     @id @default(uuid())
+  name         String
   collectionId String
-  itemId String
-  item Item? @relation(fields: [itemId],references: [id])
-  collection Collection @relation(fields: [collectionId],references: [id])
+  collection   Collection @relation(fields: [collectionId], references: [id])
 }
 
 model StringField {
-  id String @id @default(uuid())
-  name String
-  value String
-  itemId String
+  id           String     @id @default(uuid())
+  name         String
   collectionId String
-  item Item? @relation(fields: [itemId], references: [id])
-  collection Collection @relation(fields: [collectionId],references: [id])
+  collection   Collection @relation(fields: [collectionId], references: [id])
 }
 
 model MultilineTextField {
-  id String @id @default(uuid())
-  name String
-  value String
-  itemId String
+  id           String     @id @default(uuid())
+  name         String
   collectionId String
-  item Item? @relation(fields: [itemId],references: [id])
-  collection Collection @relation(fields: [collectionId],references: [id])
+  collection   Collection @relation(fields: [collectionId], references: [id])
 }
 
 model BooleanCheckboxField {
-  id String @id @default(uuid())
-  name String
-  value String
-  itemId String
+  id           String     @id @default(uuid())
+  name         String
   collectionId String
-  item Item @relation(fields: [itemId],references: [id])
-  collection Collection @relation(fields: [collectionId],references: [id])
+  collection   Collection @relation(fields: [collectionId], references: [id])
 }
 
 model DateField {
-  id String @id @default(uuid())
-  name String
-  value String
-  itemId String
+  id           String     @id @default(uuid())
+  name         String
   collectionId String
-  item Item @relation(fields: [itemId],references: [id])
-  collection Collection @relation(fields: [collectionId],references: [id])
+  collection   Collection @relation(fields: [collectionId], references: [id])
 }
 
 enum CollectionTopic {
@@ -110,4 +105,3 @@ enum Role {
   BASIC
   ADMIN
 }
-

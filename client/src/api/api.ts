@@ -10,7 +10,8 @@ const apiUrls = {
   },
   collection:{
     topics:`/collection/topics`,
-    add:'/collection'
+    add:'/collection',
+    addConfig:'/collection/configs'
   }
 };
 

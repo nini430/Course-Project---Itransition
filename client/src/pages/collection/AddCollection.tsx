@@ -32,6 +32,7 @@ import toastOptions from '../../utils/toastOptions';
 import { fileToBase64 } from '../../utils/fileToBase64';
 
 const AddCollection = () => {
+  const [accordionValues,setAccordionValues]=useState({});
   const [uploadImg, setUploadImg] = useState<File | null>(null);
   const { collectionTopics, topicsLoading, addCollectionLoading } =
     useAppSelector((state) => state.collection);
@@ -56,6 +57,7 @@ const AddCollection = () => {
       dispatch(
         addCollection({
           input: { ...values, image: imgToUpload as string },
+          configs:accordionValues,
           onSuccess: () => {
             toast.success(t('collection_created', toastOptions));
             setTimeout(() => {
@@ -77,8 +79,6 @@ const AddCollection = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-
-  const [isCollectionDialogOpen, setIsCollectionDialogOpen] = useState(false);
 
   const isDesktopOrLaptop = useMediaQuery({ minWidth: 1224 });
   const isBigScreen = useMediaQuery({ minWidth: 1824 });
@@ -181,16 +181,18 @@ const AddCollection = () => {
             <input type="file" className="none" {...getInputProps()} />
           </ImageUploadContainer>
         </FormGroup>
-        <Button
-          onClick={() => setIsCollectionDialogOpen(true)}
-          sx={{ alignSelf: 'flex-start', border: '1px solid gray' }}
+        <Typography
         >
           Configure Item Fields
-        </Button>
-        <Typography sx={{ fontSize: 12, marginTop: 0.5 }}>
+        </Typography>
+        <Typography sx={{ fontSize: 12, marginTop: 0.5, mb:1 }}>
           if not, it will be set as default (id,name,tags)
         </Typography>
-        <LoadingButton
+        <CollectionDialog
+        accordionValues={accordionValues}
+        setAccordionValues={setAccordionValues}
+      />
+              <LoadingButton
           loading={addCollectionLoading}
           disabled={!dirty || Object.values(errors).length > 0}
           type="submit"
@@ -201,10 +203,7 @@ const AddCollection = () => {
           Add Collection
         </LoadingButton>
       </CollectionForm>
-      <CollectionDialog
-        open={isCollectionDialogOpen}
-        onClose={() => setIsCollectionDialogOpen(false)}
-      />
+     
     </Container>
   );
 };
@@ -222,12 +221,14 @@ const Container = styled.div`
 const CollectionForm = styled(({ mode, ...rest }: any) => <form {...rest} />)`
   background-color: ${({ mode }) => (mode === 'dark' ? '#252121' : 'white')};
   width: ${({ isX, isMob, isD, isXS }) =>
-    isX ? '700px' : isMob ? '500px' : isXS ? '350px' : '400px'};
+    isX ? '700px' : isMob ? '500px' : isXS ? '350px' : '500px'};
   padding: 20px;
   min-width: 300px;
   max-width: 600px;
   height: auto;
   border-radius: 10px;
+  max-height:750px;
+  overflow-y: auto;
 `;
 
 const ImageUploadContainer = styled(({ mode, isDragActive, ...props }: any) => (

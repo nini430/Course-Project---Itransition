@@ -1,34 +1,19 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  Typography,
-
-} from '@mui/material';
-import {Save,Cancel} from '@mui/icons-material'
-
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, Dispatch,SetStateAction } from 'react';
 import CollectionAccordion from './CollectionAccordion';
-import { LoadingButton } from '@mui/lab';
 
 interface ICollectionDialogProps {
-  open: boolean;
-  onClose: () => void;
+  accordionValues:any;
+  setAccordionValues:Dispatch<SetStateAction<any>>
 }
 
-const CollectionDialog = ({ open, onClose }: ICollectionDialogProps) => {
-  const [accordionValues,setAccordionValues]=useState({});
+const CollectionDialog = ({accordionValues,setAccordionValues}:ICollectionDialogProps) => {
   const [integerFieldCount, setIntegerFieldCount] = useState(1);
   const [stringFieldCount, setStringFieldCount] = useState(1);
   const [multilineFieldCount, setMultilineFieldCount] = useState(1);
   const [dateFieldCount, setDateFieldCount] = useState(1);
   const [checkboxFieldCount, setCheckboxFieldCount] = useState(1);
   return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogContent sx={{ minWidth: 400 }}>
-        <Typography sx={{ mb: 4 }}>Configure Item Fields</Typography>
         <ConfigurationContainer>
           <CollectionAccordion
             setField={() => setIntegerFieldCount((prev) => prev + 1)}
@@ -37,7 +22,7 @@ const CollectionDialog = ({ open, onClose }: ICollectionDialogProps) => {
             summaryMessage="Integer Fields"
             accordionValues={accordionValues}
             setAccordionValues={setAccordionValues}
-            name='integerfield'
+            name='integerField'
           />
           <CollectionAccordion
            setField={()=>setStringFieldCount(prev=>prev+1)}
@@ -46,7 +31,7 @@ const CollectionDialog = ({ open, onClose }: ICollectionDialogProps) => {
            summaryMessage='String Text Fields'
            accordionValues={accordionValues}
            setAccordionValues={setAccordionValues}
-           name='stringfield'
+           name='stringField'
             />
           <CollectionAccordion
           setField={()=>setMultilineFieldCount(prev=>prev+1)}
@@ -55,7 +40,7 @@ const CollectionDialog = ({ open, onClose }: ICollectionDialogProps) => {
           summaryMessage='Multiline Text Fields'
           accordionValues={accordionValues}
           setAccordionValues={setAccordionValues}
-          name='multilinetextfield'
+          name='multilineTextField'
            />
           <CollectionAccordion
           setField={()=>setCheckboxFieldCount(prev=>prev+1)}
@@ -64,7 +49,7 @@ const CollectionDialog = ({ open, onClose }: ICollectionDialogProps) => {
           summaryMessage='Checkbox Fields'
           accordionValues={accordionValues}
           setAccordionValues={setAccordionValues}
-          name='booleancheckboxfield'
+          name='booleanCheckboxField'
            />
           <CollectionAccordion
           setField={()=>setDateFieldCount(prev=>prev+1)}
@@ -73,15 +58,10 @@ const CollectionDialog = ({ open, onClose }: ICollectionDialogProps) => {
           summaryMessage='Date Fields'
           accordionValues={accordionValues}
           setAccordionValues={setAccordionValues}
-          name='datefield'
+          name='dateField'
            />
         </ConfigurationContainer>
-      </DialogContent>
-      <DialogActions>
-        <LoadingButton startIcon={<Save/>}>Save</LoadingButton>
-        <Button onClick={onClose} startIcon={<Cancel/>}>Cancel</Button>
-      </DialogActions>
-    </Dialog>
+ 
   );
 };
 

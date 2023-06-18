@@ -29,6 +29,21 @@ CREATE TABLE `Item` (
     `name` VARCHAR(191) NOT NULL,
     `tags` VARCHAR(191) NOT NULL,
     `collectionId` VARCHAR(191) NOT NULL,
+    `integerFieldOne` JSON NOT NULL,
+    `integerFieldTwo` JSON NOT NULL,
+    `integerFieldThree` JSON NOT NULL,
+    `stringFieldOne` JSON NOT NULL,
+    `stringFieldTwo` JSON NOT NULL,
+    `stringFieldThree` JSON NOT NULL,
+    `dateFieldOne` JSON NOT NULL,
+    `dateFieldTwo` JSON NOT NULL,
+    `dateFieldThree` JSON NOT NULL,
+    `multilineFieldOne` JSON NOT NULL,
+    `multilineFieldTwo` JSON NOT NULL,
+    `multilineFieldThree` JSON NOT NULL,
+    `booleanCheckboxFieldOne` JSON NOT NULL,
+    `booleanCheckboxFieldTwo` JSON NOT NULL,
+    `booleanCheckboxFieldThree` JSON NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -37,9 +52,7 @@ CREATE TABLE `Item` (
 CREATE TABLE `IntegerField` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
-    `value` VARCHAR(191) NOT NULL,
     `collectionId` VARCHAR(191) NOT NULL,
-    `itemId` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -48,8 +61,6 @@ CREATE TABLE `IntegerField` (
 CREATE TABLE `StringField` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
-    `value` VARCHAR(191) NOT NULL,
-    `itemId` VARCHAR(191) NOT NULL,
     `collectionId` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -59,8 +70,6 @@ CREATE TABLE `StringField` (
 CREATE TABLE `MultilineTextField` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
-    `value` VARCHAR(191) NOT NULL,
-    `itemId` VARCHAR(191) NOT NULL,
     `collectionId` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -70,8 +79,6 @@ CREATE TABLE `MultilineTextField` (
 CREATE TABLE `BooleanCheckboxField` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
-    `value` VARCHAR(191) NOT NULL,
-    `itemId` VARCHAR(191) NOT NULL,
     `collectionId` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -81,8 +88,6 @@ CREATE TABLE `BooleanCheckboxField` (
 CREATE TABLE `DateField` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
-    `value` VARCHAR(191) NOT NULL,
-    `itemId` VARCHAR(191) NOT NULL,
     `collectionId` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -95,31 +100,16 @@ ALTER TABLE `Collection` ADD CONSTRAINT `Collection_authorId_fkey` FOREIGN KEY (
 ALTER TABLE `Item` ADD CONSTRAINT `Item_collectionId_fkey` FOREIGN KEY (`collectionId`) REFERENCES `Collection`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `IntegerField` ADD CONSTRAINT `IntegerField_itemId_fkey` FOREIGN KEY (`itemId`) REFERENCES `Item`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE `IntegerField` ADD CONSTRAINT `IntegerField_collectionId_fkey` FOREIGN KEY (`collectionId`) REFERENCES `Collection`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `StringField` ADD CONSTRAINT `StringField_itemId_fkey` FOREIGN KEY (`itemId`) REFERENCES `Item`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `StringField` ADD CONSTRAINT `StringField_collectionId_fkey` FOREIGN KEY (`collectionId`) REFERENCES `Collection`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `MultilineTextField` ADD CONSTRAINT `MultilineTextField_itemId_fkey` FOREIGN KEY (`itemId`) REFERENCES `Item`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE `MultilineTextField` ADD CONSTRAINT `MultilineTextField_collectionId_fkey` FOREIGN KEY (`collectionId`) REFERENCES `Collection`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `BooleanCheckboxField` ADD CONSTRAINT `BooleanCheckboxField_itemId_fkey` FOREIGN KEY (`itemId`) REFERENCES `Item`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE `BooleanCheckboxField` ADD CONSTRAINT `BooleanCheckboxField_collectionId_fkey` FOREIGN KEY (`collectionId`) REFERENCES `Collection`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `DateField` ADD CONSTRAINT `DateField_itemId_fkey` FOREIGN KEY (`itemId`) REFERENCES `Item`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `DateField` ADD CONSTRAINT `DateField_collectionId_fkey` FOREIGN KEY (`collectionId`) REFERENCES `Collection`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
