@@ -37,6 +37,13 @@ const lightTheme = createTheme({
           color:'#000'
         }
       }
+    },
+    MuiCircularProgress:{
+      styleOverrides:{
+        root:{
+          color:'black'
+        }
+      }
     }
   }
   
@@ -76,6 +83,13 @@ const darkTheme = createTheme({
       }
     },
     MuiButton:{
+      styleOverrides:{
+        root:{
+          color:'#fff'
+        }
+      }
+    },
+    MuiCircularProgress:{
       styleOverrides:{
         root:{
           color:'#fff'

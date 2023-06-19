@@ -13,6 +13,7 @@ interface IFormInputProps {
   onChange: ChangeEventHandler<HTMLInputElement>;
   mode: 'dark' | 'light';
   toggleType?:()=>void;
+  multiline?:any;
 }
 
 const FormInput: React.FC<IFormInputProps> = ({
@@ -24,10 +25,13 @@ const FormInput: React.FC<IFormInputProps> = ({
   onChange,
   onBlur,
   mode,
-  toggleType
+  toggleType,
+  multiline
 }) => {
   return (
     <StyledInputEl
+    multiline={multiline}
+    rows={multiline?4:1}
       InputProps={
         name === 'password' || name === 'confirmPassword'
           ? {

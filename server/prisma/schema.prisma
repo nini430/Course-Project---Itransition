@@ -42,27 +42,14 @@ model Item {
   tags                      String
   collectionId              String
   collection                Collection @relation(fields: [collectionId], references: [id])
-  integerFieldOne           Json
-  integerFieldTwo           Json
-  integerFieldThree         Json
-  stringFieldOne            Json
-  stringFieldTwo            Json
-  stringFieldThree          Json
-  dateFieldOne              Json
-  dateFieldTwo              Json
-  dateFieldThree            Json
-  multilineFieldOne         Json
-  multilineFieldTwo         Json
-  multilineFieldThree       Json
-  booleanCheckboxFieldOne   Json
-  booleanCheckboxFieldTwo   Json
-  booleanCheckboxFieldThree Json
+  customFieldValues Json
 }
 
 model IntegerField {
   id           String     @id @default(uuid())
   name         String
   collectionId String
+  type String @default("integer")
   collection   Collection @relation(fields: [collectionId], references: [id])
 }
 
@@ -70,6 +57,7 @@ model StringField {
   id           String     @id @default(uuid())
   name         String
   collectionId String
+  type String @default("string")
   collection   Collection @relation(fields: [collectionId], references: [id])
 }
 
@@ -77,6 +65,7 @@ model MultilineTextField {
   id           String     @id @default(uuid())
   name         String
   collectionId String
+  type String @default("multiline")
   collection   Collection @relation(fields: [collectionId], references: [id])
 }
 
@@ -84,6 +73,7 @@ model BooleanCheckboxField {
   id           String     @id @default(uuid())
   name         String
   collectionId String
+  type String @default("boolean")
   collection   Collection @relation(fields: [collectionId], references: [id])
 }
 
@@ -91,6 +81,7 @@ model DateField {
   id           String     @id @default(uuid())
   name         String
   collectionId String
+  type String @default("date")
   collection   Collection @relation(fields: [collectionId], references: [id])
 }
 

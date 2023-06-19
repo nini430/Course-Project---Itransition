@@ -65,7 +65,6 @@ const CollectionAccordion = ({
           />
         ))}
         <Button
-          disabled={field === 3}
           onClick={setField}
           size="small"
           sx={{ mt: 1 }}

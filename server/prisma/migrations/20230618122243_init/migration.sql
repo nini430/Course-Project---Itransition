@@ -29,21 +29,7 @@ CREATE TABLE `Item` (
     `name` VARCHAR(191) NOT NULL,
     `tags` VARCHAR(191) NOT NULL,
     `collectionId` VARCHAR(191) NOT NULL,
-    `integerFieldOne` JSON NOT NULL,
-    `integerFieldTwo` JSON NOT NULL,
-    `integerFieldThree` JSON NOT NULL,
-    `stringFieldOne` JSON NOT NULL,
-    `stringFieldTwo` JSON NOT NULL,
-    `stringFieldThree` JSON NOT NULL,
-    `dateFieldOne` JSON NOT NULL,
-    `dateFieldTwo` JSON NOT NULL,
-    `dateFieldThree` JSON NOT NULL,
-    `multilineFieldOne` JSON NOT NULL,
-    `multilineFieldTwo` JSON NOT NULL,
-    `multilineFieldThree` JSON NOT NULL,
-    `booleanCheckboxFieldOne` JSON NOT NULL,
-    `booleanCheckboxFieldTwo` JSON NOT NULL,
-    `booleanCheckboxFieldThree` JSON NOT NULL,
+    `customFieldValues` JSON NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -53,6 +39,7 @@ CREATE TABLE `IntegerField` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `collectionId` VARCHAR(191) NOT NULL,
+    `type` VARCHAR(191) NOT NULL DEFAULT 'integer',
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -62,6 +49,7 @@ CREATE TABLE `StringField` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `collectionId` VARCHAR(191) NOT NULL,
+    `type` VARCHAR(191) NOT NULL DEFAULT 'string',
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -71,6 +59,7 @@ CREATE TABLE `MultilineTextField` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `collectionId` VARCHAR(191) NOT NULL,
+    `type` VARCHAR(191) NOT NULL DEFAULT 'multiline',
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -80,6 +69,7 @@ CREATE TABLE `BooleanCheckboxField` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `collectionId` VARCHAR(191) NOT NULL,
+    `type` VARCHAR(191) NOT NULL DEFAULT 'boolean',
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -89,6 +79,7 @@ CREATE TABLE `DateField` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `collectionId` VARCHAR(191) NOT NULL,
+    `type` VARCHAR(191) NOT NULL DEFAULT 'date',
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
