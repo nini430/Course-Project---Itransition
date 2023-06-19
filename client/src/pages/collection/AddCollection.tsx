@@ -166,7 +166,7 @@ const AddCollection = () => {
                 <DeleteCircle
                   onClick={(e) => {
                     e.stopPropagation();
-                    setFieldValue('image', null);
+                    setUploadImg(null);
                   }}
                 >
                   <Close />

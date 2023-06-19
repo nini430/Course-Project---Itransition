@@ -11,12 +11,14 @@ const apiUrls = {
   collection:{
     topics:`/collection/topics`,
     add:'/collection',
-    addConfig:'/collection/configs'
+    addConfig:'/collection/configs',
+    latest:'/collection/largest',
   },
   item:{
     initialize:'/item',
     add:'/item',
-    tags:'/item/tags'
+    tags:'/item/tags',
+    latest:'/item/latest'
   }
 };
 

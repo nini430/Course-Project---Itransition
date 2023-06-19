@@ -2,19 +2,24 @@ import styled from 'styled-components'
 import {Card, CardContent, Typography,CardActions, Button} from '@mui/material'
 
 import Avatar from '../../assets/avatar.png'
+import { Item as ItemType } from '../../types/item'
 
-const Item = () => {
+interface IItemProps {
+  item:any
+}
+
+const Item = ({item}:IItemProps) => {
   return (
     <ItemContainer>
         <CardContent sx={{flexDirection:'column',alignItems:'center',display:'flex',gap:'5px'}}>
-        <Typography variant='h6'>Dankin Chocolate</Typography>
-        <Typography sx={{color:'gray'}}>Collection: Chocolates</Typography>
+        <Typography variant='h6'>{item.name}</Typography>
+        <Typography sx={{color:'gray'}}>Collection: {item.collection.name}</Typography>
         <AuthorContainer>
         <Typography sx={{color:'gray'}}>Author:</Typography>
         <AvatarContainer>
       
         <AvatarImg  src={Avatar} alt="" />
-        <Typography>Nino Gogatishvili</Typography>
+        <Typography>{item.collection.author.firstName} {item.collection.author.lastName}</Typography>
         </AvatarContainer>
         </AuthorContainer>
 

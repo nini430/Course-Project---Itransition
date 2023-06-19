@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { COLLECTION_TOPICS } from '../utils/constants';
 import { CollectionInput } from '../types/collection';
-import { addCollection, addItemConfigs } from '../services/collection';
+import { addCollection, addItemConfigs, getTopLargestCollections } from '../services/collection';
 
 const getCollectionTopics = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -31,5 +31,11 @@ const addCollectionHandler = asyncHandler(
   }
 );
 
+const getTopLargestCollectionsHandler=asyncHandler(async(req:Request,res:Response,next:NextFunction)=>{
+    const topLargestCollections=await getTopLargestCollections();
+    console.log(topLargestCollections);
+    return res.status(StatusCodes.OK).json({success:true,data:topLargestCollections});
+});
 
-export { getCollectionTopics, addCollectionHandler };
+
+export { getCollectionTopics, addCollectionHandler, getTopLargestCollectionsHandler };

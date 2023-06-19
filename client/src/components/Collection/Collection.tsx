@@ -1,18 +1,25 @@
 import styled from 'styled-components'
 import {Button, Card,CardActions,CardContent, Typography} from '@mui/material'
+import { Collection as CollectionType } from '../../types/collection'
+import NoImage from '../../assets/no-image.png'
 
-const Collection = () => {
+interface ICollectionProps {
+    collection:CollectionType
+}
+
+const Collection = ({collection}:ICollectionProps) => {
   return (
     <StyledCard>
         <CardContent>
             <Typography variant='h6'>Books</Typography>
-            <CollectionImg width={250} src="https://img.freepik.com/free-photo/book-composition-with-open-book_23-2147690555.jpg" alt="" />
-            <Typography sx={{color:'gray'}}>Topic: Books</Typography>
+            <CollectionImg  src={collection.image||NoImage} alt="" />
+            <Typography sx={{color:'gray'}}>Topic: {collection.topic}</Typography>
         </CardContent>
         <CardActions sx={{flexDirection:'column'}}>
-            <Typography sx={{wordWrap:'break-word'}}>{'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Exercitationem magni reprehenderit saepe quos, possimus explicabo, veritatis quibusdam, omnis non placeat fugit dicta voluptas'.slice(0,100)}...</Typography>
-            <Button sx={{border:'1px solid gray'}} fullWidth>View More</Button>
+            <Typography  dangerouslySetInnerHTML={{__html:collection.description.slice(0,25)}}  sx={{wordWrap:'break-word'}}></Typography>
+            <Button  sx={{border:'1px solid gray',justifySelf:'flex-end !important'}}>View More</Button>
         </CardActions>
+
     </StyledCard>
   )
 }
@@ -31,7 +38,8 @@ const StyledCard=styled(Card)`
 `
 
 const CollectionImg=styled.img`
-    
+    width:250px;
+    height:250px;
 `
 
 export default Collection

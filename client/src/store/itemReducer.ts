@@ -11,7 +11,9 @@ const initialState: ItemInitialState = {
     initializeFormLoading:false,
     formCustomFields:null,
     getItemTagsLoading:false,
-    itemTags:[]
+    itemTags:[],
+    latestItems:null,
+    getLatestItemsLoading:false
 }
 
 export const initializeItemConfig=createAsyncThunk('item/config',async(collectionId:string,thunkApi)=>{
@@ -40,6 +42,15 @@ export const getItemTags=createAsyncThunk('item/tags',async(_,thunkApi)=>{
     return response.data.data;
     }catch(err) {
         return thunkApi.rejectWithValue(err);
+    }
+});
+
+export const getLatestItems=createAsyncThunk('item/latest',async(_,thunkApi)=>{
+    try{
+    const response=await axiosApiInstance.get<{data:Item[]}>(apiUrls.item.latest);
+    return  response.data.data;
+    }catch(err) {
+    return thunkApi.rejectWithValue(err);
     }
 })
 
@@ -73,6 +84,16 @@ const itemSlice=createSlice({
         });
         builder.addCase(getItemTags.rejected,(state,action)=>{
             state.getItemTagsLoading=false;
+        });
+        builder.addCase(getLatestItems.pending,state=>{
+            state.getLatestItemsLoading=true;
+        });
+        builder.addCase(getLatestItems.fulfilled,(state,action)=>{
+            state.getLatestItemsLoading=false;
+            state.latestItems=action.payload;
+        });
+        builder.addCase(getLatestItems.rejected,(state,action)=>{
+            state.getLatestItemsLoading=false;
         })
 
     }

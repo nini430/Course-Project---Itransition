@@ -4,6 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 import {
   addItem,
   getAllUniqueItemTags,
+  getLatestItems,
   initializeItemCreation,
 } from '../services/item';
 import { ItemInput } from '../types/item';
@@ -48,8 +49,16 @@ const getUniqueItemTagsHandler = asyncHandler(
   }
 );
 
+const getLatestItemsHandler = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const latestItems=await getLatestItems();
+    return res.status(StatusCodes.OK).json({success:true,data:latestItems});
+  }
+);
+
 export {
   initializeItemCreationHandler,
   addItemHandler,
   getUniqueItemTagsHandler,
+  getLatestItemsHandler
 };

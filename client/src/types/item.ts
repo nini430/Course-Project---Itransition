@@ -3,7 +3,9 @@ export interface ItemInitialState {
     initializeFormLoading:boolean;
     formCustomFields:any;
     getItemTagsLoading:boolean;
-    itemTags:string[]
+    itemTags:string[];
+    latestItems:Item[]  | null;
+    getLatestItemsLoading:boolean;
 }
 
 export interface ItemInput {

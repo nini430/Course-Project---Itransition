@@ -7,6 +7,9 @@ const initialState: CollectionInitialState = {
   collectionTopics: [],
   topicsLoading: false,
   addCollectionLoading: false,
+  getLargestCollectionsLoading:false,
+  largestCollections:null
+
 };
 
 export const getCollectionTopics = createAsyncThunk(
@@ -44,6 +47,15 @@ export const addCollection = createAsyncThunk(
   }
 );
 
+export const getLargestCollections= createAsyncThunk('/collection/largest',async(_,thunkApi)=>{
+    try{
+      const response=await axiosApiInstance.get<{data:any}>(apiUrls.collection.latest);
+      return response.data.data;
+    }catch(err) {
+      return thunkApi.rejectWithValue(err);
+    }
+});
+
 
 const collectionReducer = createSlice({
   name: 'collection',
@@ -69,6 +81,16 @@ const collectionReducer = createSlice({
     builder.addCase(addCollection.rejected, (state, action) => {
       state.addCollectionLoading = false;
     });
+    builder.addCase(getLargestCollections.pending,state=>{
+      state.getLargestCollectionsLoading=true;
+    });
+    builder.addCase(getLargestCollections.fulfilled,(state,action)=>{
+      state.getLargestCollectionsLoading=false;
+      state.largestCollections=action.payload;
+    });
+    builder.addCase(getLargestCollections.rejected,(state,action)=>{
+      state.getLargestCollectionsLoading=false;
+    })
   },
 });
 

@@ -14,14 +14,18 @@ import { createFilterOptions } from '@mui/material/Autocomplete';
 import { DatePicker } from '@mui/x-date-pickers';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { useFormik } from 'formik';
-import {toast,Toaster} from 'react-hot-toast';
+import { toast, Toaster } from 'react-hot-toast';
 
 import { Form } from '../commonStyles';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import FormInput from '../../components/FormInput/FormInput';
 import { AddCircle } from '@mui/icons-material';
 import { useEffect, useRef } from 'react';
-import { addItem, getItemTags, initializeItemConfig } from '../../store/itemReducer';
+import {
+  addItem,
+  getItemTags,
+  initializeItemConfig,
+} from '../../store/itemReducer';
 import generateItemValidationSchema from '../../utils/formikFunctions';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -37,11 +41,15 @@ const AddItem = () => {
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
   const isExtraSmallDevice = useMediaQuery({ maxWidth: 500 });
   const { mode } = useAppSelector((state) => state.common);
-  const { initializeFormLoading, formCustomFields, addItemLoading, getItemTagsLoading, itemTags } = useAppSelector(
-    (state) => state.item
-  );
-  const navigate=useNavigate();
-  const {t}=useTranslation();
+  const {
+    initializeFormLoading,
+    formCustomFields,
+    addItemLoading,
+    getItemTagsLoading,
+    itemTags,
+  } = useAppSelector((state) => state.item);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   const {
     validateForm,
     resetForm,
@@ -54,23 +62,29 @@ const AddItem = () => {
     setFieldValue,
     setFieldTouched,
     dirty,
-    handleSubmit
+    handleSubmit,
   } = useFormik({
     initialValues: {} as any,
     validationSchema: validationSchema.current,
     enableReinitialize: true,
     onSubmit: (values) => {
-      const {name,tags,...rest}=values;
-     dispatch(addItem({input:{name,tags:tags.join(','),customFieldValues:rest},collectionId:'35da656d-f0cd-4cc4-b222-9354a4741849',onSuccess:()=>{
-        toast.success(t('item_created'),toastOptions);
-        setTimeout(()=>{
-          navigate('/');
-        },2000);
-     }}))
+      const { name, tags, ...rest } = values;
+      dispatch(
+        addItem({
+          input: { name, tags: tags.join(','), customFieldValues: rest },
+          collectionId: '87d3eae9-6083-49f9-b935-de4e284002b6',
+          onSuccess: () => {
+            toast.success(t('item_created'), toastOptions);
+            setTimeout(() => {
+              navigate('/');
+            }, 2000);
+          },
+        })
+      );
     },
   });
   useEffect(() => {
-    dispatch(initializeItemConfig('35da656d-f0cd-4cc4-b222-9354a4741849'));
+    dispatch(initializeItemConfig('87d3eae9-6083-49f9-b935-de4e284002b6'));
     dispatch(getItemTags());
   }, [dispatch]);
   useEffect(() => {
@@ -91,7 +105,7 @@ const AddItem = () => {
   }, [formCustomFields, resetForm, validateForm, setValues]);
   return (
     <Container>
-      <Toaster/>
+      <Toaster />
       <Typography sx={{ fontSize: 40 }}>Add Item</Typography>
       <Form
         isXS={isExtraSmallDevice}
@@ -99,9 +113,11 @@ const AddItem = () => {
         isMob={isTabletOrMobile}
         isD={isDesktopOrLaptop}
         mode={mode}
-        onSubmit={(e:SubmitEvent)=>{
+        onSubmit={(e: SubmitEvent) => {
           e.preventDefault();
-          handleSubmit();
+          if (Object.values(values).filter(item=>item==='').length==0) {  
+            handleSubmit();
+          }
         }}
       >
         <FormGroup sx={{ mb: 2 }}>
@@ -122,7 +138,6 @@ const AddItem = () => {
         <FormGroup sx={{ mb: 2 }}>
           <Autocomplete
             loading={getItemTagsLoading}
-            
             onBlur={() => setFieldTouched('tags')}
             freeSolo
             selectOnFocus
@@ -218,7 +233,7 @@ const AddItem = () => {
                   <Typography sx={{ mb: 1 }}>{item.name}</Typography>
                   <DemoContainer components={['DatePicker']}>
                     <DatePicker
-                      value={values[item.name]||undefined}
+                      value={values[item.name] || undefined}
                       onClose={() => {
                         setFieldTouched(item.name);
                       }}
@@ -227,9 +242,11 @@ const AddItem = () => {
                       }
                     />
                   </DemoContainer>
-                  {errors[item.name] && touched[item.name] && !values?.[item.name] && (
-                    <ErrorMessage>{errors[item.name] as string}</ErrorMessage>
-                  )}
+                  {errors[item.name] &&
+                    touched[item.name] &&
+                    !values?.[item.name] && (
+                      <ErrorMessage>{errors[item.name] as string}</ErrorMessage>
+                    )}
                 </FormGroup>
               ))}
             {formCustomFields['boolean'] &&
@@ -269,7 +286,7 @@ const AddItem = () => {
           </CustomFieldContainer>
         )}
         <LoadingButton
-          disabled={Object.values(errors).length>0 || !dirty}
+          disabled={!dirty}
           loading={addItemLoading}
           sx={{ border: '1px solid gray' }}
           fullWidth

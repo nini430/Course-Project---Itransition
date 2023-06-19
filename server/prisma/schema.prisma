@@ -24,7 +24,7 @@ model Collection {
   id                   String                 @id @default(uuid())
   name                 String
   topic                CollectionTopic
-  description          String
+  description          String @db.VarChar(4000)
   image                String?
   authorId             String
   author               User                   @relation(fields: [authorId], references: [id])
@@ -34,6 +34,8 @@ model Collection {
   multilineItems       MultilineTextField[]
   booleancheckboxItems BooleanCheckboxField[]
   dateItems            DateField[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Item {
@@ -43,6 +45,8 @@ model Item {
   collectionId              String
   collection                Collection @relation(fields: [collectionId], references: [id])
   customFieldValues Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model IntegerField {
@@ -50,7 +54,7 @@ model IntegerField {
   name         String
   collectionId String
   type String @default("integer")
-  collection   Collection @relation(fields: [collectionId], references: [id])
+  collection   Collection? @relation(fields: [collectionId], references: [id])
 }
 
 model StringField {
@@ -58,7 +62,7 @@ model StringField {
   name         String
   collectionId String
   type String @default("string")
-  collection   Collection @relation(fields: [collectionId], references: [id])
+  collection   Collection? @relation(fields: [collectionId], references: [id])
 }
 
 model MultilineTextField {
@@ -66,7 +70,7 @@ model MultilineTextField {
   name         String
   collectionId String
   type String @default("multiline")
-  collection   Collection @relation(fields: [collectionId], references: [id])
+  collection   Collection? @relation(fields: [collectionId], references: [id])
 }
 
 model BooleanCheckboxField {
@@ -74,7 +78,7 @@ model BooleanCheckboxField {
   name         String
   collectionId String
   type String @default("boolean")
-  collection   Collection @relation(fields: [collectionId], references: [id])
+  collection   Collection? @relation(fields: [collectionId], references: [id])
 }
 
 model DateField {
@@ -82,7 +86,7 @@ model DateField {
   name         String
   collectionId String
   type String @default("date")
-  collection   Collection @relation(fields: [collectionId], references: [id])
+  collection   Collection? @relation(fields: [collectionId], references: [id])
 }
 
 enum CollectionTopic {

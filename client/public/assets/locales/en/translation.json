@@ -21,7 +21,8 @@
     "nav":{
      "search":"Search...",
      "parameters":"Parameters",
-     "log_out":"Sign Out"
+     "log_out":"Sign Out",
+     "profile":"Profile"
     },
     "lang":{
         "en":"English",

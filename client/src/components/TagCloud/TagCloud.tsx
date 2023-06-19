@@ -8,38 +8,12 @@ const data = [
     { value: 'HTML5', count: 33 },
     { value: 'MongoDB', count: 18 },
     { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
-    { value: 'CSS3', count: 20 },
+
   ]
 
 const TagCloudComponent = () => {
   return (
-    <TagCloud minSize={14} maxSize={35} tags={data}  />
+    <TagCloud className='tag-cloud' minSize={14} maxSize={35} tags={data}  />
   )
 }
 

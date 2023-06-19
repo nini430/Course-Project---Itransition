@@ -1,4 +1,4 @@
-import { Button, Divider, Typography } from '@mui/material';
+import { Button, Divider, Typography, CircularProgress } from '@mui/material';
 import { AddCircle } from '@mui/icons-material';
 import styled from 'styled-components';
 
@@ -6,14 +6,27 @@ import { useAppDispatch, useAppSelector } from '../store/store';
 import { Link } from 'react-router-dom';
 import Collection from '../components/Collection/Collection';
 import Item from '../components/Item/Item';
+import Empty from '../components/Empty/Empty';
 import TagCloudComponent from '../components/TagCloud/TagCloud';
-import { testAuthedRoute } from '../store/commonReducer';
+import { useEffect } from 'react';
+import { getLatestItems } from '../store/itemReducer';
+import { getLargestCollections } from '../store/collectionReducer';
+import { Collection as CollectionType } from '../types/collection';
 
 const MainPage = () => {
   const dispatch = useAppDispatch();
   const { authedUser } = useAppSelector((state) => state.auth);
+  const { getLatestItemsLoading, latestItems } = useAppSelector(
+    (state) => state.item
+  );
+  const { getLargestCollectionsLoading, largestCollections } = useAppSelector(
+    (state) => state.collection
+  );
   const userExists = authedUser || localStorage.getItem('authed_user');
-
+  useEffect(() => {
+    dispatch(getLatestItems());
+    dispatch(getLargestCollections());
+  }, [dispatch]);
   return (
     <MainPageContainer>
       <TagCloudComponent />
@@ -22,14 +35,19 @@ const MainPage = () => {
           Latest items
         </Typography>
         <Divider />
-        <CardWrapper>
-          <Item />
-          <Item />
-          <Item />
-          <Item />
-          <Item />
-        </CardWrapper>
-        {/* <Empty message="No Collections yet"/> */}
+        {getLatestItemsLoading || !latestItems ? (
+          <LoadingContainer>
+            <CircularProgress size={75} />
+          </LoadingContainer>
+        ) : latestItems?.length === 0 ? (
+          <Empty message="No Items yet" />
+        ) : (
+          <CardWrapper>
+            {latestItems.map((item) => (
+              <Item item={item} key={item.id} />
+            ))}
+          </CardWrapper>
+        )}
       </CardContainer>
       <CardContainer>
         <Typography sx={{ fontWeight: 300, fontStyle: 'italic' }} variant="h4">
@@ -44,14 +62,20 @@ const MainPage = () => {
             Add Collection
           </StyledButton>
         </Link>
-
-        <CardWrapper>
-          <Collection />
-          <Collection />
-          <Collection />
-          <Collection />
-          <Collection />
+        {(getLargestCollectionsLoading || !largestCollections) ? (
+              <LoadingContainer>
+                <CircularProgress size={75}/>
+              </LoadingContainer>
+):largestCollections?.length===0?(
+      <Empty message='No Collections Yet' />
+):(
+  <CardWrapper>
+          {largestCollections.map((collection:CollectionType)=>(
+            <Collection collection={collection} key={collection.id}/>
+          ))}
         </CardWrapper>
+)}
+        
       </CardContainer>
     </MainPageContainer>
   );
@@ -86,5 +110,11 @@ const StyledButton = styled(Button)`
   &:hover {
     transform: scale(1.05) !important;
   }
+`;
+
+const LoadingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 export default MainPage;

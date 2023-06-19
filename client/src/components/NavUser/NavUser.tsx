@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { IconButton, Menu, MenuItem } from '@mui/material';
-import { Settings, Logout } from '@mui/icons-material';
+import { IconButton, Menu, MenuItem,  } from '@mui/material';
+import { Settings, Logout, Person2 } from '@mui/icons-material';
 
 import AvatarImg from '../../assets/avatar.png';
 import { useTranslation } from 'react-i18next';
@@ -28,6 +28,10 @@ const NavUser = () => {
         <MenuItem>
           <Settings />
         {t('nav.parameters')}
+        </MenuItem>
+        <MenuItem onClick={()=>dispatch(logoutUser())}>
+          <Logout />
+          {t('nav.profile')}
         </MenuItem>
         <MenuItem onClick={()=>dispatch(logoutUser())}>
           <Logout />

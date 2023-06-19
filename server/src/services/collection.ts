@@ -39,5 +39,10 @@ const addItemConfigs = async (
 };
 
 
+const getTopLargestCollections=async()=>{
+    const largestCollections=await client.collection.findMany({take:5,orderBy:{items:{_count:'desc'}},include:{items:true}});
+    return largestCollections;
+}
 
-export { addCollection, addItemConfigs };
+
+export { addCollection, addItemConfigs, getTopLargestCollections };

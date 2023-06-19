@@ -1,7 +1,17 @@
 export interface CollectionInitialState {
     collectionTopics:string[]
     topicsLoading:boolean
-    addCollectionLoading:boolean
+    addCollectionLoading:boolean;
+    getLargestCollectionsLoading:boolean;
+    largestCollections:Collection[] | null
+}
+
+export interface Collection {
+    id:string;
+    name:string;
+    topic:string
+    image?:string;
+    description:string;
 }
 
 export interface CollectionValues {

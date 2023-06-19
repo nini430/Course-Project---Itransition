@@ -70,7 +70,6 @@ axiosApiInstance.interceptors.response.use(
         store.dispatch(clearUser());
         localStorage.removeItem('authed_user');
         removeTokens();
-        window.location.href = '/';
         return Promise.reject(err);
       }
     }
@@ -79,7 +78,6 @@ axiosApiInstance.interceptors.response.use(
       store.dispatch(clearUser());
       removeTokens();
       localStorage.removeItem('authed_user');
-      window.location.href = '/';
     }
     const errorMessage = err.response?.data;
     err.message = errorMessage as any;

@@ -46,12 +46,32 @@ const getAllUniqueItemTags = async () => {
   const tags = Array.from(
     new Set(
       (await client.item.findMany({ select: { tags: true } }))
-        .map((item) => item.tags)
-        .map((item) => item.split(','))
+        .map((item: any) => item.tags)
+        .map((item: any) => item.split(','))
         .flat()
     )
   );
   return tags;
 };
 
-export { initializeItemCreation, addItem, getAllUniqueItemTags };
+const getLatestItems = async () => {
+  const latestItems = await client.item.findMany({
+    take: 5,
+    orderBy: { updatedAt: 'desc' },
+    include: {
+      collection: {
+        include: {
+          author: { select: { firstName: true, id: true, lastName: true } },
+        },
+      },
+    },
+  });
+  return latestItems;
+};
+
+export {
+  initializeItemCreation,
+  addItem,
+  getAllUniqueItemTags,
+  getLatestItems,
+};
