@@ -3,7 +3,9 @@ const apiUrls = {
     register: `/auth/register`,
     login: `/auth/login`,
     refreshToken: `/auth/refresh-token`,
-    logout:`/auth/logout`
+    logout:`/auth/logout`,
+    me:`/auth/me`,
+    profileImageUpload:'/auth/profile/upload'
   },
   test: {
     test: '/test',

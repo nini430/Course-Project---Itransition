@@ -1,39 +1,45 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { IconButton, Menu, MenuItem,  } from '@mui/material';
+import { IconButton, Menu, MenuItem } from '@mui/material';
 import { Settings, Logout, Person2 } from '@mui/icons-material';
 
 import AvatarImg from '../../assets/avatar.png';
 import { useTranslation } from 'react-i18next';
-import { useAppDispatch } from '../../store/store';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 import { logoutUser } from '../../store/authReducer';
+import { Link } from 'react-router-dom';
 
 const NavUser = () => {
-  const dispatch=useAppDispatch();
-    const {t}=useTranslation();
-  const [anchorEl,setAnchorEl]=useState<any>(null);
-  const handleAnchorClick=(e:React.MouseEvent<HTMLButtonElement>)=>{
-     setAnchorEl(e.currentTarget);
-  }
+  const dispatch = useAppDispatch();
+  const { t } = useTranslation();
+  const { authedUser } = useAppSelector((state) => state.auth);
+  const [anchorEl, setAnchorEl] = useState<any>(null);
+  const handleAnchorClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(e.currentTarget);
+  };
   return (
     <NavUserContainer>
       <IconButton onClick={handleAnchorClick}>
-        <UserImg src={AvatarImg} alt="avatar" />
+        <UserImg src={authedUser?.profileImage || AvatarImg} alt="avatar" />
       </IconButton>
       <StyledMenu
-      anchorEl={anchorEl}
-      open={!!anchorEl}
-      onClose={()=>setAnchorEl(null)}
+        anchorEl={anchorEl}
+        open={!!anchorEl}
+        onClose={() => setAnchorEl(null)}
       >
-        <MenuItem>
+        <MenuItem onClick={()=>setAnchorEl(null)}>
           <Settings />
-        {t('nav.parameters')}
+          {t('nav.parameters')}
         </MenuItem>
-        <MenuItem onClick={()=>dispatch(logoutUser())}>
-          <Logout />
-          {t('nav.profile')}
-        </MenuItem>
-        <MenuItem onClick={()=>dispatch(logoutUser())}>
+
+        <Link to={`/profile/${authedUser?.id}`}>
+          <MenuItem onClick={()=>setAnchorEl(null)}>
+            <Person2 />
+            {t('nav.profile')}
+          </MenuItem>
+        </Link>
+
+        <MenuItem onClick={() => dispatch(logoutUser())}>
           <Logout />
           {t('nav.log_out')}
         </MenuItem>
@@ -51,11 +57,12 @@ const NavUserContainer = styled.div`
 const UserImg = styled.img`
   border-radius: 50%;
   width: 40px;
-  height: auto;
+  height:40px;
+  object-fit:cover;
 `;
 
 const StyledMenu = styled(Menu)`
-    margin-top:15px;
+  margin-top: 15px;
 `;
 
 export default NavUser;

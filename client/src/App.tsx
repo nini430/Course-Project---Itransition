@@ -11,6 +11,7 @@ import MainPage from './pages/MainPage';
 import NavBar from './components/NavBar/NavBar';
 import AddCollection from './pages/collection/AddCollection';
 import AddItem from './pages/item/AddItem';
+import Profile from './pages/profile/Profile';
 
 function App() {
   const { mode } = useAppSelector((state) => state.common);
@@ -25,6 +26,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/register" element={<Register />} />
+          <Route path='/profile/:myId' element={<Profile/>}/>
           <Route path="/login" element={<Login />} />
           <Route path="/add-collection" element={<AddCollection />} />
           <Route path="/add-item" element={<AddItem />} />

@@ -52,3 +52,7 @@ a {
 .tag-cloud {
   align-self:center;
 }
+
+.d-none {
+  display: none;
+}

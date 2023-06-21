@@ -15,7 +15,7 @@ import {
   registerValues,
 } from '../../formik-validation/register';
 import { useAppDispatch, useAppSelector } from '../../store/store';
-import { registerUser } from '../../store/authReducer';
+import { registerUser, setAuthedUser } from '../../store/authReducer';
 import toastOptions from '../../utils/toastOptions';
 
 const Register = () => {
@@ -62,7 +62,7 @@ const Register = () => {
     if(userExists) {
       navigate('/');
     }
-  },[userExists,navigate]);
+  },[userExists,navigate,dispatch]);
   return (
     <>
       <AuthContainer>

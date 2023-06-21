@@ -27,7 +27,7 @@ const Login = () => {
     if (userExists) {
       navigate('/');
     }
-  }, [userExists, navigate]);
+  }, [userExists, navigate,dispatch]);
   const {
     values,
     errors,

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { useAppDispatch, useAppSelector } from '../store/store';
 import { Link } from 'react-router-dom';
-import Collection from '../components/Collection/Collection';
+import Collection from '../components/Collection/GridViewCollection';
 import Item from '../components/Item/Item';
 import Empty from '../components/Empty/Empty';
 import TagCloudComponent from '../components/TagCloud/TagCloud';
@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 import { getLatestItems } from '../store/itemReducer';
 import { getLargestCollections } from '../store/collectionReducer';
 import { Collection as CollectionType } from '../types/collection';
+import { setAuthedUser } from '../store/authReducer';
 
 const MainPage = () => {
   const dispatch = useAppDispatch();
@@ -26,6 +27,11 @@ const MainPage = () => {
   useEffect(() => {
     dispatch(getLatestItems());
     dispatch(getLargestCollections());
+    if (userExists) {
+      dispatch(
+        setAuthedUser(JSON.parse(localStorage.getItem('authed_user') as string))
+      );
+    }
   }, [dispatch]);
   return (
     <MainPageContainer>
@@ -54,28 +60,19 @@ const MainPage = () => {
           Top 5 Largest Collection
         </Typography>
         <Divider />
-        <Link to="/add-collection">
-          <StyledButton
-            startIcon={<AddCircle />}
-            sx={{ alignSelf: 'flex-start', border: '1px solid gray' }}
-          >
-            Add Collection
-          </StyledButton>
-        </Link>
-        {(getLargestCollectionsLoading || !largestCollections) ? (
-              <LoadingContainer>
-                <CircularProgress size={75}/>
-              </LoadingContainer>
-):largestCollections?.length===0?(
-      <Empty message='No Collections Yet' />
-):(
-  <CardWrapper>
-          {largestCollections.map((collection:CollectionType)=>(
-            <Collection collection={collection} key={collection.id}/>
-          ))}
-        </CardWrapper>
-)}
-        
+        {getLargestCollectionsLoading || !largestCollections ? (
+          <LoadingContainer>
+            <CircularProgress size={75} />
+          </LoadingContainer>
+        ) : largestCollections?.length === 0 ? (
+          <Empty message="No Collections Yet" />
+        ) : (
+          <CardWrapper>
+            {largestCollections.map((collection: CollectionType) => (
+              <Collection collection={collection} key={collection.id} />
+            ))}
+          </CardWrapper>
+        )}
       </CardContainer>
     </MainPageContainer>
   );

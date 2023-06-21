@@ -7,6 +7,8 @@ import {
   createUser,
   findUserByEmail,
   generateJwt,
+  getUserInformation,
+  uploadProfileImage,
 } from '../services/auth';
 import { LoginInput, RegisterInput } from '../types/auth';
 import ErrorResponse from '../utils/errorResponse';
@@ -129,4 +131,14 @@ const logoutUser=asyncHandler(async(req:Request & {user:any},res:Response,next:N
     return res.status(StatusCodes.OK).json({success:true,data:'logged_out'});
 });
 
-export { registerUser, loginUser, generateRefreshToken, logoutUser };
+const getUserInformationHandler=asyncHandler(async(req:Request&{user:any},res:Response,next:NextFunction)=>{
+    const user=await getUserInformation(req.user.id);
+    return res.status(StatusCodes.OK).json({success:true,data:user})
+})
+
+const uploadProfileImageHandler=asyncHandler(async(req:Request<{},{},{image:string}> & {user:any},res:Response,next:NextFunction)=>{
+      const image=await uploadProfileImage(req.body.image,req.user.id);
+      return res.status(StatusCodes.OK).json({success:true,data:image})
+})
+
+export { registerUser, loginUser, generateRefreshToken, logoutUser, getUserInformationHandler, uploadProfileImageHandler };

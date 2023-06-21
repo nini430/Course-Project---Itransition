@@ -6,6 +6,7 @@ CREATE TABLE `User` (
     `email` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
     `role` ENUM('BASIC', 'ADMIN') NOT NULL DEFAULT 'BASIC',
+    `profileImage` VARCHAR(191) NULL,
 
     UNIQUE INDEX `User_email_key`(`email`),
     PRIMARY KEY (`id`)
@@ -16,7 +17,7 @@ CREATE TABLE `Collection` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `topic` ENUM('books', 'chocolates', 'whiskeys', 'watches') NOT NULL,
-    `description` VARCHAR(191) NOT NULL,
+    `description` VARCHAR(4000) NOT NULL,
     `image` VARCHAR(191) NULL,
     `authorId` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),

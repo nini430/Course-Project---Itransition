@@ -11,7 +11,7 @@ const Collection = ({collection}:ICollectionProps) => {
   return (
     <StyledCard>
         <CardContent>
-            <Typography variant='h6'>Books</Typography>
+            <Typography variant='h6'>{collection.name}</Typography>
             <CollectionImg  src={collection.image||NoImage} alt="" />
             <Typography sx={{color:'gray'}}>Topic: {collection.topic}</Typography>
         </CardContent>
@@ -40,6 +40,7 @@ const StyledCard=styled(Card)`
 const CollectionImg=styled.img`
     width:250px;
     height:250px;
+    object-fit:cover;
 `
 
 export default Collection

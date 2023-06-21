@@ -1,15 +1,18 @@
-import express from 'express'
-import { addCollectionHandler, getCollectionTopics, getTopLargestCollectionsHandler } from '../controllers/collection';
+import express from 'express';
+import {
+  addCollectionHandler,
+  getCollectionTopics,
+  getTopLargestCollectionsHandler,
+} from '../controllers/collection';
 import authProtect from '../middleware/authProtect';
 
-const router=express.Router();
+const router = express.Router();
+
+router.get('/largest', getTopLargestCollectionsHandler);
 
 router.use(authProtect);
 
-router.get('/topics',getCollectionTopics);
-router.post('/',addCollectionHandler);
-router.get('/largest',getTopLargestCollectionsHandler);
+router.get('/topics', getCollectionTopics);
+router.post('/', addCollectionHandler);
 
 export default router;
-
-  
