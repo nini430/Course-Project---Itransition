@@ -3,5 +3,6 @@ export default {
     missingFields:'missing_fields',
     invalidCredentials:'invalid_credentials',
     unauthenticated:'unauthenticated',
-    tokenExpired:'token_expired_error'
+    tokenExpired:'token_expired_error',
+    notFound:'not_found'
 }

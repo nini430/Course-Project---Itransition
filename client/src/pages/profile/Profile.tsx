@@ -1,8 +1,9 @@
-import {useEffect} from 'react'
+import {useEffect,useState} from 'react'
 import {useMediaQuery} from 'react-responsive'
 import styled from 'styled-components'
 import { useAppDispatch, useAppSelector } from '../../store/store'
-import { getUserInformation, setAuthedUser } from '../../store/authReducer';
+import {  setAuthedUser } from '../../store/authReducer';
+import { getMyCollections } from '../../store/collectionReducer';
 import ProfileCard from './ProfileCard';
 import ProfileDashboard from './ProfileDashboard';
 
@@ -12,7 +13,7 @@ const Profile = () => {
   const userExists = authedUser || localStorage.getItem('authed_user');
   const dispatch=useAppDispatch();
   useEffect(()=>{
-    dispatch(getUserInformation());
+    dispatch(getMyCollections());
     dispatch(setAuthedUser(JSON.parse(localStorage.getItem('authed_user') as string)));
     if(userExists) {
       dispatch(setAuthedUser(JSON.parse(localStorage.getItem('authed_user') as string)))
@@ -21,7 +22,7 @@ const Profile = () => {
   return (
     <ProfileContainer isMobile={isTabletOrMobile}>
         <ProfileCard/>
-        <ProfileDashboard/>
+        <ProfileDashboard />
     </ProfileContainer>
   )
 }

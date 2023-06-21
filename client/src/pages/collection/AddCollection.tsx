@@ -159,7 +159,8 @@ const AddCollection = () => {
               <ImageContainer>
                 <img
                   width={150}
-                  height="auto"
+                  height={200}
+                  style={{objectFit:'cover'}}
                   src={URL.createObjectURL(uploadImg as File)}
                   alt=""
                 />

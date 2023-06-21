@@ -2,13 +2,17 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { CollectionInitialState, CollectionValues } from '../types/collection';
 import axiosApiInstance from '../axios';
 import apiUrls from '../api/api';
+import { Collection } from '../types/collection';
 
 const initialState: CollectionInitialState = {
   collectionTopics: [],
   topicsLoading: false,
   addCollectionLoading: false,
   getLargestCollectionsLoading:false,
-  largestCollections:null
+  largestCollections:null,
+  myCollections:null,
+  getMyCollectionsLoading:false,
+  removeCollectionLoading:false
 
 };
 
@@ -55,6 +59,30 @@ export const getLargestCollections= createAsyncThunk('/collection/largest',async
       return thunkApi.rejectWithValue(err);
     }
 });
+export const getMyCollections = createAsyncThunk(
+  'collection/myCollections',
+  async (_, thunkApi) => {
+    try {
+      const response = await axiosApiInstance.get<{
+        data: { collections: Collection[] };
+      }>(apiUrls.collection.myCollections);
+      console.log(response.data);
+      return response.data.data.collections;
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
+export const removeCollection = createAsyncThunk('collection/remove',async({collectionId,onSuccess}:{collectionId:string,onSuccess:VoidFunction},thunkApi)=>{
+   try{
+    const response=await axiosApiInstance.delete(`${apiUrls.collection.removeCollection}/${collectionId}`);
+    onSuccess && onSuccess();
+    return response.data;
+   }catch(err) {
+    return thunkApi.rejectWithValue(err);
+   }
+})
 
 
 const collectionReducer = createSlice({
@@ -75,10 +103,10 @@ const collectionReducer = createSlice({
     builder.addCase(addCollection.pending, (state) => {
       state.addCollectionLoading = true;
     });
-    builder.addCase(addCollection.fulfilled, (state, action) => {
+    builder.addCase(addCollection.fulfilled, (state) => {
       state.addCollectionLoading = false;
     });
-    builder.addCase(addCollection.rejected, (state, action) => {
+    builder.addCase(addCollection.rejected, (state) => {
       state.addCollectionLoading = false;
     });
     builder.addCase(getLargestCollections.pending,state=>{
@@ -90,6 +118,27 @@ const collectionReducer = createSlice({
     });
     builder.addCase(getLargestCollections.rejected,(state,action)=>{
       state.getLargestCollectionsLoading=false;
+    });
+    builder.addCase(getMyCollections.pending,state=>{
+      state.getMyCollectionsLoading=true;
+    });
+    builder.addCase(getMyCollections.fulfilled,(state,action)=>{
+      state.getMyCollectionsLoading=false;
+      console.log(action.payload);
+      state.myCollections=action.payload;
+    });
+    builder.addCase(getMyCollections.rejected,(state,action)=>{
+      state.getMyCollectionsLoading=false;
+    });
+    builder.addCase(removeCollection.pending,state=>{
+      state.removeCollectionLoading=true;
+    });
+    builder.addCase(removeCollection.fulfilled,(state,action)=>{
+      state.removeCollectionLoading=false;
+      state.myCollections=state.myCollections?.filter(collection=>collection.id!==action.meta.arg.collectionId) as Collection[];
+    });
+    builder.addCase(removeCollection.rejected,(state,action)=>{
+      state.removeCollectionLoading=false;
     })
   },
 });

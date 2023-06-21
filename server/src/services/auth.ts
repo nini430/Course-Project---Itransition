@@ -43,15 +43,7 @@ const createUser = async (input: RegisterInput) => {
   return user;
 };
 
-const getUserInformation = async (userId: string) => {
-  const user = await client.user.findUnique({
-    where: { id: userId },
-    select: {
-      collections: { include: { items: { select: { name: true } } } },
-    },
-  });
-  return user;
-};
+
 
 const uploadProfileImage=async(imageBase64:string,userId:string)=>{
     const img=await uploadImage(imageBase64);
@@ -66,6 +58,5 @@ export {
   comparePassword,
   findUserByEmail,
   generateJwt,
-  getUserInformation,
   uploadProfileImage
 };

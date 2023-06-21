@@ -4,7 +4,6 @@ const apiUrls = {
     login: `/auth/login`,
     refreshToken: `/auth/refresh-token`,
     logout:`/auth/logout`,
-    me:`/auth/me`,
     profileImageUpload:'/auth/profile/upload'
   },
   test: {
@@ -15,6 +14,8 @@ const apiUrls = {
     add:'/collection',
     addConfig:'/collection/configs',
     latest:'/collection/largest',
+    myCollections:'collection/my-collections',
+    removeCollection:'collection'
   },
   item:{
     initialize:'/item',

@@ -69,7 +69,7 @@ const MainPage = () => {
         ) : (
           <CardWrapper>
             {largestCollections.map((collection: CollectionType) => (
-              <Collection collection={collection} key={collection.id} />
+              <Collection main collection={collection} key={collection.id} />
             ))}
           </CardWrapper>
         )}

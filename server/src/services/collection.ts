@@ -38,11 +38,41 @@ const addItemConfigs = async (
   }
 };
 
+const getTopLargestCollections = async () => {
+  const largestCollections = await client.collection.findMany({
+    take: 5,
+    orderBy: { items: { _count: 'desc' } },
+    include: { items: true },
+  });
+  return largestCollections;
+};
 
-const getTopLargestCollections=async()=>{
-    const largestCollections=await client.collection.findMany({take:5,orderBy:{items:{_count:'desc'}},include:{items:true}});
-    return largestCollections;
-}
+const getMyCollections = async (userId: string) => {
+  const collectionsInfo = await client.user.findUnique({
+    where: { id: userId },
+    select: {
+      collections: { include: { items: { select: { name: true } } } },
+    },
+  });
+  return collectionsInfo;
+};
 
+const findCollectionById = async (collectionId: string) => {
+  const collection = await client.collection.findUnique({
+    where: { id: collectionId },
+  });
+  return collection;
+};
 
-export { addCollection, addItemConfigs, getTopLargestCollections };
+const removeCollection = async (collectionId: string) => {
+  await client.collection.delete({ where: { id: collectionId } });
+};
+
+export {
+  addCollection,
+  addItemConfigs,
+  getTopLargestCollections,
+  findCollectionById,
+  removeCollection,
+  getMyCollections,
+};

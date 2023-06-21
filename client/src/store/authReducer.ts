@@ -7,14 +7,11 @@ import axiosApiInstance from '../axios';
 import apiUrls from '../api/api';
 import toastOptions from '../utils/toastOptions';
 import { LoginValues } from '../types/login';
-import { Collection } from '../types/collection';
 
 const initialState: AuthInitialState = {
   authedUser: null,
   registerLoading: false,
   loginLoading: false,
-  myCollections: null,
-  profileLoading: false,
   profileUploadLoading:false
 };
 
@@ -87,20 +84,7 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
-export const getUserInformation = createAsyncThunk(
-  'auth/userInfo',
-  async (_, thunkApi) => {
-    try {
-      const response = await axiosApiInstance.get<{
-        data: { collections: Collection[] };
-      }>(apiUrls.auth.me);
-      console.log(response.data);
-      return response.data.data.collections;
-    } catch (err) {
-      return thunkApi.rejectWithValue(err);
-    }
-  }
-);
+
 
 export const uploadProfileImage=createAsyncThunk('auth/upload',async({image,onSuccess}:{image:string,onSuccess:VoidFunction},thunkApi)=>{
   try{
@@ -147,16 +131,6 @@ const authReducer = createSlice({
     });
     builder.addCase(logoutUser.fulfilled, (state) => {
       state.authedUser = null;
-    });
-    builder.addCase(getUserInformation.pending, (state) => {
-      state.profileLoading = true;
-    });
-    builder.addCase(getUserInformation.fulfilled, (state, action) => {
-      state.profileLoading = false;
-      state.myCollections = action.payload;
-    });
-    builder.addCase(getUserInformation.rejected, (state, action) => {
-      state.profileLoading = false;
     });
     builder.addCase(uploadProfileImage.pending,state=>{
       state.profileUploadLoading=true;
