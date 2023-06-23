@@ -26,7 +26,7 @@ model Collection {
   name                 String
   topic                CollectionTopic
   description          String @db.VarChar(4000)
-  image                String?
+  image                String? 
   authorId             String
   author               User                   @relation(fields: [authorId], references: [id])
   items                Item[]

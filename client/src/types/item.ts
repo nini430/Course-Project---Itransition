@@ -20,4 +20,6 @@ export interface Item {
     tags:string;
     customFieldValues:any;
     collectionId:string;
+    createdAt:string;
+    updatedAt:string;
 }

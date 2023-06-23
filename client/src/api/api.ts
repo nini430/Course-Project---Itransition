@@ -15,13 +15,18 @@ const apiUrls = {
     addConfig:'/collection/configs',
     latest:'/collection/largest',
     myCollections:'collection/my-collections',
-    removeCollection:'collection'
+    removeCollection:'collection',
+    getCollection:'collection',
+    uploadCollectionImage:'collection/upload'
   },
   item:{
     initialize:'/item',
     add:'/item',
     tags:'/item/tags',
     latest:'/item/latest'
+  },
+  user:{
+    getUser:'/user'
   }
 };
 

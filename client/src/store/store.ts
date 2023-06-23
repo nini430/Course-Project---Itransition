@@ -5,13 +5,15 @@ import commonReducer from './commonReducer';
 import authReducer from './authReducer';
 import collectionReducer from './collectionReducer';
 import itemReducer from './itemReducer';
+import userReducer from './userReducer';
 
 const store = configureStore({
   reducer:{
     common:commonReducer,
     auth:authReducer,
     collection:collectionReducer,
-    item:itemReducer
+    item:itemReducer,
+    user:userReducer
   },
   middleware:getDefaultMiddleware=>getDefaultMiddleware({
     serializableCheck:false

@@ -1,3 +1,5 @@
+import { User } from "./auth";
+
 export interface CollectionInitialState {
   collectionTopics: string[];
   topicsLoading: boolean;
@@ -7,6 +9,9 @@ export interface CollectionInitialState {
   myCollections: Collection[] | null;
   getMyCollectionsLoading: boolean;
   removeCollectionLoading: boolean;
+  currentCollection: ExtendedCollection | null;
+  getCollectionLoading: boolean;
+  uploadCollectionImageLoading:boolean;
 }
 
 export interface Collection {
@@ -15,6 +20,13 @@ export interface Collection {
   topic: string;
   image?: string;
   description: string;
+  createdAt:string;
+  updatedAt:string;
+}
+
+export type ExtendedCollection = Collection & {
+  items:any;
+  author:User;
 }
 
 export interface CollectionValues {

@@ -12,6 +12,7 @@ import NoImage from '../../assets/no-image.png';
 import { Delete, Edit } from '@mui/icons-material';
 import { Dispatch, SetStateAction } from 'react';
 import { useAppDispatch } from '../../store/store';
+import { Link } from 'react-router-dom';
 
 interface ICollectionProps {
   collection: CollectionType;
@@ -28,6 +29,7 @@ const Collection = ({
 }: ICollectionProps) => {
   const dispatch=useAppDispatch();
   return (
+    <Link style={{textDecoration:'none'}} to={`/collection/${collection.id}`}>
     <StyledCard>
       <CardContent>
         <Typography variant="h6">{collection.name}</Typography>
@@ -42,7 +44,7 @@ const Collection = ({
           sx={{ wordWrap: 'break-word' }}
         ></Typography>
       </CardContent>
-      <CardActions sx={{ justifyContent: 'space-between' }}>
+      <CardActions sx={{ gap:'10px' }}>
         <Button sx={{ border: '1px solid gray' }}>View More</Button>
         {!main && setIsConfirmDialogOpen && (
           <CrudBtnContainer>
@@ -60,6 +62,8 @@ const Collection = ({
         )}
       </CardActions>
     </StyledCard>
+    </Link>
+    
   );
 };
 
@@ -69,6 +73,7 @@ const StyledCard = styled(Card)`
   flex-direction: column;
   gap: 5px;
   cursor: pointer;
+  align-items:center;
   transition: all 0.3s ease !important;
 `;
 
@@ -80,6 +85,7 @@ const CollectionImg = styled.img`
 
 const CrudBtnContainer = styled.div`
   display: flex;
+  justify-self: center;
   align-items: center;
 `;
 export default Collection;

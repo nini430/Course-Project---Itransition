@@ -64,9 +64,34 @@ const findCollectionById = async (collectionId: string) => {
   return collection;
 };
 
+const findCollectionByIdExtended = async (collectionId: string) => {
+  const collection = await client.collection.findUnique({
+    where: { id: collectionId },
+    include: {
+      items: true,
+      author: {
+        select: {
+          firstName: true,
+          lastName: true,
+          id:true,
+          profileImage: true,
+          collections: { select: { name: true } },
+        },
+      },
+    },
+  });
+  return collection;
+};
+
 const removeCollection = async (collectionId: string) => {
   await client.collection.delete({ where: { id: collectionId } });
 };
+
+const updateCollectionImage=async(collectionId:string,imageBase64:string)=>{
+  const image=await uploadImage(imageBase64);
+  await client.collection.update({data:{image},where:{id:collectionId}});
+  return image;
+}
 
 export {
   addCollection,
@@ -75,4 +100,6 @@ export {
   findCollectionById,
   removeCollection,
   getMyCollections,
+  findCollectionByIdExtended,
+  updateCollectionImage
 };

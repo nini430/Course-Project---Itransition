@@ -72,7 +72,7 @@ const AddItem = () => {
       dispatch(
         addItem({
           input: { name, tags: tags.join(','), customFieldValues: rest },
-          collectionId: '87d3eae9-6083-49f9-b935-de4e284002b6',
+          collectionId: '101c6a4e-6ec9-42c2-930a-d8afd8c5e183',
           onSuccess: () => {
             toast.success(t('item_created'), toastOptions);
             setTimeout(() => {
@@ -84,7 +84,7 @@ const AddItem = () => {
     },
   });
   useEffect(() => {
-    dispatch(initializeItemConfig('87d3eae9-6083-49f9-b935-de4e284002b6'));
+    dispatch(initializeItemConfig('101c6a4e-6ec9-42c2-930a-d8afd8c5e183'));
     dispatch(getItemTags());
   }, [dispatch]);
   useEffect(() => {

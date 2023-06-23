@@ -8,11 +8,13 @@ import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { logoutUser } from '../../store/authReducer';
 import { Link } from 'react-router-dom';
+import Avatar from '../Avatar/Avatar';
 
 const NavUser = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const { authedUser } = useAppSelector((state) => state.auth);
+  const auth= authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
   const [anchorEl, setAnchorEl] = useState<any>(null);
   const handleAnchorClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget);
@@ -20,7 +22,7 @@ const NavUser = () => {
   return (
     <NavUserContainer>
       <IconButton onClick={handleAnchorClick}>
-        <UserImg src={authedUser?.profileImage || AvatarImg} alt="avatar" />
+        <Avatar width='40px' height='40px' src={auth?.profileImage || AvatarImg} />
       </IconButton>
       <StyledMenu
         anchorEl={anchorEl}
@@ -32,7 +34,7 @@ const NavUser = () => {
           {t('nav.parameters')}
         </MenuItem>
 
-        <Link to={`/profile/${authedUser?.id}`}>
+        <Link to={`/profile/${auth?.id}`}>
           <MenuItem onClick={()=>setAnchorEl(null)}>
             <Person2 />
             {t('nav.profile')}

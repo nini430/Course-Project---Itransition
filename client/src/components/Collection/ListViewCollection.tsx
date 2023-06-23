@@ -1,5 +1,6 @@
 import { Delete, Edit } from '@mui/icons-material'
 import {Dispatch, SetStateAction} from 'react'
+import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 import {Box, Button, Card, CardActions, CardContent, IconButton, Typography} from '@mui/material'
 import { Collection as CollectionType } from "../../types/collection";
@@ -13,7 +14,8 @@ interface IListViewCollectionProps {
 
 const ListViewCollection = ({collection,isConfirmDialogOpen,setIsConfirmDialogOpen}:IListViewCollectionProps) => {
   return (
-    <StyledCard sx={{minHeight:'330px'}}>
+    <Link style={{textDecoration:'none'}} to={`/collections/${collection.id}`}>
+     <StyledCard sx={{minHeight:'330px'}}>
        <CardContent sx={{display:'grid',gridTemplateColumns:'1fr 2fr auto auto',gridGap:'4px'}}>
         <LeftContent>
         <Typography sx={{fontSize:20}}>{collection.name}</Typography>
@@ -43,6 +45,8 @@ const ListViewCollection = ({collection,isConfirmDialogOpen,setIsConfirmDialogOp
         </CardActions>
        
     </StyledCard>
+    </Link>
+   
   )
 }
 

@@ -7,9 +7,11 @@ import {
   addCollection,
   addItemConfigs,
   findCollectionById,
+  findCollectionByIdExtended,
   getMyCollections,
   getTopLargestCollections,
   removeCollection,
+  updateCollectionImage,
 } from '../services/collection';
 import ErrorResponse from '../utils/errorResponse';
 import errorMessages from '../utils/errorMessages';
@@ -79,10 +81,29 @@ const getMyCollectionsHandlerHandler = asyncHandler(
   }
 );
 
+const getCollectionById=asyncHandler(async(req:Request<{collectionId:string}>,res:Response,next:NextFunction)=>{
+    const collection=await findCollectionByIdExtended(req.params.collectionId);
+    if(!collection) {
+      return next(new ErrorResponse(errorMessages.notFound,StatusCodes.NOT_FOUND));
+    }
+    return res.status(StatusCodes.OK).json({success:true,data:collection})
+})
+
+const updateCollectionImageHandler=asyncHandler(async(req:Request<{collectionId:string},{},{image:string}>,res:Response,next:NextFunction)=>{
+    const collection=await findCollectionById(req.params.collectionId);
+    if(!collection) {
+      return next(new ErrorResponse(errorMessages.notFound,StatusCodes.NOT_FOUND));
+    }
+    const image=await updateCollectionImage(req.params.collectionId,req.body.image);
+    return res.status(StatusCodes.OK).json({success:true,data:image});
+})
+
 export {
   getCollectionTopics,
   addCollectionHandler,
   getTopLargestCollectionsHandler,
   removeCollectionHandler,
   getMyCollectionsHandlerHandler,
+  getCollectionById,
+  updateCollectionImageHandler
 };
