@@ -22,6 +22,12 @@ export interface Collection {
   description: string;
   createdAt:string;
   updatedAt:string;
+  author:{
+    firstName:string;
+    lastName:string;
+    id:string;
+    profileImage?:string;
+  }
 }
 
 export type ExtendedCollection = Collection & {

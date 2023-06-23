@@ -8,7 +8,7 @@ router.post('/register',registerUser);
 router.post('/login',loginUser);
 router.post('/refresh-token',generateRefreshToken);
 router.get('/logout',authProtect,logoutUser);
-
+  
 router.use(authProtect);
 
 router.put('/profile/upload',uploadProfileImageHandler);

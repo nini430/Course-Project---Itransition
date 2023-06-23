@@ -42,7 +42,7 @@ const getTopLargestCollections = async () => {
   const largestCollections = await client.collection.findMany({
     take: 5,
     orderBy: { items: { _count: 'desc' } },
-    include: { items: true },
+    include: { items: true, author:{select:{firstName:true,lastName:true,id:true,profileImage:true}} },
   });
   return largestCollections;
 };

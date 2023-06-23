@@ -50,8 +50,8 @@ const ProfileCard = () => {
         </Typography>
 
         <ImageUpload
-          getRootProps={authId === currentProfile.id ? getRootProps : {}}
-          getInputProps={authId === currentProfile.id ? getInputProps : {}}
+          getRootProps={authId === currentProfile.id ? getRootProps : null}
+          getInputProps={authId === currentProfile.id ? getInputProps : null}
           isAllowedUpload={authId === currentProfile.id}
           uploadImage={async () => {
             dispatch(

@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import { Item, ItemInitialState, ItemInput } from '../types/item';
+import { ExtendedItem, Item, ItemInitialState, ItemInput } from '../types/item';
 import axiosApiInstance from '../axios';
 import apiUrls from '../api/api';
 
@@ -13,7 +13,9 @@ const initialState: ItemInitialState = {
     getItemTagsLoading:false,
     itemTags:[],
     latestItems:null,
-    getLatestItemsLoading:false
+    getLatestItemsLoading:false,
+    getSingleItemLoading:false,
+    currentItem:null
 }
 
 export const initializeItemConfig=createAsyncThunk('item/config',async(collectionId:string,thunkApi)=>{
@@ -51,6 +53,16 @@ export const getLatestItems=createAsyncThunk('item/latest',async(_,thunkApi)=>{
     return  response.data.data;
     }catch(err) {
     return thunkApi.rejectWithValue(err);
+    }
+})
+
+export const getSingleItem=createAsyncThunk('item/get',async(itemId:string,thunkApi)=>{
+    try{
+    const response=await axiosApiInstance.get<{data:ExtendedItem}>(`${apiUrls.item.getSingleItem}/${itemId}`);
+    console.log(response.data.data);
+    return response.data.data;
+    }catch(err) {
+        return thunkApi.rejectWithValue(err);
     }
 })
 
@@ -94,6 +106,16 @@ const itemSlice=createSlice({
         });
         builder.addCase(getLatestItems.rejected,(state,action)=>{
             state.getLatestItemsLoading=false;
+        });
+        builder.addCase(getSingleItem.pending,state=>{
+            state.getSingleItemLoading=true;
+        });
+        builder.addCase(getSingleItem.fulfilled,(state,action)=>{
+            state.getSingleItemLoading=false;
+            state.currentItem=action.payload;
+        });
+        builder.addCase(getSingleItem.rejected,(state,action)=>{
+            state.getSingleItemLoading=false;
         })
 
     }

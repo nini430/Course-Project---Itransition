@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { useMediaQuery } from 'react-responsive';
 import { ThemeProvider } from '@mui/material';
+
 import Register from './pages/auth/Register';
 import Login from './pages/auth/Login';
 import './utils/i18next';
@@ -13,6 +13,8 @@ import AddCollection from './pages/collection/AddCollection';
 import AddItem from './pages/item/AddItem';
 import Profile from './pages/profile/Profile';
 import CollectionDetails from './pages/collection/CollectionDetails';
+import ItemDetails from './pages/item/ItemDetails';
+import routesPath from './utils/routes';
 
 function App() {
   const { mode } = useAppSelector((state) => state.common);
@@ -25,13 +27,17 @@ function App() {
       <ThemeProvider theme={theme}>
         <NavBar />
         <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/register" element={<Register />} />
-          <Route path='/profile/:userId' element={<Profile/>}/>
-          <Route path="/login" element={<Login />} />
-          <Route path="/add-collection" element={<AddCollection />} />
-          <Route path="/add-item" element={<AddItem />} />
-          <Route path="/collection/:collectionId" element={<CollectionDetails/>}/>
+          <Route path={routesPath.main} element={<MainPage />} />
+          <Route path={routesPath.register} element={<Register />} />
+          <Route path={routesPath.profile} element={<Profile />} />
+          <Route path={routesPath.login} element={<Login />} />
+          <Route path={routesPath.addCollection} element={<AddCollection />} />
+          <Route path={routesPath.addItem} element={<AddItem />} />
+          <Route
+            path={routesPath.collectionDetails}
+            element={<CollectionDetails />}
+          />
+          <Route path={routesPath.itemDetails} element={<ItemDetails />} />
         </Routes>
       </ThemeProvider>
     </div>

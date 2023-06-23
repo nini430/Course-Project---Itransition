@@ -23,7 +23,8 @@ const apiUrls = {
     initialize:'/item',
     add:'/item',
     tags:'/item/tags',
-    latest:'/item/latest'
+    latest:'/item/latest',
+    getSingleItem:'/item/single'
   },
   user:{
     getUser:'/user'

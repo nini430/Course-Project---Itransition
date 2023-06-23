@@ -8,6 +8,8 @@ import {
   initializeItemCreation,
 } from '../services/item';
 import { ItemInput } from '../types/item';
+import ErrorResponse from '../utils/errorResponse';
+import errorMessages from '../utils/errorMessages';
 
 const initializeItemCreationHandler = asyncHandler(
   async (
@@ -51,8 +53,26 @@ const getUniqueItemTagsHandler = asyncHandler(
 
 const getLatestItemsHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const latestItems=await getLatestItems();
-    return res.status(StatusCodes.OK).json({success:true,data:latestItems});
+    const latestItems = await getLatestItems();
+    return res
+      .status(StatusCodes.OK)
+      .json({ success: true, data: latestItems });
+  }
+);
+
+const getItemByIdExtendedHandler = asyncHandler(
+  async (
+    req: Request<{ itemId: string }>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const item = await getItemByIdExtendedHandler(req.params.itemId);
+    if (!item) {
+      return next(
+        new ErrorResponse(errorMessages.notFound, StatusCodes.NOT_FOUND)
+      );
+    }
+    return res.status(StatusCodes.OK).json({ success: true, data: item });
   }
 );
 
@@ -60,5 +80,6 @@ export {
   initializeItemCreationHandler,
   addItemHandler,
   getUniqueItemTagsHandler,
-  getLatestItemsHandler
+  getLatestItemsHandler,
+  getItemByIdExtendedHandler,
 };

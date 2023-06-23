@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import {
+  Box,
   Button,
   Card,
   CardActions,
@@ -13,6 +14,8 @@ import { Delete, Edit } from '@mui/icons-material';
 import { Dispatch, SetStateAction } from 'react';
 import { useAppDispatch } from '../../store/store';
 import { Link } from 'react-router-dom';
+import Avatar from '../Avatar/Avatar';
+import AvatarImg from '../../assets/avatar.png'
 
 interface ICollectionProps {
   collection: CollectionType;
@@ -43,6 +46,19 @@ const Collection = ({
           }}
           sx={{ wordWrap: 'break-word' }}
         ></Typography>
+        <Link to={`/profile/${collection?.author?.id}`} style={{textDecoration:'none'}}>
+        <Box sx={{display:'flex',alignItems:'center',gap:'5px'}}>
+        <Typography sx={{ color: 'gray' }}>
+          Author:
+        </Typography>
+        <Avatar width={30} height={30} src={collection.author?.profileImage || AvatarImg}/>
+        <Typography>
+        {collection.author?.firstName} {collection.author?.lastName}
+        </Typography>
+        </Box>
+        </Link>
+        
+         
       </CardContent>
       <CardActions sx={{ gap:'10px' }}>
         <Button sx={{ border: '1px solid gray' }}>View More</Button>

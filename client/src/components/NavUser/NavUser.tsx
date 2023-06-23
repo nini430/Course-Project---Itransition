@@ -34,7 +34,7 @@ const NavUser = () => {
           {t('nav.parameters')}
         </MenuItem>
 
-        <Link to={`/profile/${auth?.id}`}>
+        <Link style={{textDecoration:'none'}} to={`/profile/${auth?.id}`}>
           <MenuItem onClick={()=>setAnchorEl(null)}>
             <Person2 />
             {t('nav.profile')}

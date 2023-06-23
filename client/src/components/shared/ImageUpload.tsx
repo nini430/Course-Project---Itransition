@@ -48,11 +48,11 @@ const ImageUpload = ({
   return (
     <>
       <ImageContainer
-      {...getRootProps()}
+      {...(getRootProps?{...getRootProps()}:{})}
         onMouseOver={() => setIsPhotoHovered(true)}
         onMouseOut={() => setIsPhotoHovered(false)}
       >
-        <input {...getInputProps()} type="file" className="d-none" />
+        <input {...(getInputProps?{...getInputProps()}:{})} type="file" className="d-none" />
         <Avatar
           width={200}
           height={200}

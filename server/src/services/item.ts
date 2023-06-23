@@ -61,7 +61,14 @@ const getLatestItems = async () => {
     include: {
       collection: {
         include: {
-          author: { select: { firstName: true, id: true, lastName: true } },
+          author: {
+            select: {
+              firstName: true,
+              id: true,
+              lastName: true,
+              profileImage: true,
+            },
+          },
         },
       },
     },
@@ -69,9 +76,37 @@ const getLatestItems = async () => {
   return latestItems;
 };
 
+const getItemById=async(itemId:string)=>{
+  const item= await client.item.findUnique({where:{id:itemId}});
+  return item;
+}
+
+const getItemByIdExtended = async (itemId: string) => {
+  const item = await client.item.findUnique({
+    where: { id: itemId },
+    include: {
+      collection: {
+        include: {
+          author: {
+            select: {
+              firstName: true,
+              lastName: true,
+              id: true,
+              profileImage: true,
+            },
+          },
+        },
+      },
+    },
+  });
+  return item;
+};
+
 export {
   initializeItemCreation,
   addItem,
   getAllUniqueItemTags,
   getLatestItems,
+  getItemById,
+  getItemByIdExtended
 };
