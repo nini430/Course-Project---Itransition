@@ -30,5 +30,5 @@ export interface Item {
 }
 
 export interface ExtendedItem extends Item {
-    collections:Collection  & {author: User}
+    collection:Collection  & {author: User}
 }

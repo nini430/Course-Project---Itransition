@@ -2,9 +2,11 @@ import { Delete, Edit } from '@mui/icons-material'
 import {Dispatch, SetStateAction} from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
-import {Box, Button, Card, CardActions, CardContent, IconButton, Typography} from '@mui/material'
+import {Avatar, Box, Button, Card, CardActions, CardContent, IconButton, Typography} from '@mui/material'
 import { Collection as CollectionType } from "../../types/collection";
 import NoImage from '../../assets/no-image.png'
+import AvatarComp from '../Avatar/Avatar'
+import AvatarImg from '../../assets/avatar.png'
 
 interface IListViewCollectionProps {
     collection:CollectionType;
@@ -37,6 +39,17 @@ const ListViewCollection = ({collection,isConfirmDialogOpen,setIsConfirmDialogOp
             }}  sx={{alignItems:'flex-start',height:'40px'}}><Delete/></IconButton>
          
             </CrudBtnContainer>
+            <Link to={`/profile/${collection.author.id}`} style={{textDecoration:'none'}}>
+            <Box sx={{display:'flex',gap:'10px',alignItems:'center'}}>
+             <Typography sx={{color:'gray'}}>Author: </Typography>
+             <Box sx={{display:'flex',gap:'10px', alignItems:'center'}}>
+                <AvatarComp   width={40} height={40} src={collection.author.profileImage || AvatarImg}/>
+             <Typography sx={{color:'gray'}}>{collection.author.firstName} {collection.author.lastName} </Typography>
+             
+            </Box>
+            </Box></Link>
+           
+
            
         </RightContent>
         </CardContent> 

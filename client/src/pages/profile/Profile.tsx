@@ -6,19 +6,21 @@ import {  setAuthedUser } from '../../store/authReducer';
 import { getMyCollections } from '../../store/collectionReducer';
 import ProfileCard from './ProfileCard';
 import ProfileDashboard from './ProfileDashboard';
+import { useParams } from 'react-router-dom';
 
 const Profile = () => {
+  const {userId}=useParams();
   const isTabletOrMobile = useMediaQuery({ maxWidth: 850 });
   const {authedUser}=useAppSelector(state=>state.auth);
   const userExists = authedUser || localStorage.getItem('authed_user');
   const dispatch=useAppDispatch();
   useEffect(()=>{
-    dispatch(getMyCollections());
+    dispatch(getMyCollections(userId as string));
     dispatch(setAuthedUser(JSON.parse(localStorage.getItem('authed_user') as string)));
     if(userExists) {
       dispatch(setAuthedUser(JSON.parse(localStorage.getItem('authed_user') as string)))
     }
-  },[dispatch])
+  },[dispatch,userId])
   return (
     <ProfileContainer isMobile={isTabletOrMobile}>
         <ProfileCard/>

@@ -42,7 +42,17 @@ const getTopLargestCollections = async () => {
   const largestCollections = await client.collection.findMany({
     take: 5,
     orderBy: { items: { _count: 'desc' } },
-    include: { items: true, author:{select:{firstName:true,lastName:true,id:true,profileImage:true}} },
+    include: {
+      items: true,
+      author: {
+        select: {
+          firstName: true,
+          lastName: true,
+          id: true,
+          profileImage: true,
+        },
+      },
+    },
   });
   return largestCollections;
 };
@@ -51,7 +61,20 @@ const getMyCollections = async (userId: string) => {
   const collectionsInfo = await client.user.findUnique({
     where: { id: userId },
     select: {
-      collections: { include: { items: { select: { name: true } } } },
+      collections: {
+        include: {
+          items: { select: { name: true } },
+          author: {
+            select: {
+              firstName: true,
+              lastName: true,
+              role: true,
+              profileImage: true,
+              id:true
+            },
+          },
+        },
+      },
     },
   });
   return collectionsInfo;
@@ -73,7 +96,7 @@ const findCollectionByIdExtended = async (collectionId: string) => {
         select: {
           firstName: true,
           lastName: true,
-          id:true,
+          id: true,
           profileImage: true,
           collections: { select: { name: true } },
         },
@@ -87,11 +110,17 @@ const removeCollection = async (collectionId: string) => {
   await client.collection.delete({ where: { id: collectionId } });
 };
 
-const updateCollectionImage=async(collectionId:string,imageBase64:string)=>{
-  const image=await uploadImage(imageBase64);
-  await client.collection.update({data:{image},where:{id:collectionId}});
+const updateCollectionImage = async (
+  collectionId: string,
+  imageBase64: string
+) => {
+  const image = await uploadImage(imageBase64);
+  await client.collection.update({
+    data: { image },
+    where: { id: collectionId },
+  });
   return image;
-}
+};
 
 export {
   addCollection,
@@ -101,5 +130,5 @@ export {
   removeCollection,
   getMyCollections,
   findCollectionByIdExtended,
-  updateCollectionImage
+  updateCollectionImage,
 };

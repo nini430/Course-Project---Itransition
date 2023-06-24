@@ -75,8 +75,8 @@ const removeCollectionHandler = asyncHandler(
 );
 
 const getMyCollectionsHandlerHandler = asyncHandler(
-  async (req: Request & { user: any }, res: Response, next: NextFunction) => {
-    const user = await getMyCollections(req.user.id);
+  async (req: Request<{authorId:string}>, res: Response, next: NextFunction) => {
+    const user = await getMyCollections(req.params.authorId);
     return res.status(StatusCodes.OK).json({ success: true, data: user });
   }
 );

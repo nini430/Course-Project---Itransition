@@ -5,6 +5,7 @@ import {
   addItem,
   getAllUniqueItemTags,
   getItemById,
+  getItemByIdExtended,
   getLatestItems,
   initializeItemCreation,
 } from '../services/item';
@@ -67,7 +68,7 @@ const getItemByIdExtendedHandler = asyncHandler(
     res: Response,
     next: NextFunction
   ) => {
-    const item = await getItemById(req.params.itemId);
+    const item = await getItemByIdExtended(req.params.itemId);
     if (!item) {
       return next(
         new ErrorResponse(errorMessages.notFound, StatusCodes.NOT_FOUND)

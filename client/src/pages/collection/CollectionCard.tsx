@@ -53,9 +53,9 @@ const CollectionCard = ({ currentCollection }: ICollectionCardProps) => {
       >
         <Typography sx={{ fontSize: 30 }}>{currentCollection?.name}</Typography>
         <ImageUpload
-          getRootProps={currentCollection?.author.id===auth.id? getRootProps:null}
-          getInputProps={currentCollection?.author.id==auth.id? getInputProps:null}
-         isAllowedUpload={currentCollection?.author.id===auth.id}
+          getRootProps={currentCollection?.author.id===auth?.id? getRootProps:null}
+          getInputProps={currentCollection?.author.id==auth?.id? getInputProps:null}
+         isAllowedUpload={currentCollection?.author.id===auth?.id}
           uploadImage={async () => {
             dispatch(
               uploadCollectionImage({
@@ -131,7 +131,7 @@ const CollectionCard = ({ currentCollection }: ICollectionCardProps) => {
               <Avatar
                 width={30}
                 height={30}
-                src={auth.profileImage as string ||AvatarImage}
+                src={currentCollection?.author.profileImage as string ||AvatarImage}
               />
               <Typography>
                 {currentCollection?.author.firstName}{' '}
@@ -168,7 +168,7 @@ const CollectionCard = ({ currentCollection }: ICollectionCardProps) => {
             {moment(currentCollection?.updatedAt as string).format('L')}
           </Typography>
         </Box>
-        {auth.id === currentCollection?.author.id && (
+        {auth?.id === currentCollection?.author.id && (
           <ActionsContainer>
           <IconButton><Edit/></IconButton>
           <IconButton onClick={()=>setIsCOnfirmModalOpen(true)}><Delete/></IconButton>
