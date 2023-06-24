@@ -1,6 +1,7 @@
 import { Box, Button, FormGroup } from '@mui/material';
 import { Cancel, ErrorOutline, Save } from '@mui/icons-material';
 import { useFormik } from 'formik';
+import {useState} from 'react';
 
 import { useAppSelector } from '../../store/store';
 import FormInput from '../../components/FormInput/FormInput';
@@ -9,8 +10,12 @@ import {
   validationSchema,
 } from '../../formik-validation/passwordSettings';
 import { ErrorMessage } from '../../components/shared/styles/FormStyles';
+import { PassType } from '../../types/common';
 
 const PasswordSettings = () => {
+  const [oldPassType,setOldPasstype]=useState<PassType>('password');
+  const [passType,setPassType]=useState<PassType>('password');
+  const [newPassType,setNewPassType]=useState<PassType>('password');
   const { dirty, errors, values, handleChange, handleBlur, touched } =
     useFormik({
       initialValues,
@@ -29,11 +34,13 @@ const PasswordSettings = () => {
         <FormInput
           onBlur={handleBlur}
           onChange={handleChange}
-          value={values.password}
+          value={values.oldPassword}
           mode={mode}
           name="oldPassword"
           error={!!(errors.oldPassword && touched.oldPassword)}
-          type="password"
+          type={oldPassType}
+          toggleType={()=>setOldPasstype(oldPassType==='password'?'text':'password')}
+
         />
         {touched.oldPassword && errors.oldPassword && (
           <ErrorMessage>{errors.oldPassword}</ErrorMessage>
@@ -46,7 +53,8 @@ const PasswordSettings = () => {
           error={!!(errors.password && touched.password)}
           onChange={handleChange}
           value={values.password}
-          type="password"
+          type={passType}
+          toggleType={()=>setPassType(passType==='password'?'text':'password')}
           name="password"
         />
         {touched.password && errors.password && (
@@ -60,7 +68,8 @@ const PasswordSettings = () => {
           error={!!(errors.confirmPassword && touched.password)}
           onChange={handleChange}
           value={values.confirmPassword}
-          type="password"
+          type={newPassType}
+          toggleType={()=>setNewPassType(newPassType==='password'?'text':'password')}
           name="confirmPassword"
         />
         {touched.confirmPassword && errors.confirmPassword && (

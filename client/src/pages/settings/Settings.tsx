@@ -1,12 +1,16 @@
 import { Typography, Accordion, AccordionDetails } from '@mui/material';
-import { useState, SyntheticEvent } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
+import { Home, Settings as SettingsIcon } from '@mui/icons-material';
+
 import { useAppSelector } from '../../store/store';
 import AccordionSummaryComponent from './AccordionSummary';
 import FullNameSettings from './FullNameSettings';
 import EmailSettings from './EmailSettings';
 import PasswordSettings from './PasswordSettings';
 import settingParams from '../../utils/settingParams';
+import BreadCrumb from '../../components/shared/BreadCrumb';
+
 
 const Settings = () => {
   const [expanded, setExpanded] = useState('');
@@ -20,6 +24,7 @@ const Settings = () => {
   };
   return (
     <SettingsContainer>
+      <BreadCrumb paths={[{path:'/',icon:Home,title:'Home'},{path:'/settings',icon:SettingsIcon,title:'Settings'}]}/>
       <Typography sx={{ fontSize: 40, mb: 2 }}>User Settings</Typography>
       <Accordion expanded={expanded===settingParams.FULL_NAME} onChange={()=>handleAccordionChange(settingParams.FULL_NAME)} sx={{ minWidth: 400 }}>
         <AccordionSummaryComponent
@@ -60,7 +65,6 @@ const SettingsContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 `;
 
 const StyledAccordionDetails = styled(AccordionDetails)`

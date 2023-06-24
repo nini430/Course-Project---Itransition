@@ -24,7 +24,7 @@ function App() {
     [mode]
   );
   return (
-    <div className={`theme-${mode}`}>
+    <div className={`theme-${mode} App`}>
       <ThemeProvider theme={theme}>
         <NavBar />
         <Routes>
