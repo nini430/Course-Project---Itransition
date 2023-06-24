@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Divider, Typography, FormGroup } from '@mui/material';
-import { LockClockRounded } from '@mui/icons-material';
+import { Home, LockClockRounded } from '@mui/icons-material';
 import { useMediaQuery } from 'react-responsive';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +16,7 @@ import {
 } from '../../formik-validation/login';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { loginUser } from '../../store/authReducer';
+import BreadCrumb from '../../components/shared/BreadCrumb';
 
 const Login = () => {
   const [passType,setPassType]=useState<'text'|'password'>('password')
@@ -60,7 +61,9 @@ const Login = () => {
 
   return (
     <>
+   
       <AuthContainer>
+      <BreadCrumb paths={[{path:'/',title:'Home',icon:Home},{path:'/login',title:'Login',icon:LockClockRounded}]}/>
         <Toaster/>
         <AuthForm
           S={isExtraSmallDevice}

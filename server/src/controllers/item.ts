@@ -4,6 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 import {
   addItem,
   getAllUniqueItemTags,
+  getItemById,
   getLatestItems,
   initializeItemCreation,
 } from '../services/item';
@@ -66,7 +67,7 @@ const getItemByIdExtendedHandler = asyncHandler(
     res: Response,
     next: NextFunction
   ) => {
-    const item = await getItemByIdExtendedHandler(req.params.itemId);
+    const item = await getItemById(req.params.itemId);
     if (!item) {
       return next(
         new ErrorResponse(errorMessages.notFound, StatusCodes.NOT_FOUND)

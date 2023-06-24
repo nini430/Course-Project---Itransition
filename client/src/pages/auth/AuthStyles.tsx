@@ -6,8 +6,8 @@ const AuthContainer = styled.div`
   height: calc(100vh - 80px);
   padding: 0px 10px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  flex-direction:column;
 `;
 const AuthForm = styled(({ isX, isMob, isD, isXS, mode, ...props }: any) => (
   <form {...props} />

@@ -2,20 +2,20 @@ import express from 'express';
 import authProtect from '../middleware/authProtect';
 import {
   addItemHandler,
+  getItemByIdExtendedHandler,
   getLatestItemsHandler,
   getUniqueItemTagsHandler,
   initializeItemCreationHandler,
 } from '../controllers/item';
-import { getItemByIdExtended } from '../services/item';
 
 const router = express.Router();
 
 router.get('/latest', getLatestItemsHandler);
+router.get('/single/:itemId',getItemByIdExtendedHandler);
 
 router.use(authProtect);
 
 router.get('/tags', getUniqueItemTagsHandler);
-router.get('/single/:itemId',getItemByIdExtended);
 router.get('/:collectionId', initializeItemCreationHandler);
 router.post('/:collectionId', addItemHandler);
 

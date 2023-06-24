@@ -62,6 +62,8 @@ const NavBar = () => {
 }
 
 const NavbarContainer=styled.div`
+  position:sticky;
+  top:0;
     height:80px; 
     border-bottom:1px solid gray;
     display:flex;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Divider, Typography, FormGroup } from '@mui/material';
-import { PersonPin } from '@mui/icons-material';
+import { Home, PersonPin } from '@mui/icons-material';
 import { useMediaQuery } from 'react-responsive';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -17,10 +17,13 @@ import {
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { registerUser, setAuthedUser } from '../../store/authReducer';
 import toastOptions from '../../utils/toastOptions';
+import BreadCrumb from '../../components/shared/BreadCrumb';
 
 const Register = () => {
-  const [passType,setPassType]=useState<'text'|'password'>('password');
-  const [confirmPassType,setConfirmPassType]=useState<'text'|'password'>('password');
+  const [passType, setPassType] = useState<'text' | 'password'>('password');
+  const [confirmPassType, setConfirmPassType] = useState<'text' | 'password'>(
+    'password'
+  );
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const {
@@ -58,14 +61,20 @@ const Register = () => {
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
   const isExtraSmallDevice = useMediaQuery({ maxWidth: 500 });
 
-  useEffect(()=>{
-    if(userExists) {
+  useEffect(() => {
+    if (userExists) {
       navigate('/');
     }
-  },[userExists,navigate,dispatch]);
+  }, [userExists, navigate, dispatch]);
   return (
     <>
       <AuthContainer>
+        <BreadCrumb
+          paths={[
+            { icon: Home, path: '/', title: 'Home' },
+            { icon: PersonPin, path: '/register', title: 'Register' },
+          ]}
+        />
         <Toaster />
         <AuthForm
           isXS={isExtraSmallDevice}
@@ -140,7 +149,9 @@ const Register = () => {
               name="password"
               placeholder={t('auth.password') as string}
               type={passType}
-              toggleType={()=>setPassType(passType==='password'?'text':'password')}
+              toggleType={() =>
+                setPassType(passType === 'password' ? 'text' : 'password')
+              }
               value={values.password}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -156,7 +167,11 @@ const Register = () => {
               name="confirmPassword"
               placeholder={t('auth.confirm_password') as string}
               type={confirmPassType}
-              toggleType={()=>setConfirmPassType(confirmPassType==='password'?'text':'password')}
+              toggleType={() =>
+                setConfirmPassType(
+                  confirmPassType === 'password' ? 'text' : 'password'
+                )
+              }
               value={values.confirmPassword}
               onChange={handleChange}
               onBlur={handleBlur}

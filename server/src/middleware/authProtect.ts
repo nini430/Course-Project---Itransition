@@ -31,6 +31,7 @@ const authProtect = asyncHandler(
       req.user=rest;
       next();
     } catch (err: any) {
+      console.log(err.name,'lalala')
       return next(
         new ErrorResponse(
           err.name === 'TokenExpiredError'
