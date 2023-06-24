@@ -33,7 +33,7 @@ const FormInput: React.FC<IFormInputProps> = ({
     multiline={multiline}
     rows={multiline?4:1}
       InputProps={
-        name === 'password' || name === 'confirmPassword'
+        name === 'password' || name === 'confirmPassword' || name==='oldPassword'
           ? {
               endAdornment: (
                 <InputAdornment position="end">

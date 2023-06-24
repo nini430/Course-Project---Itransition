@@ -6,7 +6,8 @@ const routesPath={
     addCollection:'/add-collection',
     addItem:'/add-item',
     collectionDetails:'/collection/:collectionId',
-    itemDetails:'/item/:itemId'
+    itemDetails:'/item/:itemId',
+    settings:'/settings'
 }
 
 export default routesPath;

@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import { logoutUser } from '../../store/authReducer';
 import { Link } from 'react-router-dom';
 import Avatar from '../Avatar/Avatar';
+import routesPath from '../../utils/routes';
 
 const NavUser = () => {
   const dispatch = useAppDispatch();
@@ -29,10 +30,13 @@ const NavUser = () => {
         open={!!anchorEl}
         onClose={() => setAnchorEl(null)}
       >
+        <Link style={{textDecoration:'none'}} to={routesPath.settings}>
         <MenuItem onClick={()=>setAnchorEl(null)}>
           <Settings />
           {t('nav.parameters')}
         </MenuItem>
+        </Link>
+        
 
         <Link style={{textDecoration:'none'}} to={`/profile/${auth?.id}`}>
           <MenuItem onClick={()=>setAnchorEl(null)}>

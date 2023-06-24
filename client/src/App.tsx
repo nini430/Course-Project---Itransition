@@ -15,6 +15,7 @@ import Profile from './pages/profile/Profile';
 import CollectionDetails from './pages/collection/CollectionDetails';
 import ItemDetails from './pages/item/ItemDetails';
 import routesPath from './utils/routes';
+import Settings from './pages/settings/Settings';
 
 function App() {
   const { mode } = useAppSelector((state) => state.common);
@@ -33,6 +34,7 @@ function App() {
           <Route path={routesPath.login} element={<Login />} />
           <Route path={routesPath.addCollection} element={<AddCollection />} />
           <Route path={routesPath.addItem} element={<AddItem />} />
+          <Route path={routesPath.settings} element={<Settings />} />
           <Route
             path={routesPath.collectionDetails}
             element={<CollectionDetails />}
