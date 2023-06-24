@@ -5,8 +5,13 @@ export interface RegisterInput {
     password:string;
 }
 
+export type UserUpdateInput=Partial<RegisterInput> & {newPassword?:string};
+
+export type UpdateTypes='fullName'|'email'|'password';
+
 export interface LoginInput {
     email:string;
     password:string;
 }
+
 

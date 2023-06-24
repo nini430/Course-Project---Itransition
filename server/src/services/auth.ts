@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 import client from '../utils/prismaClient';
-import { RegisterInput } from '../types/auth';
+import { RegisterInput, UpdateTypes, UserUpdateInput } from '../types/auth';
 import { uploadImage } from './common';
 
 const hashPassword = async (password: string) => {
@@ -43,14 +43,35 @@ const createUser = async (input: RegisterInput) => {
   return user;
 };
 
+const uploadProfileImage = async (imageBase64: string, userId: string) => {
+  const img = await uploadImage(imageBase64);
+  await client.user.update({
+    data: { profileImage: img },
+    where: { id: userId },
+  });
+  return img;
+};
+
+const updateUserInfo = async (
+  input: UserUpdateInput,
+  userId: string,
+  update: UpdateTypes
+) => {
+  const { firstName, lastName, email } = input;
+  const updatedUser = await client.user.update({
+    data: update === 'fullName' ? { firstName, lastName } : { email },
+    where: { id: userId },
+  });
+  const {password,...rest}=updatedUser;
+  return rest;
+};
 
 
-const uploadProfileImage=async(imageBase64:string,userId:string)=>{
-    const img=await uploadImage(imageBase64);
-    await client.user.update({data:{profileImage:img},where:{id:userId}});
-    return img;
-} 
-
+const updatePassword=async(newPassword:string,userId:string)=>{
+  const updatedUser=await client.user.update({data:{password:newPassword},where:{id:userId}});
+  const {password,...rest}=updatedUser;
+  return rest;
+}
 export {
   hashPassword,
   createUser,
@@ -58,5 +79,7 @@ export {
   comparePassword,
   findUserByEmail,
   generateJwt,
-  uploadProfileImage
+  uploadProfileImage,
+  updateUserInfo,
+  updatePassword
 };

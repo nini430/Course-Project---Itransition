@@ -1,3 +1,5 @@
+import { RegisterValues } from "./register";
+
 type Role='BASIC' | 'ADMIN';
 
 
@@ -15,4 +17,9 @@ export interface AuthInitialState {
     registerLoading: boolean;
     loginLoading: boolean;
     profileUploadLoading:boolean;
+    updateProfileLoading:boolean;
 }
+
+export type UserUpdateInput=Partial<RegisterValues> & {newPassword?:string};
+
+export type UpdateTypes='fullName'|'email'|'password';

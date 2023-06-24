@@ -6,10 +6,14 @@ import {
   comparePassword,
   createUser,
   findUserByEmail,
+  findUserById,
   generateJwt,
+  hashPassword,
+  updatePassword,
+  updateUserInfo,
   uploadProfileImage,
 } from '../services/auth';
-import { LoginInput, RegisterInput } from '../types/auth';
+import { LoginInput, RegisterInput, UpdateTypes, UserUpdateInput } from '../types/auth';
 import ErrorResponse from '../utils/errorResponse';
 import errorMessages from '../utils/errorMessages';
 
@@ -137,4 +141,26 @@ const uploadProfileImageHandler=asyncHandler(async(req:Request<{},{},{image:stri
       return res.status(StatusCodes.OK).json({success:true,data:image})
 })
 
-export { registerUser, loginUser, generateRefreshToken, logoutUser, uploadProfileImageHandler };
+const updateUserInfoHandler=asyncHandler(async(req:Request<{},{},{input:UserUpdateInput,update:UpdateTypes}>  & {user:any},res:Response,next:NextFunction)=>{
+  const {input,update}=req.body;
+  let updatedUser;
+  const user=await findUserById(req.user.id);
+  if(!user) {
+    return next(new ErrorResponse(errorMessages.notFound,StatusCodes.NOT_FOUND));
+  }
+  if(update==='fullName' || update==='email') {
+    updatedUser=await updateUserInfo(input,req.user.id,update);
+  };
+  if(update==='password') {
+    const isPasswordCorrect=await comparePassword(input.password as string,user.password);
+    if(!isPasswordCorrect) {
+      return next(new ErrorResponse(errorMessages.invalidCredentials,StatusCodes.BAD_REQUEST));
+    }
+    const hashedPassword=await hashPassword(input.newPassword as string);
+    updatedUser=await updatePassword(hashedPassword,req.user.id);
+  }
+
+  return res.status(StatusCodes.OK).json({success:true,data:updatedUser});
+})
+
+export { registerUser, loginUser, generateRefreshToken, logoutUser, uploadProfileImageHandler, updateUserInfoHandler };

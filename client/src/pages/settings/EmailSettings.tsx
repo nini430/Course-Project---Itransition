@@ -1,53 +1,91 @@
 import { Box, Button, FormGroup } from '@mui/material';
 import { Cancel, Save } from '@mui/icons-material';
 import { useFormik } from 'formik';
+import { LoadingButton } from '@mui/lab';
+import { Toaster, toast } from 'react-hot-toast';
 
-import { useAppSelector } from '../../store/store';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 import FormInput from '../../components/FormInput/FormInput';
 import {
   initialValues,
   validationSchema,
 } from '../../formik-validation/emailSettings';
 import { ErrorMessage } from '../../components/shared/styles/FormStyles';
+import { updateUserInfo } from '../../store/authReducer';
+import toastOptions from '../../utils/toastOptions';
 
 const EmailSettings = () => {
-  const { dirty, errors, values, handleChange, handleBlur, touched } =
-    useFormik({
-      initialValues,
-      validationSchema,
-      onSubmit: () => {
-        console.log('submit');
-      },
-    });
-  const { authedUser } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+  const {
+    dirty,
+    errors,
+    values,
+    handleChange,
+    handleBlur,
+    touched,
+    handleSubmit,
+  } = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: (values) => {
+      console.log('yes!')
+      dispatch(
+        updateUserInfo({
+          input: values,
+          update: 'email',
+          onSuccess: (param: string) => {
+            toast.success(`${param}_updated`, toastOptions);
+          },
+        })
+      );
+    },
+  });
+  const { authedUser, updateProfileLoading } = useAppSelector(
+    (state) => state.auth
+  );
   const auth =
     authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
   const { mode } = useAppSelector((state) => state.common);
   return (
     <>
-    <FormGroup sx={{mb:2}}>
-    <FormInput
-        onBlur={handleBlur}
-        onChange={handleChange}
-        value={values.email}
-        name="email"
-        type="email"
-        error={!!(touched.email && errors.email)}
-        mode={mode}
-        placeholder={auth.email}
-      />
-      {errors.email && touched.email && <ErrorMessage>{errors.email}</ErrorMessage>}
-    </FormGroup>
-      
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-        <Button
-          disabled={!dirty || Object.values(errors).length > 0}
+      <Toaster />
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
+      >
+        <FormGroup sx={{ mb: 2 }}>
+          <FormInput
+            onBlur={handleBlur}
+            onChange={handleChange}
+            value={values.email}
+            name="email"
+            type="email"
+            error={!!(touched.email && errors.email)}
+            mode={mode}
+            placeholder={auth.email}
+          />
+          {errors.email && touched.email && (
+            <ErrorMessage>{errors.email}</ErrorMessage>
+          )}
+        </FormGroup>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+        <LoadingButton
+          disabled={
+            !dirty || Object.values(errors).length > 0 || updateProfileLoading
+          }
           startIcon={<Save />}
+          loading={updateProfileLoading}
+          type="submit"
         >
           Save
-        </Button>
+        </LoadingButton>
         <Button startIcon={<Cancel />}>Cancel</Button>
       </Box>
+      </form>
+
+      
     </>
   );
 };

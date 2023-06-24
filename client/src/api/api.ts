@@ -4,7 +4,8 @@ const apiUrls = {
     login: `/auth/login`,
     refreshToken: `/auth/refresh-token`,
     logout:`/auth/logout`,
-    profileImageUpload:'/auth/profile/upload'
+    profileImageUpload:'/auth/profile/upload',
+    userInfoUpdate:'/auth/profile/update'
   },
   test: {
     test: '/test',

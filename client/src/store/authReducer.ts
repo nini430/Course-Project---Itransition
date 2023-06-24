@@ -1,7 +1,12 @@
 import { toast } from 'react-hot-toast';
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { AuthInitialState, User } from '../types/auth';
+import {
+  AuthInitialState,
+  UpdateTypes,
+  User,
+  UserUpdateInput,
+} from '../types/auth';
 import { RegisterValues } from '../types/register';
 import axiosApiInstance from '../axios';
 import apiUrls from '../api/api';
@@ -12,7 +17,8 @@ const initialState: AuthInitialState = {
   authedUser: null,
   registerLoading: false,
   loginLoading: false,
-  profileUploadLoading:false
+  profileUploadLoading: false,
+  updateProfileLoading: false,
 };
 
 export const registerUser = createAsyncThunk(
@@ -84,17 +90,52 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
-
-
-export const uploadProfileImage=createAsyncThunk('auth/upload',async({image,onSuccess}:{image:string,onSuccess:VoidFunction},thunkApi)=>{
-  try{
-    const response=await axiosApiInstance.put<{data:any}>(apiUrls.auth.profileImageUpload,{image});
-    onSuccess && onSuccess();
-    return response.data.data;
-  }catch(err) {
-    return thunkApi.rejectWithValue(err);
+export const uploadProfileImage = createAsyncThunk(
+  'auth/upload',
+  async (
+    { image, onSuccess }: { image: string; onSuccess: VoidFunction },
+    thunkApi
+  ) => {
+    try {
+      const response = await axiosApiInstance.put<{ data: any }>(
+        apiUrls.auth.profileImageUpload,
+        { image }
+      );
+      onSuccess && onSuccess();
+      return response.data.data;
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
   }
-})
+);
+
+export const updateUserInfo = createAsyncThunk(
+  'auth/update',
+  async (
+    {
+      update,
+      input,
+      onSuccess,
+    }: {
+      update: UpdateTypes;
+      input: UserUpdateInput;
+      onSuccess: (param: string) => void;
+    },
+    thunkApi
+  ) => {
+    try {
+      const response = await axiosApiInstance.put<{ data: User }>(
+        apiUrls.auth.userInfoUpdate,
+        { update, input }
+      );
+      console.log(response.data);
+      onSuccess && onSuccess(update);
+      return response.data.data;
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
 
 const authReducer = createSlice({
   name: 'auth',
@@ -132,19 +173,37 @@ const authReducer = createSlice({
     builder.addCase(logoutUser.fulfilled, (state) => {
       state.authedUser = null;
     });
-    builder.addCase(uploadProfileImage.pending,state=>{
-      state.profileUploadLoading=true;
+    builder.addCase(uploadProfileImage.pending, (state) => {
+      state.profileUploadLoading = true;
     });
-    builder.addCase(uploadProfileImage.fulfilled,(state,action)=>{
-      state.profileUploadLoading=false;
-      if(state.authedUser) {
-        state.authedUser={...state.authedUser,profileImage:action.payload};
-        localStorage.setItem('authed_user',JSON.stringify({...state.authedUser,profileImage:action.payload}));
+    builder.addCase(uploadProfileImage.fulfilled, (state, action) => {
+      state.profileUploadLoading = false;
+      if (state.authedUser) {
+        state.authedUser = {
+          ...state.authedUser,
+          profileImage: action.payload,
+        };
+        localStorage.setItem(
+          'authed_user',
+          JSON.stringify({ ...state.authedUser, profileImage: action.payload })
+        );
       }
     });
-    builder.addCase(uploadProfileImage.rejected,(state,action)=>{
-      state.profileUploadLoading=false;
-    })
+    builder.addCase(uploadProfileImage.rejected, (state, action) => {
+      state.profileUploadLoading = false;
+    });
+    builder.addCase(updateUserInfo.pending, (state) => {
+      state.updateProfileLoading = true;
+    });
+    builder.addCase(updateUserInfo.fulfilled, (state, action) => {
+      state.updateProfileLoading = false;
+      state.authedUser = action.payload;
+      localStorage.setItem('authed_user', JSON.stringify(state.authedUser));
+    });
+    builder.addCase(updateUserInfo.rejected, (state, action:any) => {
+      state.updateProfileLoading = false;
+      toast.error(action.payload.message.error as string,toastOptions);
+    });
   },
 });
 
