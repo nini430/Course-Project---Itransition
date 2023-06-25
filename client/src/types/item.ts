@@ -11,6 +11,7 @@ export interface ItemInitialState {
     getLatestItemsLoading:boolean;
     getSingleItemLoading:boolean;
     currentItem: null | ExtendedItem;
+    removeItemLoading:boolean;
 }
 
 export interface ItemInput {
@@ -27,6 +28,7 @@ export interface Item {
     collectionId:string;
     createdAt:string;
     updatedAt:string;
+    
 }
 
 export interface ExtendedItem extends Item {

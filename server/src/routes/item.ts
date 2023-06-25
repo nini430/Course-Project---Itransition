@@ -6,6 +6,7 @@ import {
   getLatestItemsHandler,
   getUniqueItemTagsHandler,
   initializeItemCreationHandler,
+  removeItemHandler,
 } from '../controllers/item';
 
 const router = express.Router();
@@ -18,6 +19,7 @@ router.use(authProtect);
 router.get('/tags', getUniqueItemTagsHandler);
 router.get('/:collectionId', initializeItemCreationHandler);
 router.post('/:collectionId', addItemHandler);
+router.delete('/:itemId',removeItemHandler);
 
 
 export default router;

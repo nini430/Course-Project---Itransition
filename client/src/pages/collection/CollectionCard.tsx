@@ -1,10 +1,12 @@
+
 import styled from 'styled-components';
 import moment from 'moment';
 import { Link, useNavigate } from 'react-router-dom';
-import { Box, Button, Card, CardActions, CardContent, Divider, Icon, IconButton, Typography } from '@mui/material';
+import { Box, Card, CardContent, Divider, IconButton, Typography } from '@mui/material';
 import { useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import {useDropzone, Accept} from 'react-dropzone'
+import ShowMore from 'react-show-more';
 
 import { ExtendedCollection } from '../../types/collection';
 import ImageUpload from '../../components/shared/ImageUpload';
@@ -77,23 +79,25 @@ const CollectionCard = ({ currentCollection }: ICollectionCardProps) => {
         <Box
           sx={{
             display: 'flex',
-            alignItems: 'center',
             gap: '5px',
             alignSelf: 'flex-start',
           }}
         >
           <Typography sx={{ color: 'gray' }}>Description:</Typography>
-          <Typography
+          {/* // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+             //@ts-ignore */}
+          <ShowMore children={
+              <Typography
             dangerouslySetInnerHTML={{
               __html: currentCollection?.description as string,
             }}
-          />
+          />} lines={3} more='Show More' less='Show Less'/>
+          
         </Box>
         <Divider />
         <Box
           sx={{
             display: 'flex',
-            alignItems: 'center',
             gap: '5px',
             alignSelf: 'flex-start',
           }}
@@ -105,7 +109,6 @@ const CollectionCard = ({ currentCollection }: ICollectionCardProps) => {
         <Box
           sx={{
             display: 'flex',
-            alignItems: 'center',
             gap: '5px',
             alignSelf: 'flex-start',
           }}
@@ -117,7 +120,6 @@ const CollectionCard = ({ currentCollection }: ICollectionCardProps) => {
         <Box
           sx={{
             display: 'flex',
-            alignItems: 'center',
             gap: '5px',
             alignSelf: 'flex-start',
           }}
@@ -144,7 +146,6 @@ const CollectionCard = ({ currentCollection }: ICollectionCardProps) => {
         <Box
           sx={{
             display: 'flex',
-            alignItems: 'center',
             gap: '5px',
             alignSelf: 'flex-start',
           }}
@@ -158,7 +159,6 @@ const CollectionCard = ({ currentCollection }: ICollectionCardProps) => {
         <Box
           sx={{
             display: 'flex',
-            alignItems: 'center',
             gap: '5px',
             alignSelf: 'flex-start',
           }}
@@ -190,7 +190,8 @@ const CollectionCard = ({ currentCollection }: ICollectionCardProps) => {
 
 const CardContainer = styled(Card)`
   margin: 10px;
-  height:600px;
+  max-height:600px;
+  overflow-y:auto !important;
 `;
 const ActionsContainer= styled.div`
   align-self:end;

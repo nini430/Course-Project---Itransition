@@ -25,7 +25,8 @@ const apiUrls = {
     add:'/item',
     tags:'/item/tags',
     latest:'/item/latest',
-    getSingleItem:'/item/single'
+    getSingleItem:'/item/single',
+    removeItem:'/item'
   },
   user:{
     getUser:'/user'

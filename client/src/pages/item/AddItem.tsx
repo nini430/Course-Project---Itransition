@@ -72,7 +72,7 @@ const AddItem = () => {
       dispatch(
         addItem({
           input: { name, tags: tags.join(','), customFieldValues: rest },
-          collectionId: '101c6a4e-6ec9-42c2-930a-d8afd8c5e183',
+          collectionId: '082403da-da9e-49f0-84b1-73026c30c80b',
           onSuccess: () => {
             toast.success(t('item_created'), toastOptions);
             setTimeout(() => {
@@ -84,13 +84,12 @@ const AddItem = () => {
     },
   });
   useEffect(() => {
-    dispatch(initializeItemConfig('101c6a4e-6ec9-42c2-930a-d8afd8c5e183'));
+    dispatch(initializeItemConfig('082403da-da9e-49f0-84b1-73026c30c80b'));
     dispatch(getItemTags());
   }, [dispatch]);
   useEffect(() => {
     if (formCustomFields) {
       const formValues = {} as any;
-      console.log(Object.values(formCustomFields).flat());
 
       Object.values(formCustomFields)
         .flat()
@@ -125,7 +124,7 @@ const AddItem = () => {
             name="name"
             value={values.name}
             onBlur={handleBlur}
-            onChange={handleChange}
+            onChange={(value)=>setFieldValue('name',value)}
             error={!!(touched.name && errors.name)}
             type="text"
             placeholder="Name"
@@ -177,16 +176,16 @@ const AddItem = () => {
                 <FormGroup sx={{ mb: 1 }} key={item.id}>
                   <Typography sx={{ mb: 1 }}>{item.name}</Typography>
                   <FormInput
-                    value={values[item.name]}
+                    value={values[item.name]?.value}
                     error={!!(touched[item.name] && errors[item.name])}
                     name={item.name}
-                    onChange={handleChange}
+                    onChange={(value)=>setFieldValue(item.name,{type:'integer',value})}
                     onBlur={handleBlur}
                     type="number"
                     mode={mode}
                   />
-                  {touched[item.name] && errors[item.name] && (
-                    <ErrorMessage>{errors[item.name] as string}</ErrorMessage>
+                  {touched[item.name] && (errors[item.name] as any)?.value && (
+                    <ErrorMessage>{((errors[item.name] as any)?.value)}</ErrorMessage>
                   )}
                 </FormGroup>
               ))}
@@ -196,15 +195,15 @@ const AddItem = () => {
                   <Typography sx={{ mb: 1 }}>{item.name}</Typography>
                   <FormInput
                     name={item.name}
-                    onChange={handleChange}
+                    onChange={(value)=>setFieldValue(item.name,{type:'string',value})}
                     onBlur={handleBlur}
                     error={!!(touched[item.name] && errors[item.name])}
-                    value={values[item.name]}
+                    value={values[item.name]?.value}
                     type="text"
                     mode={mode}
                   />
-                  {touched[item.name] && errors[item.name] && (
-                    <ErrorMessage>{errors[item.name] as string}</ErrorMessage>
+                  {touched[item.name] && (errors[item.name] as any)?.value && (
+                    <ErrorMessage>{(errors[item.name] as any)?.value}</ErrorMessage>
                   )}
                 </FormGroup>
               ))}
@@ -214,16 +213,16 @@ const AddItem = () => {
                   <Typography sx={{ mb: 1 }}>{item.name}</Typography>
                   <FormInput
                     name={item.name}
-                    onChange={handleChange}
+                    onChange={(value)=>setFieldValue(item.name,{type:'multiline',value})}
                     onBlur={handleBlur}
-                    value={values[item.name]}
+                    value={values[item.name]?.value}
                     error={!!(errors[item.name] && touched[item.name])}
                     multiline={true}
                     type="text"
                     mode={mode}
                   />
-                  {errors[item.name] && touched[item.name] && (
-                    <ErrorMessage>{errors[item.name] as string}</ErrorMessage>
+                  {(errors[item.name] as any)?.value && touched[item.name] && (
+                    <ErrorMessage>{(errors[item.name]as any)?.value as string}</ErrorMessage>
                   )}
                 </FormGroup>
               ))}
@@ -233,19 +232,19 @@ const AddItem = () => {
                   <Typography sx={{ mb: 1 }}>{item.name}</Typography>
                   <DemoContainer components={['DatePicker']}>
                     <DatePicker
-                      value={values[item.name] || undefined}
+                      value={values[item.name]?.value || undefined}
                       onClose={() => {
                         setFieldTouched(item.name);
                       }}
                       onChange={(e: any) =>
-                        setFieldValue(item.name, new Date(e._d))
+                        setFieldValue(item.name, {type:'date',value:new Date(e._d)})
                       }
                     />
                   </DemoContainer>
-                  {errors[item.name] &&
+                  {(errors[item.name] as any)?.value &&
                     touched[item.name] &&
-                    !values?.[item.name] && (
-                      <ErrorMessage>{errors[item.name] as string}</ErrorMessage>
+                    !values?.[item.name]?.value && (
+                      <ErrorMessage>{(errors[item.name] as any).value}</ErrorMessage>
                     )}
                 </FormGroup>
               ))}
@@ -262,10 +261,10 @@ const AddItem = () => {
                     <FormLabel sx={{ display: 'flex', alignItems: 'center' }}>
                       <Typography>Yes</Typography>{' '}
                       <Checkbox
-                        checked={values[item.name] === true}
-                        onChange={() => setFieldValue(item.name, true)}
+                        checked={values[item.name]?.value === true}
+                        onChange={() => setFieldValue(item.name, {type:'boolean',value:true})}
                         onBlur={handleBlur}
-                        value={values[item.name]}
+                        value={values[item.name]?.value}
                         name={item.name}
                       />
                     </FormLabel>
@@ -273,10 +272,10 @@ const AddItem = () => {
                     <FormLabel sx={{ display: 'flex', alignItems: 'center' }}>
                       <Typography>No</Typography>{' '}
                       <Checkbox
-                        checked={values[item.name] === false}
-                        onChange={() => setFieldValue(item.name, false)}
+                        checked={values[item.name]?.value === false}
+                        onChange={() => setFieldValue(item.name, {type:'boolean',value:false})}
                         onBlur={handleBlur}
-                        value={values[item.name]}
+                        value={values[item.name]?.value}
                         name={item.name}
                       />
                     </FormLabel>

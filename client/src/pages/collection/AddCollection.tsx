@@ -106,7 +106,7 @@ const AddCollection = () => {
       >
         <FormGroup sx={{ mb: 2 }}>
           <FormInput
-            onChange={handleChange}
+            onChange={(value)=>setFieldValue('name',value)}
             onBlur={handleBlur}
             error={!!errors.name}
             value={values.name}

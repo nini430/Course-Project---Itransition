@@ -48,7 +48,7 @@ const FormInput: React.FC<IFormInputProps> = ({
       mode={mode}
       onBlur={onBlur}
       value={value}
-      onChange={onChange}
+      onChange={(e:any)=>onChange(e.target.value)}
       error={error}
       type={type}
       placeholder={placeholder}

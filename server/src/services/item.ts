@@ -102,11 +102,16 @@ const getItemByIdExtended = async (itemId: string) => {
   return item;
 };
 
+const removeItem=async(itemId:string)=>{
+  await client.item.delete({where:{id:itemId}});
+}
+
 export {
   initializeItemCreation,
   addItem,
   getAllUniqueItemTags,
   getLatestItems,
   getItemById,
-  getItemByIdExtended
+  getItemByIdExtended,
+  removeItem
 };

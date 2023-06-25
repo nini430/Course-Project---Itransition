@@ -2,6 +2,8 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import { ExtendedItem, Item, ItemInitialState, ItemInput } from '../types/item';
 import axiosApiInstance from '../axios';
 import apiUrls from '../api/api';
+import { toast } from 'react-hot-toast';
+import toastOptions from '../utils/toastOptions';
 
 
 
@@ -15,7 +17,9 @@ const initialState: ItemInitialState = {
     latestItems:null,
     getLatestItemsLoading:false,
     getSingleItemLoading:false,
-    currentItem:null
+    currentItem:null,
+    removeItemLoading:false
+
 }
 
 export const initializeItemConfig=createAsyncThunk('item/config',async(collectionId:string,thunkApi)=>{
@@ -60,6 +64,16 @@ export const getSingleItem=createAsyncThunk('item/get',async(itemId:string,thunk
     try{
     const response=await axiosApiInstance.get<{data:ExtendedItem}>(`${apiUrls.item.getSingleItem}/${itemId}`);
     console.log(response.data.data);
+    return response.data.data;
+    }catch(err) {
+        return thunkApi.rejectWithValue(err);
+    }
+})
+
+export const removeItem=createAsyncThunk('item/delete',async({itemId,onSuccess}:{itemId:string,onSuccess:VoidFunction},thunkApi)=>{
+    try{
+    const response=await axiosApiInstance.delete<{data:string}>(`${apiUrls.item.removeItem}/${itemId}`);
+    onSuccess && onSuccess();
     return response.data.data;
     }catch(err) {
         return thunkApi.rejectWithValue(err);
@@ -116,6 +130,14 @@ const itemSlice=createSlice({
         });
         builder.addCase(getSingleItem.rejected,(state,action)=>{
             state.getSingleItemLoading=false;
+        });
+        builder.addCase(removeItem.pending,state=>{
+            state.removeItemLoading=true;
+        });
+        builder.addCase(removeItem.fulfilled,(state,action)=>{
+            state.removeItemLoading=false;
+            toast.success(action.payload,toastOptions)
+           
         })
 
     }

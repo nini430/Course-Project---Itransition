@@ -37,6 +37,7 @@ const Login = () => {
     touched,
     handleChange,
     handleBlur,
+    setFieldValue
   } = useFormik({
     initialValues: loginValues,
     validationSchema: loginValidationSchema,
@@ -92,7 +93,7 @@ const Login = () => {
             <StyledInput
               value={values.email}
               onBlur={handleBlur}
-              onChange={handleChange}
+              onChange={(value)=>setFieldValue('email',value)}
               error={!!(touched.email && errors.email)}
               name="email"
               placeholder={t('auth.email') as string}
@@ -107,7 +108,7 @@ const Login = () => {
             <StyledInput
               value={values.password}
               onBlur={handleBlur}
-              onChange={handleChange}
+              onChange={(value)=>setFieldValue('password',value)}
               error={!!(errors.password && touched.password)}
               name="password"
               placeholder={t('auth.password') as string}

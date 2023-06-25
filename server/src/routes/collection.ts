@@ -13,13 +13,13 @@ import authProtect from '../middleware/authProtect';
 
 const router = express.Router();
 
+router.get('/topics', getCollectionTopics);
 router.get('/largest', getTopLargestCollectionsHandler);
 router.get('/my-collections/:authorId',getMyCollectionsHandlerHandler);
 router.get('/:collectionId',getCollectionById);
 
 router.use(authProtect);
 
-router.get('/topics', getCollectionTopics);
 
 router.post('/', addCollectionHandler);
 router.put('/upload/:collectionId',updateCollectionImageHandler);

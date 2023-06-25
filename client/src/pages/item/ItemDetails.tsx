@@ -5,6 +5,8 @@ import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { getSingleItem } from '../../store/itemReducer';
 import Loading from '../../components/Loading/Loading';
+import BreadCrumb from '../../components/shared/BreadCrumb';
+import { Home, FileCopy } from '@mui/icons-material';
   
 const ItemDetails = () => {
   const { itemId } = useParams();
@@ -19,6 +21,7 @@ const ItemDetails = () => {
   }
   return (
     <ItemContainer>
+      <BreadCrumb paths={[{path:'/',icon:Home,title:'Home'},{path:`/item/${itemId}`,icon:FileCopy,title:'Item'}]}/>
       <ItemCard />
     </ItemContainer>
   );
@@ -26,10 +29,12 @@ const ItemDetails = () => {
 
 const ItemContainer = styled.div`
   min-height: calc(100vh - 80px);
-  display: grid;
-  grid-template-rows: 1fr 2fr;
+  display: flex;
+  flex-direction:column;
+  gap:20px;
   justify-items: center;
   padding: 20px;
+  align-items:center;
 `;
 
 export default ItemDetails;

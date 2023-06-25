@@ -8,6 +8,7 @@ import {
   getItemByIdExtended,
   getLatestItems,
   initializeItemCreation,
+  removeItem,
 } from '../services/item';
 import { ItemInput } from '../types/item';
 import ErrorResponse from '../utils/errorResponse';
@@ -78,10 +79,21 @@ const getItemByIdExtendedHandler = asyncHandler(
   }
 );
 
+const removeItemHandler=asyncHandler(async(req:Request<{itemId:string}>,res:Response,next:NextFunction)=>{
+    const item=await getItemById(req.params.itemId);
+    if(!item) {
+      return next(new ErrorResponse(errorMessages.notFound,StatusCodes.NOT_FOUND));
+    }
+    await removeItem(item.id);
+
+    return res.status(StatusCodes.OK).json({success:true,data:'deleted_success'})
+})
+
 export {
   initializeItemCreationHandler,
   addItemHandler,
   getUniqueItemTagsHandler,
   getLatestItemsHandler,
   getItemByIdExtendedHandler,
+  removeItemHandler
 };
