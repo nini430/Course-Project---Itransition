@@ -56,7 +56,7 @@ const getTopLargestCollectionsHandler = asyncHandler(
 
 const removeCollectionHandler = asyncHandler(
   async (
-    req: Request<{ collectionId: string }>,
+    req: Request<{ collectionId: string }> & {usser:any},
     res: Response,
     next: NextFunction
   ) => {
@@ -66,6 +66,10 @@ const removeCollectionHandler = asyncHandler(
         new ErrorResponse(errorMessages.notFound, StatusCodes.NOT_FOUND)
       );
     }
+    if(collection.authorId!==req.usser.id) {
+      return next(new ErrorResponse(errorMessages.forbiddenOperation,StatusCodes.FORBIDDEN));
+    }
+    
     await removeCollection(req.params.collectionId);
 
     return res

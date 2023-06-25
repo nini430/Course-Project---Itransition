@@ -4,5 +4,6 @@ export default {
     invalidCredentials:'invalid_credentials',
     unauthenticated:'unauthenticated',
     tokenExpired:'token_expired_error',
-    notFound:'not_found'
+    notFound:'not_found',
+    forbiddenOperation:'forbidden_operation'
 }

@@ -79,15 +79,35 @@ const getItemByIdExtendedHandler = asyncHandler(
   }
 );
 
-const removeItemHandler=asyncHandler(async(req:Request<{itemId:string}>,res:Response,next:NextFunction)=>{
-    const item=await getItemById(req.params.itemId);
-    if(!item) {
-      return next(new ErrorResponse(errorMessages.notFound,StatusCodes.NOT_FOUND));
+const removeItemHandler = asyncHandler(
+  async (
+    req: Request<{ itemId: string }> & { user: any },
+    res: Response,
+    next: NextFunction
+  ) => {
+    const item = await getItemById(req.params.itemId);
+
+    if (!item) {
+      return next(
+        new ErrorResponse(errorMessages.notFound, StatusCodes.NOT_FOUND)
+      );
+    }
+
+    if (item?.collection.authorId !== req.user.id) {
+      return next(
+        new ErrorResponse(
+          errorMessages.forbiddenOperation,
+          StatusCodes.FORBIDDEN
+        )
+      );
     }
     await removeItem(item.id);
 
-    return res.status(StatusCodes.OK).json({success:true,data:'deleted_success'})
-})
+    return res
+      .status(StatusCodes.OK)
+      .json({ success: true, data: 'deleted_success' });
+  }
+);
 
 export {
   initializeItemCreationHandler,
@@ -95,5 +115,5 @@ export {
   getUniqueItemTagsHandler,
   getLatestItemsHandler,
   getItemByIdExtendedHandler,
-  removeItemHandler
+  removeItemHandler,
 };

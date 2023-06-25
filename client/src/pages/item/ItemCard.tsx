@@ -20,6 +20,8 @@ const ItemCard = () => {
   const [confirmDialog,setConfirmDialog]=useState<Item | null>(null);
   const navigate=useNavigate();
   const dispatch=useAppDispatch();
+  const {authedUser}=useAppSelector(state=>state.auth);
+  const auth= authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
   const { currentItem, removeItemLoading } = useAppSelector((state) => state.item);
   return (
     <StyledCard>
@@ -88,10 +90,13 @@ const ItemCard = () => {
           <Loading />
         )}
       </CustomFieldsContainer>
-      <Box sx={{diaplay:'flex',alignItems:'center',gap:'10px'}}>
-          <IconButton><Edit/></IconButton>
-          <IconButton onClick={()=>setConfirmDialog(currentItem)}><Delete/></IconButton>
-      </Box>
+      {auth.id === currentItem?.collection.author.id && (
+        <Box sx={{diaplay:'flex',alignItems:'center',gap:'10px'}}>
+        <IconButton><Edit/></IconButton>
+        <IconButton onClick={()=>setConfirmDialog(currentItem)}><Delete/></IconButton>
+    </Box>
+      )}
+      
       <ConfirmDialog onClose={()=>setConfirmDialog(null)} open={confirmDialog} loading={removeItemLoading} onOk={()=>{
         dispatch(removeItem({itemId:currentItem?.id as string,onSuccess:()=>{
           setConfirmDialog(null);

@@ -77,7 +77,7 @@ const getLatestItems = async () => {
 };
 
 const getItemById=async(itemId:string)=>{
-  const item= await client.item.findUnique({where:{id:itemId}});
+  const item= await client.item.findUnique({where:{id:itemId},include:{collection:{select:{authorId:true}}}});
   return item;
 }
 
