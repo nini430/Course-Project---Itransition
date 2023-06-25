@@ -31,7 +31,7 @@ const StyledPaper=styled(Paper)`
     width:90%;
     padding:20px;
     height:30px;
-    margin:20px;
+    margin:10px;
     display: flex;
     align-items: center;
     color:gray;

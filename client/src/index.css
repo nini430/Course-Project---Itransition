@@ -57,3 +57,10 @@ a {
   display: none;
 }
 
+.EmojiPickerReact {
+  position:absolute !important;
+bottom:40px;
+  left:-330px;
+  z-index:100 !important;
+
+}

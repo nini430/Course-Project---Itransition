@@ -19,7 +19,7 @@ const NavBar = () => {
   const {authedUser}=useAppSelector(state=>state.auth);
   const userExists=authedUser || localStorage.getItem('authed_user');
   const [dropdownOpen,setDropdownOpen]=useState(false);
-  const isExtraSmallDevice = useMediaQuery({ maxWidth: 500 });
+  const isExtraSmallDevice = useMediaQuery({ maxWidth: 800 });
   useEffect(()=>{
     const handleClickOutside=(e:any)=>{
       console.log(e.target);

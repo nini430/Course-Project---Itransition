@@ -27,12 +27,29 @@ const ItemCard = () => {
     <StyledCard>
       <Toaster/>
       <Typography sx={{ textAlign: 'center' }}>{currentItem?.name}</Typography>
+      <GridContainer>
       <Box sx={{ display: 'flex', gap: '10px' }}>
         <Typography sx={{ color: 'gray' }}>Tags:</Typography>
         <Typography>
           {currentItem?.tags.split(',').map((item) => `#${item}`)}
         </Typography>
       </Box>
+      <Box sx={{ display: 'flex', gap: '10px' }}>
+        <Typography sx={{ color: 'gray' }}>Reactions:</Typography>
+        <Typography>
+          21
+        </Typography>
+      </Box>
+      <Box sx={{ display: 'flex', gap: '10px' }}>
+        <Typography sx={{ color: 'gray' }}>Comments:</Typography>
+        <Typography>
+          19
+        </Typography>
+      </Box>
+      </GridContainer>
+      
+     
+
       <Box sx={{ display: 'flex', gap: '10px' }}>
         <Typography sx={{ color: 'gray' }}>Collection:</Typography>
         <Box sx={{ display: 'flex', gap: '10px' }}>
@@ -113,8 +130,8 @@ const StyledCard = styled(Card)`
   width: 400px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  padding: 20px;
+  gap: 5px;
+  padding: 5px;
   max-height:700px;
   overflow-y:auto !important;
 `;
@@ -122,7 +139,12 @@ const StyledCard = styled(Card)`
 const CustomFieldsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 5px;
 `;
+
+const GridContainer=styled.div`
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+`
 
 export default ItemCard;

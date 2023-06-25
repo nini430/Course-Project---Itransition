@@ -7,6 +7,7 @@ import { getSingleItem } from '../../store/itemReducer';
 import Loading from '../../components/Loading/Loading';
 import BreadCrumb from '../../components/shared/BreadCrumb';
 import { Home, FileCopy } from '@mui/icons-material';
+import LikeComments from './LikeComments';
   
 const ItemDetails = () => {
   const { itemId } = useParams();
@@ -23,6 +24,7 @@ const ItemDetails = () => {
     <ItemContainer>
       <BreadCrumb paths={[{path:'/',icon:Home,title:'Home'},{path:`/item/${itemId}`,icon:FileCopy,title:'Item'}]}/>
       <ItemCard />
+      <LikeComments/>
     </ItemContainer>
   );
 };
@@ -31,7 +33,7 @@ const ItemContainer = styled.div`
   min-height: calc(100vh - 80px);
   display: flex;
   flex-direction:column;
-  gap:20px;
+  gap:15px;
   justify-items: center;
   padding: 20px;
   align-items:center;
