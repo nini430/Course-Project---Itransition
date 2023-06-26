@@ -76,10 +76,13 @@ const getLatestItems = async () => {
   return latestItems;
 };
 
-const getItemById=async(itemId:string)=>{
-  const item= await client.item.findUnique({where:{id:itemId},include:{collection:{select:{authorId:true}}}});
+const getItemById = async (itemId: string) => {
+  const item = await client.item.findUnique({
+    where: { id: itemId },
+    include: { collection: { select: { authorId: true } } },
+  });
   return item;
-}
+};
 
 const getItemByIdExtended = async (itemId: string) => {
   const item = await client.item.findUnique({
@@ -97,14 +100,26 @@ const getItemByIdExtended = async (itemId: string) => {
           },
         },
       },
+      comments: {
+        include: {
+          author: {
+            select: {
+              firstName: true,
+              lastName: true,
+              profileImage: true,
+              id: true,
+            },
+          },
+        },
+      },
     },
   });
   return item;
 };
 
-const removeItem=async(itemId:string)=>{
-  await client.item.delete({where:{id:itemId}});
-}
+const removeItem = async (itemId: string) => {
+  await client.item.delete({ where: { id: itemId } });
+};
 
 export {
   initializeItemCreation,
@@ -113,5 +128,5 @@ export {
   getLatestItems,
   getItemById,
   getItemByIdExtended,
-  removeItem
+  removeItem,
 };

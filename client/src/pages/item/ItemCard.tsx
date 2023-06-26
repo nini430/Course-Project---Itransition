@@ -10,14 +10,11 @@ import Avatar from '../../components/Avatar/Avatar';
 import NoPhoto from '../../assets/no-image.png';
 import AvatarImg from '../../assets/avatar.png';
 import Loading from '../../components/Loading/Loading';
-import { Delete, Edit } from '@mui/icons-material';
 import { removeItem } from '../../store/itemReducer';
 import { useNavigate } from 'react-router-dom';
 import ConfirmDialog from '../../components/shared/ConfirmDialog';
-import { Item } from '../../types/item';
 
 const ItemCard = () => {
-  const [confirmDialog,setConfirmDialog]=useState<Item | null>(null);
   const navigate=useNavigate();
   const dispatch=useAppDispatch();
   const {authedUser}=useAppSelector(state=>state.auth);
@@ -107,21 +104,9 @@ const ItemCard = () => {
           <Loading />
         )}
       </CustomFieldsContainer>
-      {auth.id === currentItem?.collection.author.id && (
-        <Box sx={{diaplay:'flex',alignItems:'center',gap:'10px'}}>
-        <IconButton><Edit/></IconButton>
-        <IconButton onClick={()=>setConfirmDialog(currentItem)}><Delete/></IconButton>
-    </Box>
-      )}
       
-      <ConfirmDialog onClose={()=>setConfirmDialog(null)} open={confirmDialog} loading={removeItemLoading} onOk={()=>{
-        dispatch(removeItem({itemId:currentItem?.id as string,onSuccess:()=>{
-          setConfirmDialog(null);
-          setTimeout(()=>{
-            navigate('/')
-          },2000);
-        }}))
-      }}/>
+      
+      
     </StyledCard>
   );
 };
@@ -138,8 +123,8 @@ const StyledCard = styled(Card)`
 
 const CustomFieldsContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 5px;
+  flex-wrap:wrap;
+  gap:20px;
 `;
 
 const GridContainer=styled.div`

@@ -30,6 +30,9 @@ const apiUrls = {
   },
   user:{
     getUser:'/user'
+  },
+  comment:{
+    addComment:'/comment'
   }
 };
 

@@ -11,22 +11,23 @@ datasource db {
 }
 
 model User {
-  id          String       @id @default(uuid())
-  firstName   String
-  lastName    String
-  email       String       @unique
-  password    String
-  role        Role         @default(BASIC)
+  id           String       @id @default(uuid())
+  firstName    String
+  lastName     String
+  email        String       @unique
+  password     String
+  role         Role         @default(BASIC)
   profileImage String?
-  collections Collection[]
+  collections  Collection[]
+  comments Comment[]
 }
 
 model Collection {
   id                   String                 @id @default(uuid())
   name                 String
   topic                CollectionTopic
-  description          String @db.VarChar(4000)
-  image                String? 
+  description          String                 @db.VarChar(4000)
+  image                String?
   authorId             String
   author               User                   @relation(fields: [authorId], references: [id])
   items                Item[]
@@ -35,58 +36,70 @@ model Collection {
   multilineItems       MultilineTextField[]
   booleancheckboxItems BooleanCheckboxField[]
   dateItems            DateField[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
 }
 
 model Item {
-  id                        String     @id @default(uuid())
-  name                      String
-  tags                      String
-  collectionId              String
-  collection                Collection @relation(fields: [collectionId], references: [id])
+  id                String     @id @default(uuid())
+  name              String
+  tags              String
+  collectionId      String
+  collection        Collection @relation(fields: [collectionId], references: [id])
   customFieldValues Json
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  comments          Comment[]
+}
+
+model Comment {
+  id     String @id @default(uuid())
+  text   String
+  itemId String
+  item   Item   @relation(fields: [itemId], references: [id])
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt @default(now())
+  authorId String
+  author User @relation(fields: [authorId],references: [id])
 }
 
 model IntegerField {
-  id           String     @id @default(uuid())
+  id           String      @id @default(uuid())
   name         String
   collectionId String
-  type String @default("integer")
+  type         String      @default("integer")
   collection   Collection? @relation(fields: [collectionId], references: [id])
 }
 
 model StringField {
-  id           String     @id @default(uuid())
+  id           String      @id @default(uuid())
   name         String
   collectionId String
-  type String @default("string")
+  type         String      @default("string")
   collection   Collection? @relation(fields: [collectionId], references: [id])
 }
 
 model MultilineTextField {
-  id           String     @id @default(uuid())
+  id           String      @id @default(uuid())
   name         String
   collectionId String
-  type String @default("multiline")
+  type         String      @default("multiline")
   collection   Collection? @relation(fields: [collectionId], references: [id])
 }
 
 model BooleanCheckboxField {
-  id           String     @id @default(uuid())
+  id           String      @id @default(uuid())
   name         String
   collectionId String
-  type String @default("boolean")
+  type         String      @default("boolean")
   collection   Collection? @relation(fields: [collectionId], references: [id])
 }
 
 model DateField {
-  id           String     @id @default(uuid())
+  id           String      @id @default(uuid())
   name         String
   collectionId String
-  type String @default("date")
+  type         String      @default("date")
   collection   Collection? @relation(fields: [collectionId], references: [id])
 }
 

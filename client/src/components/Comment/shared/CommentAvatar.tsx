@@ -2,11 +2,16 @@ import { Typography } from "@mui/material"
 import Avatar from "../../Avatar/Avatar"
 import AvatarImg from '../../../assets/avatar.png'
 
-const CommentAvatar = () => {
+interface ICommentAvatarProps {
+  src?:string;
+  fullName: string;
+}
+
+const CommentAvatar = ({src,fullName}:ICommentAvatarProps) => {
   return (
    <>
-    <Typography>Nini Gogatishvili</Typography>
-      <Avatar width={30} height={30} src={AvatarImg} />
+    <Typography>{fullName}</Typography>
+      <Avatar width={30} height={30} src={src || AvatarImg} />
    </>
   )
 }

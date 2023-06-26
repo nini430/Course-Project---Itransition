@@ -1,38 +1,44 @@
-import { Typography } from '@mui/material';
+import { Typography, IconButton, Button } from '@mui/material';
 import moment from 'moment'
 import ShowMore from 'react-show-more'
+import {useState} from 'react'
 
 import styled from 'styled-components';
 import CommentAvatar from './shared/CommentAvatar';
+import { Comment as CommentType } from '../../types/comment';
+import { MoreVert } from '@mui/icons-material';
+import ActionButtons from './ActionButtons';
 
+interface ICommentProps {
+  comment:CommentType
+}
 
-
-const Comment = () => {
+const Comment = ({comment}:ICommentProps) => {
+  const [isMoreShown,setIsMoreShown]=useState(false);
   return (
     <CommentContainer>
       <LeftCommentSection>
-        <CommentAvatar/>
+        <CommentAvatar src={comment.author?.profileImage} fullName={`${comment.author?.firstName} ${comment.author?.lastName}`}/>
       </LeftCommentSection>
       <CenterCommentSection>
-        <ShowMore lines={3} more='Show more' less='Show less'>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam ipsa
-        nobis quo sapiente, minus eligendi maxime sit dignissimos quas
-        laudantium explicabo cupiditate. Voluptate quisquam dolore animi in
-        consequatur! Sint, alias? Vero illum, doloribus quas reprehenderit fugit
-        aliquid esse accusantium quibusdam optio? Eaque obcaecati impedit
-        nostrum rem minus delectus sit totam optio nisi, veniam, eveniet ut
-        deserunt blanditiis voluptatibus tempore officiis aliquid ipsum, quasi
-        aut dignissimos quia iure. Eos dolore nam quia fugiat asperiores
-        architecto praesentium ab, voluptatem autem minus facilis qui atque
-        tempora provident accusamus. Molestias adipisci veniam, laborum
-        praesentium, deserunt pariatur sunt repellendus dolor error officia,
-        quis voluptas itaque!
-        </ShowMore>
-        
+        {comment.text.length>50? (
+          <ShowMore lines={1} more='Show more' less='Show less'>
+          {comment?.text}
+          </ShowMore>
+        ): comment.text}
+        <ReactionContainer>
+        <Typography sx={{textDecoration:'underline',cursor:'pointer',fontSize:12}}>Like</Typography>
+        </ReactionContainer>
+       
       </CenterCommentSection>
       <RightCommentSection>
-        <Typography sx={{color:'gray',fontSize:12}}>{moment().format('HH:mm')}</Typography>
-            
+        {isMoreShown && <ActionButtons/>}
+        <IconButton onClick={()=>setIsMoreShown(prev=>!prev)}>
+        <MoreVert/>
+        </IconButton>
+      
+        <Typography sx={{color:'gray',fontSize:12}}>{moment(comment?.updatedAt).format('HH:mm')}</Typography>
+         
       </RightCommentSection>
     </CommentContainer>
   );
@@ -45,10 +51,18 @@ const CommentContainer = styled.div`
   gap:10px;
 `;
 
+const ReactionContainer=styled.div``
+
 const LeftCommentSection = styled.div``;
 
-const CenterCommentSection = styled.div``;
+const CenterCommentSection = styled.div`
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+`;
 
-const RightCommentSection = styled.div``;
+const RightCommentSection = styled.div`
+  position:relative;
+`;
 
 export default Comment;

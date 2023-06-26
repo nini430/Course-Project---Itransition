@@ -1,5 +1,6 @@
 import { User } from "./auth";
 import { Collection} from "./collection";
+import { Comment } from "./comment";
 
 export interface ItemInitialState {
     addItemLoading:boolean,
@@ -12,6 +13,7 @@ export interface ItemInitialState {
     getSingleItemLoading:boolean;
     currentItem: null | ExtendedItem;
     removeItemLoading:boolean;
+    addCommentLoading:boolean;
 }
 
 export interface ItemInput {
@@ -32,5 +34,6 @@ export interface Item {
 }
 
 export interface ExtendedItem extends Item {
-    collection:Collection  & {author: User}
+    collection:Collection  & {author: User};
+    comments:Comment[];
 }
