@@ -18,13 +18,41 @@ const addComment = async (
           id: true,
         },
       },
+      reactions:{
+        include:{
+          user:{
+            select:{
+              firstName:true,
+              lastName:true,
+              profileImage:true,
+              id:true
+            }
+          }
+        }
+      }
     },
   });
   return comment;
 };
 
 const findCommentById = async (commentId: string) => {
-  const comment = await client.comment.findUnique({ where: { id: commentId } });
+  const comment = await client.comment.findUnique({
+    where: { id: commentId },
+    include: {
+      reactions: {
+        include: {
+          user: {
+            select: {
+              firstName: true,
+              lastName: true,
+              profileImage: true,
+              id: true,
+            },
+          },
+        },
+      },
+    },
+  });
   return comment;
 };
 

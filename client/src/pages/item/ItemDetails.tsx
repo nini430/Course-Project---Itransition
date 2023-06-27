@@ -25,6 +25,7 @@ import {
   Reaction as ReactionType,
   ReactionMapper as ReactionMapperType,
 } from '../../types/reaction';
+import { useTranslation } from 'react-i18next';
 
 const ItemDetails = () => {
   const navigate = useNavigate();
@@ -34,9 +35,7 @@ const ItemDetails = () => {
   const [confirmDialog, setConfirmDialog] = useState<Item | null>(null);
   const { getSingleItemLoading, currentItem, removeItemLoading } =
     useAppSelector((state) => state.item);
-  const [liked, setLiked] = useState<null | ReactionType | undefined>(
-    currentItem?.reactions.find((item) => item.userId === auth.id)
-  );
+  const liked = currentItem?.reactions.find((item) => item.userId === auth.id);
   const [isEmojiShown, setIsEmojiShown] = useState(false);
   const [animationPause, setAnimationPause] = useState(false);
   const [reactionMapper, setReactionMapper] = useState<
@@ -44,17 +43,13 @@ const ItemDetails = () => {
   >(null);
   const { itemId } = useParams();
   const dispatch = useAppDispatch();
+  const {t}=useTranslation();
 
   useEffect(() => {
     dispatch(getSingleItem(itemId as string));
   }, [dispatch, itemId]);
 
-  useEffect(() => {
-    if (currentItem) {
-      setLiked(currentItem?.reactions.find((item) => item.userId === auth.id));
-    }
-    setLiked(currentItem?.reactions.find((item) => item.userId === auth.id));
-  }, [currentItem?.reactions, auth.id, currentItem]);
+ 
   if (getSingleItemLoading || !currentItem) {
     return <Loading />;
   }
@@ -62,8 +57,8 @@ const ItemDetails = () => {
     <ItemContainer>
       <BreadCrumb
         paths={[
-          { path: '/', icon: Home, title: 'Home' },
-          { path: `/item/${itemId}`, icon: FileCopy, title: 'Item' },
+          { path: '/', icon: Home, title: t('breadcrumb.home') },
+          { path: `/item/${itemId}`, icon: FileCopy, title: t('breadcrumb.item') },
         ]}
       />
       <TopContainer>
@@ -97,9 +92,11 @@ const ItemDetails = () => {
           onMouseOut={() => setIsEmojiShown(false)}
         >
           {liked ? (
-            <Button onClick={()=>{
-              dispatch(unreactItem({reactionId:(liked as any).id}))
-            }}>
+            <Button
+              onClick={() => {
+                dispatch(unreactItem({ reactionId: (liked as any).id }));
+              }}
+            >
               <Typography sx={{ fontSize: 28 }}>
                 {reactions.find((react) => react.name === liked.name)?.emoji}
               </Typography>

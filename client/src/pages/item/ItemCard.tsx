@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import moment from 'moment';
-import {useState} from 'react'
 import { Box, IconButton, Card, Typography} from '@mui/material';
 import ShowMore from 'react-show-more';
 import {Toaster} from 'react-hot-toast';
@@ -13,8 +12,10 @@ import Loading from '../../components/Loading/Loading';
 import { removeItem } from '../../store/itemReducer';
 import { useNavigate } from 'react-router-dom';
 import ConfirmDialog from '../../components/shared/ConfirmDialog';
+import { useTranslation } from 'react-i18next';
 
 const ItemCard = () => {
+  const {t}=useTranslation();
   const navigate=useNavigate();
   const dispatch=useAppDispatch();
   const { currentItem } = useAppSelector((state) => state.item);
@@ -24,21 +25,21 @@ const ItemCard = () => {
       <Typography sx={{ textAlign: 'center' }}>{currentItem?.name}</Typography>
       <GridContainer>
       <Box sx={{ display: 'flex', gap: '10px' }}>
-        <Typography sx={{ color: 'gray' }}>Tags:</Typography>
+        <Typography sx={{ color: 'gray' }}>{t('item.tags')}:</Typography>
         <Typography>
           {currentItem?.tags.split(',').map((item) => `#${item}`)}
         </Typography>
       </Box>
       <Box sx={{ display: 'flex', gap: '10px' }}>
-        <Typography sx={{ color: 'gray' }}>Reactions:</Typography>
+        <Typography sx={{ color: 'gray' }}>{t('common.reactions')}:</Typography>
         <Typography>
-          21
+          {currentItem?.reactions.length}
         </Typography>
       </Box>
       <Box sx={{ display: 'flex', gap: '10px' }}>
-        <Typography sx={{ color: 'gray' }}>Comments:</Typography>
+        <Typography sx={{ color: 'gray' }}>{t("common.comments")}:</Typography>
         <Typography>
-          19
+          {currentItem?.comments.length}
         </Typography>
       </Box>
       </GridContainer>
@@ -46,7 +47,7 @@ const ItemCard = () => {
      
 
       <Box sx={{ display: 'flex', gap: '10px' }}>
-        <Typography sx={{ color: 'gray' }}>Collection:</Typography>
+        <Typography sx={{ color: 'gray' }}>{t('common.collection')}:</Typography>
         <Box sx={{ display: 'flex', gap: '10px' }}>
           <Avatar
             width={40}
@@ -57,7 +58,7 @@ const ItemCard = () => {
         </Box>
       </Box>
       <Box sx={{ display: 'flex', gap: '10px' }}>
-        <Typography sx={{ color: 'gray' }}>Author:</Typography>
+        <Typography sx={{ color: 'gray' }}>{t('common.author')}:</Typography>
         <Box sx={{ display: 'flex',  gap: '10px' }}>
           <Avatar
             width={40}
@@ -71,7 +72,7 @@ const ItemCard = () => {
         </Box>
       </Box>
       <CustomFieldsContainer>
-        <Typography sx={{ color: 'gray' }}>Custom Fields:</Typography>
+        <Typography sx={{ color: 'gray' }}>{t('common.custom_fields')}:</Typography>
         {currentItem?.customFieldValues ? (
           Object.entries(currentItem?.customFieldValues)?.map(
             ([key, value]) => (
@@ -79,7 +80,7 @@ const ItemCard = () => {
                 key={key}
                 sx={{ display: 'flex', gap: '10px' }}
               >
-                <Typography sx={{ color: 'gray' }}>{key}:</Typography>
+                <Typography sx={{ color: 'gray' }}>{t(`item.${key}`)}:</Typography>
                 <Typography>
                   {(value as any).type === 'date' ? (
                     moment((value as any).value).format('L')

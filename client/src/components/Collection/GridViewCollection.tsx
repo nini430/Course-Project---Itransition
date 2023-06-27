@@ -16,6 +16,7 @@ import { useAppDispatch } from '../../store/store';
 import { Link } from 'react-router-dom';
 import Avatar from '../Avatar/Avatar';
 import AvatarImg from '../../assets/avatar.png'
+import { useTranslation } from 'react-i18next';
 
 interface ICollectionProps {
   collection: CollectionType;
@@ -31,6 +32,7 @@ const Collection = ({
   main,
 }: ICollectionProps) => {
   const dispatch=useAppDispatch();
+  const {t}=useTranslation();
   return (
     <Link style={{textDecoration:'none'}} to={`/collection/${collection.id}`}>
     <StyledCard>
@@ -38,7 +40,7 @@ const Collection = ({
         <Typography variant="h6">{collection.name}</Typography>
         <CollectionImg src={collection.image || NoImage} alt="" />
         <Typography sx={{ color: 'gray' }}>
-          Topic: {collection.topic}
+          {t('common.topic')}: {collection.topic}
         </Typography>
         <Typography
           dangerouslySetInnerHTML={{
@@ -49,7 +51,7 @@ const Collection = ({
         <Link to={`/profile/${collection?.author?.id}`} style={{textDecoration:'none'}}>
         <Box sx={{display:'flex',alignItems:'center',gap:'5px'}}>
         <Typography sx={{ color: 'gray' }}>
-          Author:
+         {t('common.author')}:
         </Typography>
         <Avatar width={30} height={30} src={collection.author?.profileImage || AvatarImg}/>
         <Typography>
@@ -61,7 +63,7 @@ const Collection = ({
          
       </CardContent>
       <CardActions sx={{ gap:'10px' }}>
-        <Button sx={{ border: '1px solid gray' }}>View More</Button>
+        <Button sx={{ border: '1px solid gray' }}>{t('common.view_more')}</Button>
         {!main && setIsConfirmDialogOpen && (
           <CrudBtnContainer>
             <IconButton>

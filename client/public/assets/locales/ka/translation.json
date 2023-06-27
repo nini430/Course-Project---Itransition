@@ -1,4 +1,22 @@
 {
+  "common":{
+    "comments":"კომენტარები",
+    "reactions":"რეაქციები",
+    "collection":"კოლექცია",
+    "author":"ავტორი",
+    "view_more":"იხილეთ მეტი",
+    "topic":"თემა",
+    "custom_fields":"სპეციფიკური ველები",
+    "no_comments":"კომენტარები არ არის"
+},
+  "home":{
+    "latest_items":"უახლესი ჩანაწერები",
+    "largest_collections":"ტოპ 5 კოლექცია"
+  },
+  "item":{
+    "tags":"ტეგები",
+    "age":"ასაკი"
+  },
   "auth": {
     "register": "რეგისტრაცია",
     "login": "ავტორიზაცია",
@@ -29,6 +47,7 @@
     "geo": "ქართული"
   },
   "breadcrumb":{
-    "home":"მთავარი"
+    "home":"მთავარი",
+    "item":"ჩანაწერი"
 }
 }

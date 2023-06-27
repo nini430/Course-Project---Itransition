@@ -40,6 +40,10 @@ const apiUrls = {
   itemReaction:{
     addReaction:'/item-reaction',
     unreactItem:'/item-reaction'
+  },
+  commentReaction:{
+    addReaction:'/comment-reaction',
+    unreactComment:'/comment-reaction'
   }
 };
 

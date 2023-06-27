@@ -5,7 +5,7 @@ import apiUrls from '../api/api';
 import { toast } from 'react-hot-toast';
 import toastOptions from '../utils/toastOptions';
 import { Comment, CommentInput } from '../types/comment';
-import { ItemReaction } from '../types/reaction';
+import { CommentReaction, ItemReaction } from '../types/reaction';
 
 const initialState: ItemInitialState = {
   addItemLoading: false,
@@ -177,7 +177,7 @@ export const editComment = createAsyncThunk(
     try {
       const response = await axiosApiInstance.put<{ data: Comment }>(
         `${apiUrls.comment.editComment}/${commentId}`,
-        {input}
+        { input }
       );
       onSuccess && onSuccess();
       return response.data.data;
@@ -205,23 +205,67 @@ export const removeComment = createAsyncThunk(
   }
 );
 
-export const addItemReaction= createAsyncThunk('/itemReaction/add',async({itemId,input}:{itemId:string,input:{name:string}},thunkApi)=>{
+export const addItemReaction = createAsyncThunk(
+  '/itemReaction/add',
+  async (
+    { itemId, input }: { itemId: string; input: { name: string } },
+    thunkApi
+  ) => {
+    try {
+      const response = await axiosApiInstance.post<{
+        data: ItemReaction;
+        status: 'update' | 'create';
+        reactionId?: string;
+      }>(`${apiUrls.itemReaction.addReaction}/${itemId}`, { input });
+      return response.data;
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
+export const unreactItem = createAsyncThunk(
+  '/itemReaction/unreact',
+  async ({ reactionId }: { reactionId: string }, thunkApi) => {
+    try {
+      const response = await axiosApiInstance.delete<{ reactionId: string }>(
+        `${apiUrls.itemReaction.unreactItem}/${reactionId}`
+      );
+      return response.data.reactionId;
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
+export const reactComment = createAsyncThunk(
+  '/commentReaction/react',
+  async (
+    { commentId, emoji }: { commentId: string; emoji: string },
+    thunkApi
+  ) => {
+    try {
+      const response = await axiosApiInstance.post<{
+        data: CommentReaction;
+        status: 'create' | 'update';
+        reactionId?: string;
+      }>(`${apiUrls.commentReaction.addReaction}/${commentId}`, { emoji });
+      return response.data;
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
+export const unreactComment= createAsyncThunk('/commentReaction/react',async({reactionId}:{reactionId:string},thunkApi)=>{
   try{
-    const response=await axiosApiInstance.post<{data:ItemReaction,status:'update'|'create',reactionId?:string}>(`${apiUrls.itemReaction.addReaction}/${itemId}`,{input});
-    return response.data;
+    const response=await axiosApiInstance.delete<{reactionId:string}>(`${apiUrls.commentReaction.unreactComment}/${reactionId}`);
+    return response.data.reactionId;
   }catch(err) {
     return thunkApi.rejectWithValue(err);
   }
 })
 
-export const unreactItem = createAsyncThunk('/itemReaction/unreact',async({reactionId}:{reactionId:string},thunkApi)=>{
-   try{
-    const response=await axiosApiInstance.delete<{reactionId:string}>(`${apiUrls.itemReaction.unreactItem}/${reactionId}`);
-    return response.data.reactionId;
-   }catch(err) {
-    return thunkApi.rejectWithValue(err);
-   }
-});
 
 const itemSlice = createSlice({
   name: 'item',
@@ -326,36 +370,74 @@ const itemSlice = createSlice({
           comments: updatedComments as Comment[],
         };
       }
-      toast.success('comment_updated',toastOptions);
+      toast.success('comment_updated', toastOptions);
     });
-    builder.addCase(editComment.rejected,(state,action)=>{
-      state.editItemLoading=false;
+    builder.addCase(editComment.rejected, (state, action) => {
+      state.editItemLoading = false;
     });
-    builder.addCase(addItemReaction.fulfilled,(state,action)=>{
-      const {status,data,reactionId}=action.payload;
+    builder.addCase(addItemReaction.fulfilled, (state, action) => {
+      const { status, data, reactionId } = action.payload;
       let updatedReactions;
-      if(state.currentItem) {
-        if(status==='create') {
-            updatedReactions=[...state.currentItem.reactions,data];
-        }else{
-          updatedReactions=state.currentItem.reactions.map(item=>item.id===reactionId?data:item);
+      if (state.currentItem) {
+        if (status === 'create') {
+          updatedReactions = [...state.currentItem.reactions, data];
+        } else {
+          updatedReactions = state.currentItem.reactions.map((item) =>
+            item.id === reactionId ? data : item
+          );
         }
-        state.currentItem={...state.currentItem,reactions:updatedReactions}
+        state.currentItem = {
+          ...state.currentItem,
+          reactions: updatedReactions,
+        };
       }
-       
     });
-    builder.addCase(addItemReaction.rejected,(state,action)=>{
-        toast.error('something_went_wrong',toastOptions);
+    builder.addCase(addItemReaction.rejected, (state, action) => {
+      toast.error('something_went_wrong', toastOptions);
     });
-    builder.addCase(unreactItem.fulfilled,(state,action)=>{
-        if(state.currentItem) {
-          const updatedReactions=state.currentItem.reactions.filter(react=>react.id!==action.meta.arg.reactionId);
-          state.currentItem={...state.currentItem,reactions:updatedReactions};
+    builder.addCase(unreactItem.fulfilled, (state, action) => {
+      if (state.currentItem) {
+        const updatedReactions = state.currentItem.reactions.filter(
+          (react) => react.id !== action.meta.arg.reactionId
+        );
+        state.currentItem = {
+          ...state.currentItem,
+          reactions: updatedReactions,
+        };
+      }
+    });
+    builder.addCase(unreactItem.rejected, (state, action) => {
+      toast.error('something_went_wrong', toastOptions);
+    });
+    builder.addCase(reactComment.fulfilled, (state, action) => {
+      if (state.currentItem) {
+        let updatedReactions;
+        const { data, status, reactionId } = action.payload;
+        if (status === 'create') {
+          updatedReactions = state.currentItem.comments.map((comment) =>
+            comment.id === action.meta.arg.commentId
+              ? { ...comment, reactions: [...comment.reactions, data] }
+              : comment
+          );
+        } else {
+          updatedReactions = state.currentItem.comments.map((comment) =>
+            comment.id === action.meta.arg.commentId
+              ? {
+                  ...comment,
+                  reactions: comment.reactions.map((reaction) =>
+                    reaction.id === reactionId ? data : reaction
+                  ),
+                }
+              : comment
+          );
         }
+        state.currentItem={...state.currentItem,comments:updatedReactions};
+      }
     });
-    builder.addCase(unreactItem.rejected,(state,action)=>{
-      toast.error('something_went_wrong',toastOptions);
-    })
+    builder.addCase(reactComment.rejected, (state, action) => {
+      toast.error('something_went_wrong', toastOptions);
+    });
+   
   },
 });
 

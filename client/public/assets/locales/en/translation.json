@@ -1,4 +1,22 @@
 {
+    "common":{
+        "comments":"Comments",
+        "reactions":"Reactions",
+        "collection":"Collection",
+        "author":"Author",
+        "view_more":"View More",
+        "topic":"Topic",
+        "custom_fields":"Custom Fields",
+        "no_comments":"No Comments"
+    },
+    "home":{
+        "latest_items":"Latest Items",
+        "largest_collections":"Top 5 Largest Collections"
+      },
+      "item":{
+        "tags":"Tags",
+        "age":"Age"
+      },
     "auth":{
         "register":"Register",
         "login":"Login",
@@ -29,6 +47,7 @@
         "geo":"Georgian"
     },
     "breadcrumb":{
-        "home":"Home"
+        "home":"Home",
+        "item":"Item"
     }
 }

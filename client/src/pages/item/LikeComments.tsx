@@ -5,8 +5,10 @@ import AddComment from '../../components/Comment/AddComment';
 import { useAppSelector } from '../../store/store';
 import Loading from '../../components/Loading/Loading';
 import Empty from '../../components/Empty/Empty';
+import { useTranslation } from 'react-i18next';
 
 const LikeComments = () => {
+  const {t}=useTranslation();
   const { getSingleItemLoading, currentItem } = useAppSelector(
     (state) => state.item
   );
@@ -20,7 +22,7 @@ const LikeComments = () => {
       </Typography>
       <LikeCommentContainer>
         {currentItem.comments.length === 0 ? (
-          <Empty message="No Comments" />
+          <Empty message={t('common.no_comments')} />
         ) : (
           currentItem.comments.map((comment) => (
             <>
