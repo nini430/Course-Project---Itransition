@@ -7,6 +7,7 @@ import { EmojiEmotions } from '@mui/icons-material';
 import EmojiPicker from 'emoji-picker-react';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { addComment } from '../../store/itemReducer';
+import { Link } from 'react-router-dom';
 
 const AddComment = () => {
   const { currentItem, addCommentLoading } = useAppSelector((state) => state.item);
@@ -34,7 +35,9 @@ const AddComment = () => {
   return (
     <AddCommentContainer>
       <LeftContainer>
-        <CommentAvatar fullName={`${auth?.firstName} ${auth?.lastName}`} src={auth?.profileImage} />
+        <Link style={{textDecoration:"none"}} to={`/profile/${auth.id}`}>
+        <CommentAvatar isAdd fullName={`${auth?.firstName} ${auth?.lastName}`} src={auth?.profileImage} /></Link>
+       
       </LeftContainer>
       <RightContainer>
         <Input

@@ -11,13 +11,15 @@ interface IReactionProps {
   setAnimationPause: Dispatch<SetStateAction<boolean>>;
   bottomPx: string;
   emojiSize?:number;
+  action:(name:string)=>void;
 }
 
 const Reaction = ({
   animationPause,
   setAnimationPause,
   bottomPx,
-  emojiSize
+  emojiSize,
+  action
 }: IReactionProps) => {
   return (
     <ReactionWrapper
@@ -37,7 +39,7 @@ const Reaction = ({
             { transform: 'rotateZ(-30deg)' },
           ]}
         >
-          <Box sx={{ cursor: 'pointer' }} key={reaction.name}>
+          <Box onClick={()=>action(reaction.name)} sx={{ cursor: 'pointer' }} key={reaction.name}>
             <Typography sx={{fontSize:emojiSize}}>{reaction.emoji}</Typography>
           </Box>
         </AnimateKeyframes>

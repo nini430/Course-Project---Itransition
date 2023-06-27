@@ -36,6 +36,10 @@ const apiUrls = {
     addComment:'/comment',
     editComment:'/comment',
     removeComment:'/comment'
+  },
+  itemReaction:{
+    addReaction:'/item-reaction',
+    unreactItem:'/item-reaction'
   }
 };
 

@@ -64,3 +64,11 @@ bottom:40px;
   z-index:100 !important;
 
 }
+
+.MuiTabs-indicator {
+  background-color:gray !important;
+}
+
+.Mui-selected {
+  color:gray !important;
+}

@@ -44,7 +44,7 @@ const lightTheme = createTheme({
           color:'black'
         }
       }
-    }
+    },
   }
   
 

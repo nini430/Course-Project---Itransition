@@ -5,6 +5,7 @@ import apiUrls from '../api/api';
 import { toast } from 'react-hot-toast';
 import toastOptions from '../utils/toastOptions';
 import { Comment, CommentInput } from '../types/comment';
+import { ItemReaction } from '../types/reaction';
 
 const initialState: ItemInitialState = {
   addItemLoading: false,
@@ -204,6 +205,24 @@ export const removeComment = createAsyncThunk(
   }
 );
 
+export const addItemReaction= createAsyncThunk('/itemReaction/add',async({itemId,input}:{itemId:string,input:{name:string}},thunkApi)=>{
+  try{
+    const response=await axiosApiInstance.post<{data:ItemReaction,status:'update'|'create',reactionId?:string}>(`${apiUrls.itemReaction.addReaction}/${itemId}`,{input});
+    return response.data;
+  }catch(err) {
+    return thunkApi.rejectWithValue(err);
+  }
+})
+
+export const unreactItem = createAsyncThunk('/itemReaction/unreact',async({reactionId}:{reactionId:string},thunkApi)=>{
+   try{
+    const response=await axiosApiInstance.delete<{reactionId:string}>(`${apiUrls.itemReaction.unreactItem}/${reactionId}`);
+    return response.data.reactionId;
+   }catch(err) {
+    return thunkApi.rejectWithValue(err);
+   }
+});
+
 const itemSlice = createSlice({
   name: 'item',
   initialState,
@@ -311,6 +330,31 @@ const itemSlice = createSlice({
     });
     builder.addCase(editComment.rejected,(state,action)=>{
       state.editItemLoading=false;
+    });
+    builder.addCase(addItemReaction.fulfilled,(state,action)=>{
+      const {status,data,reactionId}=action.payload;
+      let updatedReactions;
+      if(state.currentItem) {
+        if(status==='create') {
+            updatedReactions=[...state.currentItem.reactions,data];
+        }else{
+          updatedReactions=state.currentItem.reactions.map(item=>item.id===reactionId?data:item);
+        }
+        state.currentItem={...state.currentItem,reactions:updatedReactions}
+      }
+       
+    });
+    builder.addCase(addItemReaction.rejected,(state,action)=>{
+        toast.error('something_went_wrong',toastOptions);
+    });
+    builder.addCase(unreactItem.fulfilled,(state,action)=>{
+        if(state.currentItem) {
+          const updatedReactions=state.currentItem.reactions.filter(react=>react.id!==action.meta.arg.reactionId);
+          state.currentItem={...state.currentItem,reactions:updatedReactions};
+        }
+    });
+    builder.addCase(unreactItem.rejected,(state,action)=>{
+      toast.error('something_went_wrong',toastOptions);
     })
   },
 });

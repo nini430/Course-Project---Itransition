@@ -110,22 +110,33 @@ const getItemByIdExtended = async (itemId: string) => {
               id: true,
             },
           },
+          reactions: {
+            include: {
+              user: {
+                select: {
+                  firstName: true,
+                  lastName: true,
+                  profileImage: true,
+                  id: true,
+                },
+              },
+            },
+          },
         },
       },
-      reactions:{
-        include:{
-          user:{
-            select:{
-              firstName:true,
-              lastName:true,
-              profileImage:true,
-              id:true
-            }
-          }
-        }
-      }
+      reactions: {
+        include: {
+          user: {
+            select: {
+              firstName: true,
+              lastName: true,
+              profileImage: true,
+              id: true,
+            },
+          },
+        },
+      },
     },
-    
   });
   return item;
 };

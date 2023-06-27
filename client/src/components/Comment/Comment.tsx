@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import { removeComment } from '../../store/itemReducer';
 import { LoadingButton } from '@mui/lab';
 import { editComment as editCommentHandler } from '../../store/itemReducer';
+import { Link } from 'react-router-dom';
 
 interface ICommentProps {
   comment: CommentType;
@@ -49,10 +50,13 @@ const Comment = ({ comment }: ICommentProps) => {
   return (
     <CommentContainer>
       <LeftCommentSection>
+        <Link style={{textDecoration:'none'}} to={`/profile/${comment.author.id}`}>
         <CommentAvatar
           src={comment.author?.profileImage}
           fullName={`${comment.author?.firstName} ${comment.author?.lastName}`}
         />
+        </Link>
+        
       </LeftCommentSection>
       <CenterCommentSection>
         {isInEditMode ? (
@@ -82,6 +86,7 @@ const Comment = ({ comment }: ICommentProps) => {
             ) : (
               comment.text
             )}
+            <TypoWrapper>
             <ReactionContainer
               onMouseOut={() => setIsEmojiShown(false)}
               onMouseOver={() => setIsEmojiShown(true)}
@@ -91,8 +96,10 @@ const Comment = ({ comment }: ICommentProps) => {
                   setAnimationPause={setAnimationPause}
                   animationPause={animationPause}
                   setIsEmojiShown={setIsEmojiShown}
+                  bottomPx='15px'
                 />
               )}
+              <TypoWrapper>
               <Typography
                 sx={{
                   textDecoration: 'underline',
@@ -102,7 +109,13 @@ const Comment = ({ comment }: ICommentProps) => {
               >
                 Like
               </Typography>
+              
+              </TypoWrapper>
+             
             </ReactionContainer>
+            <Typography>5 reactions</Typography>
+            </TypoWrapper>
+           
           </>
         )}
       </CenterCommentSection>
@@ -155,6 +168,13 @@ const ReactionContainer = styled.div`
   position: relative;
 `;
 
+const TypoWrapper=styled.div`
+  display:flex;
+  gap:10px;
+  align-items:center;
+  font-size:10px;
+`
+
 const LeftCommentSection = styled.div``;
 
 const CenterCommentSection = styled.div`
@@ -163,6 +183,7 @@ const CenterCommentSection = styled.div`
   align-items: center;
   width:100%;
   flex-grow:1;
+  gap:10px;
 `;
 
 const RightCommentSection = styled.div`

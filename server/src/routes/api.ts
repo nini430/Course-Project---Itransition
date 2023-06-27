@@ -14,6 +14,6 @@ router.use('/collection',collectionRouter);
 router.use('/item',itemRouter);
 router.use('/user',userRouter);
 router.use('/comment',commentRouter);
-router.use('item-reaction',itemReactionRouter);
+router.use('/item-reaction',itemReactionRouter);
 
 export default router;
