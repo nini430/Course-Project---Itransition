@@ -190,6 +190,8 @@ const LikeContainer = styled.div`
 const TopContainer = styled.div`
   display: flex;
   gap: 10px;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const ItemContainer = styled.div`

@@ -17,9 +17,7 @@ import ConfirmDialog from '../../components/shared/ConfirmDialog';
 const ItemCard = () => {
   const navigate=useNavigate();
   const dispatch=useAppDispatch();
-  const {authedUser}=useAppSelector(state=>state.auth);
-  const auth= authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
-  const { currentItem, removeItemLoading } = useAppSelector((state) => state.item);
+  const { currentItem } = useAppSelector((state) => state.item);
   return (
     <StyledCard>
       <Toaster/>
@@ -112,11 +110,12 @@ const ItemCard = () => {
 };
 
 const StyledCard = styled(Card)`
-  width: 400px;
+  max-width: 400px;
+  overflow-x:auto !important;
   display: flex;
   flex-direction: column;
   gap: 5px;
-  padding: 5px;
+  padding: 20px;
   max-height:700px;
   overflow-y:auto !important;
 `;
@@ -130,6 +129,7 @@ const CustomFieldsContainer = styled.div`
 const GridContainer=styled.div`
   display:grid;
   grid-template-columns:repeat(3,1fr);
+  grid-gap:10px;
 `
 
 export default ItemCard;
