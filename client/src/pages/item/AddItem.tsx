@@ -10,6 +10,7 @@ import {
   Typography,
   FormLabel,
 } from '@mui/material';
+import moment from 'moment'
 import { createFilterOptions } from '@mui/material/Autocomplete';
 import { DatePicker } from '@mui/x-date-pickers';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
@@ -19,15 +20,18 @@ import { toast, Toaster } from 'react-hot-toast';
 import { Form } from '../commonStyles';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import FormInput from '../../components/FormInput/FormInput';
-import { AddCircle } from '@mui/icons-material';
+import { AddCircle, Edit } from '@mui/icons-material';
+import Loading from '../../components/Loading/Loading';
 import { useEffect, useRef } from 'react';
 import {
   addItem,
+  editItem,
   getItemTags,
+  getSingleItem,
   initializeItemConfig,
 } from '../../store/itemReducer';
 import generateItemValidationSchema from '../../utils/formikFunctions';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import toastOptions from '../../utils/toastOptions';
 
@@ -47,9 +51,12 @@ const AddItem = () => {
     addItemLoading,
     getItemTagsLoading,
     itemTags,
+    getSingleItemLoading,
+    currentItem
   } = useAppSelector((state) => state.item);
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const {itemId}=useParams();
   const {
     validateForm,
     resetForm,
@@ -58,7 +65,6 @@ const AddItem = () => {
     touched,
     errors,
     handleBlur,
-    handleChange,
     setFieldValue,
     setFieldTouched,
     dirty,
@@ -69,27 +75,42 @@ const AddItem = () => {
     enableReinitialize: true,
     onSubmit: (values) => {
       const { name, tags, ...rest } = values;
-      dispatch(
-        addItem({
-          input: { name, tags: tags.join(','), customFieldValues: rest },
-          collectionId: '082403da-da9e-49f0-84b1-73026c30c80b',
-          onSuccess: () => {
-            toast.success(t('item_created'), toastOptions);
-            setTimeout(() => {
-              navigate('/');
-            }, 2000);
+      if(itemId) {
+        dispatch(editItem({
+          input:{name,tags:tags.join(','),customFieldValues:rest},
+          onSuccess:()=>{
+            toast.success('item_updated',toastOptions);
           },
-        })
-      );
+          itemId
+        }))
+      }else{
+        dispatch(
+          addItem({
+            input: { name, tags: tags.join(','), customFieldValues: rest },
+            collectionId: '082403da-da9e-49f0-84b1-73026c30c80b',
+            onSuccess: () => {
+              toast.success(t('item_created'), toastOptions);
+              setTimeout(() => {
+                navigate('/');
+              }, 2000);
+            },
+          })
+        );
+      }
+      
     },
   });
   useEffect(() => {
     dispatch(initializeItemConfig('082403da-da9e-49f0-84b1-73026c30c80b'));
     dispatch(getItemTags());
-  }, [dispatch]);
+    if(itemId) {
+      dispatch(getSingleItem(itemId))
+    }
+  }, [dispatch,itemId]);
   useEffect(() => {
     if (formCustomFields) {
-      const formValues = {} as any;
+      if(!itemId) {
+        const formValues = {} as any;
 
       Object.values(formCustomFields)
         .flat()
@@ -100,12 +121,22 @@ const AddItem = () => {
       console.log(formValues);
       validationSchema.current = generateItemValidationSchema(formCustomFields);
       setValues({ ...formValues, name: '', tags: [] });
+      }else{
+        setValues({name:currentItem?.name,tags:currentItem?.tags.split(','),...currentItem?.customFieldValues})
+      }
+      
     }
-  }, [formCustomFields, resetForm, validateForm, setValues]);
+  }, [formCustomFields, resetForm, validateForm, setValues,currentItem,itemId]);
+
+  if(!currentItem || getSingleItemLoading || initializeFormLoading) {
+    return (
+      <Loading/>
+    )
+  }
   return (
     <Container>
       <Toaster />
-      <Typography sx={{ fontSize: 40 }}>Add Item</Typography>
+      <Typography sx={{ fontSize: 40 }}>{itemId?'Update Item':'Add Item'}</Typography>
       <Form
         isXS={isExtraSmallDevice}
         isX={isBigScreen}
@@ -136,6 +167,7 @@ const AddItem = () => {
         </FormGroup>
         <FormGroup sx={{ mb: 2 }}>
           <Autocomplete
+            value={values.tags}
             loading={getItemTagsLoading}
             onBlur={() => setFieldTouched('tags')}
             freeSolo
@@ -152,12 +184,12 @@ const AddItem = () => {
 
               return filtered as any[];
             }}
-            value={values.tags}
+            defaultValue={currentItem.tags.split(',')}
             multiple
             options={itemTags}
             onChange={(e, newValue) => setFieldValue('tags', newValue)}
             renderInput={(props) => (
-              <TextField name="tags" placeholder="Tags" {...props} />
+              <TextField  name="tags" placeholder="Tags" {...props} />
             )}
           />
           {touched.tags && errors.tags && (
@@ -232,7 +264,7 @@ const AddItem = () => {
                   <Typography sx={{ mb: 1 }}>{item.name}</Typography>
                   <DemoContainer components={['DatePicker']}>
                     <DatePicker
-                      value={values[item.name]?.value || undefined}
+                      value={moment(values[item.name]?.value) || undefined}
                       onClose={() => {
                         setFieldTouched(item.name);
                       }}
@@ -289,10 +321,10 @@ const AddItem = () => {
           loading={addItemLoading}
           sx={{ border: '1px solid gray' }}
           fullWidth
-          startIcon={<AddCircle />}
+          startIcon={itemId? <Edit/>: <AddCircle/>}
           type="submit"
         >
-          Add Item
+          {itemId? 'Update Item':"Add Item"}
         </LoadingButton>
       </Form>
     </Container>

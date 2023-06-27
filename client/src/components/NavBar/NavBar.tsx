@@ -52,7 +52,7 @@ const NavBar = () => {
           <RightContainer>
               <ModeSwitch/>
           <LanguageDropDown />
-         {userExists ? <NavUser/> : <Link to='/login'><Button sx={{border:'1px solid gray'}}>{t('auth.login')}</Button></Link> } 
+         {userExists ? <NavUser/> : <Link to='/login'><Button sx={{border:'1px solid gray',width:'130px'}}>{t('auth.login')}</Button></Link> } 
           </RightContainer>
          
       </NavbarContainer>

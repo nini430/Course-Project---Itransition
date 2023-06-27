@@ -71,8 +71,8 @@ const Register = () => {
       <AuthContainer>
         <BreadCrumb
           paths={[
-            { icon: Home, path: '/', title: 'Home' },
-            { icon: PersonPin, path: '/register', title: 'Register' },
+            { icon: Home, path: '/', title: t('breadcrumb.home') },
+            { icon: PersonPin, path: '/register', title: t('auth.register') },
           ]}
         />
         <Toaster />

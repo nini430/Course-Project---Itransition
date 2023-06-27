@@ -27,5 +27,8 @@
     "lang":{
         "en":"English",
         "geo":"Georgian"
+    },
+    "breadcrumb":{
+        "home":"Home"
     }
 }

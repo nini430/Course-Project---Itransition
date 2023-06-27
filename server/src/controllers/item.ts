@@ -9,6 +9,7 @@ import {
   getLatestItems,
   initializeItemCreation,
   removeItem,
+  editItem,
 } from '../services/item';
 import { ItemInput } from '../types/item';
 import ErrorResponse from '../utils/errorResponse';
@@ -109,6 +110,29 @@ const removeItemHandler = asyncHandler(
   }
 );
 
+const editItemHandler = asyncHandler(
+  async (
+    req: Request<{ itemId: string }, {}, { input: Partial<ItemInput> }>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { name, tags, customFieldValues } = req.body.input;
+    const item = await getItemById(req.params.itemId);
+    if (!item) {
+      return next(
+        new ErrorResponse(errorMessages.notFound, StatusCodes.NOT_FOUND)
+      );
+    }
+    const updatedItem = await editItem(
+      { name, tags, customFieldValues },
+      req.params.itemId
+    );
+    return res
+      .status(StatusCodes.OK)
+      .json({ success: true, data: updatedItem });
+  }
+);
+
 export {
   initializeItemCreationHandler,
   addItemHandler,
@@ -116,4 +140,5 @@ export {
   getLatestItemsHandler,
   getItemByIdExtendedHandler,
   removeItemHandler,
+  editItemHandler,
 };

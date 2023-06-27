@@ -19,7 +19,9 @@ model User {
   role         Role         @default(BASIC)
   profileImage String?
   collections  Collection[]
-  comments Comment[]
+  comments     Comment[]
+  itemReactions  ItemReaction[]
+  commentReactions CommentReaction[]
 }
 
 model Collection {
@@ -50,17 +52,19 @@ model Item {
   createdAt         DateTime   @default(now())
   updatedAt         DateTime   @updatedAt
   comments          Comment[]
+  reactions ItemReaction[]
 }
 
 model Comment {
-  id     String @id @default(uuid())
-  text   String
-  itemId String
-  item   Item   @relation(fields: [itemId], references: [id])
+  id        String   @id @default(uuid())
+  text      String
+  itemId    String
+  item      Item     @relation(fields: [itemId], references: [id])
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt @default(now())
-  authorId String
-  author User @relation(fields: [authorId],references: [id])
+  updatedAt DateTime @default(now()) @updatedAt
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  reactions CommentReaction[]
 }
 
 model IntegerField {
@@ -103,6 +107,25 @@ model DateField {
   collection   Collection? @relation(fields: [collectionId], references: [id])
 }
 
+model ItemReaction {
+  id   String @id @default(uuid())
+  name Emojis @default(like)
+  userId String
+  user User  @relation(fields: [userId],references: [id])
+  itemId String
+  item Item @relation(fields: [itemId],references: [id])
+}
+
+
+model CommentReaction {
+  id   String @id @default(uuid())
+  name Emojis @default(like)
+  userId String
+  user User  @relation(fields: [userId],references: [id])
+  commentId String
+  comment Comment @relation(fields: [commentId],references: [id])
+}
+
 enum CollectionTopic {
   books
   chocolates
@@ -114,3 +137,13 @@ enum Role {
   BASIC
   ADMIN
 }
+
+enum Emojis {
+  like
+  love
+  haha
+  wow
+  angry
+  sad
+}
+

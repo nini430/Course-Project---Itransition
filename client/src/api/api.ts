@@ -26,13 +26,16 @@ const apiUrls = {
     tags:'/item/tags',
     latest:'/item/latest',
     getSingleItem:'/item/single',
-    removeItem:'/item'
+    editItem:'/item',
+    removeItem:'/item',
   },
   user:{
     getUser:'/user'
   },
   comment:{
-    addComment:'/comment'
+    addComment:'/comment',
+    editComment:'/comment',
+    removeComment:'/comment'
   }
 };
 

@@ -38,6 +38,8 @@ const LikeComments = () => {
   )
 }
 
+
+
 const Wrapper=styled(Card)`
         min-width:80%;
         padding:20px;

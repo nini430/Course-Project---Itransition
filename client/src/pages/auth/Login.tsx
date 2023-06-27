@@ -64,7 +64,7 @@ const Login = () => {
     <>
    
       <AuthContainer>
-      <BreadCrumb paths={[{path:'/',title:'Home',icon:Home},{path:'/login',title:'Login',icon:LockClockRounded}]}/>
+      <BreadCrumb paths={[{path:'/',title:t('breadcrumb.home'),icon:Home},{path:'/login',title:t('auth.login'),icon:LockClockRounded}]}/>
         <Toaster/>
         <AuthForm
           S={isExtraSmallDevice}

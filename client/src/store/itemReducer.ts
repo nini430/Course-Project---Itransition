@@ -8,6 +8,7 @@ import { Comment, CommentInput } from '../types/comment';
 
 const initialState: ItemInitialState = {
   addItemLoading: false,
+  editItemLoading: false,
   initializeFormLoading: false,
   formCustomFields: null,
   getItemTagsLoading: false,
@@ -18,6 +19,8 @@ const initialState: ItemInitialState = {
   currentItem: null,
   removeItemLoading: false,
   addCommentLoading: false,
+  removeCommentLoading: false,
+  editCommentLoading: false,
 };
 
 export const initializeItemConfig = createAsyncThunk(
@@ -119,6 +122,29 @@ export const removeItem = createAsyncThunk(
   }
 );
 
+export const editItem = createAsyncThunk(
+  'item/edit',
+  async (
+    {
+      itemId,
+      onSuccess,
+      input,
+    }: { itemId: string; onSuccess: VoidFunction; input: ItemInput },
+    thunkApi
+  ) => {
+    try {
+      const response = await axiosApiInstance.put<{ data: Item }>(
+        `${apiUrls.item.editItem}/${itemId}`,
+        { input }
+      );
+      onSuccess && onSuccess();
+      return response.data.data;
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
 export const addComment = createAsyncThunk(
   'comment/add',
   async (
@@ -130,6 +156,47 @@ export const addComment = createAsyncThunk(
         `${apiUrls.comment.addComment}/${itemId}`,
         { input }
       );
+      return response.data.data;
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
+export const editComment = createAsyncThunk(
+  '/comment/edit',
+  async (
+    {
+      commentId,
+      input,
+      onSuccess,
+    }: { commentId: string; input: CommentInput; onSuccess: VoidFunction },
+    thunkApi
+  ) => {
+    try {
+      const response = await axiosApiInstance.put<{ data: Comment }>(
+        `${apiUrls.comment.editComment}/${commentId}`,
+        {input}
+      );
+      onSuccess && onSuccess();
+      return response.data.data;
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
+export const removeComment = createAsyncThunk(
+  '/comment/remove',
+  async (
+    { commentId, onSuccess }: { commentId: string; onSuccess: VoidFunction },
+    thunkApi
+  ) => {
+    try {
+      const response = await axiosApiInstance.delete<{ data: string }>(
+        `${apiUrls.comment.removeComment}/${commentId}`
+      );
+      onSuccess && onSuccess();
       return response.data.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
@@ -207,9 +274,44 @@ const itemSlice = createSlice({
         };
       }
     });
-    builder.addCase(addComment.rejected,(state,action)=>{
-        state.addCommentLoading=false;
+    builder.addCase(addComment.rejected, (state) => {
+      state.addCommentLoading = false;
     });
+    builder.addCase(removeComment.pending, (state) => {
+      state.removeCommentLoading = true;
+    });
+    builder.addCase(removeComment.fulfilled, (state, action) => {
+      state.removeCommentLoading = false;
+      const updatedComments = state.currentItem?.comments.filter(
+        (comment) => comment.id !== action.meta.arg.commentId
+      ) as Comment[];
+      if (state.currentItem) {
+        state.currentItem = { ...state.currentItem, comments: updatedComments };
+      }
+      toast.success('comment_removed', toastOptions);
+    });
+    builder.addCase(removeComment.rejected, (state, action) => {
+      state.removeCommentLoading = false;
+    });
+    builder.addCase(editComment.pending, (state) => {
+      state.editCommentLoading = true;
+    });
+    builder.addCase(editComment.fulfilled, (state, action) => {
+      state.editCommentLoading = false;
+      const updatedComments = state.currentItem?.comments.map((comment) =>
+        comment.id === action.meta.arg.commentId ? action.payload : comment
+      );
+      if (state.currentItem) {
+        state.currentItem = {
+          ...state.currentItem,
+          comments: updatedComments as Comment[],
+        };
+      }
+      toast.success('comment_updated',toastOptions);
+    });
+    builder.addCase(editComment.rejected,(state,action)=>{
+      state.editItemLoading=false;
+    })
   },
 });
 

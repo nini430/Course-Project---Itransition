@@ -34,6 +34,7 @@ function App() {
           <Route path={routesPath.login} element={<Login />} />
           <Route path={routesPath.addCollection} element={<AddCollection />} />
           <Route path={routesPath.addItem} element={<AddItem />} />
+          <Route path={routesPath.editItem} element={<AddItem/>}/>
           <Route path={routesPath.settings} element={<Settings />} />
           <Route
             path={routesPath.collectionDetails}

@@ -112,13 +112,35 @@ const getItemByIdExtended = async (itemId: string) => {
           },
         },
       },
+      reactions:{
+        include:{
+          user:{
+            select:{
+              firstName:true,
+              lastName:true,
+              profileImage:true,
+              id:true
+            }
+          }
+        }
+      }
     },
+    
   });
   return item;
 };
 
 const removeItem = async (itemId: string) => {
   await client.item.delete({ where: { id: itemId } });
+};
+
+const editItem = async (input: Partial<ItemInput>, itemId: string) => {
+  const { customFieldValues, name, tags } = input;
+  const updatedItem = await client.item.update({
+    data: { name, tags, customFieldValues },
+    where: { id: itemId },
+  });
+  return updatedItem;
 };
 
 export {
@@ -129,4 +151,5 @@ export {
   getItemById,
   getItemByIdExtended,
   removeItem,
+  editItem,
 };

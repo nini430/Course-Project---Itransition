@@ -2,6 +2,7 @@ import express from 'express';
 import authProtect from '../middleware/authProtect';
 import {
   addItemHandler,
+  editItemHandler,
   getItemByIdExtendedHandler,
   getLatestItemsHandler,
   getUniqueItemTagsHandler,
@@ -19,6 +20,7 @@ router.use(authProtect);
 router.get('/tags', getUniqueItemTagsHandler);
 router.get('/:collectionId', initializeItemCreationHandler);
 router.post('/:collectionId', addItemHandler);
+router.put('/:itemId',editItemHandler);
 router.delete('/:itemId',removeItemHandler);
 
 

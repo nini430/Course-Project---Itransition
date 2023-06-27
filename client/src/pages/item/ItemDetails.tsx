@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import {IconButton,Box} from '@mui/material'
-import {Delete,Edit} from '@mui/icons-material'
+import { Link } from 'react-router-dom';
+import { IconButton, Box, Typography, Button } from '@mui/material';
+import { Delete, Edit, ThumbUp, ThumbUpOutlined } from '@mui/icons-material';
 import ItemCard from './ItemCard';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/store';
@@ -13,61 +14,121 @@ import LikeComments from './LikeComments';
 import { Item } from '../../types/item';
 import ConfirmDialog from '../../components/shared/ConfirmDialog';
 import { removeItem } from '../../store/itemReducer';
-  
+import Reaction from '../../components/Reaction/Reaction';
+
 const ItemDetails = () => {
-  const navigate=useNavigate();
-  const [confirmDialog,setConfirmDialog]=useState<Item | null>(null)
+  const navigate = useNavigate();
+  const liked=false;
+  const [confirmDialog, setConfirmDialog] = useState<Item | null>(null);
+  const [isEmojiShown, setIsEmojiShown] = useState(false);
+  const [animationPause, setAnimationPause] = useState(false);
   const { itemId } = useParams();
   const dispatch = useAppDispatch();
-  const {getSingleItemLoading,currentItem,removeItemLoading}=useAppSelector(state=>state.item);
-  const {authedUser}=useAppSelector(state=>state.auth);
-  const auth=authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
+  const { getSingleItemLoading, currentItem, removeItemLoading } =
+    useAppSelector((state) => state.item);
+  const { authedUser } = useAppSelector((state) => state.auth);
+  const auth =
+    authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
 
   useEffect(() => {
     dispatch(getSingleItem(itemId as string));
   }, [dispatch, itemId]);
-  if(getSingleItemLoading || !currentItem) {
-    return <Loading/>
+  if (getSingleItemLoading || !currentItem) {
+    return <Loading />;
   }
   return (
     <ItemContainer>
-      
-      <BreadCrumb paths={[{path:'/',icon:Home,title:'Home'},{path:`/item/${itemId}`,icon:FileCopy,title:'Item'}]}/>
+      <BreadCrumb
+        paths={[
+          { path: '/', icon: Home, title: 'Home' },
+          { path: `/item/${itemId}`, icon: FileCopy, title: 'Item' },
+        ]}
+      />
       <TopContainer>
-      <ItemCard />
-      {auth.id === currentItem?.collection.author.id && (
-        <Box sx={{diaplay:'flex',alignItems:'center',gap:'10px',alignSelf:'flex-end'}}>
-        <IconButton><Edit/></IconButton>
-        <IconButton onClick={()=>setConfirmDialog(currentItem)}><Delete/></IconButton>
-    </Box>
-      )}
+        <ItemCard />
+        {auth.id === currentItem?.collection.author?.id && (
+          <Box
+            sx={{
+              diaplay: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              alignSelf: 'flex-end',
+            }}
+          >
+            <Link
+              to={`/edit-item/${currentItem.id}`}
+              style={{ textDecoration: 'none' }}
+            >
+              <IconButton>
+                <Edit />
+              </IconButton>
+            </Link>
+            <IconButton onClick={() => setConfirmDialog(currentItem)}>
+              <Delete />
+            </IconButton>
+          </Box>
+        )}
       </TopContainer>
-      <LikeComments/>
-      <ConfirmDialog onClose={()=>setConfirmDialog(null)} open={confirmDialog} loading={removeItemLoading} onOk={()=>{
-        dispatch(removeItem({itemId:currentItem?.id as string,onSuccess:()=>{
-          setConfirmDialog(null);
-          setTimeout(()=>{
-            navigate('/')
-          },2000);
-        }}))
-      }}/>
+      <LikeContainer
+        onMouseOver={() => setIsEmojiShown(true)}
+        onMouseOut={() => setIsEmojiShown(false)}
+      >
+        {liked ? <Button><Typography sx={{fontSize:28}}>👍</Typography></Button>: <IconButton>👍</IconButton> }
+        
+        <Typography>{currentItem.reactions.length} Reactions</Typography>
+        {isEmojiShown && (
+          <Reaction
+            animationPause={animationPause}
+            setAnimationPause={setAnimationPause}
+            setIsEmojiShown={setIsEmojiShown}
+            bottomPx="35px"
+            emojiSize={28}
+          />
+        )}
+      </LikeContainer>
+      <LikeComments />
+      <ConfirmDialog
+        onClose={() => setConfirmDialog(null)}
+        open={confirmDialog}
+        loading={removeItemLoading}
+        onOk={() => {
+          dispatch(
+            removeItem({
+              itemId: currentItem?.id as string,
+              onSuccess: () => {
+                setConfirmDialog(null);
+                setTimeout(() => {
+                  navigate('/');
+                }, 2000);
+              },
+            })
+          );
+        }}
+      />
     </ItemContainer>
   );
 };
 
-const TopContainer=styled.div`
-  display:flex;
-  gap:10px;
-`
+const LikeContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  position: relative;
+`;
+
+const TopContainer = styled.div`
+  display: flex;
+  gap: 10px;
+`;
 
 const ItemContainer = styled.div`
   min-height: calc(100vh - 80px);
   display: flex;
-  flex-direction:column;
-  gap:15px;
+  flex-direction: column;
+  gap: 15px;
   justify-items: center;
   padding: 20px;
-  align-items:center;
+  align-items: center;
 `;
 
 export default ItemDetails;

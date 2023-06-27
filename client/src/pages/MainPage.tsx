@@ -13,8 +13,10 @@ import { getLatestItems } from '../store/itemReducer';
 import { getLargestCollections } from '../store/collectionReducer';
 import { Collection as CollectionType } from '../types/collection';
 import { setAuthedUser } from '../store/authReducer';
+import { useTranslation } from 'react-i18next';
 
 const MainPage = () => {
+  const {t}=useTranslation();
   const dispatch = useAppDispatch();
   const { authedUser } = useAppSelector((state) => state.auth);
   const { getLatestItemsLoading, latestItems } = useAppSelector(
@@ -38,7 +40,7 @@ const MainPage = () => {
       <TagCloudComponent />
       <CardContainer>
         <Typography sx={{ fontWeight: 300, fontStyle: 'italic' }} variant="h4">
-          Latest items
+          {t('home.latest_items')}
         </Typography>
         <Divider />
         {getLatestItemsLoading || !latestItems ? (
@@ -46,7 +48,7 @@ const MainPage = () => {
             <CircularProgress size={75} />
           </LoadingContainer>
         ) : latestItems?.length === 0 ? (
-          <Empty message="No Items yet" />
+          <Empty message={t('home.no_items_yet')} />
         ) : (
           <CardWrapper>
             {latestItems.map((item) => (
@@ -57,7 +59,7 @@ const MainPage = () => {
       </CardContainer>
       <CardContainer>
         <Typography sx={{ fontWeight: 300, fontStyle: 'italic' }} variant="h4">
-          Top 5 Largest Collection
+        {t('home.largest_collections')}
         </Typography>
         <Divider />
         {getLargestCollectionsLoading || !largestCollections ? (
@@ -65,7 +67,7 @@ const MainPage = () => {
             <CircularProgress size={75} />
           </LoadingContainer>
         ) : largestCollections?.length === 0 ? (
-          <Empty message="No Collections Yet" />
+          <Empty message={t('home.no_collections_yet')} />
         ) : (
           <CardWrapper>
             {largestCollections.map((collection: CollectionType) => (
