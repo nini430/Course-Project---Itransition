@@ -15,7 +15,7 @@ const addCommentHandler = asyncHandler(
   ) => {
     const { input } = req.body;
     const newComment = await addComment(
-      { text: input.text },
+      { text: input.text, image:input.image },
       req.params.itemId,
       req.user.id
     );

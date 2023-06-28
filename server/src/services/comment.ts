@@ -1,14 +1,24 @@
 import { CommentInput } from '../types/comment';
 import client from '../utils/prismaClient';
+import { uploadImage } from './common';
 
 const addComment = async (
   input: CommentInput,
   itemId: string,
   authorId: string
 ) => {
-  const { text } = input;
+  const { text, image } = input;
+  let uploadedImage;
+  if (image) {
+    uploadedImage = await uploadImage(image);
+  }
   const comment = await client.comment.create({
-    data: { text, itemId, authorId },
+    data: {
+      text,
+      itemId,
+      authorId,
+      image: uploadedImage ? uploadedImage : null,
+    },
     include: {
       author: {
         select: {
@@ -18,18 +28,18 @@ const addComment = async (
           id: true,
         },
       },
-      reactions:{
-        include:{
-          user:{
-            select:{
-              firstName:true,
-              lastName:true,
-              profileImage:true,
-              id:true
-            }
-          }
-        }
-      }
+      reactions: {
+        include: {
+          user: {
+            select: {
+              firstName: true,
+              lastName: true,
+              profileImage: true,
+              id: true,
+            },
+          },
+        },
+      },
     },
   });
   return comment;
@@ -74,6 +84,18 @@ const editComment = async (commentId: string, input: CommentInput) => {
           profileImage: true,
         },
       },
+      reactions:{
+        include:{
+          user:{
+            select:{
+              firstName:true,
+              lastName:true,
+              id:true,
+              profileImage:true
+            }
+          }
+        }
+      }
     },
   });
   return updatedComment;

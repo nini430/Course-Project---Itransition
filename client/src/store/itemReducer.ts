@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { ExtendedItem, Item, ItemInitialState, ItemInput } from '../types/item';
 import axiosApiInstance from '../axios';
 import apiUrls from '../api/api';
@@ -257,20 +257,51 @@ export const reactComment = createAsyncThunk(
   }
 );
 
-export const unreactComment= createAsyncThunk('/commentReaction/react',async({reactionId}:{reactionId:string},thunkApi)=>{
-  try{
-    const response=await axiosApiInstance.delete<{reactionId:string}>(`${apiUrls.commentReaction.unreactComment}/${reactionId}`);
-    return response.data.reactionId;
-  }catch(err) {
-    return thunkApi.rejectWithValue(err);
+export const unreactComment = createAsyncThunk(
+  '/commentReaction/unreact',
+  async ({ reactionId }: { reactionId: string }, thunkApi) => {
+    try {
+      const response = await axiosApiInstance.delete<{
+        reactionId: string;
+        commentId: string;
+      }>(`${apiUrls.commentReaction.unreactComment}/${reactionId}`);
+      return response.data;
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
   }
-})
-
+);
 
 const itemSlice = createSlice({
   name: 'item',
   initialState,
-  reducers: {},
+  reducers: {
+    toggleCommentImage: (
+      state,
+      action: PayloadAction<{ commentId: string; image?: string, status:'remove'|'cancel' }>
+    ) => {
+      if (state.currentItem) {
+        const { commentId, image, status } = action.payload;
+        if (status==='remove') {
+          state.currentItem = {
+            ...state.currentItem,
+            comments: state.currentItem.comments.map((comment) =>
+              comment.id === commentId
+                ? { ...comment, image: undefined }
+                : comment
+            ),
+          };
+        } else if(status==='cancel') {
+          state.currentItem = {
+            ...state.currentItem,
+            comments: state.currentItem.comments.map((comment) =>
+              comment.id === commentId ? { ...comment, image } : comment
+            ),
+          };
+        }
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(initializeItemConfig.pending, (state) => {
       state.initializeFormLoading = true;
@@ -431,14 +462,40 @@ const itemSlice = createSlice({
               : comment
           );
         }
-        state.currentItem={...state.currentItem,comments:updatedReactions};
+        state.currentItem = {
+          ...state.currentItem,
+          comments: updatedReactions,
+        };
       }
     });
     builder.addCase(reactComment.rejected, (state, action) => {
       toast.error('something_went_wrong', toastOptions);
     });
-   
+    builder.addCase(unreactComment.fulfilled, (state, action) => {
+      const { reactionId, commentId } = action.payload;
+      if (state.currentItem) {
+        const updatedReactions = state.currentItem.comments.map((comment) =>
+          comment.id === commentId
+            ? {
+                ...comment,
+                reactions: comment.reactions.filter(
+                  (reaction) => reaction.id !== reactionId
+                ),
+              }
+            : comment
+        );
+        state.currentItem = {
+          ...state.currentItem,
+          comments: updatedReactions,
+        };
+      }
+    });
+    builder.addCase(unreactComment.rejected, (state, action) => {
+      toast.error('something_went_wrong', toastOptions);
+    });
   },
 });
+
+export const { toggleCommentImage } = itemSlice.actions;
 
 export default itemSlice.reducer;

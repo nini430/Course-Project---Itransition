@@ -3,6 +3,7 @@ import { Save, Cancel } from '@mui/icons-material';
 import moment from 'moment';
 import ShowMore from 'react-show-more';
 import { useState, useEffect } from 'react';
+import { Accept, useDropzone } from 'react-dropzone';
 
 import styled from 'styled-components';
 import CommentAvatar from './shared/CommentAvatar';
@@ -12,21 +13,34 @@ import ActionButtons from './ActionButtons';
 import Reaction from '../Reaction/Reaction';
 import ConfirmDialog from '../shared/ConfirmDialog';
 import { useAppDispatch, useAppSelector } from '../../store/store';
-import { reactComment, removeComment } from '../../store/itemReducer';
+import {
+  reactComment,
+  removeComment,
+  toggleCommentImage,
+  unreactComment,
+} from '../../store/itemReducer';
 import { LoadingButton } from '@mui/lab';
 import { editComment as editCommentHandler } from '../../store/itemReducer';
 import { reactions } from '../../utils/reactions';
 import { Link } from 'react-router-dom';
+import ImageModal from '../shared/ImageModal';
+import { Wrapper, CloseContainer, ImageContainer } from './shared/SharedStyles';
+import EmojiActions from './shared/EmojiActions';
 
 interface ICommentProps {
   comment: CommentType;
 }
 
 const Comment = ({ comment }: ICommentProps) => {
-  console.log(comment);
-  const {authedUser}=useAppSelector(state=>state.auth);
-  const auth= authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
-  const liked=comment.reactions?.find(reaction=>reaction.userId===auth.id);
+  const [uploadImg, setUploadImg] = useState<File | null>(null);
+  const [isEmojiPickerShown, setIsEmojiPickerShown] = useState(false);
+  const [imageModal, setImageModal] = useState<string | null>(null);
+  const { authedUser } = useAppSelector((state) => state.auth);
+  const auth =
+    authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
+  const liked = comment.reactions?.find(
+    (reaction) => reaction.userId === auth?.id
+  );
   const { editCommentLoading } = useAppSelector((state) => state.item);
   const [editComment, setEditComment] = useState(comment.text);
   const [isInEditMode, setIsInEditMode] = useState(false);
@@ -36,6 +50,13 @@ const Comment = ({ comment }: ICommentProps) => {
   const [animationPause, setAnimationPause] = useState(false);
   const [isMoreShown, setIsMoreShown] = useState(false);
   const [confirmDialog, setConfirmDialog] = useState<CommentType | null>(null);
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: 'image/*' as unknown as Accept,
+    onDrop: (acceptedFiles) => {
+      setUploadImg(acceptedFiles[0]);
+    },
+  });
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -68,11 +89,51 @@ const Comment = ({ comment }: ICommentProps) => {
       <CenterCommentSection>
         {isInEditMode ? (
           <EditCommentWrapper>
-            <Input
-              sx={{ width: '100%' }}
-              value={editComment}
-              onChange={(e) => setEditComment(e.target.value)}
-            />
+            <Wrapper>
+              <FullEditContainer>
+                <Input
+                  sx={{ width: '100%' }}
+                  value={editComment}
+                  onChange={(e) => setEditComment(e.target.value)}
+                />
+                <EmojiActions
+                  getRootProps={getRootProps}
+                  getInputProps={getInputProps}
+                  isEmojiPickerShown={isEmojiPickerShown}
+                  setIsEmojiPickerShown={setIsEmojiPickerShown}
+                  setText={setEditComment}
+                  uploadImg={uploadImg}
+                />
+              </FullEditContainer>
+
+              {comment.image && (
+                <ImageContainer>
+                  <img
+                    width={200}
+                    height={100}
+                    style={{ objectFit: 'cover' }}
+                    src={
+                      uploadImg ? URL.createObjectURL(uploadImg) : comment.image
+                    }
+                    alt=""
+                  />
+                  <CloseContainer
+                    onClick={() =>
+                      dispatch(
+                        toggleCommentImage({
+                          commentId: comment.id,
+                          image: comment.image,
+                          status:'remove'
+                        })
+                      )
+                    }
+                  >
+                    X
+                  </CloseContainer>
+                </ImageContainer>
+              )}
+            </Wrapper>
+
             <ButtonGroup>
               <LoadingButton
                 loading={editCommentLoading}
@@ -82,7 +143,6 @@ const Comment = ({ comment }: ICommentProps) => {
                       commentId: comment.id,
                       input: { text: editComment },
                       onSuccess: () => {
-                        setEditComment(comment.text);
                         setIsInEditMode(false);
                       },
                     })
@@ -98,6 +158,13 @@ const Comment = ({ comment }: ICommentProps) => {
                 onClick={() => {
                   setIsInEditMode(false);
                   setEditComment(comment.text);
+                  dispatch(
+                    toggleCommentImage({
+                      commentId: comment.id,
+                      image: comment.image,
+                      status:'cancel'
+                    })
+                  );
                 }}
                 sx={{ border: '1px solid gray' }}
               >
@@ -114,6 +181,16 @@ const Comment = ({ comment }: ICommentProps) => {
             ) : (
               comment.text
             )}
+
+            {comment.image && (
+              <CommentImg
+                onClick={() => setImageModal(comment.image as string)}
+                width={200}
+                height={100}
+                style={{ objectFit: 'cover', cursor: 'pointer' }}
+                src={comment.image}
+              />
+            )}
             <TypoWrapper>
               <ReactionContainer
                 onMouseOut={() => setIsEmojiShown(false)}
@@ -125,8 +202,8 @@ const Comment = ({ comment }: ICommentProps) => {
                     animationPause={animationPause}
                     setIsEmojiShown={setIsEmojiShown}
                     bottomPx="15px"
-                    action={(emoji:string)=>{
-                      dispatch(reactComment({emoji,commentId:comment.id}))
+                    action={(emoji: string) => {
+                      dispatch(reactComment({ emoji, commentId: comment.id }));
                     }}
                   />
                 )}
@@ -139,11 +216,31 @@ const Comment = ({ comment }: ICommentProps) => {
                     }}
                   >
                     {liked ? (
-                      <Typography >{reactions.find(react=>react.name===liked.name)?.emoji}{liked.name}
+                      <Typography
+                        onClick={() => {
+                          dispatch(unreactComment({ reactionId: liked?.id }));
+                        }}
+                      >
+                        {
+                          reactions.find((react) => react.name === liked.name)
+                            ?.emoji
+                        }
+                        {liked.name}
                       </Typography>
-                    ): <span onClick={()=>{
-                      dispatch(reactComment({commentId:comment.id,emoji:'like'}))
-                    }}>Like</span>}
+                    ) : (
+                      <span
+                        onClick={() => {
+                          dispatch(
+                            reactComment({
+                              commentId: comment.id,
+                              emoji: 'like',
+                            })
+                          );
+                        }}
+                      >
+                        Like
+                      </span>
+                    )}
                   </Typography>
                 </TypoWrapper>
               </ReactionContainer>
@@ -188,6 +285,7 @@ const Comment = ({ comment }: ICommentProps) => {
           }}
         />
       )}
+      <ImageModal image={imageModal} onClose={() => setImageModal(null)} />
     </CommentContainer>
   );
 };
@@ -197,6 +295,12 @@ const CommentContainer = styled.div`
   justify-content: space-between;
   padding: 10px;
   gap: 10px;
+`;
+
+const FullEditContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
 `;
 
 const ReactionContainer = styled.div`
@@ -229,6 +333,11 @@ const EditCommentWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   gap: 5px;
+`;
+
+const CommentImg = styled.img`
+  object-fit: cover;
+  cursor: pointer;
 `;
 
 export default Comment;

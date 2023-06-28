@@ -35,7 +35,7 @@ const ItemDetails = () => {
   const [confirmDialog, setConfirmDialog] = useState<Item | null>(null);
   const { getSingleItemLoading, currentItem, removeItemLoading } =
     useAppSelector((state) => state.item);
-  const liked = currentItem?.reactions.find((item) => item.userId === auth.id);
+  const liked = currentItem?.reactions.find((item) => item.userId === auth?.id);
   const [isEmojiShown, setIsEmojiShown] = useState(false);
   const [animationPause, setAnimationPause] = useState(false);
   const [reactionMapper, setReactionMapper] = useState<
@@ -63,7 +63,7 @@ const ItemDetails = () => {
       />
       <TopContainer>
         <ItemCard />
-        {auth.id === currentItem?.collection.author?.id && (
+        {auth?.id === currentItem?.collection.author?.id && (
           <Box
             sx={{
               diaplay: 'flex',

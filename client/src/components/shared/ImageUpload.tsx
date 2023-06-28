@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useState, useEffect } from 'react';
 import { IconButton, Button } from '@mui/material';
 import { PhotoCamera, Save, Cancel } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import { useDropzone, Accept } from 'react-dropzone';
+import { DropzoneRootProps, DropzoneInputProps } from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
 import Loading from '../../assets/loading.gif';
 import Avatar from '../Avatar/Avatar';
@@ -16,8 +16,8 @@ interface IImageUploadProps {
   fallBackImage: any;
   uploadImage: any;
   isAllowedUpload: boolean;
-  getRootProps:any;
-  getInputProps:any;
+  getRootProps: any;
+  getInputProps: any;
 }
 
 const ImageUpload = ({
@@ -29,12 +29,11 @@ const ImageUpload = ({
   uploadImage,
   isAllowedUpload,
   getRootProps,
-  getInputProps
+  getInputProps,
 }: IImageUploadProps) => {
   const [isPhotoHovered, setIsPhotoHovered] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const { t } = useTranslation();
- 
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -48,11 +47,15 @@ const ImageUpload = ({
   return (
     <>
       <ImageContainer
-      {...(getRootProps?{...getRootProps()}:{})}
+        {...(getRootProps ? { ...getRootProps() } : {})}
         onMouseOver={() => setIsPhotoHovered(true)}
         onMouseOut={() => setIsPhotoHovered(false)}
       >
-        <input {...(getInputProps?{...getInputProps()}:{})} type="file" className="d-none" />
+        <input
+          {...(getInputProps ? { ...getInputProps() } : {})}
+          type="file"
+          className="d-none"
+        />
         <Avatar
           width={200}
           height={200}

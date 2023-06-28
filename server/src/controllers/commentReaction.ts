@@ -30,7 +30,7 @@ const unreactCommentReactionHandler=asyncHandler(async(req:Request<{reactionId:s
         return next(new ErrorResponse(errorMessages.notFound,StatusCodes.NOT_FOUND));
     }
     await unreactComment(req.params.reactionId);
-    return res.status(StatusCodes.OK).json({success:true,reactionId:reaction.id});
+    return res.status(StatusCodes.OK).json({success:true,reactionId:reaction.id,commentId:reaction.commentId});
 })
 
 export {addCommentReactionHandler,unreactCommentReactionHandler};

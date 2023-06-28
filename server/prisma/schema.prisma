@@ -58,6 +58,7 @@ model Item {
 model Comment {
   id        String   @id @default(uuid())
   text      String
+  image String?
   itemId    String
   item      Item     @relation(fields: [itemId], references: [id])
   createdAt DateTime @default(now())
