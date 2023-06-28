@@ -2,7 +2,7 @@
 import styled from 'styled-components';
 import moment from 'moment';
 import { Link, useNavigate } from 'react-router-dom';
-import { Box, Card, CardContent, Divider, IconButton, Typography } from '@mui/material';
+import { Box, Card, CardContent, Divider, IconButton, Typography, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import { useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import {useDropzone, Accept} from 'react-dropzone'
@@ -17,14 +17,16 @@ import { fileToBase64 } from '../../utils/fileToBase64';
 import toastOptions from '../../utils/toastOptions';
 import Avatar from '../../components/Avatar/Avatar';
 import AvatarImage from '../../assets/avatar.png'
-import { Delete, Edit } from '@mui/icons-material';
+import { Delete, Edit, KeyboardArrowDown } from '@mui/icons-material';
 import ConfirmDialog from '../../components/shared/ConfirmDialog';
+import { useTranslation } from 'react-i18next';
 
 interface ICollectionCardProps {
   currentCollection: ExtendedCollection | null;
 }
 
 const CollectionCard = ({ currentCollection }: ICollectionCardProps) => {
+  const {t}=useTranslation();
   const navigate=useNavigate();
   const [isConfirmModalOpen,setIsCOnfirmModalOpen]=useState(false)
   const {authedUser}=useAppSelector(state=>state.auth);
@@ -43,7 +45,10 @@ const CollectionCard = ({ currentCollection }: ICollectionCardProps) => {
   })
   
   return (
-    <CardContainer>
+    <Accordion >
+      <AccordionSummary expandIcon={<KeyboardArrowDown/>}> {t('collection.details')}</AccordionSummary>
+      <AccordionDetails sx={{display:'flex',flexDirection:'column'}}>
+      <CardContainer>
       <Toaster />
       <CardContent
         sx={{
@@ -168,14 +173,19 @@ const CollectionCard = ({ currentCollection }: ICollectionCardProps) => {
             {moment(currentCollection?.updatedAt as string).format('L')}
           </Typography>
         </Box>
-        {auth?.id === currentCollection?.author.id && (
-          <ActionsContainer>
+        
+      </CardContent>
+          
+          
+    </CardContainer>
+    {auth?.id === currentCollection?.author.id && (
+          <ActionsContainer >
           <IconButton><Edit/></IconButton>
           <IconButton onClick={()=>setIsCOnfirmModalOpen(true)}><Delete/></IconButton>
           </ActionsContainer>
         )}
-      </CardContent>
-          <ConfirmDialog loading={removeCollectionLoading}  onOk={()=>{
+      </AccordionDetails>
+      <ConfirmDialog loading={removeCollectionLoading}  onOk={()=>{
             dispatch(removeCollection({collectionId:currentCollection?.id as string,onSuccess:()=>{
               toast('collection_remove_success',toastOptions)
               setIsCOnfirmModalOpen(false);
@@ -184,14 +194,15 @@ const CollectionCard = ({ currentCollection }: ICollectionCardProps) => {
               },2000)
             }}))
           }} open={isConfirmModalOpen} onClose={()=>setIsCOnfirmModalOpen(false)}/>
-    </CardContainer>
+    </Accordion>
+  
+    
+    
   );
 };
 
 const CardContainer = styled(Card)`
   margin: 10px;
-  max-height:600px;
-  overflow-y:auto !important;
 `;
 const ActionsContainer= styled.div`
   align-self:end;

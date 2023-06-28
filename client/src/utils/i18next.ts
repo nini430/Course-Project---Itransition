@@ -19,3 +19,4 @@ i18n.use(httpBackend)
     }
 })
 
+export default i18n;

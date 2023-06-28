@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {Link} from 'react-router-dom'
 import moment from 'moment';
 import { Box, IconButton, Card, Typography} from '@mui/material';
 import ShowMore from 'react-show-more';
@@ -45,8 +46,8 @@ const ItemCard = () => {
       </GridContainer>
       
      
-
-      <Box sx={{ display: 'flex', gap: '10px' }}>
+    <Link to={`/collection/${currentItem?.collection.id}`} style={{textDecoration:'none'}}>
+    <Box sx={{ display: 'flex', gap: '10px' }}>
         <Typography sx={{ color: 'gray' }}>{t('common.collection')}:</Typography>
         <Box sx={{ display: 'flex', gap: '10px' }}>
           <Avatar
@@ -57,6 +58,8 @@ const ItemCard = () => {
           <Typography>{currentItem?.collection.name}</Typography>
         </Box>
       </Box>
+      </Link>
+      <Link to={`/profile/${currentItem?.collection.author.id}`} style={{textDecoration:'none'}}>
       <Box sx={{ display: 'flex', gap: '10px' }}>
         <Typography sx={{ color: 'gray' }}>{t('common.author')}:</Typography>
         <Box sx={{ display: 'flex',  gap: '10px' }}>
@@ -70,7 +73,8 @@ const ItemCard = () => {
             {currentItem?.collection.author.lastName}
           </Typography>
         </Box>
-      </Box>
+      </Box></Link>
+      
       <CustomFieldsContainer>
         <Typography sx={{ color: 'gray' }}>{t('common.custom_fields')}:</Typography>
         {currentItem?.customFieldValues ? (

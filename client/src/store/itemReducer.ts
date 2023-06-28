@@ -22,6 +22,8 @@ const initialState: ItemInitialState = {
   addCommentLoading: false,
   removeCommentLoading: false,
   editCommentLoading: false,
+  myItems: [],
+  getMyItemsLoading: false,
 };
 
 export const initializeItemConfig = createAsyncThunk(
@@ -272,17 +274,36 @@ export const unreactComment = createAsyncThunk(
   }
 );
 
+export const getMyItems = createAsyncThunk(
+  '/my-items/get',
+  async ({ userId }: { userId: string }, thunkApi) => {
+    try {
+      const response = await axiosApiInstance.get<{ data: Item[] }>(
+        `${apiUrls.item.getMyItems}/${userId}`
+      );
+      console.log(response.data);
+      return response.data.data;
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
 const itemSlice = createSlice({
   name: 'item',
   initialState,
   reducers: {
     toggleCommentImage: (
       state,
-      action: PayloadAction<{ commentId: string; image?: string, status:'remove'|'cancel' }>
+      action: PayloadAction<{
+        commentId: string;
+        image?: string;
+        status: 'remove' | 'cancel';
+      }>
     ) => {
       if (state.currentItem) {
         const { commentId, image, status } = action.payload;
-        if (status==='remove') {
+        if (status === 'remove') {
           state.currentItem = {
             ...state.currentItem,
             comments: state.currentItem.comments.map((comment) =>
@@ -291,7 +312,7 @@ const itemSlice = createSlice({
                 : comment
             ),
           };
-        } else if(status==='cancel') {
+        } else if (status === 'cancel') {
           state.currentItem = {
             ...state.currentItem,
             comments: state.currentItem.comments.map((comment) =>
@@ -309,6 +330,9 @@ const itemSlice = createSlice({
     builder.addCase(initializeItemConfig.fulfilled, (state, action) => {
       state.initializeFormLoading = false;
       state.formCustomFields = action.payload;
+    });
+    builder.addCase(initializeItemConfig.rejected, (state, action) => {
+      toast.error('something_went_wrong', toastOptions);
     });
     builder.addCase(addItem.pending, (state) => {
       state.addItemLoading = true;
@@ -492,6 +516,16 @@ const itemSlice = createSlice({
     });
     builder.addCase(unreactComment.rejected, (state, action) => {
       toast.error('something_went_wrong', toastOptions);
+    });
+    builder.addCase(getMyItems.pending, (state) => {
+      state.getMyItemsLoading = true;
+    });
+    builder.addCase(getMyItems.fulfilled, (state, action) => {
+      state.getMyItemsLoading = false;
+      state.myItems = action.payload;
+    });
+    builder.addCase(getMyItems.rejected, (state, action) => {
+      state.getMyItemsLoading = false;
     });
   },
 });

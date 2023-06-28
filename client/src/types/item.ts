@@ -18,6 +18,8 @@ export interface ItemInitialState {
     editItemLoading:boolean;
     removeCommentLoading:boolean;
     editCommentLoading:boolean;
+    myItems:Item[];
+    getMyItemsLoading:boolean;
 }
 
 export interface ItemInput {

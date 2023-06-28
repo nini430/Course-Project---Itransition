@@ -10,6 +10,7 @@ import {
   initializeItemCreation,
   removeItem,
   editItem,
+  getMyItems,
 } from '../services/item';
 import { ItemInput } from '../types/item';
 import ErrorResponse from '../utils/errorResponse';
@@ -133,6 +134,12 @@ const editItemHandler = asyncHandler(
   }
 );
 
+const getMyItemsHandler=asyncHandler(async(req:Request<{userId:string}>,res:Response,next:NextFunction)=>{
+    const items=await getMyItems(req.params.userId);
+    console.log('onaa')
+    return res.status(StatusCodes.OK).json({success:true,data:items});
+});
+
 export {
   initializeItemCreationHandler,
   addItemHandler,
@@ -141,4 +148,5 @@ export {
   getItemByIdExtendedHandler,
   removeItemHandler,
   editItemHandler,
+  getMyItemsHandler
 };

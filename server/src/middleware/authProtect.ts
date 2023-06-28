@@ -9,7 +9,9 @@ import { findUserById } from '../services/auth';
 
 const authProtect = asyncHandler(
   async (req: Request & {user:any}, res: Response, next: NextFunction) => {
+    console.log(req);
     const token = req.headers.authorization?.split(' ')[1];
+    console.log('anu aq rato shedis saertod');
     if (!token) {
       return next(
         new ErrorResponse(

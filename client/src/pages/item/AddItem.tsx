@@ -56,7 +56,7 @@ const AddItem = () => {
   } = useAppSelector((state) => state.item);
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const {itemId}=useParams();
+  const {itemId,collectionId}=useParams();
   const {
     validateForm,
     resetForm,
@@ -87,7 +87,7 @@ const AddItem = () => {
         dispatch(
           addItem({
             input: { name, tags: tags.join(','), customFieldValues: rest },
-            collectionId: '082403da-da9e-49f0-84b1-73026c30c80b',
+            collectionId: collectionId as string,
             onSuccess: () => {
               toast.success(t('item_created'), toastOptions);
               setTimeout(() => {
@@ -101,12 +101,12 @@ const AddItem = () => {
     },
   });
   useEffect(() => {
-    dispatch(initializeItemConfig('082403da-da9e-49f0-84b1-73026c30c80b'));
+    dispatch(initializeItemConfig(collectionId as string));
     dispatch(getItemTags());
     if(itemId) {
       dispatch(getSingleItem(itemId))
     }
-  }, [dispatch,itemId]);
+  }, [dispatch,itemId,collectionId]);
   useEffect(() => {
     if (formCustomFields) {
       if(!itemId) {
@@ -128,7 +128,7 @@ const AddItem = () => {
     }
   }, [formCustomFields, resetForm, validateForm, setValues,currentItem,itemId]);
 
-  if(!currentItem || getSingleItemLoading || initializeFormLoading) {
+  if((!currentItem && getSingleItemLoading) || initializeFormLoading) {
     return (
       <Loading/>
     )
@@ -184,7 +184,7 @@ const AddItem = () => {
 
               return filtered as any[];
             }}
-            defaultValue={currentItem.tags.split(',')}
+            defaultValue={currentItem?.tags.split(',')}
             multiple
             options={itemTags}
             onChange={(e, newValue) => setFieldValue('tags', newValue)}
@@ -196,7 +196,7 @@ const AddItem = () => {
             <ErrorMessage>{errors.tags as string}</ErrorMessage>
           )}
         </FormGroup>
-        <Typography>Custom Fields</Typography>
+       {formCustomFields  && Object.values(formCustomFields).flat().length>0 && <Typography>Custom Fields</Typography> } 
         {!formCustomFields || initializeFormLoading ? (
           <LoadingContainer>
             <CircularProgress size={75} />

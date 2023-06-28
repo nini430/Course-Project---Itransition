@@ -7,6 +7,7 @@ import { User } from '../types/auth';
 const initialState: UserInitialState = {
   currentProfile: null,
   profileLoading: false,
+  
 };
 
 export const getUserById = createAsyncThunk(

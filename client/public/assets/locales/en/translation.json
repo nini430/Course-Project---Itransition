@@ -1,53 +1,63 @@
 {
-    "common":{
-        "comments":"Comments",
-        "reactions":"Reactions",
-        "collection":"Collection",
-        "author":"Author",
-        "view_more":"View More",
-        "topic":"Topic",
-        "custom_fields":"Custom Fields",
-        "no_comments":"No Comments"
-    },
-    "home":{
-        "latest_items":"Latest Items",
-        "largest_collections":"Top 5 Largest Collections"
-      },
-      "item":{
-        "tags":"Tags",
-        "age":"Age"
-      },
-    "auth":{
-        "register":"Register",
-        "login":"Login",
-        "not_account":"Don't you have an account?",
-        "email":"E-mail",
-        "password":"Password",
-        "firstName":"First Name",
-        "lastName":"Last Name",
-        "confirm_password":"Confirm Password",
-        "already_member":"Already have an account?",
-        "email_required":"Email field is required",
-        "password_required":"Password field is required",
-        "valid_email":"Email isn't valid",
-        "first_name_required":"First Name field is required",
-        "last_name_required":"Last Name field is required",
-        "confirm_password_required":"Confirm Password field is requried",
-        "passwords_must_match":"Passwords must match",
-        "sign_in":"Sign In"
-    },
-    "nav":{
-     "search":"Search...",
-     "parameters":"Settings",
-     "log_out":"Sign Out",
-     "profile":"Profile"
-    },
-    "lang":{
-        "en":"English",
-        "geo":"Georgian"
-    },
-    "breadcrumb":{
-        "home":"Home",
-        "item":"Item"
-    }
+  "common": {
+    "comments": "Comments",
+    "reactions": "Reactions",
+    "collection": "Collection",
+    "author": "Author",
+    "view_more": "View More",
+    "topic": "Topic",
+    "custom_fields": "Custom Fields",
+    "no_comments": "No Comments"
+  },
+  "home": {
+    "latest_items": "Latest Items",
+    "largest_collections": "Top 5 Largest Collections"
+  },
+  "item": {
+    "tags": "Tags",
+    "age": "Age",
+    "name": "Name",
+    "collection":"Collection",
+    "created_at":"Created At",
+    "author":"Author",
+    "comments":"Comments",
+    "reactions":"Reactions",
+    "custom_fields": "Custom Fields"
+  },
+  "auth": {
+    "register": "Register",
+    "login": "Login",
+    "not_account": "Don't you have an account?",
+    "email": "E-mail",
+    "password": "Password",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "confirm_password": "Confirm Password",
+    "already_member": "Already have an account?",
+    "email_required": "Email field is required",
+    "password_required": "Password field is required",
+    "valid_email": "Email isn't valid",
+    "first_name_required": "First Name field is required",
+    "last_name_required": "Last Name field is required",
+    "confirm_password_required": "Confirm Password field is requried",
+    "passwords_must_match": "Passwords must match",
+    "sign_in": "Sign In"
+  },
+  "nav": {
+    "search": "Search...",
+    "parameters": "Settings",
+    "log_out": "Sign Out",
+    "profile": "Profile"
+  },
+  "lang": {
+    "en": "English",
+    "geo": "Georgian"
+  },
+  "breadcrumb": {
+    "home": "Home",
+    "item": "Item"
+  },
+  "collection":{
+    "details":"Collection Details"
+  }
 }

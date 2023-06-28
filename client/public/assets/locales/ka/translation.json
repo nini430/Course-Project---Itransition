@@ -15,7 +15,14 @@
   },
   "item":{
     "tags":"ტეგები",
-    "age":"ასაკი"
+    "age":"ასაკი",
+    "name":"სახელი",
+    "collection":"კოლექცია",
+    "created_at":"შექმნის დრო",
+    "author":"ავტორი",
+    "comments":"კომენტარები",
+    "reactions":"რეაქციები",
+    "custom_fields":"სპეციფიკური ველები"
   },
   "auth": {
     "register": "რეგისტრაცია",
@@ -49,5 +56,8 @@
   "breadcrumb":{
     "home":"მთავარი",
     "item":"ჩანაწერი"
+},
+"collection":{
+  "details":"კოლექციის დეტალები"
 }
 }

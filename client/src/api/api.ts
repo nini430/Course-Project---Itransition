@@ -28,6 +28,7 @@ const apiUrls = {
     getSingleItem:'/item/single',
     editItem:'/item',
     removeItem:'/item',
+    getMyItems:'/item/my-items'
   },
   user:{
     getUser:'/user'
@@ -39,7 +40,7 @@ const apiUrls = {
   },
   itemReaction:{
     addReaction:'/item-reaction',
-    unreactItem:'/item-reaction'
+    unreactItem:'/item-reaction',
   },
   commentReaction:{
     addReaction:'/comment-reaction',

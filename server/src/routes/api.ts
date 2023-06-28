@@ -10,9 +10,10 @@ import commentReactionRouter from './commentReaction'
 
 const router=express.Router();
 
+
+router.use('/item',itemRouter);
 router.use('/auth',authRouter);
 router.use('/collection',collectionRouter);
-router.use('/item',itemRouter);
 router.use('/user',userRouter);
 router.use('/comment',commentRouter);
 router.use('/item-reaction',itemReactionRouter);

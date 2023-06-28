@@ -154,6 +154,28 @@ const editItem = async (input: Partial<ItemInput>, itemId: string) => {
   return updatedItem;
 };
 
+const getMyItems = async (userId: string) => {
+  console.log('lol')
+  const items = await client.item.findMany({
+    where: { collection: { authorId: userId } },
+    include: {
+      collection: {
+        include: {
+          author: {
+            select: {
+              firstName: true,
+              lastName: true,
+              profileImage: true,
+              id: true,
+            },
+          },
+        },
+      },
+    },
+  });
+  return items;
+};
+
 export {
   initializeItemCreation,
   addItem,
@@ -163,4 +185,5 @@ export {
   getItemByIdExtended,
   removeItem,
   editItem,
+  getMyItems,
 };
