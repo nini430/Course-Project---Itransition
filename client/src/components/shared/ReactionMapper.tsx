@@ -9,7 +9,7 @@ import { TabPanel, TabContext, TabList } from '@mui/lab';
 import EmojiTabPanel from '../EmojiTabPanel/EmojiTabPanel';
 
 interface IReactionMapperProps {
-  open: ReactionMapperType[];
+  open: ReactionMapperType[] |null;
   onClose: () => void;
 }
 

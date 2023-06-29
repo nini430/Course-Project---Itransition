@@ -31,7 +31,8 @@ const apiUrls = {
     getMyItems:'/item/my-items'
   },
   user:{
-    getUser:'/user'
+    getUser:'/user',
+    toggleFollowUser:'/user'
   },
   comment:{
     addComment:'/comment',

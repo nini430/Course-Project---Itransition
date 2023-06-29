@@ -22,7 +22,19 @@ model User {
   comments     Comment[]
   itemReactions  ItemReaction[]
   commentReactions CommentReaction[]
+  followedIds Follow[] @relation("followed")
+  followerIds Follow[] @relation("follower")
 }
+
+model Follow {
+  id String @id @default(uuid())
+  followerId String
+  followedId String
+  follower User @relation("follower",fields: [followerId],references: [id])
+  followed User @relation("followed",fields: [followedId],references: [id])
+
+}
+
 
 model Collection {
   id                   String                 @id @default(uuid())

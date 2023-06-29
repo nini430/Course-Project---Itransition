@@ -8,7 +8,8 @@ const routesPath={
     editItem:'/edit-item/:itemId',
     collectionDetails:'/collection/:collectionId',
     itemDetails:'/item/:itemId',
-    settings:'/settings'
+    settings:'/settings',
+    messenger:'/messenger'
 }
 
 export default routesPath;

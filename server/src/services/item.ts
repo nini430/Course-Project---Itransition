@@ -154,12 +154,35 @@ const editItem = async (input: Partial<ItemInput>, itemId: string) => {
   return updatedItem;
 };
 
-const getMyItems = async (userId: string) => {
-  console.log('lol')
+const getMyItems = async (collectionId: string) => {
   const items = await client.item.findMany({
-    where: { collection: { authorId: userId } },
+    where: { collectionId},
     include: {
       collection: {
+        include: {
+          author: {
+            select: {
+              firstName: true,
+              lastName: true,
+              profileImage: true,
+              id: true,
+            },
+          },
+        },
+      },
+      reactions: {
+        include: {
+          user: {
+            select: {
+              firstName: true,
+              lastName: true,
+              profileImage: true,
+              id: true,
+            },
+          },
+        },
+      },
+      comments: {
         include: {
           author: {
             select: {

@@ -16,6 +16,7 @@ import CollectionDetails from './pages/collection/CollectionDetails';
 import ItemDetails from './pages/item/ItemDetails';
 import routesPath from './utils/routes';
 import Settings from './pages/settings/Settings';
+import DesktopMessenger from './pages/messenger/desktop/DesktopMessenger';
 
 function App() {
   const { mode } = useAppSelector((state) => state.common);
@@ -41,6 +42,7 @@ function App() {
             element={<CollectionDetails />}
           />
           <Route path={routesPath.itemDetails} element={<ItemDetails />} />
+          <Route path={routesPath.messenger} element={<DesktopMessenger/>}/>
         </Routes>
       </ThemeProvider>
     </div>

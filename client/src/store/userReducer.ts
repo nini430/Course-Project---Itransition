@@ -3,20 +3,22 @@ import { UserInitialState } from '../types/user';
 import axiosApiInstance from '../axios';
 import apiUrls from '../api/api';
 import { User } from '../types/auth';
+import { FollowInstance } from '../types/follow';
 
 const initialState: UserInitialState = {
   currentProfile: null,
   profileLoading: false,
-  
+  currentFollowers:[],
+  currentFollowings:[]
 };
 
 export const getUserById = createAsyncThunk(
   'user/id',
   async (userId: string, thunkApi) => {
     try {
-      const response = await axiosApiInstance.get<{ data: User }>(
-        `${apiUrls.user.getUser}/${userId}`
-      );
+      const response = await axiosApiInstance.get<{
+        data: User;
+      }>(`${apiUrls.user.getUser}/${userId}`);
       console.log(response.data.data);
       return response.data.data;
     } catch (err) {
@@ -24,6 +26,15 @@ export const getUserById = createAsyncThunk(
     }
   }
 );
+
+export const toggleFollow=createAsyncThunk('user/toggle',async({followerId,followedId}:{followerId:string,followedId:string},thunkApi)=>{
+  try{
+    const response=await axiosApiInstance.put<{data:FollowInstance,status:'follow'|'unfollow'}>(`${apiUrls.user.toggleFollowUser}/${followerId}/${followedId}`);
+    return response.data;
+  }catch(err) {
+    return thunkApi.rejectWithValue(err);
+  }
+})
 
 const userSlice = createSlice({
   name: 'user',
@@ -43,6 +54,5 @@ const userSlice = createSlice({
   },
 });
 
-// export const {}=userSlice.actions;
 
 export default userSlice.reducer;

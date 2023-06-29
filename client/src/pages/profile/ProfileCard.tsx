@@ -1,7 +1,14 @@
 import styled from 'styled-components';
 import { useDropzone, Accept } from 'react-dropzone';
 import { useState, useEffect } from 'react';
-import { Card, CardContent, Typography, Box, Divider } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  Divider,
+  Button,
+} from '@mui/material';
 import { Toaster, toast } from 'react-hot-toast';
 
 import { useAppDispatch, useAppSelector } from '../../store/store';
@@ -11,8 +18,10 @@ import { uploadProfileImage } from '../../store/authReducer';
 import { fileToBase64 } from '../../utils/fileToBase64';
 import toastOptions from '../../utils/toastOptions';
 import Loading from '../../components/Loading/Loading';
-import { getUserById } from '../../store/userReducer';
+import { getUserById, toggleFollow } from '../../store/userReducer';
 import { useParams } from 'react-router-dom';
+import { Add } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 
 const ProfileCard = () => {
   const { getRootProps, getInputProps } = useDropzone({
@@ -28,11 +37,13 @@ const ProfileCard = () => {
     (state) => state.auth
   );
   const authId =
-    authedUser?.id || JSON.parse(localStorage.getItem('authed_user') as string);
+    authedUser?.id ||
+    JSON.parse(localStorage.getItem('authed_user') as string).id;
   const { myCollections } = useAppSelector((state) => state.collection);
   const { currentProfile, profileLoading } = useAppSelector(
     (state) => state.user
   );
+  console.log(currentProfile);
   useEffect(() => {
     dispatch(getUserById(userId as string));
   }, [userId, dispatch]);
@@ -42,6 +53,7 @@ const ProfileCard = () => {
   return (
     <Card sx={{ height: '600px' }}>
       <Toaster />
+
       <CardContent
         sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
       >
@@ -70,6 +82,19 @@ const ProfileCard = () => {
           mainImage={currentProfile?.profileImage}
           fallBackImage={Avatar}
         />
+        {authId !== userId && (
+          <LoadingButton
+            onClick={() =>
+              dispatch(toggleFollow({ followerId: authId, followedId: userId as string }))
+            }
+            startIcon={<Add />}
+            sx={{ border: '1px solid gray' }}
+          >
+            {currentProfile.followerIds.includes(authId as string)
+              ? 'Unfollow'
+              : 'Follow'}
+          </LoadingButton>
+        )}
         <Divider />
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
           <Typography sx={{ color: 'gray' }}>Email:</Typography>{' '}

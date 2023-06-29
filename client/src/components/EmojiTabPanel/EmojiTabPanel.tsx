@@ -5,8 +5,8 @@ import { ReactionMapper } from '../../types/reaction'
 import EmojiUser from '../EmojiUser/EmojiUser'
 
 interface EmojiTabPanelProps {
-    reactEl: ReactionMapper[]
-    emoji:string
+    reactEl: ReactionMapper[] | null;
+    emoji:string;
 }
 
 const EmojiTabPanel = ({reactEl,emoji}:EmojiTabPanelProps) => {

@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import {useState,useEffect} from 'react'
 import {useMediaQuery} from 'react-responsive'
 import {Button, IconButton} from '@mui/material'
-import {Menu,MenuOpen} from '@mui/icons-material'
+import {Menu,MenuOpen,Message} from '@mui/icons-material'
 import MobileNavDropDown from '../MobileNavDropDown/MobileNavDropDown'
 
 import LanguageDropDown from '../LanguageDropDown/LanguagePicker'
@@ -50,6 +50,11 @@ const NavBar = () => {
           <Logo/>
           <SearchInput/>
           <RightContainer>
+            <Link to='/messenger'>
+            <IconButton>
+            <Message/>
+          </IconButton></Link>
+          
               <ModeSwitch/>
           <LanguageDropDown />
          {userExists ? <NavUser/> : <Link to='/login'><Button sx={{border:'1px solid gray',width:'130px'}}>{t('auth.login')}</Button></Link> } 

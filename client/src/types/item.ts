@@ -1,7 +1,7 @@
 import { User } from "./auth";
 import { Collection} from "./collection";
 import { Comment } from "./comment";
-import { ItemReaction } from "./reaction";
+import { ItemReaction, Reaction, ReactionMapper } from "./reaction";
 
 export interface ItemInitialState {
     addItemLoading:boolean,
@@ -36,11 +36,13 @@ export interface Item {
     collectionId:string;
     createdAt:string;
     updatedAt:string;
+    reactions: ItemReaction[];
+    comments: Comment[];
+    collection:Collection
     
 }
 
 export interface ExtendedItem extends Item {
     collection:Collection  & {author: User};
     comments:Comment[];
-    reactions:ItemReaction[]
 }

@@ -99,6 +99,7 @@ export const getSingleItem = createAsyncThunk(
       const response = await axiosApiInstance.get<{ data: ExtendedItem }>(
         `${apiUrls.item.getSingleItem}/${itemId}`
       );
+      console.log(itemId,'lka!!')
       console.log(response.data.data);
       return response.data.data;
     } catch (err) {
@@ -140,6 +141,7 @@ export const editItem = createAsyncThunk(
         `${apiUrls.item.editItem}/${itemId}`,
         { input }
       );
+      console.log(itemId,'ka!!')
       onSuccess && onSuccess();
       return response.data.data;
     } catch (err) {
@@ -276,10 +278,10 @@ export const unreactComment = createAsyncThunk(
 
 export const getMyItems = createAsyncThunk(
   '/my-items/get',
-  async ({ userId }: { userId: string }, thunkApi) => {
+  async ({ collectionId }: { collectionId: string }, thunkApi) => {
     try {
       const response = await axiosApiInstance.get<{ data: Item[] }>(
-        `${apiUrls.item.getMyItems}/${userId}`
+        `${apiUrls.item.getMyItems}/${collectionId}`
       );
       console.log(response.data);
       return response.data.data;
@@ -329,6 +331,7 @@ const itemSlice = createSlice({
     });
     builder.addCase(initializeItemConfig.fulfilled, (state, action) => {
       state.initializeFormLoading = false;
+      console.log(action.payload,'!')
       state.formCustomFields = action.payload;
     });
     builder.addCase(initializeItemConfig.rejected, (state, action) => {

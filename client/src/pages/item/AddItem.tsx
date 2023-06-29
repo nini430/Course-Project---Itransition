@@ -91,7 +91,7 @@ const AddItem = () => {
             onSuccess: () => {
               toast.success(t('item_created'), toastOptions);
               setTimeout(() => {
-                navigate('/');
+                navigate(-1);
               }, 2000);
             },
           })
@@ -264,7 +264,6 @@ const AddItem = () => {
                   <Typography sx={{ mb: 1 }}>{item.name}</Typography>
                   <DemoContainer components={['DatePicker']}>
                     <DatePicker
-                      value={moment(values[item.name]?.value) || undefined}
                       onClose={() => {
                         setFieldTouched(item.name);
                       }}

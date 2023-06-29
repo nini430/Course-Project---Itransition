@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import { Column } from "../types/table";
 
 
@@ -12,24 +10,12 @@ export const itemColumns:Column[]=[
     {
         id:'tags',
         minWidth:200,
-        label:'tags',
-        format:(value:string)=>value.split(',').map((item:string)=>`#${item}`)
+        label:'tags'
     },
     {
-        id:'collection',
+        id:'reactions.length',
         minWidth:200,
-        label:'collection',
-    },
-    {
-        id:'author',
-        minWidth:200,
-        label:'author',
-    },
-    {
-        id:'createdAt',
-        minWidth:200,
-        label:'created_at',
-        format:(value:string)=>moment(value).format('LL')
+        label:'reactions',
     },
     {
         id:'comments',
@@ -37,13 +23,23 @@ export const itemColumns:Column[]=[
         label:'comments',
     },
     {
-        id:'reactions',
+        id:'createdAt',
         minWidth:200,
-        label:'reactions',
+        label:'created_at'
+    },
+    {
+        id:'collection',
+        minWidth:200,
+        label:'collection'
+    },
+    {
+        id:'author',
+        minWidth:200,
+        label:'author'
     },
     {
         id:'custom_fields',
         minWidth:200,
-        label:'custom_fields',
-    },
+        label:'custom_fields'
+    }
 ]

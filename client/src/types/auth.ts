@@ -9,7 +9,8 @@ export interface User {
     lastName:string;
     email:string;
     profileImage:string;
-    role:Role
+    role:Role;
+    
 }
 
 export interface AuthInitialState {

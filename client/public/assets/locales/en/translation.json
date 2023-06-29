@@ -7,7 +7,8 @@
     "view_more": "View More",
     "topic": "Topic",
     "custom_fields": "Custom Fields",
-    "no_comments": "No Comments"
+    "no_comments": "No Comments",
+    "show":"Show"
   },
   "home": {
     "latest_items": "Latest Items",
@@ -23,6 +24,7 @@
     "comments":"Comments",
     "reactions":"Reactions",
     "custom_fields": "Custom Fields"
+
   },
   "auth": {
     "register": "Register",

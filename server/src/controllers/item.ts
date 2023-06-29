@@ -134,9 +134,8 @@ const editItemHandler = asyncHandler(
   }
 );
 
-const getMyItemsHandler=asyncHandler(async(req:Request<{userId:string}>,res:Response,next:NextFunction)=>{
-    const items=await getMyItems(req.params.userId);
-    console.log('onaa')
+const getMyItemsHandler=asyncHandler(async(req:Request<{collectionId:string}>,res:Response,next:NextFunction)=>{
+    const items=await getMyItems(req.params.collectionId);
     return res.status(StatusCodes.OK).json({success:true,data:items});
 });
 

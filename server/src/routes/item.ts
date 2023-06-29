@@ -14,7 +14,7 @@ import {
 const router = express.Router();
 
 
-router.get('/my-items/:userId',getMyItemsHandler);
+router.get('/my-items/:collectionId',getMyItemsHandler);
 router.get('/latest', getLatestItemsHandler);
 router.get('/single/:itemId',getItemByIdExtendedHandler);
 
