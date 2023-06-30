@@ -8,7 +8,9 @@
     "topic":"თემა",
     "custom_fields":"სპეციფიკური ველები",
     "no_comments":"კომენტარები არ არის",
-    "show":"ნახვა"
+    "show":"ნახვა",
+    "follow":"გამოწერა",
+    "unfollow":"ამოწერა"
 },
   "home":{
     "latest_items":"უახლესი ჩანაწერები",
@@ -42,7 +44,8 @@
     "last_name_required": "შეიყვანეთ გვარი-ს ველი",
     "confirm_password_required": "გაიმეორეთ პაროლი",
     "passwords_must_match": "პაროლი არ ემთხვევა",
-    "sign_in":"ავტორიზაცია"
+    "sign_in":"ავტორიზაცია",
+    "role":"როლი"
   },
   "nav": {
     "search": "ძიება...",
@@ -59,6 +62,7 @@
     "item":"ჩანაწერი"
 },
 "collection":{
-  "details":"კოლექციის დეტალები"
+  "details":"კოლექციის დეტალები",
+  "collections":"კოლექცია"
 }
 }

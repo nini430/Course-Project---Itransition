@@ -1,3 +1,4 @@
+import { FollowInstance } from "./follow";
 import { RegisterValues } from "./register";
 
 type Role='BASIC' | 'ADMIN';
@@ -10,6 +11,8 @@ export interface User {
     email:string;
     profileImage:string;
     role:Role;
+    followedIds:FollowInstance[];
+    followerIds: FollowInstance[];
     
 }
 
@@ -19,6 +22,8 @@ export interface AuthInitialState {
     loginLoading: boolean;
     profileUploadLoading:boolean;
     updateProfileLoading:boolean;
+    myFollowers:FollowInstance[];
+    myFollowings: FollowInstance[];
 }
 
 export type UserUpdateInput=Partial<RegisterValues> & {newPassword?:string};

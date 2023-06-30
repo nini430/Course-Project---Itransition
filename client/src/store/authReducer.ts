@@ -12,6 +12,8 @@ import axiosApiInstance from '../axios';
 import apiUrls from '../api/api';
 import toastOptions from '../utils/toastOptions';
 import { LoginValues } from '../types/login';
+import { FollowInstance } from '../types/follow';
+import { toggleFollow } from './userReducer';
 
 const initialState: AuthInitialState = {
   authedUser: null,
@@ -19,6 +21,8 @@ const initialState: AuthInitialState = {
   loginLoading: false,
   profileUploadLoading: false,
   updateProfileLoading: false,
+  myFollowers: [],
+  myFollowings: [],
 };
 
 export const registerUser = createAsyncThunk(
@@ -137,6 +141,21 @@ export const updateUserInfo = createAsyncThunk(
   }
 );
 
+export const getFollows = createAsyncThunk(
+  'auth/getFollows',
+  async (_, thunkApi) => {
+    try {
+      const response = await axiosApiInstance.get<{data:{
+        followers: FollowInstance[];
+        followings: FollowInstance[];
+      }}>(apiUrls.auth.getFollows);
+      return response.data.data;
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
 const authReducer = createSlice({
   name: 'auth',
   initialState,
@@ -200,10 +219,23 @@ const authReducer = createSlice({
       state.authedUser = action.payload;
       localStorage.setItem('authed_user', JSON.stringify(state.authedUser));
     });
-    builder.addCase(updateUserInfo.rejected, (state, action:any) => {
+    builder.addCase(updateUserInfo.rejected, (state, action: any) => {
       state.updateProfileLoading = false;
-      toast.error(action.payload.message.error as string,toastOptions);
+      toast.error(action.payload.message.error as string, toastOptions);
     });
+    builder.addCase(getFollows.fulfilled, (state, action) => {
+      console.log(action.payload)
+      state.myFollowers = action.payload.followers;
+      state.myFollowings = action.payload.followings;
+    });
+    builder.addCase(toggleFollow.fulfilled,(state,action)=>{
+      const {data,status,follow}=action.payload;
+      if(status==='follow') {
+        state.myFollowings=[...state.myFollowings,data];
+      }else{
+        state.myFollowings=state.myFollowings.filter(item=>item.id!==follow);
+      }
+    })
   },
 });
 

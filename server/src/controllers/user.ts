@@ -24,7 +24,7 @@ const toggleFollowUser=asynHandler(async(req:Request<{followerId:string,followed
     }else{
     followInstance=await followUser(req.params.followerId,req.params.followedId);
     }
-    return res.status(StatusCodes.OK).json({success:true,data:followInstance,status:doesFollow?'unfollow':'follow'})
+    return res.status(StatusCodes.OK).json({success:true,data:followInstance,status:doesFollow?'unfollow':'follow',follow:doesFollow?.id})
 });
 
 export {getUserByIdHandler,toggleFollowUser}

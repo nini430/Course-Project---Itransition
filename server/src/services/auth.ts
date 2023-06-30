@@ -16,7 +16,7 @@ const comparePassword = async (candidatePassword: string, password: string) => {
 };
 
 const findUserByEmail = async (email: string) => {
-  const user = await client.user.findUnique({ where: { email } });
+  const user = await client.user.findUnique({ where: { email }, include:{followedIds:true,followerIds:true} });
   return user;
 };
 
@@ -72,6 +72,12 @@ const updatePassword=async(newPassword:string,userId:string)=>{
   const {password,...rest}=updatedUser;
   return rest;
 }
+
+const getMyFollows=async(userId:string)=>{
+  const followers=await client.follow.findMany({where:{followedId:userId}})
+  const followings= await client.follow.findMany({where:{followerId:userId}});
+  return {followers,followings}
+}
 export {
   hashPassword,
   createUser,
@@ -81,5 +87,6 @@ export {
   generateJwt,
   uploadProfileImage,
   updateUserInfo,
-  updatePassword
+  updatePassword,
+  getMyFollows
 };

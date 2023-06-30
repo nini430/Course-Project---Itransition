@@ -1,15 +1,18 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { toast } from 'react-hot-toast';
 import { UserInitialState } from '../types/user';
 import axiosApiInstance from '../axios';
 import apiUrls from '../api/api';
 import { User } from '../types/auth';
 import { FollowInstance } from '../types/follow';
+import toastOptions from '../utils/toastOptions';
 
 const initialState: UserInitialState = {
   currentProfile: null,
   profileLoading: false,
-  currentFollowers:[],
-  currentFollowings:[]
+  currentFollowers: [],
+  currentFollowings: [],
+  toggleFollowLoading: false,
 };
 
 export const getUserById = createAsyncThunk(
@@ -17,7 +20,7 @@ export const getUserById = createAsyncThunk(
   async (userId: string, thunkApi) => {
     try {
       const response = await axiosApiInstance.get<{
-        data: User;
+        data: User & { followerIds: any[]; followedIds: any[] };
       }>(`${apiUrls.user.getUser}/${userId}`);
       console.log(response.data.data);
       return response.data.data;
@@ -27,14 +30,24 @@ export const getUserById = createAsyncThunk(
   }
 );
 
-export const toggleFollow=createAsyncThunk('user/toggle',async({followerId,followedId}:{followerId:string,followedId:string},thunkApi)=>{
-  try{
-    const response=await axiosApiInstance.put<{data:FollowInstance,status:'follow'|'unfollow'}>(`${apiUrls.user.toggleFollowUser}/${followerId}/${followedId}`);
-    return response.data;
-  }catch(err) {
-    return thunkApi.rejectWithValue(err);
+export const toggleFollow = createAsyncThunk(
+  'user/toggle',
+  async (
+    { followerId, followedId }: { followerId: string; followedId: string },
+    thunkApi
+  ) => {
+    try {
+      const response = await axiosApiInstance.put<{
+        data: FollowInstance;
+        status: 'follow' | 'unfollow';
+        follow: string;
+      }>(`${apiUrls.user.toggleFollowUser}/${followerId}/${followedId}`);
+      return response.data;
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
   }
-})
+);
 
 const userSlice = createSlice({
   name: 'user',
@@ -45,14 +58,34 @@ const userSlice = createSlice({
       state.profileLoading = true;
     });
     builder.addCase(getUserById.fulfilled, (state, action) => {
+      const { followedIds, followerIds, ...rest } = action.payload;
       state.profileLoading = false;
-      state.currentProfile = action.payload;
+      state.currentProfile = rest;
+      state.currentFollowers = followerIds;
+      state.currentFollowings = followedIds;
     });
     builder.addCase(getUserById.rejected, (state, action) => {
       state.profileLoading = false;
     });
+    builder.addCase(toggleFollow.pending, (state) => {
+      state.toggleFollowLoading = true;
+    });
+    builder.addCase(toggleFollow.fulfilled, (state, action) => {
+      const { data, status, follow: followId } = action.payload;
+      state.toggleFollowLoading = false;
+      if (status === 'follow') {
+        state.currentFollowers = [...state.currentFollowers, data];
+      } else {
+        state.currentFollowers = state.currentFollowers.filter(
+          (follow) => follow.id !== followId
+        );
+      }
+    });
+    builder.addCase(toggleFollow.rejected, (state, action) => {
+      state.toggleFollowLoading=false;
+      toast.error('something_went_wrong', toastOptions);
+    });
   },
 });
-
 
 export default userSlice.reducer;

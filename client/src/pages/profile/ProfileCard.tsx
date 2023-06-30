@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import { useDropzone, Accept } from 'react-dropzone';
 import { useState, useEffect } from 'react';
 import {
@@ -7,7 +6,6 @@ import {
   Typography,
   Box,
   Divider,
-  Button,
 } from '@mui/material';
 import { Toaster, toast } from 'react-hot-toast';
 
@@ -22,8 +20,13 @@ import { getUserById, toggleFollow } from '../../store/userReducer';
 import { useParams } from 'react-router-dom';
 import { Add } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
+import { useTranslation } from 'react-i18next';
+import FollowModal from '../../components/shared/FollowModal';
 
 const ProfileCard = () => {
+  const dispatch = useAppDispatch();
+  const [followModal,setFollowModal]=useState<any[]|null>(null);
+  const {t}=useTranslation();
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*' as unknown as Accept,
     onDrop: (acceptedFiles) => {
@@ -31,16 +34,15 @@ const ProfileCard = () => {
     },
   });
   const { userId } = useParams();
-  const dispatch = useAppDispatch();
   const [uploadImg, setUploadImg] = useState<File | any>(null);
-  const { authedUser, profileUploadLoading } = useAppSelector(
+  const { authedUser, profileUploadLoading, myFollowers, myFollowings } = useAppSelector(
     (state) => state.auth
   );
   const authId =
     authedUser?.id ||
     JSON.parse(localStorage.getItem('authed_user') as string).id;
   const { myCollections } = useAppSelector((state) => state.collection);
-  const { currentProfile, profileLoading } = useAppSelector(
+  const { currentProfile, profileLoading,  currentFollowers, currentFollowings, toggleFollowLoading } = useAppSelector(
     (state) => state.user
   );
   console.log(currentProfile);
@@ -84,33 +86,43 @@ const ProfileCard = () => {
         />
         {authId !== userId && (
           <LoadingButton
+            loading={toggleFollowLoading}
             onClick={() =>
               dispatch(toggleFollow({ followerId: authId, followedId: userId as string }))
             }
             startIcon={<Add />}
             sx={{ border: '1px solid gray' }}
           >
-            {currentProfile.followerIds.includes(authId as string)
-              ? 'Unfollow'
-              : 'Follow'}
+            {currentFollowers.find((item:any)=>item.followerId===authId)
+              ? t('common.unfollow')
+              : t('common.follow')}
           </LoadingButton>
         )}
         <Divider />
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <Typography sx={{ color: 'gray' }}>Email:</Typography>{' '}
+          <Typography sx={{ color: 'gray' }}>{t('auth.email')}:</Typography>{' '}
           <Typography>{currentProfile.email}</Typography>
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <Typography sx={{ color: 'gray' }}>Role:</Typography>{' '}
+          <Typography sx={{ color: 'gray' }}>{t('auth.role')}:</Typography>{' '}
           <Typography>
             {currentProfile?.role === 'BASIC' ? 'User' : 'Admin'}
           </Typography>
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <Typography sx={{ color: 'gray' }}>Collections:</Typography>{' '}
-          <Typography>{myCollections?.length} Collections</Typography>
+          <Typography sx={{ color: 'gray' }}>{t('collection.collections')}:</Typography>{' '}
+          <Typography>{myCollections?.length} {t('collection.collections')}</Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+          <Typography sx={{ color: 'gray' }}>Followers:</Typography>{' '}
+          <Typography onClick={()=>setFollowModal(currentFollowers.map((item:any)=>({...item.followed})))} sx={{textDecoration:'underline',cursor:'pointer'}}>{currentProfile.id===authId ? myFollowers.length:currentFollowers.length}</Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+          <Typography sx={{ color: 'gray' }}>Followings:</Typography>{' '}
+          <Typography onClick={()=>setFollowModal(currentFollowings.map((item:any)=>({...item.follower})))} sx={{textDecoration:'underline',cursor:'pointer'}}>{currentProfile.id===authId ? myFollowings.length:currentFollowings.length}</Typography>
         </Box>
       </CardContent>
+      <FollowModal open={followModal} onClose={()=>setFollowModal(null)}/>
     </Card>
   );
 };
