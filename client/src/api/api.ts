@@ -47,6 +47,12 @@ const apiUrls = {
   commentReaction:{
     addReaction:'/comment-reaction',
     unreactComment:'/comment-reaction'
+  },
+  chat:{
+    getCurrentConversations:'/chat/conversations',
+    sendMessage:'/chat/add-message',
+    getMessages:'/chat/messages',
+    getMyFollows:'/chat/my-follows'
   }
 };
 

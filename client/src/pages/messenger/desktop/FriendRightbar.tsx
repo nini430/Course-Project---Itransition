@@ -1,16 +1,24 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { styled } from 'styled-components';
 import ChatOnline from '../../../components/Chat/ChatOnline';
-import { Typography } from '@mui/material';
+import { Divider, Typography } from '@mui/material';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { getMyFollows } from '../../../store/chatReducer';
 
 const FriendRightbar = () => {
+  const dispatch=useAppDispatch();
+  const {chatFollows}=useAppSelector(state=>state.chat);
+  useEffect(()=>{
+    dispatch(getMyFollows())
+  },[dispatch])
   return (
     <RightBarContainer>
       <Typography>12 online friends</Typography>
-      <ChatOnline fullName='ნინო გოგატიშვილი'/>
-      <ChatOnline fullName='ნინო გოგატიშვილი'/>
-      <ChatOnline fullName='ნინო გოგატიშვილი'/>
-      <ChatOnline fullName='ნინო გოგატიშვილი'/>
+      {chatFollows && chatFollows.map(item=>(
+        <ChatOnline  memberId={item.follower.id}  fullName={`${item.follower.firstName} ${item.follower.lastName}`}/>
+      ))}
+      
+      
     </RightBarContainer>
   )
 }

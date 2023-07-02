@@ -6,6 +6,7 @@ import authReducer from './authReducer';
 import collectionReducer from './collectionReducer';
 import itemReducer from './itemReducer';
 import userReducer from './userReducer';
+import chatReducer from './chatReducer';
 
 const store = configureStore({
   reducer:{
@@ -13,7 +14,8 @@ const store = configureStore({
     auth:authReducer,
     collection:collectionReducer,
     item:itemReducer,
-    user:userReducer
+    user:userReducer,
+    chat:chatReducer
   },
   middleware:getDefaultMiddleware=>getDefaultMiddleware({
     serializableCheck:false

@@ -34,6 +34,7 @@ const Register = () => {
     handleSubmit,
     dirty,
     touched,
+    setFieldValue
   } = useFormik({
     initialValues: registerValues,
     validationSchema: registerValidationSchema,
@@ -105,7 +106,7 @@ const Register = () => {
               placeholder={t('auth.firstName') as string}
               type="text"
               value={values.firstName}
-              onChange={handleChange}
+              onChange={value=>setFieldValue('firstName',value)}
               onBlur={handleBlur}
               error={!!(errors.firstName && touched.firstName)}
               mode={mode}
@@ -120,7 +121,7 @@ const Register = () => {
               placeholder={t('auth.lastName') as string}
               type="text"
               value={values.lastName}
-              onChange={handleChange}
+              onChange={value=>setFieldValue('lastName',value)}
               onBlur={handleBlur}
               error={!!(errors.lastName && touched.lastName)}
               mode={mode}
@@ -135,7 +136,7 @@ const Register = () => {
               placeholder={t('auth.email') as string}
               type="email"
               value={values.email}
-              onChange={handleChange}
+              onChange={(value)=>setFieldValue('email',value)}
               onBlur={handleBlur}
               error={!!(errors.email && touched.email)}
               mode={mode}
@@ -153,7 +154,7 @@ const Register = () => {
                 setPassType(passType === 'password' ? 'text' : 'password')
               }
               value={values.password}
-              onChange={handleChange}
+              onChange={value=>setFieldValue('password',value)}
               onBlur={handleBlur}
               error={!!(errors.password && touched.password)}
               mode={mode}
@@ -173,7 +174,7 @@ const Register = () => {
                 )
               }
               value={values.confirmPassword}
-              onChange={handleChange}
+              onChange={value=>setFieldValue('confirmPassword',value)}
               onBlur={handleBlur}
               error={!!(errors.confirmPassword && touched.confirmPassword)}
               mode={mode}

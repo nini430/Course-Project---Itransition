@@ -6,6 +6,7 @@ import apiUrls from '../api/api';
 import { User } from '../types/auth';
 import { FollowInstance } from '../types/follow';
 import toastOptions from '../utils/toastOptions';
+import { uploadProfileImage } from './authReducer';
 
 const initialState: UserInitialState = {
   currentProfile: null,
@@ -58,9 +59,9 @@ const userSlice = createSlice({
       state.profileLoading = true;
     });
     builder.addCase(getUserById.fulfilled, (state, action) => {
-      const { followedIds, followerIds, ...rest } = action.payload;
+      const { followedIds, followerIds } = action.payload;
       state.profileLoading = false;
-      state.currentProfile = rest;
+      state.currentProfile = action.payload;
       state.currentFollowers = followerIds;
       state.currentFollowings = followedIds;
     });
@@ -85,6 +86,11 @@ const userSlice = createSlice({
       state.toggleFollowLoading=false;
       toast.error('something_went_wrong', toastOptions);
     });
+    builder.addCase(uploadProfileImage.fulfilled,(state,action)=>{
+      if(state.currentProfile) {
+        state.currentProfile={...state.currentProfile,profileImage:action.payload}
+      }
+    })
   },
 });
 

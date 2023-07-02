@@ -26,6 +26,14 @@ export interface AuthInitialState {
     myFollowings: FollowInstance[];
 }
 
+
+export interface SimpleUser {
+    firstName:string;
+    lastName:string;
+    profileImage:string;
+    id:string;
+}
+
 export type UserUpdateInput=Partial<RegisterValues> & {newPassword?:string};
 
 export type UpdateTypes='fullName'|'email'|'password';

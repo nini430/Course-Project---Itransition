@@ -16,13 +16,30 @@ const comparePassword = async (candidatePassword: string, password: string) => {
 };
 
 const findUserByEmail = async (email: string) => {
-  const user = await client.user.findUnique({ where: { email }, include:{followedIds:true,followerIds:true} });
+  const user = await client.user.findUnique({
+    where: { email },
+    include: { followedIds: true, followerIds: true },
+  });
   return user;
 };
 
 const generateJwt = (userId: string, secret: string, expiresIn: string) => {
   const token = jwt.sign({ id: userId }, secret, { expiresIn });
   return token;
+};
+
+const findUserByIdWithoutPass = async (id: string) => {
+  const user = await client.user.findUnique({
+    where: { id },
+    select: {
+      firstName: true,
+      lastName: true,
+      profileImage: true,
+      id: true,
+      role: true,
+    },
+  });
+  return user;
 };
 
 const findUserById = async (id: string) => {
@@ -62,22 +79,28 @@ const updateUserInfo = async (
     data: update === 'fullName' ? { firstName, lastName } : { email },
     where: { id: userId },
   });
-  const {password,...rest}=updatedUser;
+  const { password, ...rest } = updatedUser;
   return rest;
 };
 
-
-const updatePassword=async(newPassword:string,userId:string)=>{
-  const updatedUser=await client.user.update({data:{password:newPassword},where:{id:userId}});
-  const {password,...rest}=updatedUser;
+const updatePassword = async (newPassword: string, userId: string) => {
+  const updatedUser = await client.user.update({
+    data: { password: newPassword },
+    where: { id: userId },
+  });
+  const { password, ...rest } = updatedUser;
   return rest;
-}
+};
 
-const getMyFollows=async(userId:string)=>{
-  const followers=await client.follow.findMany({where:{followedId:userId}})
-  const followings= await client.follow.findMany({where:{followerId:userId}});
-  return {followers,followings}
-}
+const getMyFollows = async (userId: string) => {
+  const followers = await client.follow.findMany({
+    where: { followedId: userId },
+  });
+  const followings = await client.follow.findMany({
+    where: { followerId: userId },
+  });
+  return { followers, followings };
+};
 export {
   hashPassword,
   createUser,
@@ -88,5 +111,6 @@ export {
   uploadProfileImage,
   updateUserInfo,
   updatePassword,
-  getMyFollows
+  getMyFollows,
+  findUserByIdWithoutPass
 };

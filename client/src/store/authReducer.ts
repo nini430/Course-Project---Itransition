@@ -204,7 +204,7 @@ const authReducer = createSlice({
         };
         localStorage.setItem(
           'authed_user',
-          JSON.stringify({ ...state.authedUser, profileImage: action.payload })
+          JSON.stringify(state.authedUser)
         );
       }
     });
