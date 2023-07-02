@@ -3,12 +3,14 @@ import authProtect from '../middleware/authProtect';
 import {
   addItemHandler,
   editItemHandler,
+  filterItemHandler,
   getItemByIdExtendedHandler,
   getLatestItemsHandler,
   getMyItemsHandler,
   getUniqueItemTagsHandler,
   initializeItemCreationHandler,
   removeItemHandler,
+  sortItemHandler,
 } from '../controllers/item';
 
 const router = express.Router();
@@ -17,6 +19,8 @@ const router = express.Router();
 router.get('/my-items/:collectionId',getMyItemsHandler);
 router.get('/latest', getLatestItemsHandler);
 router.get('/single/:itemId',getItemByIdExtendedHandler);
+router.put('/filter/:collectionId',filterItemHandler);
+router.put('/sort/:collectionId',sortItemHandler);
 
 
 router.use(authProtect);

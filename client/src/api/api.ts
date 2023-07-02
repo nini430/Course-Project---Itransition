@@ -29,7 +29,9 @@ const apiUrls = {
     getSingleItem:'/item/single',
     editItem:'/item',
     removeItem:'/item',
-    getMyItems:'/item/my-items'
+    getMyItems:'/item/my-items',
+    filter:'/item/filter',
+    sort:'/item/sort'
   },
   user:{
     getUser:'/user',

@@ -23,6 +23,9 @@ const CustomFieldsModal = ({ open, onClose,itemId }: ICustomFieldsModalProps) =>
   return (
     <Dialog open={!!open} onClose={onClose}>
       <DialogContent sx={{ minWidth: 400 }}>
+        {open && Object.keys(open).length===0 && (
+          <Typography>No Custom Fields for this item</Typography>
+        )}
         {open ? (
           Object.entries(open)?.map(([key, value]) => (
             <Box>
@@ -50,7 +53,7 @@ const CustomFieldsModal = ({ open, onClose,itemId }: ICustomFieldsModalProps) =>
       </DialogContent>
       <DialogActions>
         <Link to={`/edit-item/${itemId}`}  style={{textDecoration:'none'}}>
-        <LoadingButton startIcon={<Edit />}>Edit</LoadingButton></Link>     
+        <LoadingButton disabled={!open || Object.keys(open).length===0} startIcon={<Edit />}>Edit</LoadingButton></Link>     
         <Button onClick={onClose} startIcon={<Cancel />}>
           Close
         </Button>

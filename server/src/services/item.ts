@@ -1,4 +1,5 @@
 import { ItemInput } from '../types/item';
+import { simpleUser } from '../utils/commonQueryObjs';
 import client from '../utils/prismaClient';
 
 const initializeItemCreation = async (collectionId: string) => {
@@ -156,7 +157,7 @@ const editItem = async (input: Partial<ItemInput>, itemId: string) => {
 
 const getMyItems = async (collectionId: string) => {
   const items = await client.item.findMany({
-    where: { collectionId},
+    where: { collectionId },
     include: {
       collection: {
         include: {
@@ -199,6 +200,80 @@ const getMyItems = async (collectionId: string) => {
   return items;
 };
 
+const filterItem = async (filter: string,collectionId:string) => {
+  const items = await client.item.findMany({
+    where: {
+      OR: [
+        { name: { contains: filter } },
+        { tags: { contains: filter } },
+      ],
+      collectionId
+    },
+    include:{
+      collection:{
+        include:{
+          author:{
+            select:{
+              firstName:true,
+              lastName:true,
+              profileImage:true,
+              id:true
+            }
+          }
+        }
+      },
+      reactions:{
+        include:{
+          user:{
+            select:simpleUser
+          }
+        }
+      },
+      comments:{
+        include:{
+          author:{
+            select:simpleUser
+          }
+        }
+      }
+    }
+  });
+  return items;
+};
+
+const sortItem=async(sortCol:string,sortDir:'asc'|'desc',collectionId:string)=>{
+  const items=await client.item.findMany({where:{
+    collectionId,
+  },include:{
+    collection:{
+      include:{
+        author:{
+          select:simpleUser
+        }
+      }
+    },
+    comments:{
+      include:{
+        author:{
+          select:simpleUser
+        }
+      }
+    },
+    reactions:{
+      include:{
+        user:{
+          select:simpleUser
+        }
+      }
+    }
+  },
+  orderBy:{
+    [sortCol]:sortDir
+  }
+})
+return items;
+}
+
 export {
   initializeItemCreation,
   addItem,
@@ -209,4 +284,6 @@ export {
   removeItem,
   editItem,
   getMyItems,
+  filterItem,
+  sortItem
 };

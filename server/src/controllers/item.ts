@@ -11,6 +11,8 @@ import {
   removeItem,
   editItem,
   getMyItems,
+  filterItem,
+  sortItem,
 } from '../services/item';
 import { ItemInput } from '../types/item';
 import ErrorResponse from '../utils/errorResponse';
@@ -134,11 +136,46 @@ const editItemHandler = asyncHandler(
   }
 );
 
-const getMyItemsHandler=asyncHandler(async(req:Request<{collectionId:string}>,res:Response,next:NextFunction)=>{
-    const items=await getMyItems(req.params.collectionId);
-    return res.status(StatusCodes.OK).json({success:true,data:items});
-});
+const getMyItemsHandler = asyncHandler(
+  async (
+    req: Request<{ collectionId: string }>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const items = await getMyItems(req.params.collectionId);
+    return res.status(StatusCodes.OK).json({ success: true, data: items });
+  }
+);
 
+const filterItemHandler = asyncHandler(
+  async (
+    req: Request<{ collectionId: string }, {}, { filter: string }>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const items = await filterItem(req.body.filter, req.params.collectionId);
+    return res.status(StatusCodes.OK).json({ success: true, data: items });
+  }
+);
+
+const sortItemHandler = asyncHandler(
+  async (
+    req: Request<
+      { collectionId: string },
+      {},
+      { sortedCol: string; sortedDir: 'asc' | 'desc' }
+    >,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const items = await sortItem(
+      req.body.sortedCol,
+      req.body.sortedDir,
+      req.params.collectionId
+    );
+    return res.status(StatusCodes.OK).json({ success: true, data: items });
+  }
+);
 export {
   initializeItemCreationHandler,
   addItemHandler,
@@ -147,5 +184,7 @@ export {
   getItemByIdExtendedHandler,
   removeItemHandler,
   editItemHandler,
-  getMyItemsHandler
+  getMyItemsHandler,
+  filterItemHandler,
+  sortItemHandler,
 };

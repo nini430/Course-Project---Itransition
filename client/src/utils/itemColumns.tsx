@@ -6,11 +6,13 @@ export const itemColumns:Column[]=[
         id:'name',
         minWidth:200,
         label:'name',
+        isSortable:true,
     },
     {
         id:'tags',
         minWidth:200,
-        label:'tags'
+        label:'tags',
+        isSortable:true,
     },
     {
         id:'reactions.length',
@@ -25,7 +27,8 @@ export const itemColumns:Column[]=[
     {
         id:'createdAt',
         minWidth:200,
-        label:'created_at'
+        label:'created_at',
+        isSortable:true
     },
     {
         id:'collection',
