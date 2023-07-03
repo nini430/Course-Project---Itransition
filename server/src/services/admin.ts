@@ -1,23 +1,26 @@
+import { adminUser } from '../utils/commonQueryObjs';
 import { userTableFormatter } from '../utils/formatterFns';
 import client from '../utils/prismaClient';
 
 const getAllUsers = async () => {
   const users = await client.user.findMany({
-    select: {
-      id:true,
-      firstName: true,
-      lastName: true,
-      email: true,
-      role:true,
-      profileImage:true,
-      password: false,
-      createdAt:true,
-      collections: true,
-      followedIds: { include: { followed: true, follower: true } },
-      followerIds: { include: { followed: true, follower: true } },
-    },
+    select: adminUser,
   });
   return userTableFormatter(users);
 };
 
-export { getAllUsers };
+const filterUsers= async(filter:string)=>{
+  const users=await client.user.findMany({
+    where:{
+      OR:[
+        {firstName:{contains:filter}},
+        {lastName:{contains:filter}},
+        {email:{contains:filter}},
+      ]
+    },
+    select:adminUser
+  })
+  return userTableFormatter(users);
+}
+
+export { getAllUsers, filterUsers };

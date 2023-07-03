@@ -19,6 +19,16 @@ export const getUsers=createAsyncThunk('admin/users',async(_,thunkApi)=>{
     }
 })
 
+export const filterUsers= createAsyncThunk('admin/filter',async({filter}:{filter:string},thunkApi)=>{
+    try{
+    const response=await axiosApiInstance.put<{data:any[]}>(apiUrls.admin.filterUsers,{filter});
+    console.log(response.data.data);
+    return response.data.data;
+    }catch(err) {
+        return thunkApi.rejectWithValue(err);
+    }
+})
+
 
 
 const adminReducer=createSlice({
@@ -34,6 +44,17 @@ const adminReducer=createSlice({
             state.users=action.payload;
         });
         builder.addCase(getUsers.rejected,(state,action)=>{
+            state.getUsersLoading=false;
+        });
+        builder.addCase(filterUsers.pending,state=>{
+            state.getUsersLoading=true;
+        });
+        builder.addCase(filterUsers.fulfilled,(state,action)=>{
+            state.getUsersLoading=false;
+            state.users=action.payload;
+
+        });
+        builder.addCase(filterUsers.rejected,(state,action)=>{
             state.getUsersLoading=false;
         })
     }

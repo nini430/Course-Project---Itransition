@@ -62,17 +62,15 @@ const CollectionDashboard = ({
     return () => {
       clearTimeout(timeout);
     };
-  }, [filterValue, searchValue, setSearchValue]);
+  }, [filterValue, setSearchValue]);
 
   useEffect(() => {
-    if (searchValue) {
       dispatch(
         filterItems({
           filter: searchValue,
           collectionId: currentCollection?.id as string,
         })
       );
-    }
   }, [searchValue, dispatch, currentCollection]);
   useEffect(() => {
     if (sortedColumn) {
@@ -113,7 +111,7 @@ const CollectionDashboard = ({
           }}
           size="small"
         />
-        <Button startIcon={<Download/>} sx={{border:'1px solid gray'}}>
+        <Button startIcon={<Download />} sx={{ border: '1px solid gray' }}>
           <CSVLink
             style={{ textDecoration: 'none' }}
             filename={`items-${currentCollection?.id as string}`}
@@ -123,8 +121,8 @@ const CollectionDashboard = ({
           </CSVLink>
         </Button>
       </Box>
-      <Table data={myItems || []} tableName='item' columns={itemColumns}/>
-        {/* <TableBody>
+      <Table data={myItems || []} tableName="item" columns={itemColumns} />
+      {/* <TableBody>
           {myItems.map((item) => (
             <TableRow>
               <TableCell>{item.name}</TableCell>

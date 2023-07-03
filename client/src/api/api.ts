@@ -38,7 +38,8 @@ const apiUrls = {
     toggleFollowUser:'/user'
   },
   admin:{
-    getUsers:'/admin/users'
+    getUsers:'/admin/users',
+    filterUsers:'/admin/filter-users'
   },
   comment:{
     addComment:'/comment',

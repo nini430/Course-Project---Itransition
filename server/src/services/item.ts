@@ -200,7 +200,7 @@ const filterItem = async (filter: string,collectionId:string) => {
       }
     }
   });
-  return items;
+  return itemTableFormatter(items);
 };
 
 const sortItem=async(sortCol:string,sortDir:'asc'|'desc',collectionId:string)=>{
