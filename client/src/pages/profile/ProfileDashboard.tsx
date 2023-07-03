@@ -1,15 +1,18 @@
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 import { Button, CircularProgress, Typography } from '@mui/material';
-import { List, GridView, AddCircle } from '@mui/icons-material';
+import { List, GridView, AddCircle, Download } from '@mui/icons-material';
 import { useState } from 'react';
 import {Toaster,toast} from 'react-hot-toast'
+import {CSVLink} from 'react-csv'
+
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import Collection from '../../components/Collection/GridViewCollection';
 import ListViewCollection from '../../components/Collection/ListViewCollection';
 import ConfirmDialog from '../../components/shared/ConfirmDialog';
 import { removeCollection } from '../../store/collectionReducer';
 import toastOptions from '../../utils/toastOptions';
+import { Collection as CollectionType } from '../../types/collection';
 
 
 
@@ -18,6 +21,7 @@ const ProfileDashboard = () => {
   const [isConfirmDialogOpen,setIsConfirmDialogOpen]=useState<any>(null);
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('grid');
   const { myCollections, removeCollectionLoading } = useAppSelector((state) => state.collection);
+  const {currentProfile}=useAppSelector(state=>state.user);
   return (
 
     <DashboardContainer>
@@ -36,7 +40,11 @@ const ProfileDashboard = () => {
       <Button sx={{border:'1px solid gray',marginLeft:'5px'}} startIcon={<AddCircle/>}>Add Collection</Button></Link>
       
       </TopBarContainer>
-      
+      <Button startIcon={<Download/>} sx={{border:'1px solid gray',margin:'10px 0'}}>
+        <CSVLink filename={`collections-${currentProfile?.firstName} ${currentProfile?.lastName}`} style={{textDecoration:'none'}} data={myCollections as CollectionType[] || []}>
+        Export Collections to CSV
+        </CSVLink>
+      </Button>
       {!myCollections && (
         <LoadingContainer>
           <CircularProgress size={75} />

@@ -26,6 +26,8 @@ model User {
   followerIds Follow[] @relation("follower")
   senderMessages Message[] @relation("sender")
   receiverMessages Message[] @relation("receiver")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
 }
 
 model Follow {

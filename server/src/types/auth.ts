@@ -15,3 +15,10 @@ export interface LoginInput {
 }
 
 
+export interface SimpleUser {
+    firstName:string;
+    lastName:string;
+    profileImage?:string;
+    id:string;
+}
+

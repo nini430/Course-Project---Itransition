@@ -1,5 +1,6 @@
 import { ItemInput } from '../types/item';
 import { simpleUser } from '../utils/commonQueryObjs';
+import { itemTableFormatter } from '../utils/formatterFns';
 import client from '../utils/prismaClient';
 
 const initializeItemCreation = async (collectionId: string) => {
@@ -63,12 +64,7 @@ const getLatestItems = async () => {
       collection: {
         include: {
           author: {
-            select: {
-              firstName: true,
-              id: true,
-              lastName: true,
-              profileImage: true,
-            },
+            select: simpleUser,
           },
         },
       },
@@ -92,34 +88,19 @@ const getItemByIdExtended = async (itemId: string) => {
       collection: {
         include: {
           author: {
-            select: {
-              firstName: true,
-              lastName: true,
-              id: true,
-              profileImage: true,
-            },
+            select: simpleUser,
           },
         },
       },
       comments: {
         include: {
           author: {
-            select: {
-              firstName: true,
-              lastName: true,
-              profileImage: true,
-              id: true,
-            },
+            select: simpleUser,
           },
           reactions: {
             include: {
               user: {
-                select: {
-                  firstName: true,
-                  lastName: true,
-                  profileImage: true,
-                  id: true,
-                },
+                select: simpleUser,
               },
             },
           },
@@ -128,12 +109,7 @@ const getItemByIdExtended = async (itemId: string) => {
       reactions: {
         include: {
           user: {
-            select: {
-              firstName: true,
-              lastName: true,
-              profileImage: true,
-              id: true,
-            },
+            select:simpleUser,
           },
         },
       },
@@ -159,45 +135,31 @@ const getMyItems = async (collectionId: string) => {
   const items = await client.item.findMany({
     where: { collectionId },
     include: {
-      collection: {
-        include: {
-          author: {
-            select: {
-              firstName: true,
-              lastName: true,
-              profileImage: true,
-              id: true,
-            },
-          },
-        },
+      collection:{
+        include:{
+          author:{
+            select:simpleUser
+          }
+        }
       },
       reactions: {
         include: {
           user: {
-            select: {
-              firstName: true,
-              lastName: true,
-              profileImage: true,
-              id: true,
-            },
+            select: simpleUser,
           },
         },
       },
       comments: {
         include: {
           author: {
-            select: {
-              firstName: true,
-              lastName: true,
-              profileImage: true,
-              id: true,
-            },
+            select:simpleUser,
           },
         },
       },
     },
   });
-  return items;
+
+  return itemTableFormatter(items);
 };
 
 const filterItem = async (filter: string,collectionId:string) => {

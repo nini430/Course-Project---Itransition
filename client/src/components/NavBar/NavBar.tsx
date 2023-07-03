@@ -1,85 +1,118 @@
-import styled from 'styled-components'
-import {Link} from 'react-router-dom'
-import {useState,useEffect} from 'react'
-import {useMediaQuery} from 'react-responsive'
-import {Button, IconButton} from '@mui/material'
-import {Menu,MenuOpen,Message} from '@mui/icons-material'
-import MobileNavDropDown from '../MobileNavDropDown/MobileNavDropDown'
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useMediaQuery } from 'react-responsive';
+import { Button, IconButton } from '@mui/material';
+import {
+  Menu,
+  MenuOpen,
+  Message,
+  AdminPanelSettings,
+} from '@mui/icons-material';
+import MobileNavDropDown from '../MobileNavDropDown/MobileNavDropDown';
 
-import LanguageDropDown from '../LanguageDropDown/LanguagePicker'
+import LanguageDropDown from '../LanguageDropDown/LanguagePicker';
 import Logo from '../Logo/Logo';
 import SearchInput from '../SearchInput/SearchInput';
 import ModeSwitch from '../ModeSwitch/ModeSwitch';
 import NavUser from '../NavUser/NavUser';
-import { useAppSelector } from '../../store/store'
-import { useTranslation } from 'react-i18next'
+import { useAppSelector } from '../../store/store';
+import { useTranslation } from 'react-i18next';
 
 const NavBar = () => {
-  const {t}=useTranslation();
-  const {authedUser}=useAppSelector(state=>state.auth);
-  const userExists=authedUser || localStorage.getItem('authed_user');
-  const [dropdownOpen,setDropdownOpen]=useState(false);
+  const { t } = useTranslation();
+  const { authedUser } = useAppSelector((state) => state.auth);
+  const auth =
+    authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
+  const userExists = authedUser || localStorage.getItem('authed_user');
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const isExtraSmallDevice = useMediaQuery({ maxWidth: 800 });
-  useEffect(()=>{
-    const handleClickOutside=(e:any)=>{
+  useEffect(() => {
+    const handleClickOutside = (e: any) => {
       console.log(e.target);
-      if(!e.target.closest('#mobile-navbar-dropdown') && !e.target.closest('#nav-dropdown-button')) {
-          setDropdownOpen(false);
+      if (
+        !e.target.closest('#mobile-navbar-dropdown') &&
+        !e.target.closest('#nav-dropdown-button')
+      ) {
+        setDropdownOpen(false);
       }
-    }
-    document.addEventListener('click',handleClickOutside);
-    return ()=>{
-      document.removeEventListener('click',handleClickOutside);
-    }
-  },[]);
-  if(isExtraSmallDevice) {
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+  if (isExtraSmallDevice) {
     return (
       <NavbarContainer>
-       {dropdownOpen && <MobileNavDropDown /> } 
-        <IconButton id="nav-dropdown-button" onClick={()=>setDropdownOpen(prev=>!prev)}>
-          {dropdownOpen ? <MenuOpen sx={{pointerEvents:"none"}}/> : <Menu sx={{pointerEvents:'none'}}/>}
+        {dropdownOpen && <MobileNavDropDown />}
+        <IconButton
+          id="nav-dropdown-button"
+          onClick={() => setDropdownOpen((prev) => !prev)}
+        >
+          {dropdownOpen ? (
+            <MenuOpen sx={{ pointerEvents: 'none' }} />
+          ) : (
+            <Menu sx={{ pointerEvents: 'none' }} />
+          )}
         </IconButton>
-        <SearchInput/>
-         <Logo/>
-         
+        <SearchInput />
+        <Logo />
       </NavbarContainer>
-    )
-  }else{
+    );
+  } else {
     return (
       <NavbarContainer>
-          <Logo/>
-          <SearchInput/>
-          <RightContainer>
-            <Link to='/messenger'>
+        <Logo />
+        <SearchInput />
+        <RightContainer>
+          <Link to="/messenger">
             <IconButton>
-            <Message/>
-          </IconButton></Link>
-          
-              <ModeSwitch/>
+              <Message />
+            </IconButton>
+          </Link>
+          {auth.role === 'ADMIN' && (
+            <Link to="/admin">
+              <Button
+                sx={{ textTransform: 'capitalize', border: '1px solid gray' }}
+              >
+                <AdminPanelSettings />
+                Admin Area
+              </Button>
+            </Link>
+          )}
+
+          <ModeSwitch />
           <LanguageDropDown />
-         {userExists ? <NavUser/> : <Link to='/login'><Button sx={{border:'1px solid gray',width:'130px'}}>{t('auth.login')}</Button></Link> } 
-          </RightContainer>
-         
+          {userExists ? (
+            <NavUser />
+          ) : (
+            <Link to="/login">
+              <Button sx={{ border: '1px solid gray', width: '130px' }}>
+                {t('auth.login')}
+              </Button>
+            </Link>
+          )}
+        </RightContainer>
       </NavbarContainer>
-    )
+    );
   }
-  
-}
+};
 
-const NavbarContainer=styled.div`
-    height:80px; 
-    border-bottom:1px solid gray;
-    display:flex;
-    align-items: center;
-    padding:0 10px;
-    justify-content: space-between;
-    position:relative;
-`
+const NavbarContainer = styled.div`
+  height: 80px;
+  border-bottom: 1px solid gray;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  justify-content: space-between;
+  position: relative;
+`;
 
-const RightContainer=styled.div`
-    display:flex;
-    align-items:center;
-    gap:50px;
-`
+const RightContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 50px;
+`;
 
-export default NavBar
+export default NavBar;

@@ -1,0 +1,57 @@
+import { Column } from "../types/table";
+
+
+export const adminColumns:Column[]=[
+    {
+        id:'id',
+        minWidth:200,
+        label:'id',
+    },
+    {
+        id:'firstName',
+        minWidth:200,
+        label:'first_name',
+        isSortable:true,
+    },
+    {
+        id:'lastName',
+        minWidth:200,
+        label:'last_name',
+    },
+    {
+        id:'email',
+        minWidth:200,
+        label:'email',
+    },
+    {
+        id:'role',
+        minWidth:200,
+        label:'role',
+    },
+    {
+        id:'profileImage',
+        minWidth:200,
+        label:'profile_image',
+        isSortable:true
+    },
+    {
+        id:'collections.length',
+        minWidth:200,
+        label:'collections_length'
+    },
+    {
+        id:'createdAt',
+        minWidth:200,
+        label:'created_at'
+    },
+    {
+        id:'followers.length',
+        minWidth:200,
+        label:'followers'
+    },
+    {
+        id:'followings.length',
+        minWidth:200,
+        label:'followings'
+    }
+]

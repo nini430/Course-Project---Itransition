@@ -37,6 +37,9 @@ const apiUrls = {
     getUser:'/user',
     toggleFollowUser:'/user'
   },
+  admin:{
+    getUsers:'/admin/users'
+  },
   comment:{
     addComment:'/comment',
     editComment:'/comment',

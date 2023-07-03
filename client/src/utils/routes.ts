@@ -9,7 +9,8 @@ const routesPath={
     collectionDetails:'/collection/:collectionId',
     itemDetails:'/item/:itemId',
     settings:'/settings',
-    messenger:'/messenger'
+    messenger:'/messenger',
+    admin:'/admin'
 }
 
 export default routesPath;

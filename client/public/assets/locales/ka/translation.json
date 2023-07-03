@@ -64,5 +64,17 @@
 "collection":{
   "details":"კოლექციის დეტალები",
   "collections":"კოლექცია"
+},
+"admin":{
+  "id":"უნიკალური აიდი",
+  "first_name":"სახელი",
+  "last_name":"გვარი",
+  "email":"ელ.ფოსტა",
+  "role":"როლი",
+  "profile_image":"პროფილის სურათი",
+  "collections_length":"კოლექციები",
+  "created_at":"შექმნის დრო",
+  "followers":"გამომწერები",
+  "followings":"გამოწერილები"
 }
 }

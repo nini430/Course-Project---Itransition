@@ -1,4 +1,4 @@
-import { User } from "./auth";
+import { SimpleUser, User } from "./auth";
 
 export interface CollectionInitialState {
   collectionTopics: string[];
@@ -22,12 +22,7 @@ export interface Collection {
   description: string;
   createdAt:string;
   updatedAt:string;
-  author:{
-    firstName:string;
-    lastName:string;
-    id:string;
-    profileImage?:string;
-  }
+  author:SimpleUser
 }
 
 export type ExtendedCollection = Collection & {

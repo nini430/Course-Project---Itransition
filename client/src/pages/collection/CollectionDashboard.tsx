@@ -5,15 +5,11 @@ import {
   Button,
   IconButton,
   InputAdornment,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
   TextField,
   Typography,
 } from '@mui/material';
-import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
+import { ArrowDropDown, ArrowDropUp, Download } from '@mui/icons-material';
+import { CSVLink } from 'react-csv';
 
 import { ExtendedCollection } from '../../types/collection';
 import { useAppDispatch, useAppSelector } from '../../store/store';
@@ -22,11 +18,7 @@ import { styled } from 'styled-components';
 import Loading from '../../components/Loading/Loading';
 import { itemColumns } from '../../utils/itemColumns';
 import { useTranslation } from 'react-i18next';
-import {
-  AddCircle,
-  KeyboardDoubleArrowDown,
-  Search,
-} from '@mui/icons-material';
+import { AddCircle, Search } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import NoImage from '../../assets/no-image.png';
 import Avatar from '../../components/Avatar/Avatar';
@@ -36,6 +28,8 @@ import { ReactionMapper as ReactionMapperType } from '../../types/reaction';
 import CustomFieldsModal from '../item/CustomFieldsModal';
 import useTableFilter from '../../hooks/useTableFilter';
 import { SortedDir } from '../../types/table';
+import { Item } from '../../types/item';
+import Table from '../../components/Comment/shared/Table';
 
 interface ICollectionDashboardProps {
   currentCollection: ExtendedCollection | null;
@@ -44,8 +38,8 @@ interface ICollectionDashboardProps {
 const CollectionDashboard = ({
   currentCollection,
 }: ICollectionDashboardProps) => {
-  const [sortedColumn,setSortedColumn]=useState('');
-  const [sortedDir,setSortedDir]=useState<SortedDir>('asc');
+  const [sortedColumn, setSortedColumn] = useState('');
+  const [sortedDir, setSortedDir] = useState<SortedDir>('asc');
   const [filterValue, setFilterValue] = useState('');
   const { searchValue, setSearchValue } = useTableFilter(filterValue);
   const [customFieldsModal, setCustomFieldsModal] = useState(null);
@@ -72,19 +66,28 @@ const CollectionDashboard = ({
 
   useEffect(() => {
     if (searchValue) {
-      dispatch(filterItems({ filter: searchValue, collectionId:currentCollection?.id as string }));
+      dispatch(
+        filterItems({
+          filter: searchValue,
+          collectionId: currentCollection?.id as string,
+        })
+      );
     }
-  }, [searchValue, dispatch,currentCollection]);
-  useEffect(()=>{
-    if(sortedColumn) {
-      dispatch(sortItem({sortedCol:sortedColumn,sortedDir,collectionId:currentCollection?.id as string}))
+  }, [searchValue, dispatch, currentCollection]);
+  useEffect(() => {
+    if (sortedColumn) {
+      dispatch(
+        sortItem({
+          sortedCol: sortedColumn,
+          sortedDir,
+          collectionId: currentCollection?.id as string,
+        })
+      );
     }
-  },[dispatch,currentCollection?.id,sortedDir,sortedColumn])
+  }, [dispatch, currentCollection?.id, sortedDir, sortedColumn]);
   if (getMyItemsLoading || !myItems) {
     return <Loading />;
   }
-
-  
 
   return (
     <DashboardContainer>
@@ -110,30 +113,18 @@ const CollectionDashboard = ({
           }}
           size="small"
         />
+        <Button startIcon={<Download/>} sx={{border:'1px solid gray'}}>
+          <CSVLink
+            style={{ textDecoration: 'none' }}
+            filename={`items-${currentCollection?.id as string}`}
+            data={myItems as Item[]}
+          >
+            Export Items to CSV
+          </CSVLink>
+        </Button>
       </Box>
-
-      <Table>
-        <TableHead>
-          <TableRow>
-            {itemColumns.map((column) => (
-              <TableCell>
-                {t(`item.${column.label}`)} 
-              {column.isSortable && <IconButton onClick={()=>{
-                if(sortedColumn===column.label) {
-                    setSortedDir(prev=>prev==='asc'?'desc':'asc');
-                }else{
-                    setSortedColumn(column.label);
-                    setSortedDir('desc');
-                }
-              }}>
-               {sortedColumn===column.label ? (sortedDir==='asc'? <ArrowDropUp/>: <ArrowDropDown/> ): <ArrowDropUp/>} 
-                </IconButton> }  
-              
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
+      <Table data={myItems || []} tableName='item' columns={itemColumns}/>
+        {/* <TableBody>
           {myItems.map((item) => (
             <TableRow>
               <TableCell>{item.name}</TableCell>
@@ -162,43 +153,6 @@ const CollectionDashboard = ({
               <TableCell>{item.comments?.length}</TableCell>
               <TableCell>{moment(item.createdAt).format('L')}</TableCell>
               <TableCell>
-                <Link
-                  style={{ textDecoration: 'none' }}
-                  to={`/collection/${item.collectionId}`}
-                >
-                  <Box
-                    sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}
-                  >
-                    <Avatar
-                      width={30}
-                      height={30}
-                      src={item.collection.image || NoImage}
-                    />
-                    <Typography>{item.collection.name}</Typography>
-                  </Box>
-                </Link>
-              </TableCell>
-              <TableCell>
-                <Link
-                  style={{ textDecoration: 'none' }}
-                  to={`/profile/${item.collection.author.id}`}
-                >
-                  <Box
-                    sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}
-                  >
-                    <Avatar
-                      width={30}
-                      height={30}
-                      src={item.collection.author.profileImage || AvatarImg}
-                    />
-                    <Typography>
-                      {item.collection.author.firstName}{' '}
-                      {item.collection.author.lastName}
-                    </Typography>
-                  </Box>
-                </Link>
-              </TableCell>
-              <TableCell>
                 <Button
                   onClick={() => {
                     setCustomFieldsModal(item.customFieldValues);
@@ -215,8 +169,7 @@ const CollectionDashboard = ({
               />
             </TableRow>
           ))}
-        </TableBody>
-      </Table>
+        </TableBody> */}
       <CustomFieldsModal
         itemId={selectedItemId}
         open={customFieldsModal}

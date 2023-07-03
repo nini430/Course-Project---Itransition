@@ -17,6 +17,7 @@ import ItemDetails from './pages/item/ItemDetails';
 import routesPath from './utils/routes';
 import Settings from './pages/settings/Settings';
 import DesktopMessenger from './pages/messenger/desktop/DesktopMessenger';
+import Admin from './pages/admin/Admin';
 
 function App() {
   const { mode } = useAppSelector((state) => state.common);
@@ -37,6 +38,7 @@ function App() {
           <Route path={routesPath.addItem} element={<AddItem />} />
           <Route path={routesPath.editItem} element={<AddItem/>}/>
           <Route path={routesPath.settings} element={<Settings />} />
+          <Route path={routesPath.admin} element={<Admin/>}/>
           <Route
             path={routesPath.collectionDetails}
             element={<CollectionDetails />}

@@ -65,5 +65,17 @@
   "collection":{
     "details":"Collection Details",
     "collections":"Collections"
+  },
+  "admin":{
+    "id":"Unique Id",
+    "first_name":"First Name",
+    "last_name":"Last Name",
+    "email":"Email",
+    "role":"Role",
+    "profile_image":"Profile Image",
+    "collections_length":"Collections",
+    "created_at":"Created At",
+    "followers":"Followers",
+    "followings":"Followings"
   }
 }
