@@ -53,5 +53,15 @@ export const adminColumns:Column[]=[
         id:'followings.length',
         minWidth:200,
         label:'followings'
+    },
+    {
+        id:'view',
+        minWidth:200,
+        label:'view'
+    },
+    {
+        id:'remove',
+        minWidth:200,
+        label:'remove'
     }
 ]

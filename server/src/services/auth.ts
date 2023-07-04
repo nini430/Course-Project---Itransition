@@ -99,6 +99,7 @@ const getMyFollows = async (userId: string) => {
   const followings = await client.follow.findMany({
     where: { followerId: userId },
   });
+  console.log(followers,followings,userId)
   return { followers, followings };
 };
 export {

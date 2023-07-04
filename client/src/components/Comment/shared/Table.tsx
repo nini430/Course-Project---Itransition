@@ -2,16 +2,22 @@ import {Checkbox, TableBody, TableCell, Table as TableElement, TableHead, TableR
 import { Column } from '../../../types/table';
 import { useTranslation } from 'react-i18next';
 import { customizeCells } from '../../../utils/tableFormatterFns';
+import { Item } from '../../../types/item';
 
 interface ITableProps {
     columns:Column[];
     tableName:string;
     data:any[];
+    viewCustom?:(item:Item)=>void;
+    viewReacts? : (item:Item)=>void;
+    viewComments?:(item:Item)=>void;
+    viewCollections?:(item:any)=>void;
+    viewFollows?:(item:any)=>void;
 }
 
 
 
-const Table = ({columns,tableName,data}:ITableProps) => {
+const Table = ({columns,tableName,data,viewCustom,viewReacts,viewComments,viewCollections,viewFollows}:ITableProps) => {
     const {t}=useTranslation();
   return (
     <TableElement>
@@ -30,7 +36,7 @@ const Table = ({columns,tableName,data}:ITableProps) => {
               <TableRow key={item.id}>
                 <TableCell><Checkbox/></TableCell>
                 {Object.entries(item).map(([key,value])=>(
-                  <TableCell>{customizeCells(value)}</TableCell>
+                  <TableCell>{customizeCells(value,viewCustom,item,viewReacts,viewComments,viewCollections,viewFollows)}</TableCell>
                 ))}
               </TableRow>
             ))}

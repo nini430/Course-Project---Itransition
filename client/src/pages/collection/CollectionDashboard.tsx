@@ -30,6 +30,8 @@ import useTableFilter from '../../hooks/useTableFilter';
 import { SortedDir } from '../../types/table';
 import { Item } from '../../types/item';
 import Table from '../../components/Comment/shared/Table';
+import { SimpleUser } from '../../types/auth';
+import FollowModal from '../../components/shared/FollowModal';
 
 interface ICollectionDashboardProps {
   currentCollection: ExtendedCollection | null;
@@ -49,6 +51,7 @@ const CollectionDashboard = ({
   const [reactionModal, setReactionModal] = useState<
     ReactionMapperType[] | null
   >(null);
+  const [followModal,setFollowModal]=useState<null | SimpleUser[]>(null);
   const { myItems, getMyItemsLoading } = useAppSelector((state) => state.item);
 
   useEffect(() => {
@@ -65,12 +68,12 @@ const CollectionDashboard = ({
   }, [filterValue, setSearchValue]);
 
   useEffect(() => {
-      dispatch(
-        filterItems({
-          filter: searchValue,
-          collectionId: currentCollection?.id as string,
-        })
-      );
+    dispatch(
+      filterItems({
+        filter: searchValue,
+        collectionId: currentCollection?.id as string,
+      })
+    );
   }, [searchValue, dispatch, currentCollection]);
   useEffect(() => {
     if (sortedColumn) {
@@ -121,7 +124,28 @@ const CollectionDashboard = ({
           </CSVLink>
         </Button>
       </Box>
-      <Table data={myItems || []} tableName="item" columns={itemColumns} />
+      <Table
+      viewComments={(data:any)=>{
+        console.log(data);
+        setFollowModal(data.map((item:any)=>item.author));
+      }}
+        viewReacts={(data: any) => {
+          setReactionModal(
+            data.map((reaction: any) => ({
+              id: reaction.id,
+              emoji: reaction.name,
+              user: reaction.user,
+            }))
+          );
+        }}
+        viewCustom={(item: any) => {
+          setCustomFieldsModal(item.customFields.fields);
+          setSelecteditemId(item.customFields.id);
+        }}
+        data={myItems || []}
+        tableName="item"
+        columns={itemColumns}
+      />
       {/* <TableBody>
           {myItems.map((item) => (
             <TableRow>
@@ -135,12 +159,7 @@ const CollectionDashboard = ({
               <TableCell>
                 <span
                   onClick={() => {
-                    setReactionModal(
-                      item.reactions.map((reaction) => ({
-                        id: reaction.id,
-                        emoji: reaction.name,
-                        user: reaction.user,
-                      }))
+                    
                     );
                   }}
                   style={{ textDecoration: 'underline', cursor: 'pointer' }}
@@ -161,18 +180,20 @@ const CollectionDashboard = ({
                   {t('common.show')}
                 </Button>
               </TableCell>
-              <ReactionMapper
-                open={reactionModal}
-                onClose={() => setReactionModal(null)}
-              />
+              
             </TableRow>
           ))}
         </TableBody> */}
+      <ReactionMapper
+        open={reactionModal}
+        onClose={() => setReactionModal(null)}
+      />
       <CustomFieldsModal
         itemId={selectedItemId}
         open={customFieldsModal}
         onClose={() => setCustomFieldsModal(null)}
       />
+      <FollowModal open={followModal} onClose={()=>setFollowModal(null)} />
     </DashboardContainer>
   );
 };

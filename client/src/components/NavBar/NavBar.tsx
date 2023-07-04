@@ -71,7 +71,7 @@ const NavBar = () => {
               <Message />
             </IconButton>
           </Link>
-          {auth.role === 'ADMIN' && (
+          {auth?.role === 'ADMIN' && (
             <Link to="/admin">
               <Button
                 sx={{ textTransform: 'capitalize', border: '1px solid gray' }}

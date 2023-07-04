@@ -7,11 +7,13 @@ const itemTableFormatter = (items: any[]) => {
       .split(',')
       .map((tag: string) => `#${tag}`)
       .join(','),
-    reactions: { count: true, data: item.reactions },
-    comments: { count: true, data: item.comments },
+    reactions: { count: true, data: item.reactions, name:'react' },
+    comments: { count: true, data: item.comments, name:'comments' },
     createdAt: { date: true, data: item.createdAt },
     collection: {
       foreign: true,
+      name:'collection',
+      id:item.collection.id,
       data: {
         name: item.collection.name,
         id: item.collection.id,
@@ -20,6 +22,8 @@ const itemTableFormatter = (items: any[]) => {
       },
     },
     author: {
+      name:'profile',
+      id:item.collection.author.id,
       foreign: true,
       data: {
         name: `${item.collection.author.firstName} ${item.collection.author.lastName}`,
@@ -28,7 +32,7 @@ const itemTableFormatter = (items: any[]) => {
         fallbackSrc: 'avatar'
       },
     },
-    customFields: { custom: true, data: item.customFieldValues },
+    customFields: { action: true, data: 'View', fields:item.customFieldValues, custom:true, id:item.id },
   }));
 };
 
@@ -40,10 +44,12 @@ const userTableFormatter=(users:any[])=>{
       email:user.email,
       role:user.role==='BASIC'?'user':'admin',
       profileImage: {foreign:true,data:{src:user.profileImage, fallbackSrc:'avatar'}},
-      collections:{count:true,data:user.collections},
+      collections:{count:true,data:user.collections,name:'collection'},
       createdAt:{date:true, data: user.createdAt},
-      followers:{count:true,data:user.followerIds},
-      followings:{count:true,data:user.followedIds}
+      followers:{count:true,data:user.followerIds.map((item:any)=>item.followed),name:'follow'},
+      followings:{count:true,data:user.followedIds.map((item:any)=>item.follower),name:'follow'},
+      view:{action:true,data:'View',link:`/profile/${user.id}`},
+      remove:{action:true,data:'Remove'}
    }))
 }
 
