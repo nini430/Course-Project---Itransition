@@ -2,9 +2,12 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from '
 import {KeyboardArrowDown} from '@mui/icons-material'
 import Avatar from '../../components/Avatar/Avatar'
 import AvatarImg from '../../assets/avatar.png'
+import { useAppSelector } from '../../store/store'
 
 
 const AdminCard = () => {
+  const {authedUser}=useAppSelector(state=>state.auth);
+  const auth = authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
   return (
     <Accordion>
       <AccordionSummary expandIcon={<KeyboardArrowDown/>}>
@@ -14,11 +17,11 @@ const AdminCard = () => {
           <Avatar width={70} height={70} src={AvatarImg}/>
           <Box sx={{display:'flex',alignItems:'center',gap:'3px'}}>
             <Typography sx={{color:'gray'}}>Name:</Typography>
-            <Typography>Nino Gogatishvili</Typography>
+            <Typography>{auth.firstName} {auth.lastName}</Typography>
           </Box>
           <Box sx={{display:'flex',alignItems:'center',gap:'3px'}}>
             <Typography sx={{color:'gray'}}>E-mail:</Typography>
-            <Typography>ningogatishvili1@gmail.com</Typography>
+            <Typography>{auth.email}</Typography>
           </Box>
         </AccordionDetails>
     </Accordion>

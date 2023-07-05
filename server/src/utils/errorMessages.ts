@@ -6,4 +6,6 @@ export default {
     tokenExpired:'token_expired_error',
     notFound:'not_found',
     forbiddenOperation:'forbidden_operation',
+    blockedUser:'user_blocked',
+    deletedUser:'user_deleted'
 }

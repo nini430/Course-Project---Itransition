@@ -58,6 +58,16 @@ const loginUser = asyncHandler(
       );
     }
     const user = await findUserByEmail(email);
+    if (user?.status === 'blocked') {
+      return next(
+        new ErrorResponse(errorMessages.blockedUser, StatusCodes.FORBIDDEN)
+      );
+    }
+    if (user?.status === 'deleted') {
+      return next(
+        new ErrorResponse(errorMessages.deletedUser, StatusCodes.FORBIDDEN)
+      );
+    }
     if (!user) {
       return next(
         new ErrorResponse(
@@ -198,9 +208,9 @@ const updateUserInfoHandler = asyncHandler(
 );
 
 const getMyFollowsHandler = asyncHandler(
-  async (req: Request & {user:any}, res: Response, next: NextFunction) => {
-    const followInfo=await getMyFollows(req.user.id);
-    return res.status(StatusCodes.OK).json({success:true,data:followInfo});
+  async (req: Request & { user: any }, res: Response, next: NextFunction) => {
+    const followInfo = await getMyFollows(req.user.id);
+    return res.status(StatusCodes.OK).json({ success: true, data: followInfo });
   }
 );
 

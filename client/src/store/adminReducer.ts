@@ -10,7 +10,8 @@ const initialState = {
   users: null,
   getUsersLoading: false,
   editUserLoading: false,
-  changeStatusLoading:false
+  changeStatusLoading:false,
+  addUserLoading:false
 };
 
 export const getUsers = createAsyncThunk('admin/users', async (_, thunkApi) => {
@@ -85,6 +86,15 @@ export const changeStatus = createAsyncThunk(
   }
 );
 
+export const addUser= createAsyncThunk('admin/add-user',async({input,onSuccess}:{input:RegisterValues,onSuccess:VoidFunction},thunkApi)=>{
+  try{
+    await axiosApiInstance.post(apiUrls.admin.addUser,input);
+    onSuccess && onSuccess();
+  }catch(err) {
+    return thunkApi.rejectWithValue(err);
+  }
+})
+
 const adminReducer = createSlice({
   name: 'admin',
   initialState,
@@ -135,6 +145,16 @@ const adminReducer = createSlice({
       state.changeStatusLoading=false;
       toast.error('something_went_wrong', toastOptions);
     });
+    builder.addCase(addUser.pending,state=>{
+      state.addUserLoading=true;
+    });
+    builder.addCase(addUser.fulfilled,(state,action)=>{
+      state.addUserLoading=false;
+    });
+    builder.addCase(addUser.rejected,(state,action:any)=>{
+      state.addUserLoading=false;
+      toast.error(action.payload.error,toastOptions);
+    })
   },
 });
 

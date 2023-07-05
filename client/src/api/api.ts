@@ -41,7 +41,8 @@ const apiUrls = {
     getUsers:'/admin/users',
     filterUsers:'/admin/filter-users',
     editUser:'/admin/edit-user',
-    changeStatus:'/admin/change-status'
+    changeStatus:'/admin/change-status',
+    addUser:'/admin/add-user'
   },
   comment:{
     addComment:'/comment',

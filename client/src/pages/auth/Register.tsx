@@ -25,7 +25,7 @@ import { registerUser, setAuthedUser } from '../../store/authReducer';
 import toastOptions from '../../utils/toastOptions';
 import BreadCrumb from '../../components/shared/BreadCrumb';
 import { getUserById } from '../../store/userReducer';
-import { editUser } from '../../store/adminReducer';
+import { addUser, editUser } from '../../store/adminReducer';
 
 interface IRegisterProps {
   admin?: boolean;
@@ -81,6 +81,8 @@ const Register = ({ admin, edit }: IRegisterProps) => {
       };
       admin && edit && userId
         ? dispatch(editUser({ userId, inputs: values, onSuccess }))
+        : admin
+        ? dispatch(addUser({ input: values, onSuccess }))
         : dispatch(
             registerUser({
               input: values,
