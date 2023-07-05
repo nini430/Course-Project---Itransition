@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import {Toaster} from 'react-hot-toast';
 import AdminCard from './AdminCard';
 import AdminDashboard from './AdminDashboard';
 import { useEffect } from 'react';
@@ -21,6 +22,7 @@ const Admin = () => {
   },[dispatch])
   return (
     <AdminContainer>
+      <Toaster/>
         <AdminCard/>
         <AdminDashboard/>
     </AdminContainer>

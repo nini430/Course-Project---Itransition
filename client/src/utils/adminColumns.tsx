@@ -66,16 +66,6 @@ export const adminColumns:Column[]=[
         label:'view'
     },
     {
-        id:'remove',
-        minWidth:200,
-        label:'remove'
-    },
-    {
-        id:'block',
-        minWidth:200,
-        label:'block'
-    },
-    {
         id:'edit',
         minWidth:200,
         label:'edit'

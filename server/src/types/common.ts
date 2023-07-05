@@ -5,3 +5,6 @@ export type CustomTableConfigNames =
   | 'integerField'
   | 'multilineTextField'
   | 'stringField';
+
+export type Statuses='active' | 'blocked' | 'deleted';
+

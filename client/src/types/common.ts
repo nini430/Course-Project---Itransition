@@ -7,6 +7,8 @@ export interface CommonInitialState {
 
 export type PassType = 'text' | 'password';
 
+export type Statuses= 'active' | 'blocked' | 'deleted';
+
 export interface BreadCrumbProps {
     icon:SvgIconComponent;
     title:string;

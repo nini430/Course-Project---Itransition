@@ -1,4 +1,5 @@
 import { RegisterInput } from '../types/auth';
+import { Statuses } from '../types/common';
 import { adminUser } from '../utils/commonQueryObjs';
 import { userTableFormatter } from '../utils/formatterFns';
 import client from '../utils/prismaClient';
@@ -47,4 +48,8 @@ const editUser = async (
   });
   return userTableFormatter([updatedUser]);
 };
-export { getAllUsers, filterUsers, editUser };
+
+const changeUsersStatus=async(userIds:string[],status:Statuses)=>{
+   await client.user.updateMany({data:{status},where:{id:{in:userIds}}});
+}
+export { getAllUsers, filterUsers, editUser, changeUsersStatus };

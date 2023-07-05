@@ -50,8 +50,6 @@ const userTableFormatter=(users:any[])=>{
       followers:{count:true,data:user.followerIds.map((item:any)=>item.followed),name:'follow'},
       followings:{count:true,data:user.followedIds.map((item:any)=>item.follower),name:'follow'},
       view:{action:true,data:'View',link:`/profile/${user.id}`},
-      remove:{action:true,data:'Remove',name:'remove'},
-      block:{action:true,data:'Block',name:'block'},
       edit:{action:true,data:'Edit',name:'edit',link:`/edit-user/${user.id}`}
    }))
 }

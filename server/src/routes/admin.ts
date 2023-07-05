@@ -1,5 +1,5 @@
 import express from 'express';
-import { editUserHandler, filterUsersHandler, getAllUsersHandler } from '../controllers/admin';
+import { changeUsersStatusHandler, editUserHandler, filterUsersHandler, getAllUsersHandler } from '../controllers/admin';
 import authProtect from '../middleware/authProtect';
 import adminProtect from '../middleware/adminProtect';
 
@@ -11,6 +11,7 @@ router.use(adminProtect);
 
 router.get('/users', getAllUsersHandler);
 router.put('/filter-users', filterUsersHandler);
+router.put('/change-status',changeUsersStatusHandler);
 router.put('/edit-user/:userId',editUserHandler);
 
 export default router;

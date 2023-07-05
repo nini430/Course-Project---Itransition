@@ -40,7 +40,8 @@ const apiUrls = {
   admin:{
     getUsers:'/admin/users',
     filterUsers:'/admin/filter-users',
-    editUser:'/admin/edit-user'
+    editUser:'/admin/edit-user',
+    changeStatus:'/admin/change-status'
   },
   comment:{
     addComment:'/comment',
