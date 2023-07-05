@@ -11,6 +11,7 @@ import useTableFilter from '../../hooks/useTableFilter';
 import Loading from '../../components/Loading/Loading';
 import CollectionModal from '../../components/shared/CollectionModal';
 import FollowModal from '../../components/shared/FollowModal';
+import { Link } from 'react-router-dom';
 
 const AdminDashboard = () => {
   const dispatch = useAppDispatch();
@@ -38,13 +39,15 @@ const AdminDashboard = () => {
     <DashboardContainer>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <LeftContainer>
+          <Link to={`/add-user`} style={{textDecoration:'none'}}>
           <Button
             size="small"
             sx={{ border: '1px solid gray' }}
             startIcon={<AddCircle />}
           >
             Add New User
-          </Button>
+          </Button></Link>
+          
           <TextField
             value={filterValue}
             onChange={(e) => setFilterValue(e.target.value)}

@@ -42,6 +42,7 @@ const userTableFormatter=(users:any[])=>{
       firstName:user.firstName,
       lastName:user.lastName,
       email:user.email,
+      status: {status:true,data:user.status},
       role:user.role==='BASIC'?'user':'admin',
       profileImage: {foreign:true,data:{src:user.profileImage, fallbackSrc:'avatar'}},
       collections:{count:true,data:user.collections,name:'collection'},
@@ -49,7 +50,9 @@ const userTableFormatter=(users:any[])=>{
       followers:{count:true,data:user.followerIds.map((item:any)=>item.followed),name:'follow'},
       followings:{count:true,data:user.followedIds.map((item:any)=>item.follower),name:'follow'},
       view:{action:true,data:'View',link:`/profile/${user.id}`},
-      remove:{action:true,data:'Remove'}
+      remove:{action:true,data:'Remove',name:'remove'},
+      block:{action:true,data:'Block',name:'block'},
+      edit:{action:true,data:'Edit',name:'edit',link:`/edit-user/${user.id}`}
    }))
 }
 

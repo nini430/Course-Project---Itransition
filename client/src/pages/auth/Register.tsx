@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Divider, Typography, FormGroup } from '@mui/material';
-import { Home, PersonPin } from '@mui/icons-material';
+import {
+  Divider,
+  Typography,
+  FormGroup,
+  Button,
+  ButtonGroup,
+} from '@mui/material';
+import { Home, PersonPin, Settings } from '@mui/icons-material';
 import { useMediaQuery } from 'react-responsive';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { Toaster, toast } from 'react-hot-toast';
@@ -18,39 +24,71 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import { registerUser, setAuthedUser } from '../../store/authReducer';
 import toastOptions from '../../utils/toastOptions';
 import BreadCrumb from '../../components/shared/BreadCrumb';
+import { getUserById } from '../../store/userReducer';
+import { editUser } from '../../store/adminReducer';
 
-const Register = () => {
+interface IRegisterProps {
+  admin?: boolean;
+  edit?: boolean;
+}
+
+const Register = ({ admin, edit }: IRegisterProps) => {
+  const { userId } = useParams();
+  const { currentProfile } = useAppSelector((state) => state.user);
+  const [showPasswordArea, setShowPasswordArea] = useState(false);
   const [passType, setPassType] = useState<'text' | 'password'>('password');
   const [confirmPassType, setConfirmPassType] = useState<'text' | 'password'>(
     'password'
   );
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  useEffect(() => {
+    if (admin && edit && userId) {
+      dispatch(getUserById(userId as string));
+    }
+  }, [dispatch, admin, edit, userId]);
   const {
     values,
     errors,
     handleBlur,
-    handleChange,
     handleSubmit,
     dirty,
     touched,
-    setFieldValue
+    setFieldValue,
   } = useFormik({
-    initialValues: registerValues,
-    validationSchema: registerValidationSchema,
+    initialValues:
+      {
+        firstName: currentProfile?.firstName as string,
+        lastName: currentProfile?.lastName as string,
+        email: currentProfile?.email as string,
+        password: '',
+        confirmPassword: '',
+      } || registerValues,
+    validationSchema: registerValidationSchema(!!(admin && edit)),
     onSubmit: (values) => {
-      dispatch(
-        registerUser({
-          input: values,
-          onSuccess: () => {
-            toast.success(t('auth.register_success'), toastOptions);
-            setTimeout(() => {
-              navigate('/login');
-            }, 2000);
-          },
-        })
-      );
+      const onSuccess = () => {
+        toast.success(
+          admin && edit
+            ? 'user_edited'
+            : admin
+            ? 'user_created'
+            : 'register_success',
+          toastOptions
+        );
+        setTimeout(() => {
+          navigate(admin ? '/admin' : '/login');
+        }, 2000);
+      };
+      admin && edit && userId
+        ? dispatch(editUser({ userId, inputs: values, onSuccess }))
+        : dispatch(
+            registerUser({
+              input: values,
+              onSuccess,
+            })
+          );
     },
+    enableReinitialize: true,
   });
   const { t } = useTranslation();
   const { mode } = useAppSelector((state) => state.common);
@@ -63,10 +101,10 @@ const Register = () => {
   const isExtraSmallDevice = useMediaQuery({ maxWidth: 500 });
 
   useEffect(() => {
-    if (userExists) {
+    if (userExists && !admin) {
       navigate('/');
     }
-  }, [userExists, navigate, dispatch]);
+  }, [userExists, navigate, dispatch, admin]);
   return (
     <>
       <AuthContainer>
@@ -89,7 +127,11 @@ const Register = () => {
           }}
         >
           <Typography sx={{ alignSelf: 'center', fontSize: 20 }}>
-            {t('auth.register')}
+            {admin && edit
+              ? 'Edit User'
+              : admin
+              ? 'Add User'
+              : t('auth.register')}
           </Typography>
           <PersonPin
             sx={{
@@ -106,7 +148,7 @@ const Register = () => {
               placeholder={t('auth.firstName') as string}
               type="text"
               value={values.firstName}
-              onChange={value=>setFieldValue('firstName',value)}
+              onChange={(value) => setFieldValue('firstName', value)}
               onBlur={handleBlur}
               error={!!(errors.firstName && touched.firstName)}
               mode={mode}
@@ -121,7 +163,7 @@ const Register = () => {
               placeholder={t('auth.lastName') as string}
               type="text"
               value={values.lastName}
-              onChange={value=>setFieldValue('lastName',value)}
+              onChange={(value) => setFieldValue('lastName', value)}
               onBlur={handleBlur}
               error={!!(errors.lastName && touched.lastName)}
               mode={mode}
@@ -136,7 +178,7 @@ const Register = () => {
               placeholder={t('auth.email') as string}
               type="email"
               value={values.email}
-              onChange={(value)=>setFieldValue('email',value)}
+              onChange={(value) => setFieldValue('email', value)}
               onBlur={handleBlur}
               error={!!(errors.email && touched.email)}
               mode={mode}
@@ -145,55 +187,92 @@ const Register = () => {
               <ErrorMessage>{t(`auth.${errors.email}`)}</ErrorMessage>
             )}
           </FormGroup>
-          <FormGroup sx={{ marginBottom: 2 }}>
-            <StyledInput
-              name="password"
-              placeholder={t('auth.password') as string}
-              type={passType}
-              toggleType={() =>
-                setPassType(passType === 'password' ? 'text' : 'password')
-              }
-              value={values.password}
-              onChange={value=>setFieldValue('password',value)}
-              onBlur={handleBlur}
-              error={!!(errors.password && touched.password)}
-              mode={mode}
-            />
-            {errors.password && touched.password && (
-              <ErrorMessage>{t(`auth.${errors.password}`)}</ErrorMessage>
-            )}
-          </FormGroup>
-          <FormGroup sx={{ marginBottom: 2 }}>
-            <StyledInput
-              name="confirmPassword"
-              placeholder={t('auth.confirm_password') as string}
-              type={confirmPassType}
-              toggleType={() =>
-                setConfirmPassType(
-                  confirmPassType === 'password' ? 'text' : 'password'
-                )
-              }
-              value={values.confirmPassword}
-              onChange={value=>setFieldValue('confirmPassword',value)}
-              onBlur={handleBlur}
-              error={!!(errors.confirmPassword && touched.confirmPassword)}
-              mode={mode}
-            />
-            {errors.confirmPassword && touched.confirmPassword && (
-              <ErrorMessage>{t(`auth.${errors.confirmPassword}`)}</ErrorMessage>
-            )}
-          </FormGroup>
+          {!(admin && edit && !showPasswordArea) ? (
+            <>
+              <FormGroup sx={{ marginBottom: 2 }}>
+                <StyledInput
+                  name="password"
+                  placeholder={t('auth.password') as string}
+                  type={passType}
+                  toggleType={() =>
+                    setPassType(passType === 'password' ? 'text' : 'password')
+                  }
+                  value={values.password}
+                  onChange={(value) => setFieldValue('password', value)}
+                  onBlur={handleBlur}
+                  error={!!(errors.password && touched.password)}
+                  mode={mode}
+                />
+                {errors.password && touched.password && (
+                  <ErrorMessage>{t(`auth.${errors.password}`)}</ErrorMessage>
+                )}
+              </FormGroup>
+              <FormGroup sx={{ marginBottom: 2 }}>
+                <StyledInput
+                  name="confirmPassword"
+                  placeholder={t('auth.confirm_password') as string}
+                  type={confirmPassType}
+                  toggleType={() =>
+                    setConfirmPassType(
+                      confirmPassType === 'password' ? 'text' : 'password'
+                    )
+                  }
+                  value={values.confirmPassword}
+                  onChange={(value) => setFieldValue('confirmPassword', value)}
+                  onBlur={handleBlur}
+                  error={!!(errors.confirmPassword && touched.confirmPassword)}
+                  mode={mode}
+                />
+                {errors.confirmPassword && touched.confirmPassword && (
+                  <ErrorMessage>
+                    {t(`auth.${errors.confirmPassword}`)}
+                  </ErrorMessage>
+                )}
+              </FormGroup>
+              {admin && edit && (
+                <ButtonGroup sx={{ mb: '5px' }}>
+                  <Button size="small" sx={{ border: '1px solid gray' }}>
+                    Save password changes
+                  </Button>
+                  <Button
+                    onClick={() => setShowPasswordArea(false)}
+                    size="small"
+                    sx={{ border: '1px solid gray' }}
+                  >
+                    Cancel
+                  </Button>
+                </ButtonGroup>
+              )}
+            </>
+          ) : (
+            <Button
+              onClick={() => setShowPasswordArea(true)}
+              sx={{ border: '1px solid gray', margin: '5px 0' }}
+              startIcon={<Settings />}
+            >
+              Change Password
+            </Button>
+          )}
+
           <FormButton
             loading={registerLoading}
             type="submit"
             disabled={!dirty || Object.values(errors).length > 0}
             variant="contained"
-            text={t('auth.register')}
+            text={
+              admin && edit
+                ? 'Edit User'
+                : admin
+                ? 'Add User'
+                : t('auth.register')
+            }
           />
-          <Typography sx={{ alignSelf: 'center', my: '10px' }}>
-            {t('auth.already_member')}{' '}
-            <Link to="/login">{t('auth.login')}</Link>
-          </Typography>
+          {!admin && (
+            <Typography sx={{ alignSelf: 'center', my: '10px' }}>
+              {t('auth.already_member')}{' '}
+              <Link to="/login">{t('auth.login')}</Link>
+            </Typography>
+          )}
         </AuthForm>
       </AuthContainer>
     </>

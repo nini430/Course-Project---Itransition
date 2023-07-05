@@ -1,3 +1,4 @@
+import { simpleUser } from '../utils/commonQueryObjs';
 import client from '../utils/prismaClient';
 
 const getUserById = async (userId: string) => {
@@ -15,24 +16,14 @@ const getUserById = async (userId: string) => {
       followedIds: {
         include: {
           follower: {
-            select: {
-              firstName: true,
-              lastName: true,
-              profileImage: true,
-              id: true,
-            },
+            select: simpleUser,
           },
         },
       },
       followerIds: {
         include: {
           followed: {
-            select: {
-              firstName: true,
-              lastName: true,
-              profileImage: true,
-              id: true,
-            },
+            select: simpleUser,
           },
         },
       },
@@ -46,20 +37,10 @@ const followUser = async (followerId: string, followedId: string) => {
     data: { followedId, followerId },
     include: {
       followed: {
-        select: {
-          firstName: true,
-          lastName: true,
-          id: true,
-          profileImage: true,
-        },
+        select: simpleUser,
       },
       follower: {
-        select: {
-          firstName: true,
-          lastName: true,
-          profileImage: true,
-          id: true,
-        },
+        select: simpleUser,
       },
     },
   });
@@ -75,20 +56,10 @@ const doesAlreadyFollow = async (followerId: string, followedId: string) => {
     where: { followedId, followerId },
     include: {
       followed: {
-        select: {
-          firstName: true,
-          lastName: true,
-          id: true,
-          profileImage: true,
-        },
+        select: simpleUser
       },
       follower: {
-        select: {
-          firstName: true,
-          lastName: true,
-          profileImage: true,
-          id: true,
-        },
+        select:simpleUser,
       },
     },
   });

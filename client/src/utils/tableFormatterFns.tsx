@@ -11,8 +11,8 @@ const customizeCells = (
   item: any,
   viewReacts?: any,
   viewComments?: any,
-  viewCollections?:any,
-  viewFollows?:any
+  viewCollections?: any,
+  viewFollows?: any
 ) => {
   if (value.count) {
     return (
@@ -22,9 +22,13 @@ const customizeCells = (
             ? () => viewReacts(value.data)
             : value.name === 'comments'
             ? () => viewComments(value.data)
-            : value.name==='collection'? ()=>viewCollections(value.data)
-            : value.name==='follow'? ()=>viewFollows(value.data)
-            : ()=>{throw new Error('No name matched')}
+            : value.name === 'collection'
+            ? () => viewCollections(value.data)
+            : value.name === 'follow'
+            ? () => viewFollows(value.data)
+            : () => {
+                throw new Error('No name matched');
+              }
         }
         style={{ textDecoration: 'underline', cursor: 'pointer' }}
       >
@@ -35,20 +39,22 @@ const customizeCells = (
     return moment(value.data).format('L');
   } else if (value.foreign) {
     return (
-      <Link to={`/${value.name}/${value.id}`} style={{textDecoration:'none'}}>
-      <Box sx={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
-        <Avatar
-          width={40}
-          height={40}
-          src={
-            value?.data?.src ||
-            (value?.data?.fallbackSrc === 'no-image' ? NoImage : AvatarImg)
-          }
-        />
-        <Typography>{value?.data?.name}</Typography>
-      </Box>
+      <Link
+        to={`/${value.name}/${value.id}`}
+        style={{ textDecoration: 'none' }}
+      >
+        <Box sx={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
+          <Avatar
+            width={40}
+            height={40}
+            src={
+              value?.data?.src ||
+              (value?.data?.fallbackSrc === 'no-image' ? NoImage : AvatarImg)
+            }
+          />
+          <Typography>{value?.data?.name}</Typography>
+        </Box>
       </Link>
-      
     );
   } else if (value.action && value.link) {
     return (
@@ -67,6 +73,22 @@ const customizeCells = (
     );
   } else if (value.action) {
     return <Button sx={{ border: '1px solid gray' }}>{value.data}</Button>;
+  } else if (value.status) {
+    return (
+      <Typography
+        sx={{
+          textTransform: 'capitalize',
+          color:
+            value.data === 'active'
+              ? 'limegreen'
+              : value.data === 'blocked'
+              ? 'orangered'
+              : 'gray',
+        }}
+      >
+        {value.data}
+      </Typography>
+    );
   } else {
     return value;
   }

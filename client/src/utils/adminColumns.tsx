@@ -24,10 +24,16 @@ export const adminColumns:Column[]=[
         label:'email',
     },
     {
+        id:'status',
+        minWidth:200,
+        label:'status'
+    },
+    {
         id:'role',
         minWidth:200,
         label:'role',
     },
+
     {
         id:'profileImage',
         minWidth:200,
@@ -63,5 +69,15 @@ export const adminColumns:Column[]=[
         id:'remove',
         minWidth:200,
         label:'remove'
+    },
+    {
+        id:'block',
+        minWidth:200,
+        label:'block'
+    },
+    {
+        id:'edit',
+        minWidth:200,
+        label:'edit'
     }
 ]

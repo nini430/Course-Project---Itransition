@@ -1,11 +1,13 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axiosApiInstance from '../axios';
 import apiUrls from '../api/api';
+import { RegisterValues } from '../types/register';
 
 
 const initialState={
   users: null,
   getUsersLoading:false,
+  editUserLoading:false,
 
 
 }
@@ -26,6 +28,16 @@ export const filterUsers= createAsyncThunk('admin/filter',async({filter}:{filter
     return response.data.data;
     }catch(err) {
         return thunkApi.rejectWithValue(err);
+    }
+});
+
+export const editUser= createAsyncThunk('admin/edit-user',async({userId,inputs,onSuccess}:{userId:string,inputs:Partial<RegisterValues>,onSuccess:VoidFunction},thunkApi)=>{
+    try{
+    const response=await axiosApiInstance.put<{data:any}>(`${apiUrls.admin.editUser}/${userId}`,{inputs});
+    onSuccess && onSuccess();
+    return response.data.data;
+    }catch(err) {
+    return thunkApi.rejectWithValue(err);
     }
 })
 
@@ -56,6 +68,15 @@ const adminReducer=createSlice({
         });
         builder.addCase(filterUsers.rejected,(state,action)=>{
             state.getUsersLoading=false;
+        });
+        builder.addCase(editUser.pending,state=>{
+            state.editUserLoading=true;
+        });
+        builder.addCase(editUser.fulfilled,(state)=>{
+            state.editUserLoading=false;
+        });
+        builder.addCase(editUser.rejected,(state)=>{
+            state.editUserLoading=false;
         })
     }
 })

@@ -17,6 +17,7 @@ model User {
   email        String       @unique
   password     String
   role         Role         @default(BASIC)
+  status Statuses @default(active)
   profileImage String?
   collections  Collection[]
   comments     Comment[]
@@ -186,3 +187,8 @@ enum Emojis {
   sad
 }
 
+enum Statuses {
+  active
+  blocked
+  deleted
+}

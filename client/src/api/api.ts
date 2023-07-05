@@ -39,7 +39,8 @@ const apiUrls = {
   },
   admin:{
     getUsers:'/admin/users',
-    filterUsers:'/admin/filter-users'
+    filterUsers:'/admin/filter-users',
+    editUser:'/admin/edit-user'
   },
   comment:{
     addComment:'/comment',

@@ -11,6 +11,7 @@ const adminUser = {
   lastName: true,
   email: true,
   role: true,
+  status:true,
   profileImage: true,
   password: false,
   createdAt: true,

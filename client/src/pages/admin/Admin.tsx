@@ -2,11 +2,20 @@ import styled from 'styled-components'
 import AdminCard from './AdminCard';
 import AdminDashboard from './AdminDashboard';
 import { useEffect } from 'react';
-import { useAppDispatch } from '../../store/store';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 import { getUsers } from '../../store/adminReducer';
+import { useNavigate } from 'react-router-dom';
 
 const Admin = () => {
+  const navigate=useNavigate();
+  const {authedUser}=useAppSelector(state=>state.auth);
+  const auth=authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
   const dispatch=useAppDispatch();
+  useEffect(()=>{
+    if(auth.role!=='ADMIN') {
+      navigate('/')
+    }
+  },[auth.role,navigate])
   useEffect(()=>{
     dispatch(getUsers())
   },[dispatch])

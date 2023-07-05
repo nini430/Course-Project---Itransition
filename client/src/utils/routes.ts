@@ -10,7 +10,9 @@ const routesPath={
     itemDetails:'/item/:itemId',
     settings:'/settings',
     messenger:'/messenger',
-    admin:'/admin'
+    admin:'/admin',
+    addUser:'/add-user',
+    editUser:'/edit-user/:userId'
 }
 
 export default routesPath;
