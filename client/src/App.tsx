@@ -1,4 +1,5 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
+import { Socket, io } from 'socket.io-client';
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 
@@ -20,13 +21,15 @@ import {
   Admin,
   Settings,
   Register,
-  Login
+  Login,
 } from './pages/index';
 
 import routesPath from './utils/routes';
 
 function App() {
   const { mode } = useAppSelector((state) => state.common);
+  const { authedUser }=useAppSelector(state=>state.auth);
+  const auth = authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
   const theme = useMemo(
     () => (mode === 'dark' ? darkTheme : lightTheme),
     [mode]

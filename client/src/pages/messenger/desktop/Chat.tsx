@@ -4,11 +4,18 @@ import { Typography } from '@mui/material';
 import Avatar from '../../../components/Avatar/Avatar';
 import AvatarImg from '../../../assets/avatar.png';
 import Message from '../../../components/Chat/Message';
-import { useAppSelector } from '../../../store/store';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { useEffect, useRef, useState } from 'react';
 import { SimpleUser } from '../../../types/auth';
+import { Socket } from 'socket.io-client';
+import { receiveMessage } from '../../../store/chatReducer';
 
-const Chat = () => {
+interface IChatProps {
+  socket: null | Socket
+}
+
+const Chat = ({socket}:IChatProps) => {
+  const dispatch=useAppDispatch();
   const {authedUser}=useAppSelector(state=>state.auth);
   const auth=authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
   const { currentChat } = useAppSelector((state) => state.chat);
@@ -20,6 +27,21 @@ const Chat = () => {
       console.log(currentChat.chat.userOne.id===auth.id?currentChat.chat.userTwo:currentChat.chat.userOne)
     }
   },[currentChat,auth.id])
+  useEffect(()=>{
+    const handleReceiveMessage=(message:any)=>{
+        dispatch(receiveMessage(message))
+        if(scrollRef.current) {
+          setTimeout(()=>{
+            scrollRef.current.scrollTop=scrollRef.current.scrollHeight;
+          },100)
+          
+        }
+    }
+    socket?.on('receive-message',handleReceiveMessage);
+    return ()=>{
+      socket?.off('receive-message',handleReceiveMessage);
+    }
+  },[socket,dispatch])
   return (
     <ChatContainer>
       {currentChat && (
@@ -49,7 +71,7 @@ const Chat = () => {
           </Typography>
         )}
       </ConversationContainer>
-      <ChatInput scrollRef={scrollRef} />
+      <ChatInput socket={socket} scrollRef={scrollRef} />
     </ChatContainer>
   );
 };

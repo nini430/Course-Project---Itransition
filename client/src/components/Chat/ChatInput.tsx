@@ -8,12 +8,14 @@ import EmojiPicker, { Emoji } from 'emoji-picker-react';
 
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { sendMessage } from '../../store/chatReducer';
+import { Socket } from 'socket.io-client';
 
 interface IChatInputProps {
   scrollRef:any;
+  socket: Socket | null;
 }
 
-const ChatInput = ({scrollRef}:IChatInputProps) => {
+const ChatInput = ({scrollRef, socket}:IChatInputProps) => {
   const [uploadImg,setUploadImg]=useState<File | null>(null);
   const {getRootProps,getInputProps,isDragActive}= useDropzone({
     accept:'image/*' as unknown as Accept,
@@ -73,9 +75,10 @@ const ChatInput = ({scrollRef}:IChatInputProps) => {
           dispatch(
             sendMessage({
               text: input,
-              chatId: currentChat?.chat.id as string,
-              receiverId: recipient as string,
-              onSuccess:()=>{
+            chatId: currentChat?.chat.id as string,
+            receiverId: recipient as string,
+              onSuccess:(message:any)=>{
+                socket?.emit('send-message',message);
                 setInput('')
                 setTimeout(()=>{
                   scrollRef.current.scrollTop=scrollRef.current.scrollHeight;

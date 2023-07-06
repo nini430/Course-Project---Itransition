@@ -10,7 +10,7 @@ const initialState: ChatInitialState = {
   getMessagesLoading: false,
   chatFollows: null,
   getFollowsLoading: false,
-  sendMessageLoading:false
+  sendMessageLoading: false,
 };
 
 export const getCurrentConversations = createAsyncThunk(
@@ -52,19 +52,24 @@ export const sendMessage = createAsyncThunk(
       text,
       receiverId,
       chatId,
-      onSuccess
-    }: { text: string; receiverId: string; chatId: string, onSuccess: VoidFunction },
+      onSuccess,
+    }: {
+      text: string;
+      receiverId: string;
+      chatId: string;
+      onSuccess: (message:any)=>void;
+    },
     thunkApi
   ) => {
     try {
-      const response = await axiosApiInstance.post<{message:any}>(
+      const response = await axiosApiInstance.post<{ message: any }>(
         `${apiUrls.chat.sendMessage}/${receiverId}/${chatId}`,
         {
           text,
         }
       );
       console.log(response.data);
-      onSuccess && onSuccess();
+      onSuccess && onSuccess(response.data.message);
       return response.data.message;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
@@ -89,7 +94,16 @@ export const getMyFollows = createAsyncThunk(
 const chatSlice = createSlice({
   name: 'chat',
   initialState,
-  reducers: {},
+  reducers: {
+    receiveMessage: (state, action) => {
+      if (state.currentChat) {
+        state.currentChat = {
+          ...state.currentChat,
+          messages: [...state.currentChat.messages, action.payload],
+        };
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getCurrentConversations.pending, (state) => {
       state.getCurrentConversationsLoading = true;
@@ -122,19 +136,23 @@ const chatSlice = createSlice({
     builder.addCase(getMyFollows.rejected, (state, action) => {
       state.getFollowsLoading = false;
     });
-    builder.addCase(sendMessage.pending,state=>{
-      state.sendMessageLoading=true;
+    builder.addCase(sendMessage.pending, (state) => {
+      state.sendMessageLoading = true;
     });
-    builder.addCase(sendMessage.fulfilled,(state,action)=>{
-      state.sendMessageLoading=false;
-      if(state.currentChat) {
-        state.currentChat={...state.currentChat,messages:[...state.currentChat.messages,action.payload]}
+    builder.addCase(sendMessage.fulfilled, (state, action) => {
+      state.sendMessageLoading = false;
+      if (state.currentChat) {
+        state.currentChat = {
+          ...state.currentChat,
+          messages: [...state.currentChat.messages, action.payload],
+        };
       }
     });
-    builder.addCase(sendMessage.rejected,(state,action)=>{
-      state.sendMessageLoading=false;
-    })
+    builder.addCase(sendMessage.rejected, (state, action) => {
+      state.sendMessageLoading = false;
+    });
   },
 });
 
+export const { receiveMessage } = chatSlice.actions;
 export default chatSlice.reducer;
