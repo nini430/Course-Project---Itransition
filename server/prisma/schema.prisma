@@ -29,6 +29,7 @@ model User {
   receiverMessages Message[] @relation("receiver")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
+  accountStatus AccountStatus @default(PUBLIC)
 }
 
 model Follow {
@@ -191,4 +192,9 @@ enum Statuses {
   active
   blocked
   deleted
+}
+
+enum AccountStatus {
+  PUBLIC
+  PRIVATE
 }

@@ -20,6 +20,7 @@ const AuthForm = styled(({ isX, isMob, isD, isXS, mode, ...props }: any) => (
   border-radius: 20px;
   display: flex;
   flex-direction: column;
+  gap:5px;
 `;
 
 const LngContainer = styled.div`

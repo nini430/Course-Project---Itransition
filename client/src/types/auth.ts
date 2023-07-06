@@ -1,3 +1,4 @@
+import { AccountStatuses } from "./common";
 import { FollowInstance } from "./follow";
 import { RegisterValues } from "./register";
 
@@ -10,6 +11,7 @@ export interface User {
     lastName:string;
     email:string;
     profileImage:string;
+    accountStatus:AccountStatuses;
     role:Role;
     followedIds:FollowInstance[];
     followerIds: FollowInstance[];

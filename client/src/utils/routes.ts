@@ -12,7 +12,8 @@ const routesPath={
     messenger:'/messenger',
     admin:'/admin',
     addUser:'/add-user',
-    editUser:'/edit-user/:userId'
+    editUser:'/edit-user/:userId',
+    search:'/search'
 }
 
 export default routesPath;

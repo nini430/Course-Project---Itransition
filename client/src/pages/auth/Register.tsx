@@ -6,7 +6,7 @@ import {
   Button,
   ButtonGroup,
 } from '@mui/material';
-import { Home, PersonPin, Settings } from '@mui/icons-material';
+import { GitHub, Google, Home, PersonPin, Settings } from '@mui/icons-material';
 import { useMediaQuery } from 'react-responsive';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -26,6 +26,8 @@ import toastOptions from '../../utils/toastOptions';
 import BreadCrumb from '../../components/shared/BreadCrumb';
 import { getUserById } from '../../store/userReducer';
 import { addUser, editUser } from '../../store/adminReducer';
+import { LoadingButton } from '@mui/lab';
+import Loading from '../../components/Loading/Loading';
 
 interface IRegisterProps {
   admin?: boolean;
@@ -269,6 +271,8 @@ const Register = ({ admin, edit }: IRegisterProps) => {
                 : t('auth.register')
             }
           />
+          {!admin && <LoadingButton sx={{border:'1px solid gray'}} startIcon={<Google/>}>Sign Up With Google</LoadingButton>}
+          {!admin && <LoadingButton  sx={{border:'1px solid gray'}} startIcon={<GitHub/>}>Sign Up with Github</LoadingButton>}
           {!admin && (
             <Typography sx={{ alignSelf: 'center', my: '10px' }}>
               {t('auth.already_member')}{' '}

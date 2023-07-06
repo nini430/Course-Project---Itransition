@@ -45,6 +45,13 @@ const lightTheme = createTheme({
         }
       }
     },
+    MuiTab:{
+      styleOverrides:{
+        root:{
+          color:'black'
+        }
+      }
+    }
   }
   
 
@@ -90,6 +97,13 @@ const darkTheme = createTheme({
       }
     },
     MuiCircularProgress:{
+      styleOverrides:{
+        root:{
+          color:'#fff'
+        }
+      }
+    },
+    MuiTab:{
       styleOverrides:{
         root:{
           color:'#fff'

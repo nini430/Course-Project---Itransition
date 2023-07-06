@@ -2,22 +2,28 @@ import { useMemo } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 
-import Register from './pages/auth/Register';
-import Login from './pages/auth/Login';
+import NavBar from './components/NavBar/NavBar';
+
 import './utils/i18next';
 import { useAppSelector } from './store/store';
 import { darkTheme, lightTheme } from './utils/theme';
-import MainPage from './pages/MainPage';
-import NavBar from './components/NavBar/NavBar';
-import AddCollection from './pages/collection/AddCollection';
-import AddItem from './pages/item/AddItem';
-import Profile from './pages/profile/Profile';
-import CollectionDetails from './pages/collection/CollectionDetails';
-import ItemDetails from './pages/item/ItemDetails';
+
+import {
+  MainPage,
+  AddCollection,
+  Profile,
+  AddItem,
+  CollectionDetails,
+  ItemDetails,
+  Search,
+  DesktopMessenger,
+  Admin,
+  Settings,
+  Register,
+  Login
+} from './pages/index';
+
 import routesPath from './utils/routes';
-import Settings from './pages/settings/Settings';
-import DesktopMessenger from './pages/messenger/desktop/DesktopMessenger';
-import Admin from './pages/admin/Admin';
 
 function App() {
   const { mode } = useAppSelector((state) => state.common);
@@ -43,13 +49,17 @@ function App() {
             path={routesPath.addUser}
             element={<Register admin={true} />}
           />
-          <Route path={routesPath.editUser} element={<Register edit admin={true}/>}/>
+          <Route
+            path={routesPath.editUser}
+            element={<Register edit admin={true} />}
+          />
           <Route
             path={routesPath.collectionDetails}
             element={<CollectionDetails />}
           />
           <Route path={routesPath.itemDetails} element={<ItemDetails />} />
           <Route path={routesPath.messenger} element={<DesktopMessenger />} />
+          <Route path={routesPath.search} element={<Search />} />
         </Routes>
       </ThemeProvider>
     </div>

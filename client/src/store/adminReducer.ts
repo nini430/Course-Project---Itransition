@@ -5,8 +5,9 @@ import { RegisterValues } from '../types/register';
 import { Statuses } from '../types/common';
 import { toast } from 'react-hot-toast';
 import toastOptions from '../utils/toastOptions';
+import { AdminInitialState } from '../types/admin';
 
-const initialState = {
+const initialState: AdminInitialState = {
   users: null,
   getUsersLoading: false,
   editUserLoading: false,

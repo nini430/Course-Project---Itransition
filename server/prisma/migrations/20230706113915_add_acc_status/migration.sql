@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `user` ADD COLUMN `accountStatus` ENUM('PUBLIC', 'PRIVATE') NOT NULL DEFAULT 'PUBLIC';

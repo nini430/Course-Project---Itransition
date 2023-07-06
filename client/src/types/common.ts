@@ -9,6 +9,9 @@ export type PassType = 'text' | 'password';
 
 export type Statuses= 'active' | 'blocked' | 'deleted';
 
+export type AccountStatuses = 'PUBLIC' | 'PRIVATE'
+
+
 export interface BreadCrumbProps {
     icon:SvgIconComponent;
     title:string;

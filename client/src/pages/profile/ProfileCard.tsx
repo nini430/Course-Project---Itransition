@@ -121,6 +121,10 @@ const ProfileCard = () => {
           <Typography sx={{ color: 'gray' }}>Followings:</Typography>{' '}
           <Typography onClick={()=>setFollowModal(currentFollowings.map((item:any)=>({...item.follower})))} sx={{textDecoration:'underline',cursor:'pointer'}}>{currentProfile.id===authId ? myFollowings.length:currentFollowings.length}</Typography>
         </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+          <Typography sx={{ color: 'gray' }}>Account Status:</Typography>{' '}
+          <Typography onClick={()=>setFollowModal(currentFollowings.map((item:any)=>({...item.follower})))}>{currentProfile.accountStatus==='PRIVATE'?'Private':'Public'}</Typography>
+        </Box>
       </CardContent>
       <FollowModal open={followModal} onClose={()=>setFollowModal(null)}/>
     </Card>

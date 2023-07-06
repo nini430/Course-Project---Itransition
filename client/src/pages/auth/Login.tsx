@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Divider, Typography, FormGroup } from '@mui/material';
-import { Home, LockClockRounded } from '@mui/icons-material';
+import { GitHub, Google, Home, LockClockRounded } from '@mui/icons-material';
 import { useMediaQuery } from 'react-responsive';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +17,7 @@ import {
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { loginUser } from '../../store/authReducer';
 import BreadCrumb from '../../components/shared/BreadCrumb';
+import { LoadingButton } from '@mui/lab';
 
 const Login = () => {
   const [passType,setPassType]=useState<'text'|'password'>('password')
@@ -120,6 +121,8 @@ const Login = () => {
               <ErrorMessage>{t(`auth.${errors.password}`)}</ErrorMessage>
             )}
           </FormGroup>
+          <LoadingButton startIcon={<Google/>} sx={{border:'1px solid gray'}}>Sign In With Google</LoadingButton>
+          <LoadingButton startIcon={<GitHub/>} sx={{border:'1px solid gray'}}>Sign In With Github</LoadingButton>
           <FormButton
             loading={loginLoading}
             type="submit"

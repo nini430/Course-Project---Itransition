@@ -13,6 +13,7 @@ const getUserById = async (userId: string) => {
       password: false,
       profileImage: true,
       role: true,
+      accountStatus:true,
       followedIds: {
         include: {
           follower: {

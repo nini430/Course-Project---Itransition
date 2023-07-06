@@ -23,6 +23,7 @@
     "emoji-picker-react": "^4.4.9",
     "flag-icon-css": "^4.1.7",
     "formik": "^2.4.1",
+    "highlight-words": "^1.2.2",
     "i18next": "^22.5.1",
     "i18next-browser-languagedetector": "^7.0.2",
     "i18next-http-backend": "^2.2.1",

@@ -1,0 +1,1 @@
+export type SearchItems='collections'|'items'|'users'|'comments'
