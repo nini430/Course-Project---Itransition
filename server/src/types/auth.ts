@@ -22,3 +22,10 @@ export interface SimpleUser {
     id:string;
 }
 
+export interface MailOptions {
+    from:string;
+    to:string;
+    subject:string;
+    template:string;
+    context:any;
+}

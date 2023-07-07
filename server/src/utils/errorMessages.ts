@@ -7,5 +7,6 @@ export default {
     notFound:'not_found',
     forbiddenOperation:'forbidden_operation',
     blockedUser:'user_blocked',
-    deletedUser:'user_deleted'
+    deletedUser:'user_deleted',
+    userNotFound:'user_not_found'
 }

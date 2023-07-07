@@ -25,6 +25,7 @@ import {
 } from './pages/index';
 
 import routesPath from './utils/routes';
+import ForgotPassword from './pages/auth/ForgotPassword';
 
 function App() {
   const { mode } = useAppSelector((state) => state.common);
@@ -63,6 +64,7 @@ function App() {
           <Route path={routesPath.itemDetails} element={<ItemDetails />} />
           <Route path={routesPath.messenger} element={<DesktopMessenger />} />
           <Route path={routesPath.search} element={<Search />} />
+          <Route path={routesPath.forgotPassword} element={<ForgotPassword/>}/>
         </Routes>
       </ThemeProvider>
     </div>

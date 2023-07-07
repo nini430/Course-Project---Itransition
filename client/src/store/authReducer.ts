@@ -23,6 +23,7 @@ const initialState: AuthInitialState = {
   updateProfileLoading: false,
   myFollowers: [],
   myFollowings: [],
+  forgetPasswordLoading:false
 };
 
 export const registerUser = createAsyncThunk(
@@ -156,6 +157,15 @@ export const getFollows = createAsyncThunk(
   }
 );
 
+export const forgotPassword= createAsyncThunk('auth/forgot-password',async({email,onSuccess}:{email:string,onSuccess:(message:string)=>void},thunkApi)=>{
+  try{
+    const response=await axiosApiInstance.put<{data:string}>(apiUrls.auth.forgotPassword,{email});
+    onSuccess && onSuccess(response.data.data);
+  }catch(err) {
+    return thunkApi.rejectWithValue(err);
+  }
+})
+
 const authReducer = createSlice({
   name: 'auth',
   initialState,
@@ -235,6 +245,16 @@ const authReducer = createSlice({
       }else{
         state.myFollowings=state.myFollowings.filter(item=>item.id!==follow);
       }
+    });
+    builder.addCase(forgotPassword.pending,state=>{
+      state.forgetPasswordLoading=true;
+    });
+    builder.addCase(forgotPassword.fulfilled,(state)=>{
+      state.forgetPasswordLoading=false;
+    });
+    builder.addCase(forgotPassword.rejected,(state,action:any)=>{
+      state.forgetPasswordLoading=false;
+      toast.error(action.payload.message.error,toastOptions);
     })
   },
 });

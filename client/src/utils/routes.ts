@@ -13,7 +13,8 @@ const routesPath={
     admin:'/admin',
     addUser:'/add-user',
     editUser:'/edit-user/:userId',
-    search:'/search'
+    search:'/search',
+    forgotPassword:'/forgot-password'
 }
 
 export default routesPath;

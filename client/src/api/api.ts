@@ -6,7 +6,8 @@ const apiUrls = {
     logout:`/auth/logout`,
     profileImageUpload:'/auth/profile/upload',
     userInfoUpdate:'/auth/profile/update',
-    getFollows:'/auth/profile/follows'
+    getFollows:'/auth/profile/follows',
+    forgotPassword:'/auth/forgot-password'
   },
   test: {
     test: '/test',

@@ -7,6 +7,7 @@ import {
   createUser,
   findUserByEmail,
   findUserById,
+  forgotPassword,
   generateJwt,
   getMyFollows,
   hashPassword,
@@ -22,6 +23,7 @@ import {
 } from '../types/auth';
 import ErrorResponse from '../utils/errorResponse';
 import errorMessages from '../utils/errorMessages';
+import sendEmail from '../utils/sendEmail';
 
 const registerUser = asyncHandler(
   async (
@@ -214,6 +216,39 @@ const getMyFollowsHandler = asyncHandler(
   }
 );
 
+const forgotPasswordHandler = asyncHandler(
+  async (
+    req: Request<{}, {}, { email: string }>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const user = await findUserByEmail(req.body.email);
+    if (!user) {
+      return next(
+        new ErrorResponse(errorMessages.userNotFound, StatusCodes.NOT_FOUND)
+      );
+    }
+    const token = await forgotPassword(user.id);
+    sendEmail({
+      from: process.env.EMAIL_FROM as string,
+      subject: 'Reset Password',
+      to: user.email,
+      template: 'email',
+      context: {
+        title: `Reset Password for ${user.firstName} ${user.lastName}`,
+        message: 'You requested password reset, please follow',
+        linkMessage: 'this link',
+        extra: 'if this wasnot you, we should increase your security',
+        link: `http://localhost:5173/reset-password/${token}`,
+      },
+    });
+
+    return res
+      .status(StatusCodes.OK)
+      .json({ success: true, data: 'email_sent_success' });
+  }
+);
+
 export {
   registerUser,
   loginUser,
@@ -222,4 +257,5 @@ export {
   uploadProfileImageHandler,
   updateUserInfoHandler,
   getMyFollowsHandler,
+  forgotPasswordHandler,
 };

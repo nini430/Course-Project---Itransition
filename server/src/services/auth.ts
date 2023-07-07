@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 
 import client from '../utils/prismaClient';
 import { RegisterInput, UpdateTypes, UserUpdateInput } from '../types/auth';
@@ -21,6 +22,25 @@ const findUserByEmail = async (email: string) => {
     include: { followedIds: true, followerIds: true },
   });
   return user;
+};
+
+const hashCryptoToken = () => {
+  const token = crypto.randomBytes(20).toString('hex');
+  const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+  return {token,hashedToken};
+};
+
+const forgotPassword = async (id: string) => {
+  const {token,hashedToken} = hashCryptoToken();
+  const expiredDate = Date.now() + 10 * 60 * 1000;
+  await client.user.update({
+    data: {
+      hashedForgotPasswordToken: hashedToken,
+      hashedForgotPasswordTokenExpire: expiredDate,
+    },
+    where: { id },
+  });
+  return token;
 };
 
 const generateJwt = (userId: string, secret: string, expiresIn: string) => {
@@ -99,7 +119,7 @@ const getMyFollows = async (userId: string) => {
   const followings = await client.follow.findMany({
     where: { followerId: userId },
   });
-  console.log(followers,followings,userId)
+  console.log(followers, followings, userId);
   return { followers, followings };
 };
 export {
@@ -113,5 +133,6 @@ export {
   updateUserInfo,
   updatePassword,
   getMyFollows,
-  findUserByIdWithoutPass
+  findUserByIdWithoutPass,
+  forgotPassword,
 };

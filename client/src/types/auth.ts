@@ -26,6 +26,7 @@ export interface AuthInitialState {
     updateProfileLoading:boolean;
     myFollowers:FollowInstance[];
     myFollowings: FollowInstance[];
+    forgetPasswordLoading:boolean;
 }
 
 
