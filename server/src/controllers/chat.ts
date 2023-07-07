@@ -5,6 +5,7 @@ import {
   findChat,
   findChatWithPeople,
   getChatMessages,
+  getChatUsersByIds,
   getCurrentConversations,
   getMyFollows,
   sendMessage,
@@ -76,9 +77,15 @@ const getMyFollowsHandler = asyncHandler(
   }
 );
 
+const getChatUserByIdsHandler= asyncHandler(async(req:Request<{},{},{userIds:string[]}> & {user:any},res:Response,next:NextFunction)=>{
+  const users=await getChatUsersByIds(req.body.userIds);
+  return res.status(StatusCodes.OK).json(users);
+})
+
 export {
   getCurrentConversationsHandler,
   sendMessageHandler,
   getChatMessagesHandler,
   getMyFollowsHandler,
+  getChatUserByIdsHandler
 };

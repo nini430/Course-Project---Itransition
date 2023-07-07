@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from 'react';
 import { SimpleUser } from '../../../types/auth';
 import { Socket } from 'socket.io-client';
 import { receiveMessage } from '../../../store/chatReducer';
+import { current } from '@reduxjs/toolkit';
 
 interface IChatProps {
   socket: null | Socket
@@ -23,19 +24,18 @@ const Chat = ({socket}:IChatProps) => {
   const scrollRef=useRef<any>(null);
   useEffect(()=>{
     if(currentChat) {
-      setRecipient(currentChat.chat.userOne.id===auth.id?currentChat.chat.userTwo:currentChat.chat.userOne)
+      setRecipient(currentChat.chat.userOne?.id===auth.id?currentChat.chat.userTwo:currentChat.chat.userOne)
       console.log(currentChat.chat.userOne.id===auth.id?currentChat.chat.userTwo:currentChat.chat.userOne)
     }
   },[currentChat,auth.id])
   useEffect(()=>{
     const handleReceiveMessage=(message:any)=>{
         dispatch(receiveMessage(message))
-        if(scrollRef.current) {
+        console.log(currentChat?.chat.id,message.chatId)
           setTimeout(()=>{
             scrollRef.current.scrollTop=scrollRef.current.scrollHeight;
           },100)
           
-        }
     }
     socket?.on('receive-message',handleReceiveMessage);
     return ()=>{

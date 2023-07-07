@@ -57,7 +57,7 @@ export const sendMessage = createAsyncThunk(
       text: string;
       receiverId: string;
       chatId: string;
-      onSuccess: (message:any)=>void;
+      onSuccess: (message: any) => void;
     },
     thunkApi
   ) => {
@@ -68,7 +68,6 @@ export const sendMessage = createAsyncThunk(
           text,
         }
       );
-      console.log(response.data);
       onSuccess && onSuccess(response.data.message);
       return response.data.message;
     } catch (err) {
@@ -96,7 +95,8 @@ const chatSlice = createSlice({
   initialState,
   reducers: {
     receiveMessage: (state, action) => {
-      if (state.currentChat) {
+      if (state.currentChat && state.currentChat.chat.id===action.payload.chatId) {
+        
         state.currentChat = {
           ...state.currentChat,
           messages: [...state.currentChat.messages, action.payload],
@@ -139,8 +139,32 @@ const chatSlice = createSlice({
     builder.addCase(sendMessage.pending, (state) => {
       state.sendMessageLoading = true;
     });
-    builder.addCase(sendMessage.fulfilled, (state, action) => {
+    builder.addCase(sendMessage.fulfilled, (state, action: any) => {
+      const { chatId, senderId, receiverId, sender, receiver } = action.payload;
       state.sendMessageLoading = false;
+      if (state.currentConversations) {
+        if(!state.currentConversations.find(item=>item.id===chatId)) {
+          state.currentConversations = [
+            ...state.currentConversations,
+            {
+              id: chatId,
+              memberOneId: senderId,
+              memberTwoId: receiverId,
+              userOne: sender,
+              userTwo: receiver,
+            },
+          ];
+        }
+        
+      } else {
+        state.currentConversations = [{
+          id: chatId,
+          memberOneId: senderId,
+          memberTwoId: receiverId,
+          userOne: sender,
+          userTwo: receiver,
+        }];
+      }
       if (state.currentChat) {
         state.currentChat = {
           ...state.currentChat,

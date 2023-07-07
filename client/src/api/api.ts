@@ -61,7 +61,8 @@ const apiUrls = {
     getCurrentConversations:'/chat/conversations',
     sendMessage:'/chat/add-message',
     getMessages:'/chat/messages',
-    getMyFollows:'/chat/my-follows'
+    getMyFollows:'/chat/my-follows',
+    getOnlineUsers:'/chat/online-users'
   }
 };
 

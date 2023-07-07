@@ -1,3 +1,4 @@
+import { simpleUser } from '../utils/commonQueryObjs';
 import client from '../utils/prismaClient';
 import { findUserByIdWithoutPass } from './auth';
 
@@ -46,20 +47,10 @@ const sendMessage = async (
     data: { text: message, chatId, senderId, receiverId },
     include: {
       sender: {
-        select: {
-          firstName: true,
-          lastName: true,
-          profileImage: true,
-          id: true,
-        },
+        select: simpleUser,
       },
       receiver:{
-        select:{
-          firstName:true,
-          lastName:true,
-          profileImage:true,
-          id:true
-        }
+        select:simpleUser
       }
     },
   });
@@ -120,6 +111,15 @@ const getMyFollows = async (userId: string) => {
   });
   return followers;
 };
+
+const getChatUsersByIds=async(userIds:string[])=>{
+  const users=await client.user.findMany({
+    where:{
+      id:{in:userIds}
+    }
+  })
+  return users;
+}
 export {
   getCurrentConversations,
   createChat,
@@ -128,4 +128,5 @@ export {
   getChatMessages,
   getMyFollows,
   findChatWithPeople,
+  getChatUsersByIds
 };
