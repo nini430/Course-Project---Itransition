@@ -9,7 +9,7 @@ import ExpiredLink from '../assets/expired-link.jpg'
 const Expired = () => {
   return (
     <Container>
-      <Typography sx={{fontSize:30,fontStyle:'italic'}}> <SentimentVeryDissatisfied/> Link you followed is expired!</Typography>
+      <Typography sx={{fontSize:30,fontStyle:'italic'}}> <SentimentVeryDissatisfied/> Link you followed is invalid or expired!</Typography>
       <ExpiredLinkImg src={ExpiredLink} alt=''/>
       <Link style={{textDecoration:'none'}} to='/'>
       <Button sx={{border:'1px solid gray'}} startIcon={<ArrowBack/>}>Go Back</Button>

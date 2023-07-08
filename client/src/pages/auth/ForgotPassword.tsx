@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 const ForgotPassword = () => {
   const navigate=useNavigate();
   const dispatch=useAppDispatch();
+  const {forgetPasswordLoading}=useAppSelector(state=>state.auth);
   const { mode } = useAppSelector((state) => state.common);
   const { dirty, values, errors, setFieldValue, handleBlur, touched, handleSubmit } =
     useFormik({
@@ -56,6 +57,7 @@ const ForgotPassword = () => {
           <ErrorMessage>{errors.email}</ErrorMessage>
         )}
         <LoadingButton
+          loading={forgetPasswordLoading}
           disabled={!dirty || Object.keys(errors).length > 0}
           type="submit"
           sx={{ border: '1px solid gray', mt: 2 }}

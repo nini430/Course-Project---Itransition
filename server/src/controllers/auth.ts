@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { StatusCodes } from 'http-status-codes';
 import asyncHandler from 'express-async-handler';
 import {
+  compareCryptoToken,
   comparePassword,
   createUser,
   findUserByEmail,
@@ -11,6 +12,7 @@ import {
   generateJwt,
   getMyFollows,
   hashPassword,
+  resetPassword,
   updatePassword,
   updateUserInfo,
   uploadProfileImage,
@@ -234,18 +236,68 @@ const forgotPasswordHandler = asyncHandler(
     const tokenInstance = await findTokenByUserId(id);
     if (!tokenInstance) {
       const token = await forgotPassword(user.id);
-      sendEmail(generateMail({ email, firstName, lastName, token, userId: id }));
+      sendEmail(
+        generateMail({ email, firstName, lastName, token, userId: id })
+      );
     } else if (tokenInstance && tokenInstance.tokenExpire < Date.now()) {
       removeTokenByUserId(id);
-      const token=await forgotPassword(id);
-      sendEmail(generateMail({email,firstName,lastName,token,userId:id}));
+      const token = await forgotPassword(id);
+      sendEmail(
+        generateMail({ email, firstName, lastName, token, userId: id })
+      );
     } else {
-        return next(new ErrorResponse(errorMessages.emailAlreadySent,StatusCodes.FORBIDDEN));
+      return next(
+        new ErrorResponse(errorMessages.emailAlreadySent, StatusCodes.FORBIDDEN)
+      );
     }
 
     return res
       .status(StatusCodes.OK)
       .json({ success: true, data: 'email_sent_success' });
+  }
+);
+
+const resetPasswordHandler = asyncHandler(
+  async (
+    req: Request<{ userId: string }, {}, { token: string }>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    let expired;
+    const token = await findTokenByUserId(req.params.userId);
+    if (!token) {
+      expired = true;
+    } else {
+      const isTokenCorrect = compareCryptoToken(
+        req.body.token,
+        token.hashedToken
+      );
+      if (!isTokenCorrect) {
+        await removeTokenByUserId(token.userId);
+        expired = true;
+      } else {
+        if (token.tokenExpire < Date.now()) {
+          await removeTokenByUserId(token.userId);
+          expired = true;
+        }
+      }
+    }
+
+    return res.status(StatusCodes.OK).json({ success: true, expired });
+  }
+);
+
+const resetPasswordActionHandler = asyncHandler(
+  async (
+    req: Request<{ userId: string }, {}, { newPassword: string }>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    await resetPassword(req.body.newPassword, req.params.userId);
+    await removeTokenByUserId(req.params.userId);
+    return res
+      .status(StatusCodes.OK)
+      .json({ success: true, data: 'password_reset_success' });
   }
 );
 
@@ -258,4 +310,6 @@ export {
   updateUserInfoHandler,
   getMyFollowsHandler,
   forgotPasswordHandler,
+  resetPasswordHandler,
+  resetPasswordActionHandler,
 };

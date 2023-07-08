@@ -14,6 +14,7 @@ import toastOptions from '../utils/toastOptions';
 import { LoginValues } from '../types/login';
 import { FollowInstance } from '../types/follow';
 import { toggleFollow } from './userReducer';
+import { ThumbDown } from '@mui/icons-material';
 
 const initialState: AuthInitialState = {
   authedUser: null,
@@ -23,7 +24,9 @@ const initialState: AuthInitialState = {
   updateProfileLoading: false,
   myFollowers: [],
   myFollowings: [],
-  forgetPasswordLoading:false
+  forgetPasswordLoading: false,
+  resetPasswordPageLoading: false,
+  resetPasswordLoading: false,
 };
 
 export const registerUser = createAsyncThunk(
@@ -146,10 +149,12 @@ export const getFollows = createAsyncThunk(
   'auth/getFollows',
   async (_, thunkApi) => {
     try {
-      const response = await axiosApiInstance.get<{data:{
-        followers: FollowInstance[];
-        followings: FollowInstance[];
-      }}>(apiUrls.auth.getFollows);
+      const response = await axiosApiInstance.get<{
+        data: {
+          followers: FollowInstance[];
+          followings: FollowInstance[];
+        };
+      }>(apiUrls.auth.getFollows);
       return response.data.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
@@ -157,14 +162,78 @@ export const getFollows = createAsyncThunk(
   }
 );
 
-export const forgotPassword= createAsyncThunk('auth/forgot-password',async({email,onSuccess}:{email:string,onSuccess:(message:string)=>void},thunkApi)=>{
-  try{
-    const response=await axiosApiInstance.put<{data:string}>(apiUrls.auth.forgotPassword,{email});
-    onSuccess && onSuccess(response.data.data);
-  }catch(err) {
-    return thunkApi.rejectWithValue(err);
+export const forgotPassword = createAsyncThunk(
+  'auth/forgot-password',
+  async (
+    {
+      email,
+      onSuccess,
+    }: { email: string; onSuccess: (message: string) => void },
+    thunkApi
+  ) => {
+    try {
+      const response = await axiosApiInstance.put<{ data: string }>(
+        apiUrls.auth.forgotPassword,
+        { email }
+      );
+      onSuccess && onSuccess(response.data.data);
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
   }
-})
+);
+
+export const resetPassword = createAsyncThunk(
+  'auth/reset-password',
+  async (
+    {
+      userId,
+      token,
+      onSuccess,
+    }: {
+      userId: string;
+      token: string;
+      onSuccess: (isExpire: boolean) => void;
+    },
+    thunkApi
+  ) => {
+    try {
+      const response = await axiosApiInstance.put<{ expired: boolean }>(
+        `${apiUrls.auth.resetPassword}/${userId}`,
+        { token }
+      );
+      onSuccess && onSuccess(response.data.expired);
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
+export const resetPasswordAction = createAsyncThunk(
+  'auth/reset-password-action',
+  async (
+    {
+      userId,
+      newPassword,
+      onSuccess,
+    }: {
+      userId: string;
+      newPassword: string;
+      onSuccess: (message: string) => void;
+    },
+    thunkApi
+  ) => {
+    try {
+      const response = await axiosApiInstance.put<{ data: string }>(
+        `${apiUrls.auth.resetPasswordAction}/${userId}`,
+        { newPassword }
+      );
+      onSuccess && onSuccess(response.data.data);
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
 
 const authReducer = createSlice({
   name: 'auth',
@@ -212,10 +281,7 @@ const authReducer = createSlice({
           ...state.authedUser,
           profileImage: action.payload,
         };
-        localStorage.setItem(
-          'authed_user',
-          JSON.stringify(state.authedUser)
-        );
+        localStorage.setItem('authed_user', JSON.stringify(state.authedUser));
       }
     });
     builder.addCase(uploadProfileImage.rejected, (state, action) => {
@@ -234,28 +300,48 @@ const authReducer = createSlice({
       toast.error(action.payload.message.error as string, toastOptions);
     });
     builder.addCase(getFollows.fulfilled, (state, action) => {
-      console.log(action.payload)
+      console.log(action.payload);
       state.myFollowers = action.payload.followers;
       state.myFollowings = action.payload.followings;
     });
-    builder.addCase(toggleFollow.fulfilled,(state,action)=>{
-      const {data,status,follow}=action.payload;
-      if(status==='follow') {
-        state.myFollowings=[...state.myFollowings,data];
-      }else{
-        state.myFollowings=state.myFollowings.filter(item=>item.id!==follow);
+    builder.addCase(toggleFollow.fulfilled, (state, action) => {
+      const { data, status, follow } = action.payload;
+      if (status === 'follow') {
+        state.myFollowings = [...state.myFollowings, data];
+      } else {
+        state.myFollowings = state.myFollowings.filter(
+          (item) => item.id !== follow
+        );
       }
     });
-    builder.addCase(forgotPassword.pending,state=>{
-      state.forgetPasswordLoading=true;
+    builder.addCase(forgotPassword.pending, (state) => {
+      state.forgetPasswordLoading = true;
     });
-    builder.addCase(forgotPassword.fulfilled,(state)=>{
-      state.forgetPasswordLoading=false;
+    builder.addCase(forgotPassword.fulfilled, (state) => {
+      state.forgetPasswordLoading = false;
     });
-    builder.addCase(forgotPassword.rejected,(state,action:any)=>{
-      state.forgetPasswordLoading=false;
-      toast.error(action.payload.message.error,toastOptions);
-    })
+    builder.addCase(forgotPassword.rejected, (state, action: any) => {
+      state.forgetPasswordLoading = false;
+      toast.error(action.payload.message.error, toastOptions);
+    });
+    builder.addCase(resetPassword.pending, (state) => {
+      state.resetPasswordPageLoading = true;
+    });
+    builder.addCase(resetPassword.fulfilled, (state, action) => {
+      state.resetPasswordPageLoading = false;
+    });
+    builder.addCase(resetPassword.rejected, (state) => {
+      state.resetPasswordPageLoading = false;
+    });
+    builder.addCase(resetPasswordAction.pending, (state) => {
+      state.resetPasswordLoading = true;
+    });
+    builder.addCase(resetPasswordAction.fulfilled, (state, action) => {
+      state.resetPasswordLoading = false;
+    });
+    builder.addCase(resetPasswordAction.rejected, (state, action) => {
+      state.resetPasswordLoading = false;
+    });
   },
 });
 

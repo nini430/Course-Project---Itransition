@@ -1,4 +1,4 @@
-import {ObjectSchema,object, string} from 'yup'
+import {ObjectSchema,object, string,ref} from 'yup'
 
 interface ResetPasswordValues {
     newPassword:string;
@@ -14,7 +14,7 @@ const resetPasswordValues:ResetPasswordValues={
 
 const resetPasswordValidationSchema:ObjectSchema<ResetPasswordValues>=object({
     newPassword: string().required('password_required'),
-    confirmNewPassword: string().required('confirm_new_password_required')
+    confirmNewPassword: string().required('confirm_new_password_required').oneOf([ref('newPassword')],'password_must_match')
 })
 
 export {resetPasswordValidationSchema,resetPasswordValues}

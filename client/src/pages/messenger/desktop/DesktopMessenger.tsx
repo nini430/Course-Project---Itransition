@@ -6,23 +6,33 @@ import FriendRightbar from './FriendRightbar';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { getCurrentConversations } from '../../../store/chatReducer';
 import { Socket,io } from 'socket.io-client';
+import { useNavigate } from 'react-router-dom';
 
 
 
 const DesktopMessenger = () => {
+  const navigate=useNavigate();
   const [socket,setSocket]=useState<Socket | null>(null);
   const {authedUser}=useAppSelector(state=>state.auth);
   const auth= authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
   const dispatch=useAppDispatch();
   useEffect(()=>{
-    dispatch(getCurrentConversations());
-  },[dispatch])
+    if(!auth) {
+      navigate('/login');
+    }
+  },[auth,navigate])
+  useEffect(()=>{
+    if(auth) {
+      dispatch(getCurrentConversations());
+    }
+    
+  },[dispatch,auth])
 
   useEffect(()=>{
-    if(!socket) {
+    if(!socket && auth) {
       setSocket(io('http://localhost:7070',{query:{userId:auth.id}}));
     }
-  },[socket,auth.id])
+  },[socket,auth?.id])
   return (
     <Container>
     <ConversationSidebar/>

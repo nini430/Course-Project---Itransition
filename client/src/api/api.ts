@@ -7,7 +7,9 @@ const apiUrls = {
     profileImageUpload:'/auth/profile/upload',
     userInfoUpdate:'/auth/profile/update',
     getFollows:'/auth/profile/follows',
-    forgotPassword:'/auth/forgot-password'
+    forgotPassword:'/auth/forgot-password',
+    resetPassword:'/auth/reset-password',
+    resetPasswordAction:'/auth/reset-password-action'
   },
   test: {
     test: '/test',

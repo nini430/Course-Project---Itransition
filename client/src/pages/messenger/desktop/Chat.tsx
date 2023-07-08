@@ -27,9 +27,10 @@ const Chat = ({socket}:IChatProps) => {
       setRecipient(currentChat.chat.userOne?.id===auth.id?currentChat.chat.userTwo:currentChat.chat.userOne)
       console.log(currentChat.chat.userOne.id===auth.id?currentChat.chat.userTwo:currentChat.chat.userOne)
     }
-  },[currentChat,auth.id])
+  },[currentChat,auth?.id])
   useEffect(()=>{
-    const handleReceiveMessage=(message:any)=>{
+    if(auth) {
+      const handleReceiveMessage=(message:any)=>{
         dispatch(receiveMessage(message))
         console.log(currentChat?.chat.id,message.chatId)
           setTimeout(()=>{
@@ -41,7 +42,9 @@ const Chat = ({socket}:IChatProps) => {
     return ()=>{
       socket?.off('receive-message',handleReceiveMessage);
     }
-  },[socket,dispatch])
+    }
+    
+  },[socket,dispatch,auth,currentChat?.chat?.id])
   return (
     <ChatContainer>
       {currentChat && (

@@ -35,8 +35,9 @@ const compareCryptoToken = (token: string, userHashedToken: string) => {
   return hashedToken===userHashedToken;
 };
 
-const resetPassword=async(token:string)=>{
-     
+const resetPassword=async(newPassword:string,userId:string)=>{
+    const hashedPassword=await hashPassword(newPassword);
+    await client.user.update({data:{password:hashedPassword},where:{id:userId}}) 
 }
 
 
@@ -140,4 +141,5 @@ export {
   findUserByIdWithoutPass,
   forgotPassword,
   resetPassword,
+  compareCryptoToken
 };

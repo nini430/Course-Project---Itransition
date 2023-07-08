@@ -2,18 +2,29 @@ import styled from 'styled-components';
 import { LoadingButton } from '@mui/lab';
 import { FormGroup, Typography } from '@mui/material';
 import { useFormik } from 'formik';
+import {Toaster,toast} from 'react-hot-toast'
 
 import { AuthForm } from './AuthStyles';
-import { useAppSelector } from '../../store/store';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 import FormInput from '../../components/FormInput/FormInput';
 import {
   resetPasswordValidationSchema,
   resetPasswordValues,
 } from '../../formik-validation/resetPassword';
 import { ErrorMessage } from '../../components/shared/styles/FormStyles';
+import { useEffect } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { resetPassword, resetPasswordAction } from '../../store/authReducer';
+import toastOptions from '../../utils/toastOptions';
 
 const ResetPassword = () => {
+  const {resetPasswordLoading}=useAppSelector(state=>state.auth);
   const { mode } = useAppSelector((state) => state.common);
+  const {token}=useParams();
+  const {search}=useLocation();
+  const userId=search.split('=')[1];
+  const dispatch=useAppDispatch();
+  const navigate=useNavigate();
   const {
     dirty,
     errors,
@@ -26,13 +37,28 @@ const ResetPassword = () => {
     initialValues: resetPasswordValues,
     validationSchema: resetPasswordValidationSchema,
     onSubmit: () => {
-      console.log('submit');
+      dispatch(resetPasswordAction({newPassword:values.newPassword,userId,onSuccess:(message)=>{
+          toast.success(message,toastOptions);
+          setTimeout(()=>{
+            navigate('/login');
+          },2000)
+          
+      }}))
     },
   });
+  useEffect(()=>{
+    dispatch(resetPassword({userId,token:token as string,onSuccess:(isExpired:boolean)=>{
+        if(isExpired) {
+          navigate('/expired')
+        }
+    }}))
+  },[dispatch,navigate,token,userId,values.newPassword])
   return (
     <Container>
+      <Toaster/>
       <AuthForm onSubmit={(e:SubmitEvent)=>{
         e.preventDefault();
+        handleSubmit();
       }} mode={mode}>
         <Typography sx={{ fontSize: 20, textAlign: 'center' }}>
           Reset Password
@@ -66,6 +92,8 @@ const ResetPassword = () => {
           {errors.confirmNewPassword && touched.confirmNewPassword && <ErrorMessage>{errors.confirmNewPassword}</ErrorMessage>}
         </FormGroup>
         <LoadingButton
+        type='submit'
+          loading={resetPasswordLoading}
           disabled={!dirty || Object.keys(errors).length > 0}
           sx={{ border: '1px solid gray' }}
         >

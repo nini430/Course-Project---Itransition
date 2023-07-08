@@ -31,7 +31,7 @@ const ChatInput = ({scrollRef, socket}:IChatInputProps) => {
     authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
   const { currentChat } = useAppSelector((state) => state.chat);
   const recipient =
-    currentChat?.chat.memberOneId === auth.id
+    currentChat?.chat.memberOneId === auth?.id
       ? currentChat?.chat.memberTwoId
       : currentChat?.chat.memberOneId;
       const handleEmojiClick=(emoji:any)=>{
