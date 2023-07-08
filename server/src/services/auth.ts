@@ -17,7 +17,7 @@ const comparePassword = async (candidatePassword: string, password: string) => {
 };
 
 const findUserByEmail = async (email: string) => {
-  const user = await client.user.findUnique({
+  const user = await client.user.findFirst({
     where: { email },
     include: { followedIds: true, followerIds: true },
   });
@@ -27,19 +27,23 @@ const findUserByEmail = async (email: string) => {
 const hashCryptoToken = () => {
   const token = crypto.randomBytes(20).toString('hex');
   const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
-  return {token,hashedToken};
+  return { token, hashedToken };
 };
 
-const forgotPassword = async (id: string) => {
-  const {token,hashedToken} = hashCryptoToken();
-  const expiredDate = Date.now() + 10 * 60 * 1000;
-  await client.user.update({
-    data: {
-      hashedForgotPasswordToken: hashedToken,
-      hashedForgotPasswordTokenExpire: expiredDate,
-    },
-    where: { id },
-  });
+const compareCryptoToken = (token: string, userHashedToken: string) => {
+  const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+  return hashedToken===userHashedToken;
+};
+
+const resetPassword=async(token:string)=>{
+     
+}
+
+
+const forgotPassword = async (userId: string) => {
+  const { token, hashedToken } = hashCryptoToken();
+  const tokenExpire = Date.now() + 10 * 60 * 1000;
+  await client.token.create({data:{userId,tokenExpire,hashedToken}});
   return token;
 };
 
@@ -135,4 +139,5 @@ export {
   getMyFollows,
   findUserByIdWithoutPass,
   forgotPassword,
+  resetPassword,
 };

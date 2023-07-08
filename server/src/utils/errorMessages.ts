@@ -8,5 +8,6 @@ export default {
     forbiddenOperation:'forbidden_operation',
     blockedUser:'user_blocked',
     deletedUser:'user_deleted',
-    userNotFound:'user_not_found'
+    userNotFound:'user_not_found',
+    emailAlreadySent:'email_already_sent'
 }

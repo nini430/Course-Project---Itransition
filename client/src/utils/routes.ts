@@ -14,7 +14,9 @@ const routesPath={
     addUser:'/add-user',
     editUser:'/edit-user/:userId',
     search:'/search',
-    forgotPassword:'/forgot-password'
+    forgotPassword:'/forgot-password',
+    resetPassword:'/reset-password/:token',
+    expiredLink:'/expired'
 }
 
 export default routesPath;

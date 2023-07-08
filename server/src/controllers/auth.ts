@@ -15,6 +15,7 @@ import {
   updateUserInfo,
   uploadProfileImage,
 } from '../services/auth';
+import { findTokenByUserId, removeTokenByUserId } from '../services/token';
 import {
   LoginInput,
   RegisterInput,
@@ -24,6 +25,7 @@ import {
 import ErrorResponse from '../utils/errorResponse';
 import errorMessages from '../utils/errorMessages';
 import sendEmail from '../utils/sendEmail';
+import generateMail from '../utils/mailConstructor';
 
 const registerUser = asyncHandler(
   async (
@@ -228,20 +230,18 @@ const forgotPasswordHandler = asyncHandler(
         new ErrorResponse(errorMessages.userNotFound, StatusCodes.NOT_FOUND)
       );
     }
-    const token = await forgotPassword(user.id);
-    sendEmail({
-      from: process.env.EMAIL_FROM as string,
-      subject: 'Reset Password',
-      to: user.email,
-      template: 'email',
-      context: {
-        title: `Reset Password for ${user.firstName} ${user.lastName}`,
-        message: 'You requested password reset, please follow',
-        linkMessage: 'this link',
-        extra: 'if this wasnot you, we should increase your security',
-        link: `http://localhost:5173/reset-password/${token}`,
-      },
-    });
+    const { email, firstName, lastName, id } = user;
+    const tokenInstance = await findTokenByUserId(id);
+    if (!tokenInstance) {
+      const token = await forgotPassword(user.id);
+      sendEmail(generateMail({ email, firstName, lastName, token, userId: id }));
+    } else if (tokenInstance && tokenInstance.tokenExpire < Date.now()) {
+      removeTokenByUserId(id);
+      const token=await forgotPassword(id);
+      sendEmail(generateMail({email,firstName,lastName,token,userId:id}));
+    } else {
+        return next(new ErrorResponse(errorMessages.emailAlreadySent,StatusCodes.FORBIDDEN));
+    }
 
     return res
       .status(StatusCodes.OK)

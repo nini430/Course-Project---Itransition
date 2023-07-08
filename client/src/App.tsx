@@ -1,5 +1,4 @@
-import { useMemo, useState, useEffect } from 'react';
-import { Socket, io } from 'socket.io-client';
+import { useMemo } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 
@@ -22,10 +21,12 @@ import {
   Settings,
   Register,
   Login,
+  Expired,
 } from './pages/index';
 
 import routesPath from './utils/routes';
 import ForgotPassword from './pages/auth/ForgotPassword';
+import ResetPassword from './pages/auth/ResetPassword';
 
 function App() {
   const { mode } = useAppSelector((state) => state.common);
@@ -65,6 +66,8 @@ function App() {
           <Route path={routesPath.messenger} element={<DesktopMessenger />} />
           <Route path={routesPath.search} element={<Search />} />
           <Route path={routesPath.forgotPassword} element={<ForgotPassword/>}/>
+          <Route path={routesPath.resetPassword} element={<ResetPassword/>}/>
+          <Route path={routesPath.expiredLink} element={<Expired/>}/>
         </Routes>
       </ThemeProvider>
     </div>

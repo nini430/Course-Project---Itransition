@@ -12,8 +12,8 @@ interface IFormInputProps {
   onBlur: FocusEventHandler<HTMLInputElement>;
   onChange: ChangeEventHandler<HTMLInputElement>;
   mode: 'dark' | 'light';
-  toggleType?:()=>void;
-  multiline?:any;
+  toggleType?: () => void;
+  multiline?: any;
 }
 
 const FormInput: React.FC<IFormInputProps> = ({
@@ -26,14 +26,18 @@ const FormInput: React.FC<IFormInputProps> = ({
   onBlur,
   mode,
   toggleType,
-  multiline
+  multiline,
 }) => {
   return (
     <StyledInputEl
-    multiline={multiline}
-    rows={multiline?4:1}
+      multiline={multiline}
+      rows={multiline ? 4 : 1}
       InputProps={
-        name === 'password' || name === 'confirmPassword' || name==='oldPassword'
+        name === 'password' ||
+        name === 'confirmPassword' ||
+        name === 'oldPassword' ||
+        name === 'newPassword' ||
+        name === 'confirmNewPassword'
           ? {
               endAdornment: (
                 <InputAdornment position="end">
@@ -48,7 +52,7 @@ const FormInput: React.FC<IFormInputProps> = ({
       mode={mode}
       onBlur={onBlur}
       value={value}
-      onChange={(e:any)=>onChange(e.target.value)}
+      onChange={(e: any) => onChange(e.target.value)}
       error={error}
       type={type}
       placeholder={placeholder}

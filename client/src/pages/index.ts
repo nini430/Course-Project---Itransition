@@ -10,6 +10,7 @@ import Settings from './settings/Settings';
 import DesktopMessenger from './messenger/desktop/DesktopMessenger';
 import Admin from './admin/Admin';
 import Search from './search/Search';
+import Expired from './Expired';
 
 export {
   Register,
@@ -24,4 +25,5 @@ export {
   DesktopMessenger,
   Admin,
   Search,
+  Expired
 };

@@ -131,7 +131,7 @@ const Login = () => {
             text={t('auth.login')}
           />
           <Link style={{alignSelf:'center'}} to='/forgot-password'>
-          <Typography>Forgot Password?</Typography></Link>
+          <Typography style={{textDecoration:'underline'}} >Forgot Password?</Typography></Link>
           
           <Typography sx={{ alignSelf: 'center', my: '10px' }}>
             {t('auth.not_account')}{' '}
