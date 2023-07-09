@@ -170,9 +170,10 @@ model CommentReaction {
 
 model Token {
   id String @id @default(uuid())
-  userId String @unique
+  userId String
   tokenExpire BigInt
   hashedToken String
+  name String
 }
 
 enum CollectionTopic {
@@ -205,4 +206,9 @@ enum Statuses {
 enum AccountStatus {
   PUBLIC
   PRIVATE
+}
+
+enum TokenNames {
+  password
+  email
 }

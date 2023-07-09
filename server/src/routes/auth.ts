@@ -1,5 +1,5 @@
 import express from 'express'
-import { forgotPasswordHandler, generateRefreshToken,getMyFollowsHandler,loginUser, logoutUser, registerUser, resetPasswordActionHandler, resetPasswordHandler, updateUserInfoHandler, uploadProfileImageHandler } from '../controllers/auth';
+import { forgotPasswordHandler, generateRefreshToken,getMyFollowsHandler,loginUser, logoutUser, registerUser, resetPasswordActionHandler, resetPasswordHandler, updateUserInfoHandler, uploadProfileImageHandler, verifyEmailActionHandler, verifyEmailHandler } from '../controllers/auth';
 import authProtect from '../middleware/authProtect';
 
 const router=express.Router();
@@ -17,7 +17,8 @@ router.get('/logout',logoutUser);
 router.get('/profile/follows',getMyFollowsHandler);
 router.put('/profile/update',updateUserInfoHandler);
 router.put('/profile/upload',uploadProfileImageHandler);
-
+router.put('/verify-email/:userId',verifyEmailHandler);
+router.put('/verify-email-action/:userId',verifyEmailActionHandler);
 
 export default router;
 

@@ -9,7 +9,9 @@ const apiUrls = {
     getFollows:'/auth/profile/follows',
     forgotPassword:'/auth/forgot-password',
     resetPassword:'/auth/reset-password',
-    resetPasswordAction:'/auth/reset-password-action'
+    resetPasswordAction:'/auth/reset-password-action',
+    verifyEmail:'/auth/verify-email',
+    verifyEmailAction:'/auth/verify-email-action'
   },
   test: {
     test: '/test',

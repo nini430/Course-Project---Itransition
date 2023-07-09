@@ -27,11 +27,14 @@ import {
 import routesPath from './utils/routes';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
+import VerifyEmail from './pages/auth/VerifyEmail';
+import EmailVerificationSuccess from './pages/auth/EmailVerificationSuccess';
 
 function App() {
   const { mode } = useAppSelector((state) => state.common);
-  const { authedUser }=useAppSelector(state=>state.auth);
-  const auth = authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
+  const { authedUser } = useAppSelector((state) => state.auth);
+  const auth =
+    authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
   const theme = useMemo(
     () => (mode === 'dark' ? darkTheme : lightTheme),
     [mode]
@@ -65,9 +68,17 @@ function App() {
           <Route path={routesPath.itemDetails} element={<ItemDetails />} />
           <Route path={routesPath.messenger} element={<DesktopMessenger />} />
           <Route path={routesPath.search} element={<Search />} />
-          <Route path={routesPath.forgotPassword} element={<ForgotPassword/>}/>
-          <Route path={routesPath.resetPassword} element={<ResetPassword/>}/>
-          <Route path={routesPath.expiredLink} element={<Expired/>}/>
+          <Route
+            path={routesPath.forgotPassword}
+            element={<ForgotPassword />}
+          />
+          <Route path={routesPath.resetPassword} element={<ResetPassword />} />
+          <Route path={routesPath.expiredLink} element={<Expired />} />
+          <Route path={routesPath.verifyEmail} element={<VerifyEmail />} />
+          <Route
+            path={routesPath.verifyEmailAction}
+            element={<EmailVerificationSuccess />}
+          />
         </Routes>
       </ThemeProvider>
     </div>

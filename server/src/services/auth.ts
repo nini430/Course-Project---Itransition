@@ -6,6 +6,9 @@ import client from '../utils/prismaClient';
 import { RegisterInput, UpdateTypes, UserUpdateInput } from '../types/auth';
 import { uploadImage } from './common';
 
+
+
+
 const hashPassword = async (password: string) => {
   const hashedPassword = await bcrypt.hash(password, 12);
   return hashedPassword;
@@ -14,13 +17,15 @@ const hashPassword = async (password: string) => {
 const comparePassword = async (candidatePassword: string, password: string) => {
   const isPasswordCorrect = await bcrypt.compare(candidatePassword, password);
   return isPasswordCorrect;
-};
+};   
 
 const findUserByEmail = async (email: string) => {
   const user = await client.user.findFirst({
     where: { email },
+    
     include: { followedIds: true, followerIds: true },
   });
+  console.log(user);
   return user;
 };
 
@@ -37,14 +42,16 @@ const compareCryptoToken = (token: string, userHashedToken: string) => {
 
 const resetPassword=async(newPassword:string,userId:string)=>{
     const hashedPassword=await hashPassword(newPassword);
-    await client.user.update({data:{password:hashedPassword},where:{id:userId}}) 
+    const token=await client.token.findFirst({where:{userId,name:'password'}})
+  await client.user.update({data:{password:hashedPassword},where:{id:userId}});
+  return token;
 }
 
 
 const forgotPassword = async (userId: string) => {
   const { token, hashedToken } = hashCryptoToken();
   const tokenExpire = Date.now() + 10 * 60 * 1000;
-  await client.token.create({data:{userId,tokenExpire,hashedToken}});
+  await client.token.create({data:{userId,tokenExpire,hashedToken,name:'PASSWORD'}});
   return token;
 };
 
@@ -108,6 +115,13 @@ const updateUserInfo = async (
   return rest;
 };
 
+const verifyEmail=async(userId:string)=>{
+  const {hashedToken,token}=hashCryptoToken()
+  const tokenExpire=Date.now() + 10 * 60 * 1000;
+  await client.token.create({data:{userId, hashedToken, tokenExpire,name:'email'}});
+  return token;
+}
+
 const updatePassword = async (newPassword: string, userId: string) => {
   const updatedUser = await client.user.update({
     data: { password: newPassword },
@@ -127,6 +141,11 @@ const getMyFollows = async (userId: string) => {
   console.log(followers, followings, userId);
   return { followers, followings };
 };
+
+
+const verifyEmailAction=async(userId:string)=>{
+  await client.user.update({data:{isEmailVerified:true},where:{id:userId}});
+}
 export {
   hashPassword,
   createUser,
@@ -141,5 +160,7 @@ export {
   findUserByIdWithoutPass,
   forgotPassword,
   resetPassword,
-  compareCryptoToken
+  compareCryptoToken,
+  verifyEmail,
+  verifyEmailAction
 };

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { Button, IconButton } from '@mui/material';
@@ -8,7 +8,9 @@ import {
   MenuOpen,
   Message,
   AdminPanelSettings,
+  Email
 } from '@mui/icons-material';
+import {Toaster} from 'react-hot-toast'
 import MobileNavDropDown from '../MobileNavDropDown/MobileNavDropDown';
 
 import LanguageDropDown from '../LanguageDropDown/LanguagePicker';
@@ -16,11 +18,14 @@ import Logo from '../Logo/Logo';
 import SearchInput from '../SearchInput/SearchInput';
 import ModeSwitch from '../ModeSwitch/ModeSwitch';
 import NavUser from '../NavUser/NavUser';
-import { useAppSelector } from '../../store/store';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 import { useTranslation } from 'react-i18next';
+import { verifyEmail } from '../../store/authReducer';
 
 const NavBar = () => {
   const { t } = useTranslation();
+  const navigate=useNavigate();
+  const dispatch=useAppDispatch();
   const { authedUser } = useAppSelector((state) => state.auth);
   const auth =
     authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
@@ -45,6 +50,7 @@ const NavBar = () => {
   if (isExtraSmallDevice) {
     return (
       <NavbarContainer>
+        <Toaster/>
         {dropdownOpen && <MobileNavDropDown />}
         <IconButton
           id="nav-dropdown-button"
@@ -63,6 +69,7 @@ const NavBar = () => {
   } else {
     return (
       <NavbarContainer>
+        <Toaster/>
         <Logo />
         <SearchInput />
         <RightContainer>
@@ -81,6 +88,14 @@ const NavBar = () => {
               </Button>
             </Link>
           )}
+
+          {auth && !auth?.isEmailVerified && (
+            <Button onClick={()=>{
+              dispatch(verifyEmail({userId:auth.id,onSuccess:()=>{
+                navigate('/verify-email')
+              }}))
+            }} startIcon={<Email/>} sx={{border:'1px solid gray'}}>Verify Email</Button>
+          ) }
 
           <ModeSwitch />
           <LanguageDropDown />

@@ -16,6 +16,8 @@ import {
   updatePassword,
   updateUserInfo,
   uploadProfileImage,
+  verifyEmail,
+  verifyEmailAction,
 } from '../services/auth';
 import { findTokenByUserId, removeTokenByUserId } from '../services/token';
 import {
@@ -27,7 +29,10 @@ import {
 import ErrorResponse from '../utils/errorResponse';
 import errorMessages from '../utils/errorMessages';
 import sendEmail from '../utils/sendEmail';
-import generateMail from '../utils/mailConstructor';
+import {
+  generateEmailMail,
+  generatePasswordMail,
+} from '../utils/mailConstructor';
 
 const registerUser = asyncHandler(
   async (
@@ -103,11 +108,14 @@ const loginUser = asyncHandler(
       process.env.JWT_REFRESH_TOKEN_EXPIRE_MIN as string
     );
 
-    const { password: pass, ...rest } = user;
+    const { password: pass, isEmailVerified, ...rest } = user;
 
-    return res
-      .status(StatusCodes.OK)
-      .json({ success: true, user: rest, accessToken, refreshToken });
+    return res.status(StatusCodes.OK).json({
+      success: true,
+      user: { ...rest, isEmailVerified },
+      accessToken,
+      refreshToken,
+    });
   }
 );
 
@@ -233,17 +241,17 @@ const forgotPasswordHandler = asyncHandler(
       );
     }
     const { email, firstName, lastName, id } = user;
-    const tokenInstance = await findTokenByUserId(id);
+    const tokenInstance = await findTokenByUserId(id, 'password');
     if (!tokenInstance) {
       const token = await forgotPassword(user.id);
       sendEmail(
-        generateMail({ email, firstName, lastName, token, userId: id })
+        generatePasswordMail({ email, firstName, lastName, token, userId: id })
       );
     } else if (tokenInstance && tokenInstance.tokenExpire < Date.now()) {
-      removeTokenByUserId(id);
+      removeTokenByUserId(tokenInstance.id);
       const token = await forgotPassword(id);
       sendEmail(
-        generateMail({ email, firstName, lastName, token, userId: id })
+        generatePasswordMail({ email, firstName, lastName, token, userId: id })
       );
     } else {
       return next(
@@ -264,7 +272,7 @@ const resetPasswordHandler = asyncHandler(
     next: NextFunction
   ) => {
     let expired;
-    const token = await findTokenByUserId(req.params.userId);
+    const token = await findTokenByUserId(req.params.userId, 'password');
     if (!token) {
       expired = true;
     } else {
@@ -273,11 +281,11 @@ const resetPasswordHandler = asyncHandler(
         token.hashedToken
       );
       if (!isTokenCorrect) {
-        await removeTokenByUserId(token.userId);
+        await removeTokenByUserId(token.id);
         expired = true;
       } else {
         if (token.tokenExpire < Date.now()) {
-          await removeTokenByUserId(token.userId);
+          await removeTokenByUserId(token.id);
           expired = true;
         }
       }
@@ -293,13 +301,75 @@ const resetPasswordActionHandler = asyncHandler(
     res: Response,
     next: NextFunction
   ) => {
-    await resetPassword(req.body.newPassword, req.params.userId);
-    await removeTokenByUserId(req.params.userId);
+    const token = await resetPassword(req.body.newPassword, req.params.userId);
+    if (token) {
+      await removeTokenByUserId(token?.id);
+    }
+
     return res
       .status(StatusCodes.OK)
       .json({ success: true, data: 'password_reset_success' });
   }
 );
+
+const verifyEmailHandler = asyncHandler(
+  async (req: Request & { user: any }, res: Response, next: NextFunction) => {
+    const user = await findUserById(req.user.id)!;
+    const tokenInstance = await findTokenByUserId(user?.id as string, 'email');
+    
+    if (!tokenInstance) {
+      const token = await verifyEmail(req.user.id);
+      sendEmail(
+        generateEmailMail({
+          email: user?.email as string,
+          firstName: user?.firstName as string,
+          lastName: user?.lastName as string,
+          token,
+          userId: user?.id as string,
+        })
+      );
+    } else if (tokenInstance && tokenInstance.tokenExpire < Date.now()) {
+      await removeTokenByUserId(tokenInstance.id);
+      const token=await verifyEmail(req.user.id);
+      sendEmail(
+        generateEmailMail({
+          email: user?.email as string,
+          firstName: user?.firstName as string,
+          lastName: user?.lastName as string,
+          token,
+          userId: user?.id as string,
+        })
+      );
+    } else {
+      return next(
+        new ErrorResponse(errorMessages.emailAlreadySent, StatusCodes.FORBIDDEN)
+      );
+    }
+
+    return res.status(StatusCodes.OK).json({success:true,data:'email_sent_success'})
+  }
+);
+
+const verifyEmailActionHandler=asyncHandler(async(req:Request<{userId:string},{},{token:string}>,res:Response,next:NextFunction)=>{
+      let expired=false;
+     const tokenInstance=await findTokenByUserId(req.params.userId,'email');
+     if(!tokenInstance) {
+      expired=true;
+     }else{
+      const isTokenCorrect=compareCryptoToken(req.body.token,tokenInstance.hashedToken);
+      if(!isTokenCorrect) {
+        expired=true;
+      }else{
+        if(tokenInstance.tokenExpire < Date.now()) {
+          expired=true;
+        }else{
+          await verifyEmailAction(req.params.userId);
+        }
+      }
+      await removeTokenByUserId(tokenInstance.id);
+     }
+     return res.status(StatusCodes.OK).json({success:true,data:expired})
+})
 
 export {
   registerUser,
@@ -312,4 +382,6 @@ export {
   forgotPasswordHandler,
   resetPasswordHandler,
   resetPasswordActionHandler,
+  verifyEmailHandler,
+  verifyEmailActionHandler
 };

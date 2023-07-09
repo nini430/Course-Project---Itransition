@@ -1,12 +1,12 @@
 import client from '../utils/prismaClient';
 
-const findTokenByUserId = async (userId: string) => {
-  const token = await client.token.findUnique({ where: { userId } });
+const findTokenByUserId = async (userId: string,name:string) => {
+  const token = await client.token.findFirst({ where: { userId, name } });
   return token;
 };
 
-const removeTokenByUserId = async(userId:string)=>{
-    await client.token.delete({where:{userId}});
+const removeTokenByUserId = async(id:string)=>{
+    await client.token.delete({where:{id}});
 }
 
 export { findTokenByUserId, removeTokenByUserId };

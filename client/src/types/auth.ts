@@ -11,6 +11,7 @@ export interface User {
     lastName:string;
     email:string;
     profileImage:string;
+    isEmailVerified:boolean;
     accountStatus:AccountStatuses;
     role:Role;
     followedIds:FollowInstance[];
@@ -29,6 +30,8 @@ export interface AuthInitialState {
     forgetPasswordLoading:boolean;
     resetPasswordLoading:boolean;
     resetPasswordPageLoading:boolean;
+    verifyEmailLoading:boolean;
+    verifyEmailActionLoading:boolean;
 }
 
 

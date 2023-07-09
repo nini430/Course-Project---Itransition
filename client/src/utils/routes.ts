@@ -16,7 +16,9 @@ const routesPath={
     search:'/search',
     forgotPassword:'/forgot-password',
     resetPassword:'/reset-password/:token',
-    expiredLink:'/expired'
+    expiredLink:'/expired',
+    verifyEmail:'/verify-email',
+    verifyEmailAction:'/verify-email/:token'
 }
 
 export default routesPath;
