@@ -18,6 +18,7 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import { loginUser } from '../../store/authReducer';
 import BreadCrumb from '../../components/shared/BreadCrumb';
 import { LoadingButton } from '@mui/lab';
+import { SERVER_BASE_URL } from '../../utils/constants';
 
 const Login = () => {
   const [passType,setPassType]=useState<'text'|'password'>('password')
@@ -121,8 +122,8 @@ const Login = () => {
               <ErrorMessage>{t(`auth.${errors.password}`)}</ErrorMessage>
             )}
           </FormGroup>
-          <LoadingButton startIcon={<Google/>} sx={{border:'1px solid gray'}}>Sign In With Google</LoadingButton>
-          <LoadingButton startIcon={<GitHub/>} sx={{border:'1px solid gray'}}>Sign In With Github</LoadingButton>
+          <LoadingButton onClick={()=>window.open(`${SERVER_BASE_URL}/passport/auth/google`,"_self")} startIcon={<Google/>} sx={{border:'1px solid gray'}}>Sign In With Google</LoadingButton>
+          <LoadingButton  startIcon={<GitHub/>} sx={{border:'1px solid gray'}}>Sign In With Github</LoadingButton>
           <FormButton
             loading={loginLoading}
             type="submit"

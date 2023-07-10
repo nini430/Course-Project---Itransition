@@ -8,7 +8,7 @@ interface IEmptyProps {
 const Empty: React.FC<IEmptyProps> = ({message}) => {
   return (
     <EmptyContainer>
-        <Typography sx={{fontSize:50,fontStyle:'italic'}}>{message}</Typography>
+        <Typography sx={{fontSize:30,fontStyle:'italic'}}>{message}</Typography>
     </EmptyContainer>
   )
 }

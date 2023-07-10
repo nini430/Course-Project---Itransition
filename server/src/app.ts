@@ -3,19 +3,29 @@ import path from 'path'
 import {engine} from 'express-handlebars'
 import cors from 'cors';
 import morgan from 'morgan'
+import expressSession from 'express-session'
 
 import apiRouter from './routes/api'
+import './passport/passport-setup'
 
 import errorHandler from './middleware/errorHandler';
 import authProtect from './middleware/authProtect';
+import passport from 'passport';
 
 const app = express();
  
+
 app.use(express.json({limit:'10mb'}));
 app.use(express.urlencoded({limit:'10mb',extended:true}));
 app.use(cors())
 app.use(morgan('dev'));
-
+app.use(expressSession({
+    secret:'lala',
+    resave:false,
+    saveUninitialized:false
+}));
+app.use(passport.initialize());
+app.use(passport.session())
 
 app.engine('handlebars',engine());
 app.set('view engine','handlebars');

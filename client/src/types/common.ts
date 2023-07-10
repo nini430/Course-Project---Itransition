@@ -2,7 +2,8 @@ import {SvgIconComponent} from '@mui/icons-material'
 
 export interface CommonInitialState {
     mode:'dark'|'light';
-    lang:'en'|'ka'
+    lang:'en'|'ka';
+    isSidebarOpen:boolean;
 }
 
 export type PassType = 'text' | 'password';

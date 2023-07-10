@@ -28,6 +28,7 @@ import { getUserById } from '../../store/userReducer';
 import { addUser, editUser } from '../../store/adminReducer';
 import { LoadingButton } from '@mui/lab';
 import Loading from '../../components/Loading/Loading';
+import { SERVER_BASE_URL } from '../../utils/constants';
 
 interface IRegisterProps {
   admin?: boolean;
@@ -271,7 +272,7 @@ const Register = ({ admin, edit }: IRegisterProps) => {
                 : t('auth.register')
             }
           />
-          {!admin && <LoadingButton sx={{border:'1px solid gray'}} startIcon={<Google/>}>Sign Up With Google</LoadingButton>}
+          {!admin && <LoadingButton onClick={()=>window.open(`${SERVER_BASE_URL}/auth/google`,"_self")} sx={{border:'1px solid gray'}} startIcon={<Google/>}>Sign Up With Google</LoadingButton>}
           {!admin && <LoadingButton  sx={{border:'1px solid gray'}} startIcon={<GitHub/>}>Sign Up with Github</LoadingButton>}
           {!admin && (
             <Typography sx={{ alignSelf: 'center', my: '10px' }}>

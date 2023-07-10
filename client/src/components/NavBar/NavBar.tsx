@@ -11,7 +11,6 @@ import {
   Email
 } from '@mui/icons-material';
 import {Toaster} from 'react-hot-toast'
-import MobileNavDropDown from '../MobileNavDropDown/MobileNavDropDown';
 
 import LanguageDropDown from '../LanguageDropDown/LanguagePicker';
 import Logo from '../Logo/Logo';
@@ -21,8 +20,10 @@ import NavUser from '../NavUser/NavUser';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { useTranslation } from 'react-i18next';
 import { verifyEmail } from '../../store/authReducer';
+import { toggleSidebar } from '../../store/commonReducer';
 
 const NavBar = () => {
+  const {isSidebarOpen}=useAppSelector(state=>state.common);
   const { t } = useTranslation();
   const navigate=useNavigate();
   const dispatch=useAppDispatch();
@@ -30,7 +31,6 @@ const NavBar = () => {
   const auth =
     authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
   const userExists = authedUser || localStorage.getItem('authed_user');
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const isExtraSmallDevice = useMediaQuery({ maxWidth: 800 });
   useEffect(() => {
     const handleClickOutside = (e: any) => {
@@ -39,7 +39,6 @@ const NavBar = () => {
         !e.target.closest('#mobile-navbar-dropdown') &&
         !e.target.closest('#nav-dropdown-button')
       ) {
-        setDropdownOpen(false);
       }
     };
     document.addEventListener('click', handleClickOutside);
@@ -49,21 +48,18 @@ const NavBar = () => {
   }, []);
   if (isExtraSmallDevice) {
     return (
-      <NavbarContainer>
+      <NavbarContainer isSidebarOpen={isSidebarOpen}>
         <Toaster/>
-        {dropdownOpen && <MobileNavDropDown />}
         <IconButton
           id="nav-dropdown-button"
-          onClick={() => setDropdownOpen((prev) => !prev)}
+          onClick={() => dispatch(toggleSidebar())}
         >
-          {dropdownOpen ? (
+          {isSidebarOpen ? (
             <MenuOpen sx={{ pointerEvents: 'none' }} />
           ) : (
             <Menu sx={{ pointerEvents: 'none' }} />
           )}
         </IconButton>
-        <SearchInput />
-        <Logo />
       </NavbarContainer>
     );
   } else {
@@ -114,14 +110,15 @@ const NavBar = () => {
   }
 };
 
-const NavbarContainer = styled.div`
+const NavbarContainer = styled(({isSidebarOpen,...rest}:any)=><div {...rest} />)`
   height: 80px;
-  border-bottom: 1px solid gray;
+  margin-left:${({isSidebarOpen})=>isSidebarOpen?'450px':'0px'};
+  box-shadow: 1px 10px 14px -8px rgba(0, 0, 0, 0.26);
   display: flex;
   align-items: center;
   padding: 0 10px;
   justify-content: space-between;
-  position: relative;
+  transition:all 0.3s ease;
 `;
 
 const RightContainer = styled.div`

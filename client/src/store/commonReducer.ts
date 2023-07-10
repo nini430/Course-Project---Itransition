@@ -7,6 +7,7 @@ import apiUrls from '../api/api';
 const initialState: CommonInitialState = {
   mode: (localStorage.getItem('mode') as 'light' | 'dark') || 'light',
   lang: (jsCookie.get('i18next') as 'en' | 'ka') || 'en',
+  isSidebarOpen:false
 };
 
 export const testAuthedRoute = createAsyncThunk('/test', async () => {
@@ -22,12 +23,15 @@ const commonReducer = createSlice({
       state.mode = state.mode === 'light' ? 'dark' : 'light';
       localStorage.setItem('mode', state.mode);
     },
+    toggleSidebar(state) {
+      state.isSidebarOpen=!state.isSidebarOpen
+    },
     changeLang(state) {
       state.lang = state.lang === 'en' ? 'ka' : 'en';
     },
   },
 });
 
-export const { changeTheme, changeLang } = commonReducer.actions;
+export const { changeTheme, changeLang, toggleSidebar } = commonReducer.actions;
 
 export default commonReducer.reducer;

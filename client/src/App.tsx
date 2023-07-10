@@ -22,6 +22,7 @@ import {
   Register,
   Login,
   Expired,
+  NotFound,
 } from './pages/index';
 
 import routesPath from './utils/routes';
@@ -29,6 +30,8 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
 import VerifyEmail from './pages/auth/VerifyEmail';
 import EmailVerificationSuccess from './pages/auth/EmailVerificationSuccess';
+import { styled } from 'styled-components';
+import Sidebar from './components/Sidebar/Sidebar';
 
 function App() {
   const { mode } = useAppSelector((state) => state.common);
@@ -43,6 +46,8 @@ function App() {
     <div className={`theme-${mode} App`}>
       <ThemeProvider theme={theme}>
         <NavBar />
+        <AppContainer>
+          <Sidebar/>
         <Routes>
           <Route path={routesPath.main} element={<MainPage />} />
           <Route path={routesPath.register} element={<Register />} />
@@ -79,10 +84,17 @@ function App() {
             path={routesPath.verifyEmailAction}
             element={<EmailVerificationSuccess />}
           />
+          <Route path='*' element={<NotFound/>}/>
         </Routes>
+        </AppContainer>
+        
       </ThemeProvider>
     </div>
   );
 }
+
+const AppContainer=styled.div`
+  display:flex;
+`
 
 export default App;

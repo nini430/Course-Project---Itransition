@@ -11,6 +11,7 @@ import DesktopMessenger from './messenger/desktop/DesktopMessenger';
 import Admin from './admin/Admin';
 import Search from './search/Search';
 import Expired from './Expired';
+import NotFound from './NotFound';
 
 export {
   Register,
@@ -25,5 +26,6 @@ export {
   DesktopMessenger,
   Admin,
   Search,
-  Expired
+  Expired,
+  NotFound
 };

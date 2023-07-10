@@ -1,9 +1,16 @@
 import express from 'express'
+import passport from 'passport'
+
 import { forgotPasswordHandler, generateRefreshToken,getMyFollowsHandler,loginUser, logoutUser, registerUser, resetPasswordActionHandler, resetPasswordHandler, updateUserInfoHandler, uploadProfileImageHandler, verifyEmailActionHandler, verifyEmailHandler } from '../controllers/auth';
 import authProtect from '../middleware/authProtect';
 
 const router=express.Router();
 
+
+router.get('/google',passport.authenticate('google',{scope:['profile']}));
+router.get('/google/callback',passport.authenticate('google',{
+    successRedirect:'/omggggg'
+}));
 router.post('/register',registerUser);
 router.post('/login',loginUser);
 router.post('/refresh-token',generateRefreshToken);
