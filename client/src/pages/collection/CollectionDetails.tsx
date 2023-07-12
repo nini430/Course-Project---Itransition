@@ -46,6 +46,7 @@ const CollectionWrapper=styled.div`
   flex-direction: column;
   gap:30px;
   align-items:center;
+  width:100vw;
 `
 
 const CollectionContainer = styled(({isMob,...rest}:any)=><div {...rest} />)`

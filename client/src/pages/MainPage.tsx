@@ -86,6 +86,7 @@ const MainPageContainer = styled.div`
   padding: 40px;
   min-height: calc(100vh - 80px);
   gap: 40px;
+  width:100vw;
 `;
 
 const CardContainer = styled.div`

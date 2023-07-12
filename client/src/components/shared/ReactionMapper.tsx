@@ -26,13 +26,14 @@ const ReactionMapper = ({ open, onClose }: IReactionMapperProps) => {
               label="All"
             />
             {reactions.map((item) => (
-              <StyledTab value={item.name} label={item.emoji} />
+              <StyledTab key={item.name} value={item.name} label={item.emoji} />
             ))}
           </TabList>
           <TabPanel value="all" tabIndex={0}>
             <ReactsList>
               {open?.map((react) => (
                 <Link
+                key={react.user.id}
                   to={`/profile/${react.user.id}`}
                   style={{ textDecoration: 'none' }}
                 >
@@ -42,7 +43,7 @@ const ReactionMapper = ({ open, onClose }: IReactionMapperProps) => {
             </ReactsList>
           </TabPanel>
           {reactions.map(reaction=>(
-            <EmojiTabPanel  reactEl={open} key={reaction.name} emoji={reaction.name} />
+            <EmojiTabPanel key={reaction.name}  reactEl={open}  emoji={reaction.name} />
           ))}
          
         </TabContext>

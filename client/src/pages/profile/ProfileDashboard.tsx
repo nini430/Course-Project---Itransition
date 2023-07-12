@@ -77,7 +77,7 @@ const ProfileDashboard = () => {
 };
 
 const DashboardContainer = styled.div`
-
+  flex:1;
 `;
 
 const TopBarContainer=styled.div`

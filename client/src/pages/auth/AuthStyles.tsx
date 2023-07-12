@@ -13,7 +13,7 @@ const AuthForm = styled(({ isX, isMob, isD, isXS, mode, ...props }: any) => (
   <form {...props} />
 ))`
   width: ${({ isX, isMob, isD, isXS }) =>
-    isX ? '700px' : isMob ? '500px' : isXS ? '90%' : '400px'};
+    isX ? '800px' : isMob ? '500px' : isXS ? '90%' : '700px'};
   height: auto;
   background-color:${({mode})=>mode==='dark'?'#252121':'white'}; 
   padding: 20px;
@@ -22,6 +22,12 @@ const AuthForm = styled(({ isX, isMob, isD, isXS, mode, ...props }: any) => (
   flex-direction: column;
   gap:5px;
 `;
+
+const TwoGridContainer=styled.div`
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap:5px;
+`
 
 const LngContainer = styled.div`
   position: absolute;
@@ -58,4 +64,5 @@ export {
   AuthWrapper,
   ErrorMessage,
   PropertyContainer,
+  TwoGridContainer
 };

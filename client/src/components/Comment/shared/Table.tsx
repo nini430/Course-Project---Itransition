@@ -51,7 +51,7 @@ const Table = ({
                     : data.map((item) => item.id)
                 )
               }
-              checked={selectedIds.length === data?.length}
+              checked={selectedIds?.length === data?.length}
             />
           </TableCell>
           {columns.map((column) => (

@@ -35,7 +35,7 @@ const itemTableFormatter = (items: any[]) => {
     customFields: { action: true, data: 'View', fields:item.customFieldValues, custom:true, id:item.id },
   }));
 };
-
+  
 const userTableFormatter=(users:any[])=>{
    return users.map(user=>({
     id:user.id,

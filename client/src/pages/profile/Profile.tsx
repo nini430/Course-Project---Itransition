@@ -12,15 +12,10 @@ const Profile = () => {
   const {userId}=useParams();
   const isTabletOrMobile = useMediaQuery({ maxWidth: 850 });
   const {authedUser}=useAppSelector(state=>state.auth);
-  const userExists = authedUser || localStorage.getItem('authed_user');
   const dispatch=useAppDispatch();
   useEffect(()=>{
     dispatch(getMyCollections(userId as string));
     dispatch(getFollows())
-    dispatch(setAuthedUser(JSON.parse(localStorage.getItem('authed_user') as string)));
-    if(userExists) {
-      dispatch(setAuthedUser(JSON.parse(localStorage.getItem('authed_user') as string)))
-    }
   },[dispatch,userId])
   return (
     <ProfileContainer isMobile={isTabletOrMobile}>
@@ -31,7 +26,7 @@ const Profile = () => {
 }
 
 const ProfileContainer=styled(({isMobile,...rest}:any)=><div {...rest}/>)`
-    max-width:100vw;
+    width:100vw;
     min-height:calc(100vh - 80px);
     padding:20px;
     display:${({isMobile})=>isMobile?'flex':'grid'};

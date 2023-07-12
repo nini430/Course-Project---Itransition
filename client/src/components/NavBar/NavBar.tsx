@@ -32,20 +32,7 @@ const NavBar = () => {
     authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
   const userExists = authedUser || localStorage.getItem('authed_user');
   const isExtraSmallDevice = useMediaQuery({ maxWidth: 800 });
-  useEffect(() => {
-    const handleClickOutside = (e: any) => {
-      console.log(e.target);
-      if (
-        !e.target.closest('#mobile-navbar-dropdown') &&
-        !e.target.closest('#nav-dropdown-button')
-      ) {
-      }
-    };
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
+  
   if (isExtraSmallDevice) {
     return (
       <NavbarContainer isSidebarOpen={isSidebarOpen}>
@@ -60,6 +47,7 @@ const NavBar = () => {
             <Menu sx={{ pointerEvents: 'none' }} />
           )}
         </IconButton>
+        <Logo/>
       </NavbarContainer>
     );
   } else {
@@ -112,7 +100,7 @@ const NavBar = () => {
 
 const NavbarContainer = styled(({isSidebarOpen,...rest}:any)=><div {...rest} />)`
   height: 80px;
-  margin-left:${({isSidebarOpen})=>isSidebarOpen?'450px':'0px'};
+  z-index:${({isSidebarOpen})=>isSidebarOpen?'-1':'1'};
   box-shadow: 1px 10px 14px -8px rgba(0, 0, 0, 0.26);
   display: flex;
   align-items: center;

@@ -18,7 +18,8 @@ const routesPath={
     resetPassword:'/reset-password/:token',
     expiredLink:'/expired',
     verifyEmail:'/verify-email',
-    verifyEmailAction:'/verify-email/:token'
+    verifyEmailAction:'/verify-email/:token',
+    redirectPage:'/redirect'
 }
 
 export default routesPath;

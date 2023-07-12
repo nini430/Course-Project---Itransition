@@ -256,6 +256,16 @@ export const verifyEmailAction = createAsyncThunk('auth/verify-email-action',asy
     }
 })
 
+export const getMyPassportUser= createAsyncThunk('auth/my-passport-user',async({onSuccess}:{onSuccess:VoidFunction},thunkApi)=>{
+  try{
+    const response=await axiosApiInstance.get<{data:any}>(`${apiUrls.auth.getMyPassportUser}`);
+    onSuccess && onSuccess();
+    return response.data.data;
+  }catch(err) {
+    return thunkApi.rejectWithValue(err);
+  }
+})
+
 const authReducer = createSlice({
   name: 'auth',
   initialState,
@@ -385,6 +395,10 @@ const authReducer = createSlice({
     });
     builder.addCase(verifyEmailAction.rejected,(state,action)=>{
       state.verifyEmailActionLoading=false;
+    });
+    builder.addCase(getMyPassportUser.fulfilled,(state,action)=>{
+      state.authedUser=action.payload;
+      localStorage.setItem('authed_user',JSON.stringify(state.authedUser));
     })
   },
 });

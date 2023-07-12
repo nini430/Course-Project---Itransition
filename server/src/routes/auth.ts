@@ -1,16 +1,15 @@
 import express from 'express'
 import passport from 'passport'
 
-import { forgotPasswordHandler, generateRefreshToken,getMyFollowsHandler,loginUser, logoutUser, registerUser, resetPasswordActionHandler, resetPasswordHandler, updateUserInfoHandler, uploadProfileImageHandler, verifyEmailActionHandler, verifyEmailHandler } from '../controllers/auth';
+import { forgotPasswordHandler, generateRefreshToken,getMyFollowsHandler,getMyPassportUser,loginUser, logoutUser, passportSuccessRedirect, registerUser, resetPasswordActionHandler, resetPasswordHandler, updateUserInfoHandler, uploadProfileImageHandler, verifyEmailActionHandler, verifyEmailHandler } from '../controllers/auth';
 import authProtect from '../middleware/authProtect';
 
 const router=express.Router();
 
 
-router.get('/google',passport.authenticate('google',{scope:['profile']}));
-router.get('/google/callback',passport.authenticate('google',{
-    successRedirect:'/omggggg'
-}));
+router.get('/google',passport.authenticate('google',{scope:['profile','email']}));
+router.get('/google/callback',passport.authenticate('google'),passportSuccessRedirect);
+
 router.post('/register',registerUser);
 router.post('/login',loginUser);
 router.post('/refresh-token',generateRefreshToken);
@@ -21,6 +20,7 @@ router.put('/reset-password-action/:userId',resetPasswordActionHandler);
 router.use(authProtect);
 
 router.get('/logout',logoutUser);
+router.get('/my-passport-user',getMyPassportUser);
 router.get('/profile/follows',getMyFollowsHandler);
 router.put('/profile/update',updateUserInfoHandler);
 router.put('/profile/upload',uploadProfileImageHandler);

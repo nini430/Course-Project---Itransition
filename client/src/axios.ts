@@ -6,19 +6,22 @@ import { clearUser } from './store/authReducer';
 
 declare module 'axios' {
   interface AxiosRequestConfig {
-    _isRetry: boolean;
+    _isRetry?: boolean;
+    withCredentials?:boolean;
   }
 }
 
 const axiosApiInstance = axios.create({
   baseURL: 'http://localhost:7070/api/v1',
   _isRetry: false,
+  withCredentials:true
 });
 
 axiosApiInstance.interceptors.request.use((request) => {
   if (
     request.url !== apiUrls.auth.login ||
-    request.url !== apiUrls.auth.register
+    request.url !== apiUrls.auth.register ||
+    request.url !== apiUrls.auth.getMyPassportUser
   ) {
     const accessToken = localStorage.getItem('access_token');
     const refreshToken = localStorage.getItem('refresh_token');
@@ -60,13 +63,17 @@ axiosApiInstance.interceptors.response.use(
       err.response?.status === 401 &&
       originalRequest.url !== apiUrls.auth.login &&
       originalRequest.url !== apiUrls.auth.register &&
-      originalRequest.url !== apiUrls.auth.refreshToken
+      originalRequest.url !== apiUrls.auth.refreshToken &&
+      originalRequest.url !== apiUrls.auth.getMyPassportUser &&
+      store.getState().auth.authedUser&& !store.getState().auth.authedUser?.social
     ) {
       try {
+        console.log(originalRequest.url)
         originalRequest._isRetry = true;
         await axiosApiInstance.post(apiUrls.auth.refreshToken);
         return axiosApiInstance(originalRequest);
       } catch (err) {
+        console.log(err);
         store.dispatch(clearUser());
         localStorage.removeItem('authed_user');
         removeTokens();

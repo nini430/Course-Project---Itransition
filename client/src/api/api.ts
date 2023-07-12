@@ -11,7 +11,8 @@ const apiUrls = {
     resetPassword:'/auth/reset-password',
     resetPasswordAction:'/auth/reset-password-action',
     verifyEmail:'/auth/verify-email',
-    verifyEmailAction:'/auth/verify-email-action'
+    verifyEmailAction:'/auth/verify-email-action',
+    getMyPassportUser:'/auth/my-passport-user'
   },
   test: {
     test: '/test',

@@ -201,7 +201,7 @@ const updateUserInfoHandler = asyncHandler(
     if (update === 'password') {
       const isPasswordCorrect = await comparePassword(
         input.password as string,
-        user.password
+        user.password as string
       );
       if (!isPasswordCorrect) {
         return next(
@@ -316,7 +316,7 @@ const verifyEmailHandler = asyncHandler(
   async (req: Request & { user: any }, res: Response, next: NextFunction) => {
     const user = await findUserById(req.user.id)!;
     const tokenInstance = await findTokenByUserId(user?.id as string, 'email');
-    
+
     if (!tokenInstance) {
       const token = await verifyEmail(req.user.id);
       sendEmail(
@@ -330,7 +330,7 @@ const verifyEmailHandler = asyncHandler(
       );
     } else if (tokenInstance && tokenInstance.tokenExpire < Date.now()) {
       await removeTokenByUserId(tokenInstance.id);
-      const token=await verifyEmail(req.user.id);
+      const token = await verifyEmail(req.user.id);
       sendEmail(
         generateEmailMail({
           email: user?.email as string,
@@ -346,29 +346,53 @@ const verifyEmailHandler = asyncHandler(
       );
     }
 
-    return res.status(StatusCodes.OK).json({success:true,data:'email_sent_success'})
+    return res
+      .status(StatusCodes.OK)
+      .json({ success: true, data: 'email_sent_success' });
   }
 );
 
-const verifyEmailActionHandler=asyncHandler(async(req:Request<{userId:string},{},{token:string}>,res:Response,next:NextFunction)=>{
-      let expired=false;
-     const tokenInstance=await findTokenByUserId(req.params.userId,'email');
-     if(!tokenInstance) {
-      expired=true;
-     }else{
-      const isTokenCorrect=compareCryptoToken(req.body.token,tokenInstance.hashedToken);
-      if(!isTokenCorrect) {
-        expired=true;
-      }else{
-        if(tokenInstance.tokenExpire < Date.now()) {
-          expired=true;
-        }else{
+const verifyEmailActionHandler = asyncHandler(
+  async (
+    req: Request<{ userId: string }, {}, { token: string }>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    let expired = false;
+    const tokenInstance = await findTokenByUserId(req.params.userId, 'email');
+    if (!tokenInstance) {
+      expired = true;
+    } else {
+      const isTokenCorrect = compareCryptoToken(
+        req.body.token,
+        tokenInstance.hashedToken
+      );
+      if (!isTokenCorrect) {
+        expired = true;
+      } else {
+        if (tokenInstance.tokenExpire < Date.now()) {
+          expired = true;
+        } else {
           await verifyEmailAction(req.params.userId);
         }
       }
       await removeTokenByUserId(tokenInstance.id);
-     }
-     return res.status(StatusCodes.OK).json({success:true,data:expired})
+    }
+    return res.status(StatusCodes.OK).json({ success: true, data: expired });
+  }
+);
+
+const passportSuccessRedirect = asyncHandler(
+  async (req: Request & { user: any }, res: Response, next: NextFunction) => {
+    res.redirect(
+      `${process.env.MY_APP}/redirect`
+    );
+  }
+);
+
+const getMyPassportUser= asyncHandler(async(req:Request & {user:any},res:Response,next:NextFunction)=>{
+  const {password,...rest}=req.user;
+   return res.status(StatusCodes.OK).json({success:true,data:rest});
 })
 
 export {
@@ -383,5 +407,7 @@ export {
   resetPasswordHandler,
   resetPasswordActionHandler,
   verifyEmailHandler,
-  verifyEmailActionHandler
+  verifyEmailActionHandler,
+  passportSuccessRedirect,
+  getMyPassportUser
 };

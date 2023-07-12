@@ -40,7 +40,7 @@ const ProfileCard = () => {
   );
   const authId =
     authedUser?.id ||
-    JSON.parse(localStorage.getItem('authed_user') as string).id;
+    JSON.parse(localStorage.getItem('authed_user') as string)?.id;
   const { myCollections } = useAppSelector((state) => state.collection);
   const { currentProfile, profileLoading,  currentFollowers, currentFollowings, toggleFollowLoading } = useAppSelector(
     (state) => state.user

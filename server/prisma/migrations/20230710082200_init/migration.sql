@@ -4,7 +4,7 @@ CREATE TABLE `User` (
     `firstName` VARCHAR(191) NOT NULL,
     `lastName` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
-    `password` VARCHAR(191) NOT NULL,
+    `password` VARCHAR(191) NULL,
     `role` ENUM('BASIC', 'ADMIN') NOT NULL DEFAULT 'BASIC',
     `status` ENUM('active', 'blocked', 'deleted') NOT NULL DEFAULT 'active',
     `profileImage` VARCHAR(191) NULL,
@@ -12,6 +12,9 @@ CREATE TABLE `User` (
     `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `accountStatus` ENUM('PUBLIC', 'PRIVATE') NOT NULL DEFAULT 'PUBLIC',
     `isEmailVerified` BOOLEAN NOT NULL DEFAULT false,
+    `social` ENUM('GOOGLE', 'GITHUB') NULL,
+    `googleId` VARCHAR(191) NULL,
+    `githubId` VARCHAR(191) NULL,
 
     UNIQUE INDEX `User_email_key`(`email`),
     PRIMARY KEY (`id`)
@@ -166,8 +169,8 @@ CREATE TABLE `Token` (
     `userId` VARCHAR(191) NOT NULL,
     `tokenExpire` BIGINT NOT NULL,
     `hashedToken` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `Token_userId_key`(`userId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

@@ -15,7 +15,7 @@ model User {
   firstName    String
   lastName     String
   email        String       @unique
-  password     String
+  password     String?
   role         Role         @default(BASIC)
   status Statuses @default(active)
   profileImage String?
@@ -31,8 +31,12 @@ model User {
   updatedAt DateTime @updatedAt @default(now())
   accountStatus AccountStatus @default(PUBLIC)
   isEmailVerified Boolean @default(false)
-  googleId String
+  social Socials?
+  googleId String?
+  githubId String?
 }
+
+
 
 model Follow {
   id String @id @default(uuid())
@@ -212,4 +216,9 @@ enum AccountStatus {
 enum TokenNames {
   password
   email
+}
+
+enum Socials {
+  GOOGLE
+  GITHUB
 }

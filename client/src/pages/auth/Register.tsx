@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { Toaster, toast } from 'react-hot-toast';
 
-import { AuthContainer, AuthForm, ErrorMessage } from './AuthStyles';
+import { AuthContainer, AuthForm, ErrorMessage, TwoGridContainer } from './AuthStyles';
 import StyledInput from '../../components/FormInput/FormInput';
 import FormButton from '../../components/FormButton/FormButton';
 import {
@@ -147,6 +147,7 @@ const Register = ({ admin, edit }: IRegisterProps) => {
             }}
           />
           <Divider sx={{ my: '20px' }} />
+          <TwoGridContainer>
           <FormGroup sx={{ marginBottom: 2 }}>
             <StyledInput
               name="firstName"
@@ -177,6 +178,8 @@ const Register = ({ admin, edit }: IRegisterProps) => {
               <ErrorMessage>{t(`auth.${errors.lastName}`)}</ErrorMessage>
             )}
           </FormGroup>
+          </TwoGridContainer>
+          
           <FormGroup sx={{ marginBottom: 2 }}>
             <StyledInput
               name="email"
@@ -192,8 +195,10 @@ const Register = ({ admin, edit }: IRegisterProps) => {
               <ErrorMessage>{t(`auth.${errors.email}`)}</ErrorMessage>
             )}
           </FormGroup>
+        
           {!(admin && edit && !showPasswordArea) ? (
             <>
+            <TwoGridContainer>
               <FormGroup sx={{ marginBottom: 2 }}>
                 <StyledInput
                   name="password"
@@ -234,6 +239,7 @@ const Register = ({ admin, edit }: IRegisterProps) => {
                   </ErrorMessage>
                 )}
               </FormGroup>
+              </TwoGridContainer>
               {admin && edit && (
                 <ButtonGroup sx={{ mb: '5px' }}>
                   <Button size="small" sx={{ border: '1px solid gray' }}>
