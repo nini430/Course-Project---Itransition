@@ -80,6 +80,9 @@ const AddItem = () => {
           input:{name,tags:tags.join(','),customFieldValues:rest},
           onSuccess:()=>{
             toast.success('item_updated',toastOptions);
+            setTimeout(()=>{
+              navigate(-1);
+            },2000)
           },
           itemId
         }))
@@ -104,6 +107,7 @@ const AddItem = () => {
     dispatch(initializeItemConfig(collectionId as string));
     dispatch(getItemTags());
     if(itemId) {
+      console.log(itemId);
       dispatch(getSingleItem(itemId))
     }
   }, [dispatch,itemId,collectionId]);

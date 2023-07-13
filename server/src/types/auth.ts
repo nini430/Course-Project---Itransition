@@ -3,6 +3,8 @@ export interface RegisterInput {
     lastName:string;
     email:string;
     password:string;
+    phoneNumber:string;
+    phoneCountryCode:string;
 }
 
 export type UserUpdateInput=Partial<RegisterInput> & {newPassword?:string};

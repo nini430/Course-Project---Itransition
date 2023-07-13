@@ -5,7 +5,7 @@ const routesPath={
     login:'/login',
     addCollection:'/add-collection',
     addItem:'/add-item/:collectionId',
-    editItem:'/edit-item/:itemId',
+    editItem:'/edit-item/:itemId/:collectionId',
     collectionDetails:'/collection/:collectionId',
     itemDetails:'/item/:itemId',
     settings:'/settings',

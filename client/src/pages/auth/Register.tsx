@@ -12,8 +12,14 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { Toaster, toast } from 'react-hot-toast';
+import PhoneInput from 'react-phone-input-2';
 
-import { AuthContainer, AuthForm, ErrorMessage, TwoGridContainer } from './AuthStyles';
+import {
+  AuthContainer,
+  AuthForm,
+  ErrorMessage,
+  TwoGridContainer,
+} from './AuthStyles';
 import StyledInput from '../../components/FormInput/FormInput';
 import FormButton from '../../components/FormButton/FormButton';
 import {
@@ -58,12 +64,15 @@ const Register = ({ admin, edit }: IRegisterProps) => {
     dirty,
     touched,
     setFieldValue,
+    setFieldTouched,
   } = useFormik({
     initialValues:
       {
         firstName: currentProfile?.firstName as string,
         lastName: currentProfile?.lastName as string,
         email: currentProfile?.email as string,
+        phoneNumber: currentProfile?.phoneNumber as string,
+        phoneCountryCode: currentProfile?.phoneCountryCode as string,
         password: '',
         confirmPassword: '',
       } || registerValues,
@@ -94,7 +103,7 @@ const Register = ({ admin, edit }: IRegisterProps) => {
           );
     },
     enableReinitialize: true,
-  });
+  }); 
   const { t } = useTranslation();
   const { mode } = useAppSelector((state) => state.common);
   const { authedUser } = useAppSelector((state) => state.auth);
@@ -110,6 +119,7 @@ const Register = ({ admin, edit }: IRegisterProps) => {
       navigate('/');
     }
   }, [userExists, navigate, dispatch, admin]);
+
   return (
     <>
       <AuthContainer>
@@ -148,38 +158,38 @@ const Register = ({ admin, edit }: IRegisterProps) => {
           />
           <Divider sx={{ my: '20px' }} />
           <TwoGridContainer>
-          <FormGroup sx={{ marginBottom: 2 }}>
-            <StyledInput
-              name="firstName"
-              placeholder={t('auth.firstName') as string}
-              type="text"
-              value={values.firstName}
-              onChange={(value) => setFieldValue('firstName', value)}
-              onBlur={handleBlur}
-              error={!!(errors.firstName && touched.firstName)}
-              mode={mode}
-            />
-            {errors.firstName && touched.firstName && (
-              <ErrorMessage>{t(`auth.${errors.firstName}`)}</ErrorMessage>
-            )}
-          </FormGroup>
-          <FormGroup sx={{ marginBottom: 2 }}>
-            <StyledInput
-              name="lastName"
-              placeholder={t('auth.lastName') as string}
-              type="text"
-              value={values.lastName}
-              onChange={(value) => setFieldValue('lastName', value)}
-              onBlur={handleBlur}
-              error={!!(errors.lastName && touched.lastName)}
-              mode={mode}
-            />
-            {errors.lastName && touched.lastName && (
-              <ErrorMessage>{t(`auth.${errors.lastName}`)}</ErrorMessage>
-            )}
-          </FormGroup>
+            <FormGroup sx={{ marginBottom: 2 }}>
+              <StyledInput
+                name="firstName"
+                placeholder={t('auth.firstName') as string}
+                type="text"
+                value={values.firstName}
+                onChange={(value) => setFieldValue('firstName', value)}
+                onBlur={handleBlur}
+                error={!!(errors.firstName && touched.firstName)}
+                mode={mode}
+              />
+              {errors.firstName && touched.firstName && (
+                <ErrorMessage>{t(`auth.${errors.firstName}`)}</ErrorMessage>
+              )}
+            </FormGroup>
+            <FormGroup sx={{ marginBottom: 2 }}>
+              <StyledInput
+                name="lastName"
+                placeholder={t('auth.lastName') as string}
+                type="text"
+                value={values.lastName}
+                onChange={(value) => setFieldValue('lastName', value)}
+                onBlur={handleBlur}
+                error={!!(errors.lastName && touched.lastName)}
+                mode={mode}
+              />
+              {errors.lastName && touched.lastName && (
+                <ErrorMessage>{t(`auth.${errors.lastName}`)}</ErrorMessage>
+              )}
+            </FormGroup>
           </TwoGridContainer>
-          
+
           <FormGroup sx={{ marginBottom: 2 }}>
             <StyledInput
               name="email"
@@ -195,50 +205,68 @@ const Register = ({ admin, edit }: IRegisterProps) => {
               <ErrorMessage>{t(`auth.${errors.email}`)}</ErrorMessage>
             )}
           </FormGroup>
-        
+          <FormGroup sx={{ marginBottom: 2 }}>
+            <PhoneInput
+              inputStyle={{ width: '100%' }}
+              onBlur={() => setFieldTouched('phoneNumber', true)}
+              value={values.phoneNumber}
+              onChange={(value: string, country: { countryCode: string }) => {
+                setFieldValue('phoneNumber', value);
+                setFieldValue('phoneCountryCode',country.countryCode.toUpperCase())
+              }}
+              isValid={!(touched.phoneNumber && errors.phoneNumber)}
+            />
+            {touched.phoneNumber && errors.phoneNumber && (
+              <ErrorMessage>{errors.phoneNumber}</ErrorMessage>
+            )}
+          </FormGroup>
           {!(admin && edit && !showPasswordArea) ? (
             <>
-            <TwoGridContainer>
-              <FormGroup sx={{ marginBottom: 2 }}>
-                <StyledInput
-                  name="password"
-                  placeholder={t('auth.password') as string}
-                  type={passType}
-                  toggleType={() =>
-                    setPassType(passType === 'password' ? 'text' : 'password')
-                  }
-                  value={values.password}
-                  onChange={(value) => setFieldValue('password', value)}
-                  onBlur={handleBlur}
-                  error={!!(errors.password && touched.password)}
-                  mode={mode}
-                />
-                {errors.password && touched.password && (
-                  <ErrorMessage>{t(`auth.${errors.password}`)}</ErrorMessage>
-                )}
-              </FormGroup>
-              <FormGroup sx={{ marginBottom: 2 }}>
-                <StyledInput
-                  name="confirmPassword"
-                  placeholder={t('auth.confirm_password') as string}
-                  type={confirmPassType}
-                  toggleType={() =>
-                    setConfirmPassType(
-                      confirmPassType === 'password' ? 'text' : 'password'
-                    )
-                  }
-                  value={values.confirmPassword}
-                  onChange={(value) => setFieldValue('confirmPassword', value)}
-                  onBlur={handleBlur}
-                  error={!!(errors.confirmPassword && touched.confirmPassword)}
-                  mode={mode}
-                />
-                {errors.confirmPassword && touched.confirmPassword && (
-                  <ErrorMessage>
-                    {t(`auth.${errors.confirmPassword}`)}
-                  </ErrorMessage>
-                )}
-              </FormGroup>
+              <TwoGridContainer>
+                <FormGroup sx={{ marginBottom: 2 }}>
+                  <StyledInput
+                    name="password"
+                    placeholder={t('auth.password') as string}
+                    type={passType}
+                    toggleType={() =>
+                      setPassType(passType === 'password' ? 'text' : 'password')
+                    }
+                    value={values.password}
+                    onChange={(value) => setFieldValue('password', value)}
+                    onBlur={handleBlur}
+                    error={!!(errors.password && touched.password)}
+                    mode={mode}
+                  />
+                  {errors.password && touched.password && (
+                    <ErrorMessage>{t(`auth.${errors.password}`)}</ErrorMessage>
+                  )}
+                </FormGroup>
+                <FormGroup sx={{ marginBottom: 2 }}>
+                  <StyledInput
+                    name="confirmPassword"
+                    placeholder={t('auth.confirm_password') as string}
+                    type={confirmPassType}
+                    toggleType={() =>
+                      setConfirmPassType(
+                        confirmPassType === 'password' ? 'text' : 'password'
+                      )
+                    }
+                    value={values.confirmPassword}
+                    onChange={(value) =>
+                      setFieldValue('confirmPassword', value)
+                    }
+                    onBlur={handleBlur}
+                    error={
+                      !!(errors.confirmPassword && touched.confirmPassword)
+                    }
+                    mode={mode}
+                  />
+                  {errors.confirmPassword && touched.confirmPassword && (
+                    <ErrorMessage>
+                      {t(`auth.${errors.confirmPassword}`)}
+                    </ErrorMessage>
+                  )}
+                </FormGroup>
               </TwoGridContainer>
               {admin && edit && (
                 <ButtonGroup sx={{ mb: '5px' }}>
@@ -278,8 +306,25 @@ const Register = ({ admin, edit }: IRegisterProps) => {
                 : t('auth.register')
             }
           />
-          {!admin && <LoadingButton onClick={()=>window.open(`${SERVER_BASE_URL}/auth/google`,"_self")} sx={{border:'1px solid gray'}} startIcon={<Google/>}>Sign Up With Google</LoadingButton>}
-          {!admin && <LoadingButton  sx={{border:'1px solid gray'}} startIcon={<GitHub/>}>Sign Up with Github</LoadingButton>}
+          {!admin && (
+            <LoadingButton
+              onClick={() =>
+                window.open(`${SERVER_BASE_URL}/auth/google`, '_self')
+              }
+              sx={{ border: '1px solid gray' }}
+              startIcon={<Google />}
+            >
+              Sign Up With Google
+            </LoadingButton>
+          )}
+          {!admin && (
+            <LoadingButton
+              sx={{ border: '1px solid gray' }}
+              startIcon={<GitHub />}
+            >
+              Sign Up with Github
+            </LoadingButton>
+          )}
           {!admin && (
             <Typography sx={{ alignSelf: 'center', my: '10px' }}>
               {t('auth.already_member')}{' '}

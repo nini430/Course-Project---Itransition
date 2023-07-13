@@ -73,7 +73,7 @@ const Table = ({
                       : [...prev, item.id]
                   )
                 }
-                checked={selectedIds.includes(item.id)}
+                checked={selectedIds?.includes(item.id)}
               />
             </TableCell>
             {Object.entries(item).map(([key, value]) => (

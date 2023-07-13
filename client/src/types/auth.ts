@@ -9,6 +9,7 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
+  phoneNumber:string;
   profileImage: string;
   isEmailVerified: boolean;
   accountStatus: AccountStatuses;
@@ -21,6 +22,7 @@ export interface User {
   googleId: string | null;
   social: string | null;
   status: Statuses;
+  phoneCountryCode: string;
 }
 
 export interface AuthInitialState {

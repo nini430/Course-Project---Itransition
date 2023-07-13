@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import moment from 'moment';
 import {
   Box,
   Button,
@@ -146,50 +145,13 @@ const CollectionDashboard = ({
         tableName="item"
         columns={itemColumns}
       />
-      {/* <TableBody>
-          {myItems.map((item) => (
-            <TableRow>
-              <TableCell>{item.name}</TableCell>
-              <TableCell>
-                {item.tags
-                  .split(',')
-                  .map((item) => `#${item}`)
-                  .join(',')}
-              </TableCell>
-              <TableCell>
-                <span
-                  onClick={() => {
-                    
-                    );
-                  }}
-                  style={{ textDecoration: 'underline', cursor: 'pointer' }}
-                >
-                  {item.reactions?.length}
-                </span>
-              </TableCell>
-              <TableCell>{item.comments?.length}</TableCell>
-              <TableCell>{moment(item.createdAt).format('L')}</TableCell>
-              <TableCell>
-                <Button
-                  onClick={() => {
-                    setCustomFieldsModal(item.customFieldValues);
-                    setSelecteditemId(item.id);
-                  }}
-                  sx={{ border: '1px solid gray' }}
-                >
-                  {t('common.show')}
-                </Button>
-              </TableCell>
-              
-            </TableRow>
-          ))}
-        </TableBody> */}
       <ReactionMapper
         open={reactionModal}
         onClose={() => setReactionModal(null)}
       />
       <CustomFieldsModal
         itemId={selectedItemId}
+        collectionId={currentCollection?.id as string}
         open={customFieldsModal}
         onClose={() => setCustomFieldsModal(null)}
       />

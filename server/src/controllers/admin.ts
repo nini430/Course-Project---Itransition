@@ -25,7 +25,7 @@ const editUserHandler=asyncHandler(async(req:Request<{userId:string},{},{inputs:
      if(!user) {
           return next(new ErrorResponse(errorMessages.notFound,StatusCodes.NOT_FOUND));
      }
-     const updatedUser= await editUser(req.params.userId,req.body.inputs,user.password);
+     const updatedUser= await editUser(req.params.userId,req.body.inputs,user.password as string);
      return res.status(StatusCodes.OK).json({success:true,data:updatedUser});
 });
 

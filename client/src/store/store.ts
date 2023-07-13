@@ -8,6 +8,7 @@ import itemReducer from './itemReducer';
 import userReducer from './userReducer';
 import chatReducer from './chatReducer';
 import adminReducer from './adminReducer';
+import searchReducer from './searchReducer';
 
 const store = configureStore({
   reducer:{
@@ -17,7 +18,8 @@ const store = configureStore({
     item:itemReducer,
     user:userReducer,
     chat:chatReducer,
-    admin:adminReducer
+    admin:adminReducer,
+    search:searchReducer
   },
   middleware:getDefaultMiddleware=>getDefaultMiddleware({
     serializableCheck:false

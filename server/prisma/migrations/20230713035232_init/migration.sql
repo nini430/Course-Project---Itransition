@@ -3,6 +3,7 @@ CREATE TABLE `User` (
     `id` VARCHAR(191) NOT NULL,
     `firstName` VARCHAR(191) NOT NULL,
     `lastName` VARCHAR(191) NOT NULL,
+    `phoneNumber` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NULL,
     `role` ENUM('BASIC', 'ADMIN') NOT NULL DEFAULT 'BASIC',
@@ -15,6 +16,7 @@ CREATE TABLE `User` (
     `social` ENUM('GOOGLE', 'GITHUB') NULL,
     `googleId` VARCHAR(191) NULL,
     `githubId` VARCHAR(191) NULL,
+    `phoneCountryCode` VARCHAR(191) NOT NULL,
 
     UNIQUE INDEX `User_email_key`(`email`),
     PRIMARY KEY (`id`)

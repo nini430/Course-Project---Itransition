@@ -40,7 +40,7 @@ const registerUser = asyncHandler(
     res: Response,
     next: NextFunction
   ) => {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, phoneNumber, phoneCountryCode } = req.body;
     if (!firstName || !lastName || !email || !password) {
       return next(
         new ErrorResponse(errorMessages.missingFields, StatusCodes.BAD_REQUEST)
@@ -51,6 +51,8 @@ const registerUser = asyncHandler(
       lastName,
       email,
       password,
+      phoneCountryCode,
+      phoneNumber
     });
     return res.status(StatusCodes.CREATED).json({ success: true, user: rest });
   }
@@ -87,7 +89,7 @@ const loginUser = asyncHandler(
         )
       );
     }
-    const isPasswordCorrect = await comparePassword(password, user.password);
+    const isPasswordCorrect = await comparePassword(password, user.password as string);
     if (!isPasswordCorrect) {
       return next(
         new ErrorResponse(

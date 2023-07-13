@@ -49,6 +49,7 @@
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
     "pino": "^8.14.1",
-    "socket.io": "^4.6.2"
+    "socket.io": "^4.6.2",
+    "uninstall": "^0.0.0"
   }
 }

@@ -16,9 +16,10 @@ interface ICustomFieldsModalProps {
   open: any;
   itemId:string;
   onClose: () => void;
+  collectionId:string;
 }
 
-const CustomFieldsModal = ({ open, onClose,itemId }: ICustomFieldsModalProps) => {
+const CustomFieldsModal = ({ open, onClose,itemId, collectionId }: ICustomFieldsModalProps) => {
   console.log(open);
   return (
     <Dialog open={!!open} onClose={onClose}>
@@ -52,7 +53,7 @@ const CustomFieldsModal = ({ open, onClose,itemId }: ICustomFieldsModalProps) =>
         )}
       </DialogContent>
       <DialogActions>
-        <Link to={`/edit-item/${itemId}`}  style={{textDecoration:'none'}}>
+        <Link to={`/edit-item/${itemId}/${collectionId}`}  style={{textDecoration:'none'}}>
         <LoadingButton disabled={!open || Object.keys(open).length===0} startIcon={<Edit />}>Edit</LoadingButton></Link>     
         <Button onClick={onClose} startIcon={<Cancel />}>
           Close
