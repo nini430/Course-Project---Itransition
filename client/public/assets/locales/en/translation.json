@@ -25,7 +25,8 @@
     "author":"Author",
     "comments":"Comments",
     "reactions":"Reactions",
-    "custom_fields": "Custom Fields"
+    "custom_fields": "Custom Fields",
+    "action":"Actions"
 
   },
   "auth": {

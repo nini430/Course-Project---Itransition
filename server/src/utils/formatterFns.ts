@@ -2,6 +2,7 @@ import { Item } from '../types/item';
 
 const itemTableFormatter = (items: any[]) => {
   return items.map((item) => ({
+    id:item.id,
     name: item.name,
     tags: item.tags
       .split(',')
@@ -33,6 +34,7 @@ const itemTableFormatter = (items: any[]) => {
       },
     },
     customFields: { action: true, data: 'View', fields:item.customFieldValues, custom:true, id:item.id },
+    edit:{action:true,data:'Edit',name:'edit',link:`/edit-item/${item.id}/${item.collection.id}`}
   }));
 };
   

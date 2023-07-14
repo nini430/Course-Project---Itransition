@@ -9,6 +9,7 @@ import itemReactionRouter from './itemReaction'
 import commentReactionRouter from './commentReaction'
 import chatRouter from './chat';
 import adminRouter from './admin';
+import searchRouter from './search'
 
 const router=express.Router();
 
@@ -22,5 +23,6 @@ router.use('/item-reaction',itemReactionRouter);
 router.use('/comment-reaction',commentReactionRouter);
 router.use('/chat',chatRouter);
 router.use('/admin',adminRouter);
+router.use('/search',searchRouter);
 
 export default router;

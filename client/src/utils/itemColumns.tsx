@@ -3,6 +3,12 @@ import { Column } from "../types/table";
 
 export const itemColumns:Column[]=[
     {
+        id:'id',
+        minWidth:200,
+        label:'id',
+        isSortable:false
+    },
+    {
         id:'name',
         minWidth:200,
         label:'name',
@@ -44,5 +50,10 @@ export const itemColumns:Column[]=[
         id:'custom_fields',
         minWidth:200,
         label:'custom_fields'
+    },
+    {
+        id:'edit',
+        minWidth:200,
+        label:'action'
     }
 ]

@@ -1,5 +1,7 @@
 export type SearchItems='collections'|'items'|'users'|'comments'
 
 export interface SearchInitialState {
-    searchedItems:[]
+    searchedItems:any[];
+    searchLoading:boolean;
+    searchQuery:string;
 }

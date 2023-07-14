@@ -25,7 +25,8 @@
     "author":"ავტორი",
     "comments":"კომენტარები",
     "reactions":"რეაქციები",
-    "custom_fields":"სპეციფიკური ველები"
+    "custom_fields":"სპეციფიკური ველები",
+    "action":"მოქმედებები"
   },
   "auth": {
     "register": "რეგისტრაცია",

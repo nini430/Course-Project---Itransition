@@ -192,6 +192,7 @@ const TopContainer = styled.div`
 `;
 
 const ItemContainer = styled.div`
+  width:100vw;
   min-height: calc(100vh - 80px);
   display: flex;
   flex-direction: column;

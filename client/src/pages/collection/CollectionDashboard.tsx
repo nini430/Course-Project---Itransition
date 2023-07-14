@@ -5,9 +5,10 @@ import {
   IconButton,
   InputAdornment,
   TextField,
+  Tooltip,
   Typography,
 } from '@mui/material';
-import { ArrowDropDown, ArrowDropUp, Download } from '@mui/icons-material';
+import { ArrowDropDown, ArrowDropUp, Delete, Download } from '@mui/icons-material';
 import { CSVLink } from 'react-csv';
 
 import { ExtendedCollection } from '../../types/collection';
@@ -31,6 +32,7 @@ import { Item } from '../../types/item';
 import Table from '../../components/Comment/shared/Table';
 import { SimpleUser } from '../../types/auth';
 import FollowModal from '../../components/shared/FollowModal';
+import ConfirmDialog from '../../components/shared/ConfirmDialog';
 
 interface ICollectionDashboardProps {
   currentCollection: ExtendedCollection | null;
@@ -39,6 +41,8 @@ interface ICollectionDashboardProps {
 const CollectionDashboard = ({
   currentCollection,
 }: ICollectionDashboardProps) => {
+  const [confirmDialog,setConfirmDialog]=useState<any | null>(null);
+  const [selectedRowKeys,setSelectedRowKeys]=useState<string[]>([])
   const [sortedColumn, setSortedColumn] = useState('');
   const [sortedDir, setSortedDir] = useState<SortedDir>('asc');
   const [filterValue, setFilterValue] = useState('');
@@ -91,7 +95,8 @@ const CollectionDashboard = ({
 
   return (
     <DashboardContainer>
-      <Box sx={{ display: 'flex', gap: '20px' }}>
+      <Box sx={{ display: 'flex', justifyContent:'space-between', alignItems:'center'}}>
+        <ToolbarSides>
         <Link to={`/add-item/${currentCollection?.id as string}`}>
           <Button
             startIcon={<AddCircle />}
@@ -122,8 +127,17 @@ const CollectionDashboard = ({
             Export Items to CSV
           </CSVLink>
         </Button>
+        </ToolbarSides>
+        <ToolbarSides>
+          <Tooltip title='Delete'>
+            <IconButton onClick={()=>setConfirmDialog(selectedRowKeys)}><Delete/></IconButton>
+          </Tooltip>
+        </ToolbarSides>
+        
       </Box>
       <Table
+      selectedIds={selectedRowKeys}
+      setSelectedIds={setSelectedRowKeys}
       viewComments={(data:any)=>{
         console.log(data);
         setFollowModal(data.map((item:any)=>item.author));
@@ -156,6 +170,7 @@ const CollectionDashboard = ({
         onClose={() => setCustomFieldsModal(null)}
       />
       <FollowModal open={followModal} onClose={()=>setFollowModal(null)} />
+      <ConfirmDialog open={confirmDialog} onClose={()=>setConfirmDialog(null)}/>
     </DashboardContainer>
   );
 };
@@ -166,4 +181,9 @@ const DashboardContainer = styled.div`
   gap: 10px;
 `;
 
+const ToolbarSides=styled.div`
+  display:flex;
+  align-items:center;
+  gap:20px;
+`
 export default CollectionDashboard;

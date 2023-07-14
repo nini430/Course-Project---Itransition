@@ -6,6 +6,7 @@ import io from 'socket.io'
 import app from './app'
 import ioListen from './sockets';
 import './utils/cloudinaryConfig';
+import './utils/dbConnect'
 
 const PORT=process.env.PORT;
 const NODE_ENV=process.env.NODE_ENV;

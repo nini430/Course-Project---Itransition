@@ -69,6 +69,9 @@ const apiUrls = {
     getMessages:'/chat/messages',
     getMyFollows:'/chat/my-follows',
     getOnlineUsers:'/chat/online-users'
+  },
+  search:{
+    getFullText:'/search'
   }
 };
 
