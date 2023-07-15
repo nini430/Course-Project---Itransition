@@ -26,13 +26,13 @@ const LikeComments = () => {
         ) : (
           currentItem.comments.map((comment) => (
             <>
-              <Comment comment={comment} />
+              <Comment  comment={comment} />
               <Divider sx={{ color: 'gray' }} />
             </>
           ))
         )}
       </LikeCommentContainer>
-      <AddComment />
+      <AddComment  />
     </Wrapper>
   );
 };

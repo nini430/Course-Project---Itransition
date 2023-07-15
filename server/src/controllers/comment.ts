@@ -31,7 +31,7 @@ const removeCommentHandler=asyncHandler(async(req:Request<{commentId:string}>,re
       return next(new ErrorResponse(errorMessages.notFound,StatusCodes.NOT_FOUND));
     }
     await removeComment(req.params.commentId);
-    return res.status(StatusCodes.OK).json({success:true,data:'comment_deleted'});
+    return res.status(StatusCodes.OK).json({success:true,data:'comment_remove_success'});
 })
 
 
@@ -42,7 +42,7 @@ const editCommentHandler=asyncHandler(async(req:Request<{commentId:string},{},{i
       return next(new ErrorResponse(errorMessages.notFound,StatusCodes.NOT_FOUND));
     }
     const updatedComment=await editComment(req.params.commentId,{text:input.text});
-    return res.status(StatusCodes.OK).json({success:true,data:updatedComment});
+    return res.status(StatusCodes.OK).json({success:true,data:updatedComment,message:'comment_update_success'});
 })
 
 export { addCommentHandler, removeCommentHandler, editCommentHandler };

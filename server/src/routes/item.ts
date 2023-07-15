@@ -10,6 +10,7 @@ import {
   getUniqueItemTagsHandler,
   initializeItemCreationHandler,
   removeItemHandler,
+  removeItemsHandler,
   sortItemHandler,
 } from '../controllers/item';
 
@@ -25,6 +26,7 @@ router.put('/sort/:collectionId',sortItemHandler);
 
 router.use(authProtect);
 
+router.put('/remove-items',removeItemsHandler);
 router.get('/tags', getUniqueItemTagsHandler);
 router.get('/:collectionId', initializeItemCreationHandler);
 router.post('/:collectionId', addItemHandler);

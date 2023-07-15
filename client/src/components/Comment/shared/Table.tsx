@@ -1,16 +1,19 @@
 import {
   Checkbox,
+  IconButton,
   TableBody,
   TableCell,
   Table as TableElement,
   TableHead,
   TableRow,
 } from '@mui/material';
+import styled from 'styled-components';
 import { Dispatch, SetStateAction } from 'react';
-import { Column } from '../../../types/table';
+import { Column, SortedDir } from '../../../types/table';
 import { useTranslation } from 'react-i18next';
 import { customizeCells } from '../../../utils/tableFormatterFns';
 import { Item } from '../../../types/item';
+import { ArrowDownward, ArrowUpward, Sort } from '@mui/icons-material';
 
 interface ITableProps {
   columns: Column[];
@@ -23,6 +26,9 @@ interface ITableProps {
   viewFollows?: (item: any) => void;
   selectedIds: string[];
   setSelectedIds: Dispatch<SetStateAction<string[]>>;
+  sortedColumn: string;
+  sortedDir: SortedDir;
+  sortItem: (sortedCol: string, sortedDir: SortedDir) => void;
 }
 
 const Table = ({
@@ -36,6 +42,9 @@ const Table = ({
   viewFollows,
   selectedIds,
   setSelectedIds,
+  sortedColumn,
+  sortedDir,
+  sortItem,
 }: ITableProps) => {
   const { t } = useTranslation();
   return (
@@ -55,8 +64,39 @@ const Table = ({
             />
           </TableCell>
           {columns.map((column) => (
-            <TableCell key={column.id}>
+            <TableCell
+              sx={{ cursor: 'pointer', position: 'relative', width: 150 }}
+              key={column.id}
+            >
               {t(`${tableName}.${column.label}`)}
+              <SortingIcon>
+                {column.isSortable ? (
+                  <IconButton
+                    onClick={() =>
+                      sortItem(
+                        column.id,
+                        column.id === sortedColumn
+                          ? sortedDir === 'asc'
+                            ? 'desc'
+                            : 'asc'
+                          : 'asc'
+                      )
+                    }
+                  >
+                    {sortedColumn === column.id ? (
+                      sortedDir === 'asc' ? (
+                        <ArrowUpward />
+                      ) : (
+                        <ArrowDownward />
+                      )
+                    ) : (
+                      <Sort/>
+                    )}
+                  </IconButton>
+                ) : (
+                  ''
+                )}
+              </SortingIcon>
             </TableCell>
           ))}
         </TableRow>
@@ -95,5 +135,12 @@ const Table = ({
     </TableElement>
   );
 };
+
+const SortingIcon = styled.div`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: -2px;
+`;
 
 export default Table;

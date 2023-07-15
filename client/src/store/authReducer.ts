@@ -14,9 +14,10 @@ import toastOptions from '../utils/toastOptions';
 import { LoginValues } from '../types/login';
 import { FollowInstance } from '../types/follow';
 import { toggleFollow } from './userReducer';
+import i18n from '../utils/i18next';
 
 const initialState: AuthInitialState = {
-  authedUser:JSON.parse(localStorage.getItem('authed_user') as string) || null,
+  authedUser: JSON.parse(localStorage.getItem('authed_user') as string) || null,
   registerLoading: false,
   loginLoading: false,
   profileUploadLoading: false,
@@ -26,8 +27,8 @@ const initialState: AuthInitialState = {
   forgetPasswordLoading: false,
   resetPasswordPageLoading: false,
   resetPasswordLoading: false,
-  verifyEmailLoading:false,
-  verifyEmailActionLoading:false
+  verifyEmailLoading: false,
+  verifyEmailActionLoading: false,
 };
 
 export const registerUser = createAsyncThunk(
@@ -236,35 +237,65 @@ export const resetPasswordAction = createAsyncThunk(
   }
 );
 
-export const verifyEmail = createAsyncThunk('auth/verify-email',async({userId,onSuccess}:{userId:string,onSuccess:VoidFunction},thunkApi)=>{
-  try{
-    const response=await axiosApiInstance.put<{data:string}>(`${apiUrls.auth.verifyEmail}/${userId}`);
-    onSuccess && onSuccess();
-    return response.data.data;
-  }catch(err) {
-    return thunkApi.rejectWithValue(err);
+export const verifyEmail = createAsyncThunk(
+  'auth/verify-email',
+  async (
+    { userId, onSuccess }: { userId: string; onSuccess: VoidFunction },
+    thunkApi
+  ) => {
+    try {
+      const response = await axiosApiInstance.put<{ data: string }>(
+        `${apiUrls.auth.verifyEmail}/${userId}`
+      );
+      onSuccess && onSuccess();
+      return response.data.data;
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
   }
-})
+);
 
-export const verifyEmailAction = createAsyncThunk('auth/verify-email-action',async({userId,token,onSuccess}:{userId:string,token:string,onSuccess:(isExpired:boolean)=>void},thunkApi)=>{
-    try{
-      const response= await axiosApiInstance.put<{data:boolean}>(`${apiUrls.auth.verifyEmailAction}/${userId}`,{token});
+export const verifyEmailAction = createAsyncThunk(
+  'auth/verify-email-action',
+  async (
+    {
+      userId,
+      token,
+      onSuccess,
+    }: {
+      userId: string;
+      token: string;
+      onSuccess: (isExpired: boolean) => void;
+    },
+    thunkApi
+  ) => {
+    try {
+      const response = await axiosApiInstance.put<{ data: boolean }>(
+        `${apiUrls.auth.verifyEmailAction}/${userId}`,
+        { token }
+      );
       onSuccess && onSuccess(response.data.data);
       return response.data.data;
-    }catch(err) {
-      return  thunkApi.rejectWithValue(err);
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
     }
-})
-
-export const getMyPassportUser= createAsyncThunk('auth/my-passport-user',async({onSuccess}:{onSuccess:VoidFunction},thunkApi)=>{
-  try{
-    const response=await axiosApiInstance.get<{data:any}>(`${apiUrls.auth.getMyPassportUser}`);
-    onSuccess && onSuccess();
-    return response.data.data;
-  }catch(err) {
-    return thunkApi.rejectWithValue(err);
   }
-})
+);
+
+export const getMyPassportUser = createAsyncThunk(
+  'auth/my-passport-user',
+  async ({ onSuccess }: { onSuccess: VoidFunction }, thunkApi) => {
+    try {
+      const response = await axiosApiInstance.get<{ data: any }>(
+        `${apiUrls.auth.getMyPassportUser}`
+      );
+      onSuccess && onSuccess();
+      return response.data.data;
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
 
 const authReducer = createSlice({
   name: 'auth',
@@ -286,7 +317,12 @@ const authReducer = createSlice({
     });
     builder.addCase(registerUser.rejected, (state, action: any) => {
       state.registerLoading = false;
-      toast.error(action.payload.message.error, toastOptions);
+      toast.error(
+        `${i18n.t(
+          `errors.${action.payload.message.error || 'something_went_wrong'}`
+        )}`,
+        toastOptions
+      );
     });
     builder.addCase(loginUser.pending, (state) => {
       state.loginLoading = true;
@@ -297,7 +333,12 @@ const authReducer = createSlice({
     });
     builder.addCase(loginUser.rejected, (state, action: any) => {
       state.loginLoading = false;
-      toast.error(action.payload.message.error, toastOptions);
+      toast.error(
+        `${i18n.t(
+          `errors.${action.payload.message.error || 'something_went_wrong'}`
+        )}`,
+        toastOptions
+      );
     });
     builder.addCase(logoutUser.fulfilled, (state) => {
       state.authedUser = null;
@@ -328,7 +369,12 @@ const authReducer = createSlice({
     });
     builder.addCase(updateUserInfo.rejected, (state, action: any) => {
       state.updateProfileLoading = false;
-      toast.error(action.payload.message.error as string, toastOptions);
+      toast.error(
+        `${i18n.t(
+          `errors.${action.payload.message.error || 'something_went_wrong'}`
+        )}`,
+        toastOptions
+      );
     });
     builder.addCase(getFollows.fulfilled, (state, action) => {
       console.log(action.payload);
@@ -353,7 +399,12 @@ const authReducer = createSlice({
     });
     builder.addCase(forgotPassword.rejected, (state, action: any) => {
       state.forgetPasswordLoading = false;
-      toast.error(action.payload.message.error, toastOptions);
+      toast.error(
+        `${i18n.t(
+          `errors.${action.payload.message.error || 'something_went_wrong'}`
+        )}`,
+        toastOptions
+      );
     });
     builder.addCase(resetPassword.pending, (state) => {
       state.resetPasswordPageLoading = true;
@@ -373,33 +424,38 @@ const authReducer = createSlice({
     builder.addCase(resetPasswordAction.rejected, (state, action) => {
       state.resetPasswordLoading = false;
     });
-    builder.addCase(verifyEmail.pending,state=>{
-      state.verifyEmailLoading=true;
+    builder.addCase(verifyEmail.pending, (state) => {
+      state.verifyEmailLoading = true;
     });
-    builder.addCase(verifyEmail.fulfilled,(state,action)=>{
-       state.verifyEmailLoading=false;
+    builder.addCase(verifyEmail.fulfilled, (state, action) => {
+      state.verifyEmailLoading = false;
     });
-    builder.addCase(verifyEmail.rejected,(state,action:any)=>{
-      state.verifyEmailLoading=false;
-      toast.error(action.payload.message.error,toastOptions)
+    builder.addCase(verifyEmail.rejected, (state, action: any) => {
+      state.verifyEmailLoading = false;
+      toast.error(
+        `${i18n.t(
+          `errors.${action.payload.message.error || 'something_went_wrong'}`
+        )}`,
+        toastOptions
+      );
     });
-    builder.addCase(verifyEmailAction.pending,state=>{
-      state.verifyEmailActionLoading=true;
+    builder.addCase(verifyEmailAction.pending, (state) => {
+      state.verifyEmailActionLoading = true;
     });
-    builder.addCase(verifyEmailAction.fulfilled,(state,action)=>{
-      state.verifyEmailActionLoading=false;
-      if(state.authedUser && !action.payload) {
-        state.authedUser={...state.authedUser,isEmailVerified:true};
-        localStorage.setItem('authed_user',JSON.stringify(state.authedUser));
+    builder.addCase(verifyEmailAction.fulfilled, (state, action) => {
+      state.verifyEmailActionLoading = false;
+      if (state.authedUser && !action.payload) {
+        state.authedUser = { ...state.authedUser, isEmailVerified: true };
+        localStorage.setItem('authed_user', JSON.stringify(state.authedUser));
       }
     });
-    builder.addCase(verifyEmailAction.rejected,(state,action)=>{
-      state.verifyEmailActionLoading=false;
+    builder.addCase(verifyEmailAction.rejected, (state, action) => {
+      state.verifyEmailActionLoading = false;
     });
-    builder.addCase(getMyPassportUser.fulfilled,(state,action)=>{
-      state.authedUser=action.payload;
-      localStorage.setItem('authed_user',JSON.stringify(state.authedUser));
-    })
+    builder.addCase(getMyPassportUser.fulfilled, (state, action) => {
+      state.authedUser = action.payload;
+      localStorage.setItem('authed_user', JSON.stringify(state.authedUser));
+    });
   },
 });
 

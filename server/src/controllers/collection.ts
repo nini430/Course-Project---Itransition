@@ -8,9 +8,11 @@ import {
   addItemConfigs,
   findCollectionById,
   findCollectionByIdExtended,
+  getCollectionExtended,
   getMyCollections,
   getTopLargestCollections,
   removeCollection,
+  updateCollection,
   updateCollectionImage,
 } from '../services/collection';
 import ErrorResponse from '../utils/errorResponse';
@@ -56,7 +58,7 @@ const getTopLargestCollectionsHandler = asyncHandler(
 
 const removeCollectionHandler = asyncHandler(
   async (
-    req: Request<{ collectionId: string }> & {usser:any},
+    req: Request<{ collectionId: string }> & { usser: any },
     res: Response,
     next: NextFunction
   ) => {
@@ -66,10 +68,15 @@ const removeCollectionHandler = asyncHandler(
         new ErrorResponse(errorMessages.notFound, StatusCodes.NOT_FOUND)
       );
     }
-    if(collection.authorId!==req.usser.id) {
-      return next(new ErrorResponse(errorMessages.forbiddenOperation,StatusCodes.FORBIDDEN));
+    if (collection.authorId !== req.usser.id) {
+      return next(
+        new ErrorResponse(
+          errorMessages.forbiddenOperation,
+          StatusCodes.FORBIDDEN
+        )
+      );
     }
-    
+
     await removeCollection(req.params.collectionId);
 
     return res
@@ -79,29 +86,86 @@ const removeCollectionHandler = asyncHandler(
 );
 
 const getMyCollectionsHandlerHandler = asyncHandler(
-  async (req: Request<{authorId:string}>, res: Response, next: NextFunction) => {
+  async (
+    req: Request<{ authorId: string }>,
+    res: Response,
+    next: NextFunction
+  ) => {
     const user = await getMyCollections(req.params.authorId);
     return res.status(StatusCodes.OK).json({ success: true, data: user });
   }
 );
 
-const getCollectionById=asyncHandler(async(req:Request<{collectionId:string}>,res:Response,next:NextFunction)=>{
-    const collection=await findCollectionByIdExtended(req.params.collectionId);
-    if(!collection) {
-      return next(new ErrorResponse(errorMessages.notFound,StatusCodes.NOT_FOUND));
+const getCollectionById = asyncHandler(
+  async (
+    req: Request<{ collectionId: string }>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const collection = await findCollectionByIdExtended(
+      req.params.collectionId
+    );
+    if (!collection) {
+      return next(
+        new ErrorResponse(errorMessages.notFound, StatusCodes.NOT_FOUND)
+      );
     }
-    return res.status(StatusCodes.OK).json({success:true,data:collection})
-})
+    return res.status(StatusCodes.OK).json({ success: true, data: collection });
+  }
+);
 
-const updateCollectionImageHandler=asyncHandler(async(req:Request<{collectionId:string},{},{image:string}>,res:Response,next:NextFunction)=>{
-    const collection=await findCollectionById(req.params.collectionId);
-    if(!collection) {
-      return next(new ErrorResponse(errorMessages.notFound,StatusCodes.NOT_FOUND));
+const updateCollectionImageHandler = asyncHandler(
+  async (
+    req: Request<{ collectionId: string }, {}, { image: string }>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const collection = await findCollectionById(req.params.collectionId);
+    if (!collection) {
+      return next(
+        new ErrorResponse(errorMessages.notFound, StatusCodes.NOT_FOUND)
+      );
     }
-    const image=await updateCollectionImage(req.params.collectionId,req.body.image);
-    return res.status(StatusCodes.OK).json({success:true,data:image});
-})
+    const image = await updateCollectionImage(
+      req.params.collectionId,
+      req.body.image
+    );
+    return res.status(StatusCodes.OK).json({ success: true, data: image });
+  }
+);
 
+const getCollectionExtendedHandler = asyncHandler(
+  async (
+    req: Request<{ collectionId: string }>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const collectionDetails = await getCollectionExtended(
+      req.params.collectionId
+    );
+    return res
+      .status(StatusCodes.OK)
+      .json({ success: true, data: collectionDetails });
+  }
+);
+
+const updateCollectionHandler = asyncHandler(
+  async (
+    req: Request<{ collectionId: string },{},{configs:any,input:CollectionInput}>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const {configs,input}=req.body;
+    const collection = await findCollectionById(req.params.collectionId);
+    if (!collection) {
+      return next(
+        new ErrorResponse(errorMessages.notFound, StatusCodes.NOT_FOUND)
+      );
+    }
+    await updateCollection(collection.image,collection.id,configs,input);
+    return res.status(StatusCodes.OK).json({success:true,data:'collection_updated'});
+  }
+);
 export {
   getCollectionTopics,
   addCollectionHandler,
@@ -109,5 +173,7 @@ export {
   removeCollectionHandler,
   getMyCollectionsHandlerHandler,
   getCollectionById,
-  updateCollectionImageHandler
+  updateCollectionImageHandler,
+  getCollectionExtendedHandler,
+  updateCollectionHandler,
 };

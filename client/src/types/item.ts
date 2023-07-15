@@ -20,6 +20,7 @@ export interface ItemInitialState {
     editCommentLoading:boolean;
     myItems:Item[];
     getMyItemsLoading:boolean;
+    isCommentEditMode:boolean;
 }
 
 export interface ItemInput {

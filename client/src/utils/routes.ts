@@ -7,6 +7,7 @@ const routesPath={
     addItem:'/add-item/:collectionId',
     editItem:'/edit-item/:itemId/:collectionId',
     collectionDetails:'/collection/:collectionId',
+    editCollection:'/edit-collection/:collectionId',
     itemDetails:'/item/:itemId',
     settings:'/settings',
     messenger:'/messenger',

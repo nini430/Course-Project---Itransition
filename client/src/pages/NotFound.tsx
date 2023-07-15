@@ -21,6 +21,7 @@ const NotFound = () => {
 const Container=styled.div`
     min-height:calc(100vh - 80px);  
     display:flex;
+    width:100vw;
     justify-content: center;
     align-items: center;
 `

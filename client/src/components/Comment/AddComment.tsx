@@ -11,7 +11,10 @@ import { fileToBase64 } from '../../utils/fileToBase64';
 import { Wrapper, ImageContainer, CloseContainer } from './shared/SharedStyles';
 import EmojiActions from './shared/EmojiActions';
 
+
 const AddComment = () => {
+  const {isCommentEditMode}=useAppSelector(state=>state.item)
+    
   const [uploadImg, setUploadImg] = useState<File | null>(null);
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*' as unknown as Accept,
@@ -87,7 +90,7 @@ const AddComment = () => {
         />
         <LoadingButton
           loading={addCommentLoading}
-          disabled={!text && !uploadImg}
+          disabled={(!text && !uploadImg) || isCommentEditMode}
           onClick={async () => {
             dispatch(
               addComment({

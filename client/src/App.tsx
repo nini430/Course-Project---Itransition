@@ -74,6 +74,7 @@ function App() {
               path={routesPath.collectionDetails}
               element={<CollectionDetails />}
             />
+            <Route path={routesPath.editCollection} element={<AddCollection/>}/>
             <Route path={routesPath.itemDetails} element={<ItemDetails />} />
             <Route path={routesPath.messenger} element={<DesktopMessenger />} />
             <Route path={routesPath.search} element={<Search />} />

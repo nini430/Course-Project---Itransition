@@ -6,6 +6,7 @@ import { Statuses } from '../types/common';
 import { toast } from 'react-hot-toast';
 import toastOptions from '../utils/toastOptions';
 import { AdminInitialState } from '../types/admin';
+import i18n from '../utils/i18next';
 
 const initialState: AdminInitialState = {
   users: null,
@@ -142,9 +143,9 @@ const adminReducer = createSlice({
         );
       }
     });
-    builder.addCase(changeStatus.rejected, (state, action) => {
+    builder.addCase(changeStatus.rejected, (state, action:any) => {
       state.changeStatusLoading=false;
-      toast.error('something_went_wrong', toastOptions);
+      toast.error(`${i18n.t(`errors.${action.payload.message.error||'something_went_wrong'}`)}`, toastOptions);
     });
     builder.addCase(addUser.pending,state=>{
       state.addUserLoading=true;
@@ -154,7 +155,7 @@ const adminReducer = createSlice({
     });
     builder.addCase(addUser.rejected,(state,action:any)=>{
       state.addUserLoading=false;
-      toast.error(action.payload.error,toastOptions);
+      toast.error(`${i18n.t(`errors.${action.payload.message.error||'something_went_wrong'}`)}`,toastOptions);
     })
   },
 });

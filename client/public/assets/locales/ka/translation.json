@@ -46,7 +46,8 @@
     "confirm_password_required": "გაიმეორეთ პაროლი",
     "passwords_must_match": "პაროლი არ ემთხვევა",
     "sign_in":"ავტორიზაცია",
-    "role":"როლი"
+    "role":"როლი",
+    "verify_email":"დაადასტურეთ ელ.ფოსტა"
   },
   "nav": {
     "search": "ძიება...",
@@ -76,6 +77,21 @@
   "collections_length":"კოლექციები",
   "created_at":"შექმნის დრო",
   "followers":"გამომწერები",
-  "followings":"გამოწერილები"
+  "followings":"გამოწერილები",
+  "admin_area":"ადმინის სივრცე"
+},
+"errors":{
+  "something_went_wrong":"დაფიქსირდა შეცდომა",
+  "unique_email_error":"ელ.ფოსტა უნდა იყოს უნიკალური",
+    "missing_fields":"შეავსეთ სავალდებულო ველები",
+    "invalid_credentials":"არასწორი მონაცემები",
+    "unauthenticated":"არაავტორიზებული მოთხოვნა",
+    "token_expired_error":"სესიას გაუვიდა ვადა",
+    "not_found":"არ მოიძებნა",
+    "forbidden_operation":"მოქმედების შესრულება აკრძალულია",
+    "user_blocked":"მოხმარებელი დაბლოკილია",
+    "user_deleted":"მოხმარებელი წაშლილია",
+    "user_not_found":"მომხმარებელი არ მოიძებნა",
+    "email_already_sent":"მეილი უკვე გამოგზავნილია"
 }
 }

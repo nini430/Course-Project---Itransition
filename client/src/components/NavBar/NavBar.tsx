@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { Button, IconButton } from '@mui/material';
 import {
@@ -68,7 +67,7 @@ const NavBar = () => {
                 sx={{ textTransform: 'capitalize', border: '1px solid gray' }}
               >
                 <AdminPanelSettings />
-                Admin Area
+                {t("admin.admin_area")}
               </Button>
             </Link>
           )}
@@ -78,7 +77,7 @@ const NavBar = () => {
               dispatch(verifyEmail({userId:auth.id,onSuccess:()=>{
                 navigate('/verify-email')
               }}))
-            }} startIcon={<Email/>} sx={{border:'1px solid gray'}}>Verify Email</Button>
+            }} startIcon={<Email/>} sx={{border:'1px solid gray'}}>{t('auth.verify_email')}</Button>
           ) }
 
           <ModeSwitch />

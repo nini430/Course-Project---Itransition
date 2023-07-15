@@ -47,7 +47,8 @@
     "confirm_password_required": "Confirm Password field is requried",
     "passwords_must_match": "Passwords must match",
     "sign_in": "Sign In",
-    "role":"Role"
+    "role":"Role",
+    "verify_email":"Verify E-mail"
   },
   "nav": {
     "search": "Search...",
@@ -77,6 +78,21 @@
     "collections_length":"Collections",
     "created_at":"Created At",
     "followers":"Followers",
-    "followings":"Followings"
+    "followings":"Followings",
+    "admin_area":"Admin Area"
+  },
+  "errors":{
+    "something_went_wrong":"Something Went Wrong",
+    "unique_email_error":"Email must be unique",
+    "missing_fields":"Fill Required fields",
+    "invalid_credentials":"Invalid Credentials",
+    "unauthenticated":"Unauthenticated",
+    "token_expired_error":"Token Has Expired",
+    "not_found":"Not Found",
+    "forbidden_operation":"Action not Allowed",
+    "user_blocked":"User is blocked",
+    "user_deleted":"User is deleted",
+    "user_not_found":"User is not found",
+    "email_already_sent":"Email is Already sent"
   }
 }

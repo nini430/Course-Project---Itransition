@@ -44,8 +44,8 @@ model Follow {
   id String @id @default(uuid())
   followerId String
   followedId String
-  follower User @relation("follower",fields: [followedId],references: [id])
-  followed User @relation("followed",fields: [followerId],references: [id])
+  follower User @relation("follower",fields: [followedId],references: [id],onDelete: Cascade)
+  followed User @relation("followed",fields: [followerId],references: [id],onDelete: Cascade)
 
 }
 
@@ -55,10 +55,10 @@ model Message {
   image String?
   senderId String
   receiverId String
-  sender User @relation("sender",fields: [senderId],references: [id])
-  receiver User @relation("receiver",fields: [receiverId],references: [id])
+  sender User @relation("sender",fields: [senderId],references: [id],onDelete: Cascade)
+  receiver User @relation("receiver",fields: [receiverId],references: [id],onDelete: Cascade)
   chatId String
-  chat Chat @relation(fields: [chatId],references: [id])
+  chat Chat @relation(fields: [chatId],references: [id],onDelete: Cascade)
   type String @default("text")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
@@ -79,7 +79,7 @@ model Collection {
   description          String                 @db.VarChar(4000)
   image                String?
   authorId             String
-  author               User                   @relation(fields: [authorId], references: [id])
+  author               User                   @relation(fields: [authorId], references: [id],onDelete: Cascade)
   items                Item[]
   integerItems         IntegerField[]
   stringItems          StringField[]
@@ -95,7 +95,7 @@ model Item {
   name              String
   tags              String
   collectionId      String
-  collection        Collection @relation(fields: [collectionId], references: [id])
+  collection        Collection @relation(fields: [collectionId], references: [id],onDelete: Cascade)
   customFieldValues Json
   createdAt         DateTime   @default(now())
   updatedAt         DateTime   @updatedAt
@@ -108,11 +108,11 @@ model Comment {
   text      String
   image String?
   itemId    String
-  item      Item     @relation(fields: [itemId], references: [id])
+  item      Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   authorId  String
-  author    User     @relation(fields: [authorId], references: [id])
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   reactions CommentReaction[]
 }
 
@@ -121,7 +121,7 @@ model IntegerField {
   name         String
   collectionId String
   type         String      @default("integer")
-  collection   Collection? @relation(fields: [collectionId], references: [id])
+  collection   Collection? @relation(fields: [collectionId], references: [id],onDelete: Cascade)
 }
 
 model StringField {
@@ -129,7 +129,7 @@ model StringField {
   name         String
   collectionId String
   type         String      @default("string")
-  collection   Collection? @relation(fields: [collectionId], references: [id])
+  collection   Collection? @relation(fields: [collectionId], references: [id],onDelete: Cascade)
 }
 
 model MultilineTextField {
@@ -137,7 +137,7 @@ model MultilineTextField {
   name         String
   collectionId String
   type         String      @default("multiline")
-  collection   Collection? @relation(fields: [collectionId], references: [id])
+  collection   Collection? @relation(fields: [collectionId], references: [id],onDelete: Cascade)
 }
 
 model BooleanCheckboxField {
@@ -145,7 +145,7 @@ model BooleanCheckboxField {
   name         String
   collectionId String
   type         String      @default("boolean")
-  collection   Collection? @relation(fields: [collectionId], references: [id])
+  collection   Collection? @relation(fields: [collectionId], references: [id],onDelete: Cascade)
 }
 
 model DateField {
@@ -153,16 +153,16 @@ model DateField {
   name         String
   collectionId String
   type         String      @default("date")
-  collection   Collection? @relation(fields: [collectionId], references: [id])
+  collection   Collection? @relation(fields: [collectionId], references: [id],onDelete: Cascade)
 }
 
 model ItemReaction {
   id   String @id @default(uuid())
   name Emojis @default(like)
   userId String
-  user User  @relation(fields: [userId],references: [id])
+  user User  @relation(fields: [userId],references: [id],onDelete: Cascade)
   itemId String
-  item Item @relation(fields: [itemId],references: [id])
+  item Item @relation(fields: [itemId],references: [id],onDelete: Cascade)
 }
 
 
@@ -170,9 +170,9 @@ model CommentReaction {
   id   String @id @default(uuid())
   name Emojis @default(like)
   userId String
-  user User  @relation(fields: [userId],references: [id])
+  user User  @relation(fields: [userId],references: [id],onDelete: Cascade)
   commentId String
-  comment Comment @relation(fields: [commentId],references: [id])
+  comment Comment @relation(fields: [commentId],references: [id],onDelete: Cascade)
 }
 
 model Token {

@@ -4,6 +4,7 @@ import moment from 'moment';
 import ShowMore from 'react-show-more';
 import { useState, useEffect } from 'react';
 import { Accept, useDropzone } from 'react-dropzone';
+import {Toaster,toast} from 'react-hot-toast'
 
 import styled from 'styled-components';
 import CommentAvatar from './shared/CommentAvatar';
@@ -16,6 +17,7 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import {
   reactComment,
   removeComment,
+  setCommentEditMode,
   toggleCommentImage,
   unreactComment,
 } from '../../store/itemReducer';
@@ -26,12 +28,15 @@ import { Link } from 'react-router-dom';
 import ImageModal from '../shared/ImageModal';
 import { Wrapper, CloseContainer, ImageContainer } from './shared/SharedStyles';
 import EmojiActions from './shared/EmojiActions';
+import { useTranslation } from 'react-i18next';
+import toastOptions from '../../utils/toastOptions';
 
 interface ICommentProps {
   comment: CommentType;
 }
 
 const Comment = ({ comment }: ICommentProps) => {
+  const {t}=useTranslation();
   const [uploadImg, setUploadImg] = useState<File | null>(null);
   const [isEmojiPickerShown, setIsEmojiPickerShown] = useState(false);
   const [imageModal, setImageModal] = useState<string | null>(null);
@@ -75,6 +80,7 @@ const Comment = ({ comment }: ICommentProps) => {
   }, []);
   return (
     <CommentContainer>
+      <Toaster/>
       <LeftCommentSection>
         <Link
           style={{ textDecoration: 'none' }}
@@ -142,8 +148,10 @@ const Comment = ({ comment }: ICommentProps) => {
                     editCommentHandler({
                       commentId: comment.id,
                       input: { text: editComment },
-                      onSuccess: () => {
+                      onSuccess: (message) => {
                         setIsInEditMode(false);
+                        toast.success(t(`messages.${message||'success'}`,toastOptions));
+                        dispatch(setCommentEditMode(false));
                       },
                     })
                   );
@@ -158,6 +166,7 @@ const Comment = ({ comment }: ICommentProps) => {
                 onClick={() => {
                   setIsInEditMode(false);
                   setEditComment(comment.text);
+                  dispatch(setCommentEditMode(false));
                   dispatch(
                     toggleCommentImage({
                       commentId: comment.id,
@@ -256,6 +265,7 @@ const Comment = ({ comment }: ICommentProps) => {
           <ActionButtons
             setIsInEditMode={setIsInEditMode}
             comment={comment}
+            setEditComment={setEditComment}
             setConfirmDialog={setConfirmDialog}
             setIsMoreShown={setIsMoreShown}
           />
@@ -277,8 +287,10 @@ const Comment = ({ comment }: ICommentProps) => {
             dispatch(
               removeComment({
                 commentId: comment.id,
-                onSuccess: () => {
+                onSuccess: (message:string) => {
                   setConfirmDialog(null);
+                  toast.success(t(`messages.${message||'success'}`,toastOptions));
+                  
                 },
               })
             );

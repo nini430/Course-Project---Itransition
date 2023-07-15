@@ -6,23 +6,19 @@ import {
   InputAdornment,
   TextField,
   Tooltip,
-  Typography,
 } from '@mui/material';
-import { ArrowDropDown, ArrowDropUp, Delete, Download } from '@mui/icons-material';
+import { Delete, Download } from '@mui/icons-material';
 import { CSVLink } from 'react-csv';
 
 import { ExtendedCollection } from '../../types/collection';
 import { useAppDispatch, useAppSelector } from '../../store/store';
-import { filterItems, getMyItems, sortItem } from '../../store/itemReducer';
+import { filterItems, getMyItems, removeItems, sortItem } from '../../store/itemReducer';
 import { styled } from 'styled-components';
 import Loading from '../../components/Loading/Loading';
 import { itemColumns } from '../../utils/itemColumns';
 import { useTranslation } from 'react-i18next';
 import { AddCircle, Search } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import NoImage from '../../assets/no-image.png';
-import Avatar from '../../components/Avatar/Avatar';
-import AvatarImg from '../../assets/avatar.png';
 import ReactionMapper from '../../components/shared/ReactionMapper';
 import { ReactionMapper as ReactionMapperType } from '../../types/reaction';
 import CustomFieldsModal from '../item/CustomFieldsModal';
@@ -33,6 +29,8 @@ import Table from '../../components/Comment/shared/Table';
 import { SimpleUser } from '../../types/auth';
 import FollowModal from '../../components/shared/FollowModal';
 import ConfirmDialog from '../../components/shared/ConfirmDialog';
+import {toast,Toaster} from 'react-hot-toast';
+import toastOptions from '../../utils/toastOptions';
 
 interface ICollectionDashboardProps {
   currentCollection: ExtendedCollection | null;
@@ -55,7 +53,7 @@ const CollectionDashboard = ({
     ReactionMapperType[] | null
   >(null);
   const [followModal,setFollowModal]=useState<null | SimpleUser[]>(null);
-  const { myItems, getMyItemsLoading } = useAppSelector((state) => state.item);
+  const { myItems, getMyItemsLoading, removeItemLoading } = useAppSelector((state) => state.item);
 
   useEffect(() => {
     dispatch(getMyItems({ collectionId: currentCollection?.id as string }));
@@ -95,6 +93,7 @@ const CollectionDashboard = ({
 
   return (
     <DashboardContainer>
+      <Toaster/>
       <Box sx={{ display: 'flex', justifyContent:'space-between', alignItems:'center'}}>
         <ToolbarSides>
         <Link to={`/add-item/${currentCollection?.id as string}`}>
@@ -136,6 +135,17 @@ const CollectionDashboard = ({
         
       </Box>
       <Table
+      sortItem={(sortedCol:string,sortedDir:SortedDir)=>{
+        setSortedColumn(sortedCol);
+        setSortedDir(sortedDir);
+        dispatch(sortItem({
+          sortedCol:sortedCol,
+          sortedDir,
+          collectionId:currentCollection?.id as string
+        }))
+      }}
+      sortedColumn={sortedColumn}
+      sortedDir={sortedDir}
       selectedIds={selectedRowKeys}
       setSelectedIds={setSelectedRowKeys}
       viewComments={(data:any)=>{
@@ -170,7 +180,12 @@ const CollectionDashboard = ({
         onClose={() => setCustomFieldsModal(null)}
       />
       <FollowModal open={followModal} onClose={()=>setFollowModal(null)} />
-      <ConfirmDialog open={confirmDialog} onClose={()=>setConfirmDialog(null)}/>
+      <ConfirmDialog loading={removeItemLoading} onOk={()=>{
+        dispatch(removeItems({itemIds:selectedRowKeys,onSuccess:(message:string)=>{
+          setConfirmDialog(null);
+          toast.success(message,toastOptions);
+        }}))
+      }} open={confirmDialog} onClose={()=>setConfirmDialog(null)}/>
     </DashboardContainer>
   );
 };

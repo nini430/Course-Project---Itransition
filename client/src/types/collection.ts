@@ -12,6 +12,8 @@ export interface CollectionInitialState {
   currentCollection: ExtendedCollection | null;
   getCollectionLoading: boolean;
   uploadCollectionImageLoading:boolean;
+  draftCollection:any | null;
+  updateCollectionLoading:boolean;
 }
 
 export interface Collection {

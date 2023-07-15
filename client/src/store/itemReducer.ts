@@ -7,6 +7,7 @@ import toastOptions from '../utils/toastOptions';
 import { Comment, CommentInput } from '../types/comment';
 import { CommentReaction, ItemReaction } from '../types/reaction';
 import { SortDirection } from '@mui/material';
+import i18n from '../utils/i18next';
 
 const initialState: ItemInitialState = {
   addItemLoading: false,
@@ -25,6 +26,7 @@ const initialState: ItemInitialState = {
   editCommentLoading: false,
   myItems: [],
   getMyItemsLoading: false,
+  isCommentEditMode:false
 };
 
 export const initializeItemConfig = createAsyncThunk(
@@ -112,14 +114,14 @@ export const getSingleItem = createAsyncThunk(
 export const removeItem = createAsyncThunk(
   'item/delete',
   async (
-    { itemId, onSuccess }: { itemId: string; onSuccess: VoidFunction },
+    { itemId, onSuccess }: { itemId: string; onSuccess: (message:string)=>void},
     thunkApi
   ) => {
     try {
       const response = await axiosApiInstance.delete<{ data: string }>(
         `${apiUrls.item.removeItem}/${itemId}`
       );
-      onSuccess && onSuccess();
+      onSuccess && onSuccess(response.data.data);
       return response.data.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
@@ -176,15 +178,15 @@ export const editComment = createAsyncThunk(
       commentId,
       input,
       onSuccess,
-    }: { commentId: string; input: CommentInput; onSuccess: VoidFunction },
+    }: { commentId: string; input: CommentInput; onSuccess: (message:string)=>void },
     thunkApi
   ) => {
     try {
-      const response = await axiosApiInstance.put<{ data: Comment }>(
+      const response = await axiosApiInstance.put<{ data: Comment , message: string}>(
         `${apiUrls.comment.editComment}/${commentId}`,
         { input }
       );
-      onSuccess && onSuccess();
+      onSuccess && onSuccess(response.data.message);
       return response.data.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
@@ -195,14 +197,14 @@ export const editComment = createAsyncThunk(
 export const removeComment = createAsyncThunk(
   '/comment/remove',
   async (
-    { commentId, onSuccess }: { commentId: string; onSuccess: VoidFunction },
+    { commentId, onSuccess }: { commentId: string; onSuccess: (message:string)=>void; },
     thunkApi
   ) => {
     try {
       const response = await axiosApiInstance.delete<{ data: string }>(
         `${apiUrls.comment.removeComment}/${commentId}`
       );
-      onSuccess && onSuccess();
+      onSuccess && onSuccess(response.data.data);
       return response.data.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
@@ -333,10 +335,35 @@ export const sortItem = createAsyncThunk(
   }
 );
 
+export const removeItems = createAsyncThunk(
+  'item/remove-items',
+  async (
+    {
+      itemIds,
+      onSuccess,
+    }: { itemIds: string[]; onSuccess: (message: string) => void },
+    thunkApi
+  ) => {
+    try {
+      const response = await axiosApiInstance.put<{ data: string }>(
+        apiUrls.item.removeItems,
+        { itemIds }
+      );
+      onSuccess && onSuccess(response.data.data);
+      return response.data.data;
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
 const itemSlice = createSlice({
   name: 'item',
   initialState,
   reducers: {
+    setCommentEditMode:(state,action:PayloadAction<boolean>)=>{
+        state.isCommentEditMode=action.payload;
+    },
     toggleCommentImage: (
       state,
       action: PayloadAction<{
@@ -376,8 +403,13 @@ const itemSlice = createSlice({
       console.log(action.payload, '!');
       state.formCustomFields = action.payload;
     });
-    builder.addCase(initializeItemConfig.rejected, (state, action) => {
-      toast.error('something_went_wrong', toastOptions);
+    builder.addCase(initializeItemConfig.rejected, (state, action: any) => {
+      toast.error(
+        i18n.t(
+          `errors.${action.payload.message.error || 'something_went_wrong'}`
+        ),
+        toastOptions
+      );
     });
     builder.addCase(addItem.pending, (state) => {
       state.addItemLoading = true;
@@ -423,7 +455,6 @@ const itemSlice = createSlice({
     });
     builder.addCase(removeItem.fulfilled, (state, action) => {
       state.removeItemLoading = false;
-      toast.success(action.payload, toastOptions);
     });
     builder.addCase(addComment.pending, (state) => {
       state.addCommentLoading = true;
@@ -451,7 +482,6 @@ const itemSlice = createSlice({
       if (state.currentItem) {
         state.currentItem = { ...state.currentItem, comments: updatedComments };
       }
-      toast.success('comment_removed', toastOptions);
     });
     builder.addCase(removeComment.rejected, (state, action) => {
       state.removeCommentLoading = false;
@@ -470,7 +500,6 @@ const itemSlice = createSlice({
           comments: updatedComments as Comment[],
         };
       }
-      toast.success('comment_updated', toastOptions);
     });
     builder.addCase(editComment.rejected, (state, action) => {
       state.editItemLoading = false;
@@ -492,8 +521,13 @@ const itemSlice = createSlice({
         };
       }
     });
-    builder.addCase(addItemReaction.rejected, (state, action) => {
-      toast.error('something_went_wrong', toastOptions);
+    builder.addCase(addItemReaction.rejected, (state, action: any) => {
+      toast.error(
+        i18n.t(
+          `errors.${action.payload.message.error || 'something_went_wrong'}`
+        ),
+        toastOptions
+      );
     });
     builder.addCase(unreactItem.fulfilled, (state, action) => {
       if (state.currentItem) {
@@ -537,8 +571,13 @@ const itemSlice = createSlice({
         };
       }
     });
-    builder.addCase(reactComment.rejected, (state, action) => {
-      toast.error('something_went_wrong', toastOptions);
+    builder.addCase(reactComment.rejected, (state, action: any) => {
+      toast.error(
+        i18n.t(
+          `errors.${action.payload.message.error || 'something_went_wrong'}`
+        ),
+        toastOptions
+      );
     });
     builder.addCase(unreactComment.fulfilled, (state, action) => {
       const { reactionId, commentId } = action.payload;
@@ -559,8 +598,13 @@ const itemSlice = createSlice({
         };
       }
     });
-    builder.addCase(unreactComment.rejected, (state, action) => {
-      toast.error('something_went_wrong', toastOptions);
+    builder.addCase(unreactComment.rejected, (state, action: any) => {
+      toast.error(
+        i18n.t(
+          `errors.${action.payload.message.error || 'something_went_wrong'}`
+        ),
+        toastOptions
+      );
     });
     builder.addCase(getMyItems.pending, (state) => {
       state.getMyItemsLoading = true;
@@ -592,9 +636,24 @@ const itemSlice = createSlice({
     builder.addCase(sortItem.rejected, (state, action) => {
       state.getMyItemsLoading = false;
     });
+    builder.addCase(removeItems.pending, (state) => {
+      state.removeItemLoading = true;
+    });
+    builder.addCase(removeItems.fulfilled, (state, action) => {
+      const { itemIds } = action.meta.arg;
+      state.removeItemLoading = false;
+      if (state.myItems) {
+        state.myItems = state.myItems.filter(
+          (item) => !itemIds.includes(item.id)
+        );
+      }
+    });
+    builder.addCase(removeItems.rejected, (state, action) => {
+      state.removeItemLoading = false;
+    });
   },
 });
 
-export const { toggleCommentImage } = itemSlice.actions;
+export const { toggleCommentImage, setCommentEditMode } = itemSlice.actions;
 
 export default itemSlice.reducer;

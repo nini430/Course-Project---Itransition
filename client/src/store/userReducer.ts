@@ -7,6 +7,7 @@ import { User } from '../types/auth';
 import { FollowInstance } from '../types/follow';
 import toastOptions from '../utils/toastOptions';
 import { uploadProfileImage } from './authReducer';
+import i18n from '../utils/i18next';
 
 const initialState: UserInitialState = {
   currentProfile: null,
@@ -82,9 +83,9 @@ const userSlice = createSlice({
         );
       }
     });
-    builder.addCase(toggleFollow.rejected, (state, action) => {
+    builder.addCase(toggleFollow.rejected, (state, action:any) => {
       state.toggleFollowLoading=false;
-      toast.error('something_went_wrong', toastOptions);
+      toast.error(i18n.t(`errors.${action.payload.message.error||'something_went_wrong'}`), toastOptions);
     });
     builder.addCase(uploadProfileImage.fulfilled,(state,action)=>{
       if(state.currentProfile) {

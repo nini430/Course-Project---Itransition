@@ -13,6 +13,7 @@ import {
   getMyItems,
   filterItem,
   sortItem,
+  removeItems,
 } from '../services/item';
 import { ItemInput } from '../types/item';
 import ErrorResponse from '../utils/errorResponse';
@@ -109,9 +110,14 @@ const removeItemHandler = asyncHandler(
 
     return res
       .status(StatusCodes.OK)
-      .json({ success: true, data: 'deleted_success' });
+      .json({ success: true, data: 'item_remove_success' });
   }
 );
+
+const removeItemsHandler=asyncHandler(async(req:Request<{},{},{itemIds:string[]}>,res:Response,next:NextFunction)=>{
+     await removeItems(req.body.itemIds);
+     return res.status(StatusCodes.OK).json({success:true,data:'items_delete_success'});
+});
 
 const editItemHandler = asyncHandler(
   async (
@@ -187,4 +193,5 @@ export {
   getMyItemsHandler,
   filterItemHandler,
   sortItemHandler,
+  removeItemsHandler
 };

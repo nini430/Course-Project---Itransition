@@ -7,6 +7,7 @@ import { Collection as CollectionType } from "../../types/collection";
 import NoImage from '../../assets/no-image.png'
 import AvatarComp from '../Avatar/Avatar'
 import AvatarImg from '../../assets/avatar.png'
+import { useTranslation } from 'react-i18next'
 
 interface IListViewCollectionProps {
     collection:CollectionType;
@@ -15,6 +16,7 @@ interface IListViewCollectionProps {
 }
 
 const ListViewCollection = ({collection,isConfirmDialogOpen,setIsConfirmDialogOpen}:IListViewCollectionProps) => {
+    const {t}=useTranslation();
   return (
     <Link style={{textDecoration:'none'}} to={`/collections/${collection.id}`}>
      <StyledCard sx={{minHeight:'330px'}}>
@@ -54,7 +56,7 @@ const ListViewCollection = ({collection,isConfirmDialogOpen,setIsConfirmDialogOp
         </RightContent>
         </CardContent> 
         <CardActions>
-        <Button fullWidth sx={{border:'1px solid gray'}}>View More</Button>
+        <Button fullWidth sx={{border:'1px solid gray'}}>{t("common.view_more")}</Button>
         </CardActions>
        
     </StyledCard>

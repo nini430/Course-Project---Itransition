@@ -15,7 +15,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { useAppDispatch } from '../../store/store';
 import { Link } from 'react-router-dom';
 import Avatar from '../Avatar/Avatar';
-import AvatarImg from '../../assets/avatar.png'
+import AvatarImg from '../../assets/avatar.png';
 import { useTranslation } from 'react-i18next';
 
 interface ICollectionProps {
@@ -31,44 +31,58 @@ const Collection = ({
   setIsConfirmDialogOpen,
   main,
 }: ICollectionProps) => {
-  const dispatch=useAppDispatch();
-  const {t}=useTranslation();
+  const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   return (
-    <Link style={{textDecoration:'none'}} to={`/collection/${collection.id}`}>
     <StyledCard>
-      <CardContent>
-        <Typography variant="h6">{collection.name}</Typography>
-        <CollectionImg src={collection.image || NoImage} alt="" />
-        <Typography sx={{ color: 'gray' }}>
-          {t('common.topic')}: {collection.topic}
-        </Typography>
-        <Typography
-          dangerouslySetInnerHTML={{
-            __html: collection.description.slice(0, 25),
-          }}
-          sx={{ wordWrap: 'break-word' }}
-        ></Typography>
-        <Link to={`/profile/${collection?.author?.id}`} style={{textDecoration:'none'}}>
-        <Box sx={{display:'flex',alignItems:'center',gap:'5px'}}>
-        <Typography sx={{ color: 'gray' }}>
-         {t('common.author')}:
-        </Typography>
-        <Avatar width={30} height={30} src={collection.author?.profileImage || AvatarImg}/>
-        <Typography>
-        {collection.author?.firstName} {collection.author?.lastName}
-        </Typography>
-        </Box>
-        </Link>
-        
-         
-      </CardContent>
-      <CardActions sx={{ gap:'10px' }}>
-        <Button sx={{ border: '1px solid gray' }}>{t('common.view_more')}</Button>
+      <Link
+        style={{ textDecoration: 'none' }}
+        to={`/collection/${collection.id}`}
+      >
+        <CardContent>
+          <Typography variant="h6">{collection.name}</Typography>
+          <CollectionImg src={collection.image || NoImage} alt="" />
+          <Typography sx={{ color: 'gray' }}>
+            {t('common.topic')}: {collection.topic}
+          </Typography>
+          <Typography
+            dangerouslySetInnerHTML={{
+              __html: collection.description.slice(0, 25),
+            }}
+            sx={{ wordWrap: 'break-word' }}
+          ></Typography>
+          <Link
+            to={`/profile/${collection?.author?.id}`}
+            style={{ textDecoration: 'none' }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <Typography sx={{ color: 'gray' }}>
+                {t('common.author')}:
+              </Typography>
+              <Avatar
+                width={30}
+                height={30}
+                src={collection.author?.profileImage || AvatarImg}
+              />
+              <Typography>
+                {collection.author?.firstName} {collection.author?.lastName}
+              </Typography>
+            </Box>
+          </Link>
+        </CardContent>
+      </Link>
+      <CardActions sx={{ gap: '10px' }}>
+        <Button sx={{ border: '1px solid gray' }}>
+          {t('common.view_more')}
+        </Button>
         {!main && setIsConfirmDialogOpen && (
           <CrudBtnContainer>
-            <IconButton>
-              <Edit />
-            </IconButton>
+            <Link to={`/edit-collection/${collection.id}`} style={{textDecoration:'none'}}>
+              <IconButton>
+                <Edit />
+              </IconButton>
+            </Link>
+
             <IconButton
               onClick={() => {
                 setIsConfirmDialogOpen(collection);
@@ -80,10 +94,13 @@ const Collection = ({
         )}
       </CardActions>
     </StyledCard>
-    </Link>
-    
   );
 };
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 const StyledCard = styled(Card)`
   width: 300px;
@@ -91,7 +108,7 @@ const StyledCard = styled(Card)`
   flex-direction: column;
   gap: 5px;
   cursor: pointer;
-  align-items:center;
+  align-items: center;
   transition: all 0.3s ease !important;
 `;
 

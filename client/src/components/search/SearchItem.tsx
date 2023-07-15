@@ -2,6 +2,7 @@ import { Button, Card, CardActions, CardContent, Typography } from '@mui/materia
 import {useAppSelector} from '../../store/store'
 import {Link} from 'react-router-dom'
 import Avatar from '../Avatar/Avatar';
+import { useTranslation } from 'react-i18next';
 
 interface ISearchItemProps {
     item:{
@@ -14,6 +15,7 @@ interface ISearchItemProps {
 }
 
 const SearchItem = ({item}:ISearchItemProps) => {
+    const {t}=useTranslation();
     const {searchQuery}=useAppSelector(state=>state.search);
    const commentSection=item.commentText?.replace(new RegExp(`${searchQuery}`,'gi'),`<b>${searchQuery}</b>`)
   return (
@@ -26,7 +28,7 @@ const SearchItem = ({item}:ISearchItemProps) => {
             <div dangerouslySetInnerHTML={{__html:commentSection as string}}/> 
         </CardContent>
         <CardActions sx={{display:'flex',justifyContent:'center'}}>
-            <Button sx={{border:'1px solid gray'}}>View More</Button>
+            <Button sx={{border:'1px solid gray'}}>{t('common.view_more')}</Button>
         </CardActions>
         </Card></Link>
         

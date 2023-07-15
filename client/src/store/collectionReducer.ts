@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
   CollectionInitialState,
   CollectionValues,
@@ -7,6 +7,9 @@ import {
 import axiosApiInstance from '../axios';
 import apiUrls from '../api/api';
 import { Collection } from '../types/collection';
+import toast from 'react-hot-toast';
+import toastOptions from '../utils/toastOptions';
+import i18n from '../utils/i18next';
 
 const initialState: CollectionInitialState = {
   collectionTopics: [],
@@ -20,6 +23,8 @@ const initialState: CollectionInitialState = {
   currentCollection: null,
   getCollectionLoading: false,
   uploadCollectionImageLoading: false,
+  draftCollection: null,
+  updateCollectionLoading: false,
 };
 
 export const getCollectionTopics = createAsyncThunk(
@@ -147,10 +152,83 @@ export const uploadCollectionImage = createAsyncThunk(
   }
 );
 
+export const getCollectionExtended = createAsyncThunk(
+  'collection/extended',
+  async ({ collectionId }: { collectionId: string }, thunkApi) => {
+    try {
+      const response = await axiosApiInstance.get<{ data: any }>(
+        `${apiUrls.collection.getCollectionExtended}/${collectionId}`
+      );
+      console.log(response.data.data);
+      return response.data.data;
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
+export const updateCollection = createAsyncThunk(
+  'collection/update',
+  async (
+    {
+      input,
+      configs,
+      collectionId,
+      onSuccess,
+    }: {
+      input: CollectionValues;
+      configs: any;
+      collectionId: string;
+      onSuccess: (message: string) => void;
+    },
+    thunkApi
+  ) => {
+    try {
+      const response = await axiosApiInstance.put<{ data: string }>(
+        `${apiUrls.collection.updateCollection}/${collectionId}`,
+        { configs, input }
+      );
+      onSuccess && onSuccess(response.data.data);
+      return response.data.data;
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
+  }
+);
+
 const collectionReducer = createSlice({
   name: 'collection',
   initialState,
-  reducers: {},
+  reducers: {
+    removeCollectionPic: (
+      state,
+      action: PayloadAction<{ otherParams: Omit<CollectionValues, 'image'> }>
+    ) => {
+      if (state.draftCollection) {
+        state.draftCollection = {
+          ...state.draftCollection,
+          collection: { ...action.payload.otherParams, image: null },
+        };
+      }
+    },
+    removeCustomField: (
+      state,
+      action: PayloadAction<{ id: number; fieldType: string }>
+    ) => {
+      const { fieldType, id } = action.payload;
+      if (state.draftCollection) {
+        state.draftCollection = {
+          ...state.draftCollection,
+          [fieldType]: state.draftCollection[fieldType].filter(
+            (item: any) => item.id !== id
+          ),
+        };
+      }
+    },
+    removeDraftCollection: (state) => {
+      state.draftCollection = null;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getCollectionTopics.pending, (state) => {
       state.topicsLoading = true;
@@ -229,7 +307,40 @@ const collectionReducer = createSlice({
     builder.addCase(uploadCollectionImage.rejected, (state, action) => {
       state.uploadCollectionImageLoading = false;
     });
+    builder.addCase(getCollectionExtended.pending, (state) => {
+      state.getCollectionLoading = true;
+    });
+    builder.addCase(getCollectionExtended.fulfilled, (state, action) => {
+      state.getCollectionLoading = false;
+      state.draftCollection = action.payload;
+    });
+    builder.addCase(getCollectionExtended.rejected, (state, action: any) => {
+      state.getCollectionLoading = false;
+      toast.error(
+        i18n.t(
+          `errors.${action.payload.message.error || 'something_went_wrong'}`
+        ),
+        toastOptions
+      );
+    });
+    builder.addCase(updateCollection.pending, (state) => {
+      state.updateCollectionLoading = true;
+    });
+    builder.addCase(updateCollection.fulfilled, (state, action) => {
+      state.updateCollectionLoading = false;
+    });
+    builder.addCase(updateCollection.rejected, (state, action: any) => {
+      state.updateCollectionLoading = false;
+      toast.error(
+        `errors.${i18n.t(
+          `${action.payload.message.error || 'something_went_wrong'}`
+        )}`,
+        toastOptions
+      );
+    });
   },
 });
 
+export const { removeCollectionPic, removeCustomField, removeDraftCollection } =
+  collectionReducer.actions;
 export default collectionReducer.reducer;

@@ -122,6 +122,10 @@ const removeItem = async (itemId: string) => {
   await client.item.delete({ where: { id: itemId } });
 };
 
+const removeItems=async(itemIds:string[])=>{
+  await client.item.deleteMany({where:{id:{in:itemIds}}});
+}
+
 const editItem = async (input: Partial<ItemInput>, itemId: string) => {
   const { customFieldValues, name, tags } = input;
   const updatedItem = await client.item.update({
@@ -233,7 +237,7 @@ const sortItem=async(sortCol:string,sortDir:'asc'|'desc',collectionId:string)=>{
     [sortCol]:sortDir
   }
 })
-return items;
+return itemTableFormatter(items);
 }
 
 export {
@@ -247,5 +251,6 @@ export {
   editItem,
   getMyItems,
   filterItem,
-  sortItem
+  sortItem,
+  removeItems
 };

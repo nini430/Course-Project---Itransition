@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {Toaster,toast} from 'react-hot-toast'
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { IconButton, Box, Typography, Button } from '@mui/material';
@@ -26,6 +27,7 @@ import {
   ReactionMapper as ReactionMapperType,
 } from '../../types/reaction';
 import { useTranslation } from 'react-i18next';
+import toastOptions from '../../utils/toastOptions';
 
 const ItemDetails = () => {
   const navigate = useNavigate();
@@ -55,6 +57,7 @@ const ItemDetails = () => {
   }
   return (
     <ItemContainer>
+      <Toaster/>
       <BreadCrumb
         paths={[
           { path: '/', icon: Home, title: t('breadcrumb.home') },
@@ -73,7 +76,7 @@ const ItemDetails = () => {
             }}
           >
             <Link
-              to={`/edit-item/${currentItem.id}`}
+              to={`/edit-item/${currentItem.id}/${currentItem.collectionId}`}
               style={{ textDecoration: 'none' }}
             >
               <IconButton>
@@ -159,8 +162,9 @@ const ItemDetails = () => {
           dispatch(
             removeItem({
               itemId: currentItem?.id as string,
-              onSuccess: () => {
+              onSuccess: (message:string) => {
                 setConfirmDialog(null);
+                toast.success(t(`messages.${message||'success'}`),toastOptions);
                 setTimeout(() => {
                   navigate('/');
                 }, 2000);

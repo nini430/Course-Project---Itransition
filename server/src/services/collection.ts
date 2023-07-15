@@ -2,6 +2,7 @@ import client from '../utils/prismaClient';
 import { CollectionInput } from '../types/collection';
 import { uploadImage } from './common';
 import { CustomTableConfigNames } from '../types/common';
+import { Collection } from '@prisma/client';
 
 const addCollection = async (input: CollectionInput, authorId: string) => {
   let { name, description, topic, image } = input;
@@ -28,6 +29,7 @@ const addItemConfigs = async (
     const actualValues = Object.values(
       itemConfigs[fields as CustomTableConfigNames]
     );
+
     await Promise.all(
       actualValues.map(async (item: any) => {
         await (client[fields as CustomTableConfigNames] as any).create({
@@ -70,7 +72,7 @@ const getMyCollections = async (userId: string) => {
               lastName: true,
               role: true,
               profileImage: true,
-              id:true
+              id: true,
             },
           },
         },
@@ -122,6 +124,71 @@ const updateCollectionImage = async (
   return image;
 };
 
+const getCollectionExtended = async (collectionId: string) => {
+  const collection = await client.collection.findUnique({
+    where: { id: collectionId },
+    select: { name: true, description: true, topic: true, image: true },
+  });
+  const integerField = await client.integerField.findMany({
+    where: { collectionId },
+  });
+  const dateField = await client.dateField.findMany({
+    where: { collectionId },
+  });
+  const multilineTextField = await client.multilineTextField.findMany({
+    where: { collectionId },
+  });
+  const booleanCheckboxField = await client.booleanCheckboxField.findMany({
+    where: { collectionId },
+  });
+  const stringField = await client.stringField.findMany({
+    where: { collectionId },
+  });
+  return {
+    collection,
+    integerField,
+    dateField,
+    multilineTextField,
+    booleanCheckboxField,
+    stringField,
+  };
+};
+
+const updateConfig = async (configs: any) => {
+  for (const fields in configs) {
+    await Promise.all(
+      configs[fields].map(async (item: any) => {
+        await (client[fields as CustomTableConfigNames] as any).update({
+          data: { name: item.name },
+          where: { id: item.id },
+        });
+      })
+    );
+  }
+};
+
+const updateCollection = async (
+  collectionImage: string | null,
+  collectionId: string,
+  configs: any,
+  input: CollectionInput
+) => {
+  let updatedImage = collectionImage;
+  if (input.image) {
+    updatedImage = await uploadImage(input.image);
+  }
+  await client.collection.update({
+    data: {
+      image: updatedImage,
+      description: input.description,
+      topic: input.topic,
+      name: input.name,
+    },
+    where: { id: collectionId },
+  });
+  await updateConfig(configs);
+};
+
 export {
   addCollection,
   addItemConfigs,
@@ -131,4 +198,6 @@ export {
   getMyCollections,
   findCollectionByIdExtended,
   updateCollectionImage,
+  getCollectionExtended,
+  updateCollection,
 };

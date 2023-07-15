@@ -22,10 +22,12 @@ const apiUrls = {
     add:'/collection',
     addConfig:'/collection/configs',
     latest:'/collection/largest',
-    myCollections:'collection/my-collections',
-    removeCollection:'collection',
-    getCollection:'collection',
-    uploadCollectionImage:'collection/upload'
+    myCollections:'/collection/my-collections',
+    removeCollection:'/collection',
+    getCollection:'/collection',
+    uploadCollectionImage:'/collection/upload',
+    getCollectionExtended:'/collection/extended',
+    updateCollection:'/collection'
   },
   item:{
     initialize:'/item',
@@ -37,7 +39,8 @@ const apiUrls = {
     removeItem:'/item',
     getMyItems:'/item/my-items',
     filter:'/item/filter',
-    sort:'/item/sort'
+    sort:'/item/sort',
+    removeItems:'/item/remove-items'
   },
   user:{
     getUser:'/user',

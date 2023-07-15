@@ -21,6 +21,7 @@ const SearchInput = () => {
     <Link to='/search'>
     <IconButton onClick={()=>{
     dispatch(getFullTextSearch({searchQuery:searchValue}))
+    setSearchValue('');
    }}>
     <Search/>
    </IconButton></Link>
