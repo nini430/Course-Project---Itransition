@@ -89,15 +89,15 @@ const CollectionCard = ({ currentCollection }: ICollectionCardProps) => {
           }}
         >
           <Typography sx={{ color: 'gray' }}>Description:</Typography>
-          {/* // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-             //@ts-ignore */}
+              { currentCollection?.description && currentCollection?.description.length>50 ? 
           <ShowMore children={
               <Typography
             dangerouslySetInnerHTML={{
               __html: currentCollection?.description as string,
             }}
-          />} lines={3} more='Show More' less='Show Less'/>
-          
+          /> as any} lines={3} more='Show More' less='Show Less'/> : 
+          <Typography dangerouslySetInnerHTML={{__html: currentCollection?.description as string}}/>
+          }
         </Box>
         <Divider />
         <Box

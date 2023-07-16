@@ -1,9 +1,9 @@
-import { CommentInput } from '../types/comment';
+import { CommentInput, SimpleCommentInput } from '../types/comment';
 import client from '../utils/prismaClient';
 import { uploadImage } from './common';
 
 const addComment = async (
-  input: CommentInput,
+  input: SimpleCommentInput,
   itemId: string,
   authorId: string
 ) => {
@@ -71,9 +71,21 @@ const removeComment = async (commentId: string) => {
 };
 
 const editComment = async (commentId: string, input: CommentInput) => {
-  const { text } = input;
+  console.log('anu saertod aq???')
+  const { text, image } = input;
+  console.log(image);
+  let updatedImage;
+  if(image && image.name==='deleted') {
+    updatedImage=undefined;
+  }else if(image && image.name==='cloudinary') {
+    console.log('????????')
+    updatedImage=image.value;
+  }else if(image && image.name==='base64') {
+    console.log('base64')
+    updatedImage=await uploadImage(image.value as string);
+  }
   const updatedComment = await client.comment.update({
-    data: { text },
+    data: { text, image: updatedImage },
     where: { id: commentId },
     include: {
       author: {

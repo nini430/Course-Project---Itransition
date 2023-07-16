@@ -2,14 +2,14 @@ import asyncHandler from 'express-async-handler';
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-import { CommentInput } from '../types/comment';
+import { CommentInput, SimpleCommentInput } from '../types/comment';
 import { addComment, editComment, findCommentById, removeComment } from '../services/comment';
 import ErrorResponse from '../utils/errorResponse';
 import errorMessages from '../utils/errorMessages';
 
 const addCommentHandler = asyncHandler(
   async (
-    req: Request<{ itemId: string }, {}, { input: CommentInput } > & {user:any},
+    req: Request<{ itemId: string }, {}, { input: SimpleCommentInput } > & {user:any},
     res: Response,
     next: NextFunction
   ) => {
@@ -41,7 +41,7 @@ const editCommentHandler=asyncHandler(async(req:Request<{commentId:string},{},{i
     if(!comment) {
       return next(new ErrorResponse(errorMessages.notFound,StatusCodes.NOT_FOUND));
     }
-    const updatedComment=await editComment(req.params.commentId,{text:input.text});
+    const updatedComment=await editComment(req.params.commentId,{text:input.text,image:input.image});
     return res.status(StatusCodes.OK).json({success:true,data:updatedComment,message:'comment_update_success'});
 })
 

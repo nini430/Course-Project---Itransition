@@ -13,13 +13,16 @@ interface IItemProps {
 const Item = ({item}:IItemProps) => {
   const {t}= useTranslation();
   return (
-    <Link style={{textDecoration:'none'}} to={`/item/${item.id}`}>
     <ItemContainer>
+    <Link style={{textDecoration:'none'}} to={`/item/${item.id}`}>
         <CardContent sx={{flexDirection:'column',alignItems:'center',display:'flex',gap:'5px'}}>
         <Typography variant='h6'>{item.name}</Typography>
         <Typography sx={{color:'gray'}}>{t('common.collection')}: {item.collection.name}</Typography>
         <AuthorContainer>
         <Typography sx={{color:'gray'}}>{t('common.author')}:</Typography>
+        </AuthorContainer>
+        </CardContent>
+        </Link>
         <Link to={`/profile/${item.collection.author.id}`} style={{textDecoration:'none'}}>
         <AvatarContainer>
       
@@ -27,15 +30,11 @@ const Item = ({item}:IItemProps) => {
         <Typography>{item.collection.author.firstName} {item.collection.author.lastName}</Typography>
         </AvatarContainer>
         </Link>
-        
-        </AuthorContainer>
-
-        </CardContent>
         <CardActions>
           <Button sx={{border:'1px solid gray'}}>{t('common.view_more')}</Button>
         </CardActions>
     </ItemContainer>
-    </Link>
+    
     
   )
 }

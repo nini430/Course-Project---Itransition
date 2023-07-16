@@ -3,7 +3,10 @@ import { CommentReaction } from "./reaction";
 
 export interface CommentInput {
     text:string;
-    image?:string;
+    image?:{
+        value:string | undefined,
+        name:string;
+    };
 }
 
 export interface Comment {

@@ -30,6 +30,7 @@ import { Wrapper, CloseContainer, ImageContainer } from './shared/SharedStyles';
 import EmojiActions from './shared/EmojiActions';
 import { useTranslation } from 'react-i18next';
 import toastOptions from '../../utils/toastOptions';
+import { fileToBase64 } from '../../utils/fileToBase64';
 
 interface ICommentProps {
   comment: CommentType;
@@ -37,6 +38,7 @@ interface ICommentProps {
 
 const Comment = ({ comment }: ICommentProps) => {
   const {t}=useTranslation();
+  const [currentComment,setCurrentComment]=useState(comment);
   const [uploadImg, setUploadImg] = useState<File | null>(null);
   const [isEmojiPickerShown, setIsEmojiPickerShown] = useState(false);
   const [imageModal, setImageModal] = useState<string | null>(null);
@@ -112,26 +114,25 @@ const Comment = ({ comment }: ICommentProps) => {
                 />
               </FullEditContainer>
 
-              {comment.image && (
+              {(currentComment.image || uploadImg) && (
                 <ImageContainer>
                   <img
                     width={200}
                     height={100}
                     style={{ objectFit: 'cover' }}
                     src={
-                      uploadImg ? URL.createObjectURL(uploadImg) : comment.image
+                      uploadImg ? URL.createObjectURL(uploadImg) : currentComment.image
                     }
                     alt=""
                   />
                   <CloseContainer
-                    onClick={() =>
-                      dispatch(
-                        toggleCommentImage({
-                          commentId: comment.id,
-                          image: comment.image,
-                          status:'remove'
-                        })
-                      )
+                    onClick={() =>{
+                      if(currentComment.image) {
+                        setCurrentComment(prev=>({...prev,image:undefined}))
+                      }else{
+                        setUploadImg(null);
+                      }
+                    }         
                     }
                   >
                     X
@@ -143,19 +144,17 @@ const Comment = ({ comment }: ICommentProps) => {
             <ButtonGroup>
               <LoadingButton
                 loading={editCommentLoading}
-                onClick={() => {
+                onClick={async() => {
                   dispatch(
                     editCommentHandler({
                       commentId: comment.id,
-                      input: { text: editComment },
-                      onSuccess: (message) => {
+                      input: { text: editComment, image: uploadImg? {value:await fileToBase64(uploadImg) as string,name:'base64'}: currentComment.image? {name:'cloudinary',value:currentComment.image} : {name:'deleted',value:undefined}},
+                      onSuccess: (message:string) => {
                         setIsInEditMode(false);
                         toast.success(t(`messages.${message||'success'}`,toastOptions));
                         dispatch(setCommentEditMode(false));
                       },
-                    })
-                  );
-                }}
+                    }))}}
                 startIcon={<Save />}
                 sx={{ border: '1px solid gray' }}
               >
@@ -167,13 +166,8 @@ const Comment = ({ comment }: ICommentProps) => {
                   setIsInEditMode(false);
                   setEditComment(comment.text);
                   dispatch(setCommentEditMode(false));
-                  dispatch(
-                    toggleCommentImage({
-                      commentId: comment.id,
-                      image: comment.image,
-                      status:'cancel'
-                    })
-                  );
+                  setCurrentComment(comment);
+                  setUploadImg(null);
                 }}
                 sx={{ border: '1px solid gray' }}
               >

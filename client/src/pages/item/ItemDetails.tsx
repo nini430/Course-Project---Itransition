@@ -186,6 +186,7 @@ const LikeContainer = styled.div`
   gap: 10px;
   align-items: center;
   position: relative;
+  overflow-x:hidden;
 `;
 
 const TopContainer = styled.div`

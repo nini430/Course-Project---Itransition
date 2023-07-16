@@ -51,6 +51,8 @@ const Collection = ({
             }}
             sx={{ wordWrap: 'break-word' }}
           ></Typography>
+          </CardContent>
+          </Link>
           <Link
             to={`/profile/${collection?.author?.id}`}
             style={{ textDecoration: 'none' }}
@@ -69,8 +71,6 @@ const Collection = ({
               </Typography>
             </Box>
           </Link>
-        </CardContent>
-      </Link>
       <CardActions sx={{ gap: '10px' }}>
         <Button sx={{ border: '1px solid gray' }}>
           {t('common.view_more')}
