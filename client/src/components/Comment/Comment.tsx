@@ -40,7 +40,6 @@ const Comment = ({ comment }: ICommentProps) => {
   const {t}=useTranslation();
   const [currentComment,setCurrentComment]=useState(comment);
   const [uploadImg, setUploadImg] = useState<File | null>(null);
-  const [isEmojiPickerShown, setIsEmojiPickerShown] = useState(false);
   const [imageModal, setImageModal] = useState<string | null>(null);
   const { authedUser } = useAppSelector((state) => state.auth);
   const auth =
@@ -107,9 +106,6 @@ const Comment = ({ comment }: ICommentProps) => {
                 <EmojiActions
                   getRootProps={getRootProps}
                   getInputProps={getInputProps}
-                  isEmojiPickerShown={isEmojiPickerShown}
-                  setIsEmojiPickerShown={setIsEmojiPickerShown}
-                  setText={setEditComment}
                   uploadImg={uploadImg}
                 />
               </FullEditContainer>

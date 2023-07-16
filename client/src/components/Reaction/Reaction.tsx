@@ -51,8 +51,8 @@ const Reaction = ({
 const ReactionWrapper = styled(({ bottomPx, ...rest }: any) => (
   <Paper {...rest} />
 ))`
+ position:absolute;
   border-radius: 20px;
-  position: absolute;
   display: flex;
   bottom: ${({ bottomPx }) => (bottomPx ? bottomPx : '15px')};
 `;

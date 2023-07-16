@@ -186,7 +186,6 @@ const LikeContainer = styled.div`
   gap: 10px;
   align-items: center;
   position: relative;
-  overflow-x:hidden;
 `;
 
 const TopContainer = styled.div`
@@ -201,10 +200,11 @@ const ItemContainer = styled.div`
   min-height: calc(100vh - 80px);
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 40px;
   justify-items: center;
   padding: 20px;
   align-items: center;
+  overflow-x:hidden;
 `;
 
 const LikeWrapper = styled.div`
