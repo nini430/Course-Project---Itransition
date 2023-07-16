@@ -10,7 +10,6 @@ const routesPath={
     editCollection:'/edit-collection/:collectionId',
     itemDetails:'/item/:itemId',
     settings:'/settings',
-    messenger:'/messenger',
     admin:'/admin',
     addUser:'/add-user',
     editUser:'/edit-user/:userId',

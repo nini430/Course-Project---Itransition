@@ -31,7 +31,7 @@ const Search = () => {
           borderBottom: '1px solid gray',
         }}
       >
-        {searchedItems?.length} Items Found
+        {searchedItems?.map(item=>item.data).flat().length} Items Found
       </Typography>
       <TabContext value={selectedFilter}>
         <StyledTabsList

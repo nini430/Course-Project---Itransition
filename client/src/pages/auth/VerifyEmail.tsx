@@ -21,6 +21,7 @@ const VerifyEmail = () => {
 
 const Container=styled.div`
     min-height:calc(100vh - 80px);
+    width:100vw;
     display:flex;
     justify-content: center;
     align-items:center;

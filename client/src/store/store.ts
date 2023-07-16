@@ -6,7 +6,6 @@ import authReducer from './authReducer';
 import collectionReducer from './collectionReducer';
 import itemReducer from './itemReducer';
 import userReducer from './userReducer';
-import chatReducer from './chatReducer';
 import adminReducer from './adminReducer';
 import searchReducer from './searchReducer';
 
@@ -17,7 +16,6 @@ const store = configureStore({
     collection:collectionReducer,
     item:itemReducer,
     user:userReducer,
-    chat:chatReducer,
     admin:adminReducer,
     search:searchReducer
   },

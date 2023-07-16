@@ -4,7 +4,6 @@ import {
   Typography,
   FormGroup,
   Button,
-  ButtonGroup,
 } from '@mui/material';
 import { GitHub, Google, Home, PersonPin, Settings } from '@mui/icons-material';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -26,13 +25,12 @@ import {
   registerValues,
 } from '../../formik-validation/register';
 import { useAppDispatch, useAppSelector } from '../../store/store';
-import { registerUser, setAuthedUser } from '../../store/authReducer';
+import { registerUser } from '../../store/authReducer';
 import toastOptions from '../../utils/toastOptions';
 import BreadCrumb from '../../components/shared/BreadCrumb';
 import { getUserById } from '../../store/userReducer';
 import { addUser, editUser } from '../../store/adminReducer';
 import { LoadingButton } from '@mui/lab';
-import Loading from '../../components/Loading/Loading';
 import { SERVER_BASE_URL } from '../../utils/constants';
 import useResponsive from '../../hooks/useResponsive';
 

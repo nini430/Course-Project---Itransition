@@ -2,7 +2,7 @@ import { AccountStatuses, Statuses } from './common';
 import { FollowInstance } from './follow';
 import { RegisterValues } from './register';
 
-type Role = 'BASIC' | 'ADMIN';
+export type Role = 'BASIC' | 'ADMIN';
 
 export interface User {
   id: string;

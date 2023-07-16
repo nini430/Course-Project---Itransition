@@ -51,6 +51,7 @@ const apiUrls = {
     filterUsers:'/admin/filter-users',
     editUser:'/admin/edit-user',
     changeStatus:'/admin/change-status',
+    changeRole:'/admin/change-role',
     addUser:'/admin/add-user',
     sortUsers:'/admin/sort-users'
   },
@@ -66,13 +67,6 @@ const apiUrls = {
   commentReaction:{
     addReaction:'/comment-reaction',
     unreactComment:'/comment-reaction'
-  },
-  chat:{
-    getCurrentConversations:'/chat/conversations',
-    sendMessage:'/chat/add-message',
-    getMessages:'/chat/messages',
-    getMyFollows:'/chat/my-follows',
-    getOnlineUsers:'/chat/online-users'
   },
   search:{
     getFullText:'/search'

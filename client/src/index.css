@@ -51,6 +51,7 @@ a {
 
 .tag-cloud {
   align-self:center;
+  cursor:pointer;
 }
 
 .d-none {

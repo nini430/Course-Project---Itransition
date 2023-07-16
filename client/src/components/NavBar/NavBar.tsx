@@ -57,11 +57,6 @@ const NavBar = () => {
         <Logo />
         <SearchInput />
         <RightContainer>
-          <Link to="/messenger">
-            <IconButton>
-              <Message />
-            </IconButton>
-          </Link>
           {auth?.role === 'ADMIN' && (
             <Link to="/admin">
               <Button

@@ -1,4 +1,6 @@
 import { styled } from 'styled-components';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -13,31 +15,30 @@ import {
   AddCircle,
   Block,
   DeleteTwoTone,
-  RemoveOutlined,
   Search,
   Undo,
 } from '@mui/icons-material';
+import {useTranslation} from 'react-i18next'
+import { toast, Toaster } from 'react-hot-toast';
 
 import Table from '../../components/Comment/shared/Table';
 import { adminColumns } from '../../utils/adminColumns';
 import { useAppDispatch, useAppSelector } from '../../store/store';
-import { useEffect, useState } from 'react';
-import { changeStatus, filterUsers, sortUser } from '../../store/adminReducer';
+import { changeRole, changeStatus, filterUsers, sortUser } from '../../store/adminReducer';
 import useTableFilter from '../../hooks/useTableFilter';
 import Loading from '../../components/Loading/Loading';
 import CollectionModal from '../../components/shared/CollectionModal';
 import FollowModal from '../../components/shared/FollowModal';
-import { Link } from 'react-router-dom';
 import { Statuses } from '../../types/common';
 import ConfirmDialog from '../../components/shared/ConfirmDialog';
-import { toast } from 'react-hot-toast';
 import toastOptions from '../../utils/toastOptions';
 import { SortedDir } from '../../types/table';
 import useResponsive from '../../hooks/useResponsive';
 
 const AdminDashboard = () => {
+  const {t}=useTranslation();
   const dispatch = useAppDispatch();
-  const { users, getUsersLoading, changeStatusLoading} = useAppSelector(
+  const { users, getUsersLoading, changeStatusLoading } = useAppSelector(
     (state) => state.admin
   );
   const [filterValue, setFilterValue] = useState('');
@@ -47,11 +48,10 @@ const AdminDashboard = () => {
   const [followModal, setFollowModal] = useState<any[] | null>(null);
   const [confirmDialog, setConfirmDialog] = useState<any | null>(null);
   const { searchValue, setSearchValue } = useTableFilter(filterValue);
-  const [sortedColumn,setSortedColumn]=useState('')
-  const [sortedDir,setSortedDir]=useState<SortedDir>('asc');
-  const {xs,sm}=useResponsive();
-  
- 
+  const [sortedColumn, setSortedColumn] = useState('');
+  const [sortedDir, setSortedDir] = useState<SortedDir>('asc');
+  const { xs, sm } = useResponsive();
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       setSearchValue(filterValue);
@@ -68,7 +68,15 @@ const AdminDashboard = () => {
   }
   return (
     <DashboardContainer>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: (sm || xs)? 'column':'row', gap:'10px' }}>
+      <Toaster/>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexDirection: sm || xs ? 'column' : 'row',
+          gap: '10px',
+        }}
+      >
         <LeftContainer>
           <Link to={`/add-user`} style={{ textDecoration: 'none' }}>
             <Button
@@ -133,17 +141,33 @@ const AdminDashboard = () => {
               }
               disabled={selectedIds.length === 0}
             >
-              <Undo/>
+              <Undo />
             </IconButton>
           </Tooltip>
+          <Button
+            onClick={() => {
+              setConfirmDialog({ name: 'add-admin', topic: 'user' });
+            }}
+            sx={{ border: '1px solid gray' }}
+          >
+            Add as Admin
+          </Button>
+          <Button
+            onClick={() => {
+              setConfirmDialog({ name: 'remove-admin', topic: 'user' });
+            }}
+            sx={{ border: '1px solid gray' }}
+          >
+            Remove as Admin
+          </Button>
         </RightContainer>
       </Box>
       <Table
         loading={getUsersLoading}
-        sortItem={(sortedCol:string,sortedDir:SortedDir)=>{
+        sortItem={(sortedCol: string, sortedDir: SortedDir) => {
           setSortedColumn(sortedCol);
           setSortedDir(sortedDir);
-          dispatch(sortUser({sortedCol,sortedDir}));
+          dispatch(sortUser({ sortedCol, sortedDir }));
         }}
         sortedColumn={sortedColumn}
         sortedDir={sortedDir}
@@ -175,22 +199,37 @@ const AdminDashboard = () => {
       <FollowModal open={followModal} onClose={() => setFollowModal(null)} />
       <ConfirmDialog
         onOk={() => {
-          dispatch(
-            changeStatus({
-              userIds: selectedIds,
-              status:
-                confirmDialog.name === 'block'
-                  ? 'blocked'
-                  : confirmDialog.name === 'unblock'
-                  ? 'active'
-                  : 'deleted',
-              onSuccess: () => {
-                setConfirmDialog(null);
+          if (
+            confirmDialog.name === 'add-admin' ||
+            confirmDialog.name === 'remove-admin'
+          ) {
+            dispatch(changeRole({
+              userIds:selectedIds,
+              role: confirmDialog.name==='add-admin'?'ADMIN':'BASIC',
+              onSuccess:(message:string)=>{
+                toast.success(t(`errors.${message||'success'}`,toastOptions));
                 setSelectedIds([]);
-                toast.success('status_changed_success', toastOptions);
-              },
-            })
-          );
+                setConfirmDialog(null);
+              }
+            }))
+          } else {
+            dispatch(
+              changeStatus({
+                userIds: selectedIds,
+                status:
+                  confirmDialog.name === 'block'
+                    ? 'blocked'
+                    : confirmDialog.name === 'unblock'
+                    ? 'active'
+                    : 'deleted',
+                onSuccess: () => {
+                  setConfirmDialog(null);
+                  setSelectedIds([]);
+                  toast.success('status_changed_success', toastOptions);
+                },
+              })
+            );
+          }
         }}
         loading={changeStatusLoading}
         open={confirmDialog}
@@ -208,7 +247,7 @@ const DashboardContainer = styled.div`
 const LeftContainer = styled.div`
   display: flex;
   gap: 20px;
-  align-items:center;
+  align-items: center;
 `;
 
 const RightContainer = styled.div`

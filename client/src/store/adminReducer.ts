@@ -8,12 +8,14 @@ import toastOptions from '../utils/toastOptions';
 import { AdminFormattedUser, AdminInitialState } from '../types/admin';
 import i18n from '../utils/i18next';
 import { SortedDir } from '../types/table';
+import { Role } from '../types/auth';
 
 const initialState: AdminInitialState = {
   users: null,
   getUsersLoading: false,
   editUserLoading: false,
   changeStatusLoading: false,
+  changeRoleLoading:false,
   addUserLoading: false,
 };
 
@@ -124,6 +126,16 @@ export const addUser = createAsyncThunk(
   }
 );
 
+export const changeRole= createAsyncThunk('admin/change-role',async({userIds,role,onSuccess}:{userIds:string[],role:Role,onSuccess:(message:string)=>void},thunkApi)=>{
+  try{
+    const response=await axiosApiInstance.put<{data:string}>(apiUrls.admin.changeRole,{userIds,role});
+    onSuccess && onSuccess(response.data.data);
+    return response.data.data;
+  }catch(err) {
+    return thunkApi.rejectWithValue(err);
+  }
+});
+
 const adminReducer = createSlice({
   name: 'admin',
   initialState,
@@ -212,6 +224,26 @@ const adminReducer = createSlice({
         toastOptions
       );
     });
+    builder.addCase(changeRole.pending,state=>{
+      state.changeRoleLoading=true;
+    });
+    builder.addCase(changeRole.fulfilled,(state,action)=>{
+      state.changeRoleLoading=false;
+      if(state.users) {
+        const {userIds,role}=action.meta.arg;
+        state.users=state.users.map(user=>{
+          if(userIds.includes(user.id)) {
+            return {...user,role:role==='BASIC'?'user':'admin'};
+          }else{
+            return user;
+          }
+        }) 
+      }
+    });
+    builder.addCase(changeRole.rejected,(state,action:any)=>{
+      state.changeRoleLoading=false;
+      toast.error(`${i18n.t(`errors.${action.payload.nessage.error || 'something_went_wrong'}`)}`,toastOptions);
+    })
   },
 });
 

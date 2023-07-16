@@ -22,6 +22,7 @@ export interface AdminInitialState {
     getUsersLoading:boolean;
     editUserLoading:boolean;
     changeStatusLoading:boolean;
+    changeRoleLoading:boolean;
     addUserLoading:boolean;
-    users: AdminFormattedUser[] | null
+    users: AdminFormattedUser[] | null;
 }

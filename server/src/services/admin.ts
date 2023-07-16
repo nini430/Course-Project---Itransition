@@ -1,3 +1,4 @@
+import { Role } from '@prisma/client';
 import { RegisterInput } from '../types/auth';
 import { Statuses } from '../types/common';
 import { adminUser } from '../utils/commonQueryObjs';
@@ -26,10 +27,13 @@ const filterUsers = async (filter: string) => {
   return userTableFormatter(users);
 };
 
-const sortUsers=async(sortedCol:string,sortedDir:'asc'|'desc')=>{
-    const users=await client.user.findMany({orderBy:{[sortedCol]:sortedDir},select:adminUser});
-    return userTableFormatter(users);
-}
+const sortUsers = async (sortedCol: string, sortedDir: 'asc' | 'desc') => {
+  const users = await client.user.findMany({
+    orderBy: { [sortedCol]: sortedDir },
+    select: adminUser,
+  });
+  return userTableFormatter(users);
+};
 
 const editUser = async (
   userId: string,
@@ -49,12 +53,29 @@ const editUser = async (
       password: newPassword ? newPassword : oldPassword,
     },
     where: { id: userId },
-    select:adminUser
+    select: adminUser,
   });
   return userTableFormatter([updatedUser]);
 };
 
-const changeUsersStatus=async(userIds:string[],status:Statuses)=>{
-   await client.user.updateMany({data:{status},where:{id:{in:userIds}}});
-}
-export { getAllUsers, filterUsers, editUser, changeUsersStatus, sortUsers};
+const changeUsersStatus = async (userIds: string[], status: Statuses) => {
+  await client.user.updateMany({
+    data: { status },
+    where: { id: { in: userIds } },
+  });
+};
+
+const changeUsersRole = async (userIds: string[], role: Role) => {
+  await client.user.updateMany({
+    data: { role },
+    where: { id: { in: userIds } },
+  });
+};
+export {
+  getAllUsers,
+  filterUsers,
+  editUser,
+  changeUsersStatus,
+  sortUsers,
+  changeUsersRole,
+};

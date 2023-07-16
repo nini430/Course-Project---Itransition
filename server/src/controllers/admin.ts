@@ -2,6 +2,7 @@ import asyncHandler from 'express-async-handler';
 import { StatusCodes } from 'http-status-codes';
 import { Request, Response, NextFunction } from 'express';
 import {
+  changeUsersRole,
   changeUsersStatus,
   editUser,
   filterUsers,
@@ -13,6 +14,7 @@ import { RegisterInput } from '../types/auth';
 import ErrorResponse from '../utils/errorResponse';
 import errorMessages from '../utils/errorMessages';
 import { Statuses } from '../types/common';
+import { Role } from '@prisma/client';
 
 const getAllUsersHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -77,14 +79,21 @@ const changeUsersStatusHandler = asyncHandler(
   ) => {
     const { status, userIds } = req.body;
     await changeUsersStatus(userIds, status);
-    return res.status(StatusCodes.OK).json({ success: true, data: 'updated' });
+    return res.status(StatusCodes.OK).json({ success: true, data: 'users_updated' });
   }
 );
+
+const changeUsersRoleHandler= asyncHandler(async(req:Request<{},{},{userIds:string[],role:Role}>,res:Response,next:NextFunction)=>{
+    const {userIds,role}=req.body;
+    await changeUsersRole(userIds,role);
+    return res.status(StatusCodes.OK).json({success:true,data:'users_updated'})
+})
 
 export {
   getAllUsersHandler,
   filterUsersHandler,
   editUserHandler,
   changeUsersStatusHandler,
-  sortUsersHandler
+  sortUsersHandler,
+  changeUsersRoleHandler
 };

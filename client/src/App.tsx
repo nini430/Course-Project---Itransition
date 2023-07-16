@@ -16,7 +16,6 @@ import {
   CollectionDetails,
   ItemDetails,
   Search,
-  DesktopMessenger,
   Admin,
   Settings,
   Register,
@@ -76,7 +75,6 @@ function App() {
             />
             <Route path={routesPath.editCollection} element={<AddCollection/>}/>
             <Route path={routesPath.itemDetails} element={<ItemDetails />} />
-            <Route path={routesPath.messenger} element={<DesktopMessenger />} />
             <Route path={routesPath.search} element={<Search />} />
             <Route
               path={routesPath.forgotPassword}
