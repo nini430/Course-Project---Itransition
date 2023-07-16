@@ -1,5 +1,7 @@
 import {
+  Box,
   Checkbox,
+  CircularProgress,
   IconButton,
   TableBody,
   TableCell,
@@ -29,6 +31,7 @@ interface ITableProps {
   sortedColumn: string;
   sortedDir: SortedDir;
   sortItem: (sortedCol: string, sortedDir: SortedDir) => void;
+  loading:boolean;
 }
 
 const Table = ({
@@ -45,6 +48,7 @@ const Table = ({
   sortedColumn,
   sortedDir,
   sortItem,
+  loading
 }: ITableProps) => {
   const { t } = useTranslation();
   return (
@@ -65,7 +69,7 @@ const Table = ({
           </TableCell>
           {columns.map((column) => (
             <TableCell
-              sx={{ cursor: 'pointer', position: 'relative', width: 150 }}
+              sx={{ cursor: 'pointer', position: 'relative', width: 150, maxWidth:150 }}
               key={column.id}
             >
               {t(`${tableName}.${column.label}`)}
@@ -102,7 +106,10 @@ const Table = ({
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.map((item: any) => (
+        {loading ? <Box sx={{display:'flex',justifyContent:'center'}}>
+                <CircularProgress size={75} />
+        </Box>:
+        data.map((item: any) => (
           <TableRow key={item.id}>
             <TableCell>
               <Checkbox
@@ -130,7 +137,9 @@ const Table = ({
               </TableCell>
             ))}
           </TableRow>
-        ))}
+        ))
+        }
+
       </TableBody>
     </TableElement>
   );
@@ -140,7 +149,7 @@ const SortingIcon = styled.div`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: -2px;
+  right: -20px;
 `;
 
 export default Table;

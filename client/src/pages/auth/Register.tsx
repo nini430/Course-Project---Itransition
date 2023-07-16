@@ -7,7 +7,6 @@ import {
   ButtonGroup,
 } from '@mui/material';
 import { GitHub, Google, Home, PersonPin, Settings } from '@mui/icons-material';
-import { useMediaQuery } from 'react-responsive';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
@@ -35,6 +34,7 @@ import { addUser, editUser } from '../../store/adminReducer';
 import { LoadingButton } from '@mui/lab';
 import Loading from '../../components/Loading/Loading';
 import { SERVER_BASE_URL } from '../../utils/constants';
+import useResponsive from '../../hooks/useResponsive';
 
 interface IRegisterProps {
   admin?: boolean;
@@ -109,10 +109,7 @@ const Register = ({ admin, edit }: IRegisterProps) => {
   const { authedUser } = useAppSelector((state) => state.auth);
   const userExists = authedUser || localStorage.getItem('authed_user');
   const { registerLoading } = useAppSelector((state) => state.auth);
-  const isDesktopOrLaptop = useMediaQuery({ minWidth: 1224 });
-  const isBigScreen = useMediaQuery({ minWidth: 1824 });
-  const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
-  const isExtraSmallDevice = useMediaQuery({ maxWidth: 500 });
+  const {lg,sm,xl,xs}=useResponsive();
 
   useEffect(() => {
     if (userExists && !admin) {
@@ -131,10 +128,10 @@ const Register = ({ admin, edit }: IRegisterProps) => {
         />
         <Toaster />
         <AuthForm
-          isXS={isExtraSmallDevice}
-          isX={isBigScreen}
-          isMob={isTabletOrMobile}
-          isD={isDesktopOrLaptop}
+          isXS={xs}
+          isX={xl}
+          isMob={sm}
+          isD={lg}
           mode={mode}
           onSubmit={(e: SubmitEvent) => {
             e.preventDefault();
@@ -268,20 +265,6 @@ const Register = ({ admin, edit }: IRegisterProps) => {
                   )}
                 </FormGroup>
               </TwoGridContainer>
-              {admin && edit && (
-                <ButtonGroup sx={{ mb: '5px' }}>
-                  <Button size="small" sx={{ border: '1px solid gray' }}>
-                    Save password changes
-                  </Button>
-                  <Button
-                    onClick={() => setShowPasswordArea(false)}
-                    size="small"
-                    sx={{ border: '1px solid gray' }}
-                  >
-                    Cancel
-                  </Button>
-                </ButtonGroup>
-              )}
             </>
           ) : (
             <Button

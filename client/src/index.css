@@ -73,3 +73,9 @@ bottom:40px;
   color:gray !important;
 }
 
+
+table {
+  display: block !important;
+  overflow-x: auto !important;
+  white-space: nowrap !important;
+}

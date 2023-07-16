@@ -1,13 +1,14 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom';
-import { Close, Person2, Settings } from '@mui/icons-material';
-import {ClickAwayListener, IconButton} from '@mui/material'
+import { AdminPanelSettings, Close, Email, Person2, Settings } from '@mui/icons-material';
+import {Button, ClickAwayListener, IconButton} from '@mui/material'
 
 import { useAppDispatch, useAppSelector } from '../../store/store'
 import Logo from '../Logo/Logo';
 import ModeSwitch from '../ModeSwitch/ModeSwitch';
 import LanguagePicker from '../LanguageDropDown/LanguagePicker';
 import { toggleSidebar } from '../../store/commonReducer';
+import SearchInput from '../SearchInput/SearchInput';
 
 
 const Sidebar = () => {
@@ -29,20 +30,31 @@ const Sidebar = () => {
         <Close/>
       </IconButton>
       </LogoContainer>
+      <SearchInput/>
          <MenuContainer>
           <ModeSwitch/>
           <LanguagePicker/>
           {authedUser && (
             <>
-            <Link onClick={()=>dispatch(toggleSidebar())} style={{textDecoration:'none'}} to='/settings'>
+            <Link onClick={()=>dispatch(toggleSidebar())} style={{textDecoration:'none',display:'flex',alignItems:'center',gap:'2px'}} to='/settings'>
             <Settings/>
             Settings
           </Link>
-          <Link onClick={()=>dispatch(toggleSidebar())} style={{textDecoration:'none'}} to={`/profile/${authedUser?.id}`}>
+          <Link onClick={()=>dispatch(toggleSidebar())} style={{textDecoration:'none',display:'flex',alignItems:'center',gap:'2px'}} to={`/profile/${authedUser?.id}`}>
             <Person2/>
             Profile
           </Link>
             </>
+          )}
+          {authedUser && !authedUser.isEmailVerified && (
+         <Link to='/verify-email' style={{textDecoration:'none'}}>
+          <Button onClick={()=>{dispatch(toggleSidebar())}} sx={{border:'1px solid gray'}} startIcon={<Email/>}>Verify E-mail</Button>
+         </Link>
+          )}
+          {authedUser && authedUser.role==='ADMIN'&& (
+           <Link style={{textDecoration:'none'}} to='/admin'>
+           <Button onClick={()=>{dispatch(toggleSidebar())}} startIcon={<AdminPanelSettings/>} sx={{border:'1px solid gray'}}>Admin Area</Button>
+           </Link> 
           )}
           </MenuContainer>  
     </Container>
@@ -65,6 +77,7 @@ const Container=styled(({isSidebarOpen,mode,...rest}:any)=><div {...rest}/>)`
     display:flex;
     flex-direction:column;
     z-index:50;
+    align-items:center;
 `
 const LogoContainer=styled.div`
   height:80px;

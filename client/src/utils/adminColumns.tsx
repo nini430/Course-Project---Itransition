@@ -17,11 +17,13 @@ export const adminColumns:Column[]=[
         id:'lastName',
         minWidth:200,
         label:'last_name',
+        isSortable:true
     },
     {
         id:'email',
         minWidth:200,
         label:'email',
+        isSortable:true
     },
     {
         id:'status',
@@ -38,7 +40,6 @@ export const adminColumns:Column[]=[
         id:'profileImage',
         minWidth:200,
         label:'profile_image',
-        isSortable:true
     },
     {
         id:'collections.length',
@@ -48,7 +49,8 @@ export const adminColumns:Column[]=[
     {
         id:'createdAt',
         minWidth:200,
-        label:'created_at'
+        label:'created_at',
+        isSortable:true
     },
     {
         id:'followers.length',

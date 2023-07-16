@@ -6,13 +6,16 @@ import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { useAppDispatch } from '../../store/store';
 import { getFullTextSearch } from '../../store/searchReducer';
+import useResponsive from '../../hooks/useResponsive';
+import { toggleSidebar } from '../../store/commonReducer';
 
 const SearchInput = () => {
   const dispatch=useAppDispatch();
   const [searchValue, setSearchValue] = useState('');
   const { t } = useTranslation();
+  const {md,sm,xs}=useResponsive();
   return (
-    <InputWrapper>
+    <InputWrapper xs={xs} sm={sm} md={md}>
     <StyledInput
       value={searchValue}
       onChange={(e) => setSearchValue(e.target.value)}
@@ -22,6 +25,9 @@ const SearchInput = () => {
     <IconButton onClick={()=>{
     dispatch(getFullTextSearch({searchQuery:searchValue}))
     setSearchValue('');
+    if(md || xs || sm) {
+      dispatch(toggleSidebar());
+    }
    }}>
     <Search/>
    </IconButton></Link>
@@ -30,8 +36,8 @@ const SearchInput = () => {
   );
 };
 
-const InputWrapper=styled.div`
-  width:40%;
+const InputWrapper=styled(({md,xs,sm,...rest}:any)=><div {...rest} />)`
+  width:${({md,xs,sm})=>(md || xs ||  sm)? '90%':'40%'};
   display:flex;
   gap:10px;
   align-items:center;

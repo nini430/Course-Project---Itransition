@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { useMediaQuery } from 'react-responsive';
 import { LoadingButton } from '@mui/lab';
 import {
   Autocomplete,
@@ -34,16 +33,14 @@ import generateItemValidationSchema from '../../utils/formikFunctions';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import toastOptions from '../../utils/toastOptions';
+import useResponsive from '../../hooks/useResponsive';
 
 const filter = createFilterOptions();
 
 const AddItem = () => {
   const dispatch = useAppDispatch();
   const validationSchema = useRef<any>(null);
-  const isDesktopOrLaptop = useMediaQuery({ minWidth: 1224 });
-  const isBigScreen = useMediaQuery({ minWidth: 1824 });
-  const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
-  const isExtraSmallDevice = useMediaQuery({ maxWidth: 500 });
+ const {lg,sm,xl,xs}=useResponsive();
   const { mode } = useAppSelector((state) => state.common);
   const {
     initializeFormLoading,
@@ -142,10 +139,10 @@ const AddItem = () => {
       <Toaster />
       <Typography sx={{ fontSize: 40 }}>{itemId?'Update Item':'Add Item'}</Typography>
       <Form
-        isXS={isExtraSmallDevice}
-        isX={isBigScreen}
-        isMob={isTabletOrMobile}
-        isD={isDesktopOrLaptop}
+        isXS={xs}
+        isX={xl}
+        isMob={sm}
+        isD={lg}
         mode={mode}
         onSubmit={(e: SubmitEvent) => {
           e.preventDefault();

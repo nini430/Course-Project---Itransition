@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Divider, Typography, FormGroup } from '@mui/material';
 import { GitHub, Google, Home, LockClockRounded } from '@mui/icons-material';
-import { useMediaQuery } from 'react-responsive';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
@@ -19,6 +18,7 @@ import { loginUser } from '../../store/authReducer';
 import BreadCrumb from '../../components/shared/BreadCrumb';
 import { LoadingButton } from '@mui/lab';
 import { SERVER_BASE_URL } from '../../utils/constants';
+import useResponsive from '../../hooks/useResponsive';
 
 const Login = () => {
   const [passType,setPassType]=useState<'text'|'password'>('password')
@@ -57,10 +57,7 @@ const Login = () => {
   const { mode } = useAppSelector((state) => state.common);
   const { loginLoading } = useAppSelector((state) => state.auth);
   const { t } = useTranslation();
-  const isDesktopOrLaptop = useMediaQuery({ minWidth: 1224 });
-  const isBigScreen = useMediaQuery({ minWidth: 1824 });
-  const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
-  const isExtraSmallDevice = useMediaQuery({ maxWidth: 500 });
+  const {xs,sm,xl,lg}=useResponsive();
 
   return (
     <>
@@ -69,10 +66,10 @@ const Login = () => {
       <BreadCrumb paths={[{path:'/',title:t('breadcrumb.home'),icon:Home},{path:'/login',title:t('auth.login'),icon:LockClockRounded}]}/>
         <Toaster/>
         <AuthForm
-          S={isExtraSmallDevice}
-          isX={isBigScreen}
-          isMob={isTabletOrMobile}
-          isD={isDesktopOrLaptop}
+          S={xs}
+          isX={xl}
+          isMob={sm}
+          isD={lg}
           mode={mode}
           onSubmit={(e: SubmitEvent) => {
             e.preventDefault();

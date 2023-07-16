@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
-import { useMediaQuery } from 'react-responsive';
 import { Button, IconButton } from '@mui/material';
 import {
   Menu,
@@ -20,6 +19,7 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import { useTranslation } from 'react-i18next';
 import { verifyEmail } from '../../store/authReducer';
 import { toggleSidebar } from '../../store/commonReducer';
+import useResponsive from '../../hooks/useResponsive';
 
 const NavBar = () => {
   const {isSidebarOpen}=useAppSelector(state=>state.common);
@@ -30,9 +30,9 @@ const NavBar = () => {
   const auth =
     authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
   const userExists = authedUser || localStorage.getItem('authed_user');
-  const isExtraSmallDevice = useMediaQuery({ maxWidth: 800 });
+  const {sm,xs}=useResponsive();
   
-  if (isExtraSmallDevice) {
+  if (sm || xs) {
     return (
       <NavbarContainer isSidebarOpen={isSidebarOpen}>
         <Toaster/>
@@ -47,6 +47,7 @@ const NavBar = () => {
           )}
         </IconButton>
         <Logo/>
+
       </NavbarContainer>
     );
   } else {
@@ -65,8 +66,9 @@ const NavBar = () => {
             <Link to="/admin">
               <Button
                 sx={{ textTransform: 'capitalize', border: '1px solid gray' }}
+                startIcon={<AdminPanelSettings/>}
               >
-                <AdminPanelSettings />
+                
                 {t("admin.admin_area")}
               </Button>
             </Link>

@@ -51,7 +51,8 @@ const apiUrls = {
     filterUsers:'/admin/filter-users',
     editUser:'/admin/edit-user',
     changeStatus:'/admin/change-status',
-    addUser:'/admin/add-user'
+    addUser:'/admin/add-user',
+    sortUsers:'/admin/sort-users'
   },
   comment:{
     addComment:'/comment',

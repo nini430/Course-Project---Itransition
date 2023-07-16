@@ -15,6 +15,7 @@ export interface AdminFormattedUser  {
     followings:{count:true,data:SimpleUser[],name:'follow'},
     view:{action:true,data:'view',link:string},
     edit:{action:true,data:'Edit',name:'edit',link:string}
+
 }
 
 export interface AdminInitialState {

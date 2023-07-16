@@ -3,11 +3,12 @@ import { FileCopy, Collections, Comment, Person3 } from '@mui/icons-material';
 import styled from 'styled-components';
 import SearchItem from '../../components/search/SearchItem';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { Fragment, useState } from 'react';
+import { ChangeEvent, Fragment, useState } from 'react';
 import { SearchItems } from '../../types/search';
 import { useAppSelector } from '../../store/store';
 import Loading from '../../components/Loading/Loading';
 import AvatarImg from '../../assets/avatar.png';
+import useResponsive from '../../hooks/useResponsive';
 
 const Search = () => {
   const [selectedFilter, setSelectedFilter] = useState<SearchItems | 'all'>(
@@ -16,6 +17,7 @@ const Search = () => {
   const { searchedItems, searchLoading } = useAppSelector(
     (state) => state.search
   );
+  const {sm,xs}=useResponsive();
   if (searchLoading) {
     return <Loading />;
   }
@@ -29,21 +31,23 @@ const Search = () => {
           borderBottom: '1px solid gray',
         }}
       >
-        5 Items Found
+        {searchedItems?.length} Items Found
       </Typography>
       <TabContext value={selectedFilter}>
-        <TabList
+        <StyledTabsList
+         sm={sm}
+         xs={xs}
           TabIndicatorProps={{ style: { borderColor: 'gray !important' } }}
-          onChange={(e, value) => setSelectedFilter(value)}
+          onChange={(e:ChangeEvent, value:SearchItems |'all') => setSelectedFilter(value)}
         >
           <Tab value="all" label="All" />
           <Tab icon={<FileCopy />} value="items" label="Items" />
           <Tab icon={<Collections />} value="collections" label="Collections" />
           <Tab icon={<Comment />} value="comments" label="Comments" />
           <Tab icon={<Person3 />} value="users" label="Users" />
-        </TabList>
+        </StyledTabsList>
         <TabPanel value="all">
-          <PanelsContainer>
+          <PanelsContainer sm={sm} xs={xs}>
             {searchedItems.map((item: any) => (
               <Fragment key={item.name}>
                 {item.data.map((elem: any) => (
@@ -105,7 +109,6 @@ const Search = () => {
           </TabPanel>
         ))}
       </TabContext>
-      <ItemsContainer></ItemsContainer>
     </SearchContainer>
   );
 };
@@ -119,15 +122,20 @@ const SearchContainer = styled.div`
   gap: 20px;
 `;
 
-const ItemsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-`;
+const StyledTabsList=styled(({sm,xs,...rest}:any)=><TabList {...rest} />)`
+  display:flex;
+  gap:10px;
 
-const PanelsContainer = styled.div`
+  .css-heg063-MuiTabs-flexContainer {
+    flex-direction:${({sm,xs})=>(sm || xs)? 'column':'row'};
+  }
+  
+`
+
+const PanelsContainer = styled(({sm,xs,...rest}:any)=><div {...rest} />)`
   display: flex;
-  gap: 25px;
+  gap: 15px;
+  flex-direction:${({sm,xs})=>(sm || xs)? 'column':'row'};
 `;
 
 export default Search;

@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { toast, Toaster } from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
-import { useMediaQuery } from 'react-responsive';
 import {
   FormGroup,
   Typography,
@@ -34,6 +33,7 @@ import { useTranslation } from 'react-i18next';
 import toastOptions from '../../utils/toastOptions';
 import { fileToBase64 } from '../../utils/fileToBase64';
 import { Form } from '../commonStyles';
+import useResponsive from '../../hooks/useResponsive';
 
 const AddCollection = () => {
   const { collectionTopics, topicsLoading, addCollectionLoading, draftCollection, updateCollectionLoading } =
@@ -43,7 +43,6 @@ const AddCollection = () => {
   const [accordionValues,setAccordionValues]=useState({});
   const [uploadImg, setUploadImg] = useState<File | null>(null);
   const {
-    dirty,
     handleSubmit,
     handleBlur,
     touched,
@@ -98,10 +97,7 @@ const AddCollection = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const isDesktopOrLaptop = useMediaQuery({ minWidth: 1224 });
-  const isBigScreen = useMediaQuery({ minWidth: 1824 });
-  const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
-  const isExtraSmallDevice = useMediaQuery({ maxWidth: 500 });
+  const {lg,xs,sm,xl}=useResponsive();
   const { mode } = useAppSelector((state) => state.common);
   useEffect(()=>{
     if(!collectionId) {
@@ -122,10 +118,10 @@ const AddCollection = () => {
       <Toaster />
       <Typography sx={{ fontSize: 40 }}>{collectionId?'Update':'Add'} Collection</Typography>
       <Form
-        isXS={isExtraSmallDevice}
-        isX={isBigScreen}
-        isMob={isTabletOrMobile}
-        isD={isDesktopOrLaptop}
+        isXS={xs}
+        isX={xl}
+        isMob={sm}
+        isD={lg}
         mode={mode}
         onSubmit={(e: any) => {
           e.preventDefault();

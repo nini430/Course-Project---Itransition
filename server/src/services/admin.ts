@@ -26,6 +26,11 @@ const filterUsers = async (filter: string) => {
   return userTableFormatter(users);
 };
 
+const sortUsers=async(sortedCol:string,sortedDir:'asc'|'desc')=>{
+    const users=await client.user.findMany({orderBy:{[sortedCol]:sortedDir},select:adminUser});
+    return userTableFormatter(users);
+}
+
 const editUser = async (
   userId: string,
   inputs: Partial<RegisterInput>,
@@ -52,4 +57,4 @@ const editUser = async (
 const changeUsersStatus=async(userIds:string[],status:Statuses)=>{
    await client.user.updateMany({data:{status},where:{id:{in:userIds}}});
 }
-export { getAllUsers, filterUsers, editUser, changeUsersStatus };
+export { getAllUsers, filterUsers, editUser, changeUsersStatus, sortUsers};

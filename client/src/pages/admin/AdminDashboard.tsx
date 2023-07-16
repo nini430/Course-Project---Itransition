@@ -22,7 +22,7 @@ import Table from '../../components/Comment/shared/Table';
 import { adminColumns } from '../../utils/adminColumns';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { useEffect, useState } from 'react';
-import { changeStatus, filterUsers } from '../../store/adminReducer';
+import { changeStatus, filterUsers, sortUser } from '../../store/adminReducer';
 import useTableFilter from '../../hooks/useTableFilter';
 import Loading from '../../components/Loading/Loading';
 import CollectionModal from '../../components/shared/CollectionModal';
@@ -32,10 +32,12 @@ import { Statuses } from '../../types/common';
 import ConfirmDialog from '../../components/shared/ConfirmDialog';
 import { toast } from 'react-hot-toast';
 import toastOptions from '../../utils/toastOptions';
+import { SortedDir } from '../../types/table';
+import useResponsive from '../../hooks/useResponsive';
 
 const AdminDashboard = () => {
   const dispatch = useAppDispatch();
-  const { users, getUsersLoading, changeStatusLoading } = useAppSelector(
+  const { users, getUsersLoading, changeStatusLoading} = useAppSelector(
     (state) => state.admin
   );
   const [filterValue, setFilterValue] = useState('');
@@ -45,7 +47,11 @@ const AdminDashboard = () => {
   const [followModal, setFollowModal] = useState<any[] | null>(null);
   const [confirmDialog, setConfirmDialog] = useState<any | null>(null);
   const { searchValue, setSearchValue } = useTableFilter(filterValue);
-
+  const [sortedColumn,setSortedColumn]=useState('')
+  const [sortedDir,setSortedDir]=useState<SortedDir>('asc');
+  const {xs,sm}=useResponsive();
+  
+ 
   useEffect(() => {
     const timeout = setTimeout(() => {
       setSearchValue(filterValue);
@@ -62,7 +68,7 @@ const AdminDashboard = () => {
   }
   return (
     <DashboardContainer>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: (sm || xs)? 'column':'row', gap:'10px' }}>
         <LeftContainer>
           <Link to={`/add-user`} style={{ textDecoration: 'none' }}>
             <Button
@@ -133,6 +139,14 @@ const AdminDashboard = () => {
         </RightContainer>
       </Box>
       <Table
+        loading={getUsersLoading}
+        sortItem={(sortedCol:string,sortedDir:SortedDir)=>{
+          setSortedColumn(sortedCol);
+          setSortedDir(sortedDir);
+          dispatch(sortUser({sortedCol,sortedDir}));
+        }}
+        sortedColumn={sortedColumn}
+        sortedDir={sortedDir}
         selectedIds={selectedIds}
         setSelectedIds={setSelectedIds}
         viewFollows={(follows: any) => {
@@ -194,6 +208,7 @@ const DashboardContainer = styled.div`
 const LeftContainer = styled.div`
   display: flex;
   gap: 20px;
+  align-items:center;
 `;
 
 const RightContainer = styled.div`
