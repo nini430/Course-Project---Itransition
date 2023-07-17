@@ -1,24 +1,97 @@
 {
-    "auth":{
-        "register":"რეგისტრაცია",
-        "login":"ავტორიზაცია",
-        "not_account":"ჯერ არ შეგიქმნიათ ექაუნთი?",
-        "email":"ელექტრონული ფოსტა",
-        "password":"პაროლი",
-        "firstName":"სახელი",
-        "lastName":"გვარი",
-        "confirm_password":"გაიმეორეთ პაროლი",
-        "already_member":"უკვე გაქვთ ექაუნთი?",
-        "email_required":"შეიყვანეთ ელექტრონული ფოსტის ველი",
-        "password_required":"შეიყვანეთ პაროლის ველი",
-        "valid_email":"ელექტრონული ფოსტის ფორმატი არასწორია",
-        "first_name_required":"შეიყვანეთ სახელი-ს ველი",
-        "last_name_required":"შეიყვანეთ გვარი-ს ველი",
-        "confirm_password_required":"გაიმეორეთ პაროლი",
-        "passwords_must_match":"პაროლი არ ემთხვევა"
-    },
-    "lang":{
-        "en":"ინგლისური",
-        "geo":"ქართული"
-    }
+  "common":{
+    "comments":"კომენტარები",
+    "reactions":"რეაქციები",
+    "collection":"კოლექცია",
+    "author":"ავტორი",
+    "view_more":"იხილეთ მეტი",
+    "topic":"თემა",
+    "custom_fields":"სპეციფიკური ველები",
+    "no_comments":"კომენტარები არ არის",
+    "show":"ნახვა",
+    "follow":"გამოწერა",
+    "unfollow":"ამოწერა"
+},
+  "home":{
+    "latest_items":"უახლესი ჩანაწერები",
+    "largest_collections":"ტოპ 5 კოლექცია"
+  },
+  "item":{
+    "tags":"ტეგები",
+    "age":"ასაკი",
+    "name":"სახელი",
+    "collection":"კოლექცია",
+    "created_at":"შექმნის დრო",
+    "author":"ავტორი",
+    "comments":"კომენტარები",
+    "reactions":"რეაქციები",
+    "custom_fields":"სპეციფიკური ველები",
+    "action":"მოქმედებები"
+  },
+  "auth": {
+    "register": "რეგისტრაცია",
+    "login": "ავტორიზაცია",
+    "not_account": "ჯერ არ შეგიქმნიათ ექაუნთი?",
+    "email": "ელექტრონული ფოსტა",
+    "password": "პაროლი",
+    "firstName": "სახელი",
+    "lastName": "გვარი",
+    "confirm_password": "გაიმეორეთ პაროლი",
+    "already_member": "უკვე გაქვთ ექაუნთი?",
+    "email_required": "შეიყვანეთ ელექტრონული ფოსტის ველი",
+    "password_required": "შეიყვანეთ პაროლის ველი",
+    "valid_email": "ელექტრონული ფოსტის ფორმატი არასწორია",
+    "first_name_required": "შეიყვანეთ სახელი-ს ველი",
+    "last_name_required": "შეიყვანეთ გვარი-ს ველი",
+    "confirm_password_required": "გაიმეორეთ პაროლი",
+    "passwords_must_match": "პაროლი არ ემთხვევა",
+    "sign_in":"ავტორიზაცია",
+    "role":"როლი",
+    "verify_email":"დაადასტურეთ ელ.ფოსტა"
+  },
+  "nav": {
+    "search": "ძიება...",
+    "parameters":"პარამეტრები",
+     "log_out":"გამოსვლა",
+     "profile":"პროფილი"
+  },
+  "lang": {
+    "en": "ინგლისური",
+    "geo": "ქართული"
+  },
+  "breadcrumb":{
+    "home":"მთავარი",
+    "item":"ჩანაწერი"
+},
+"collection":{
+  "details":"კოლექციის დეტალები",
+  "collections":"კოლექცია"
+},
+"admin":{
+  "id":"უნიკალური აიდი",
+  "first_name":"სახელი",
+  "last_name":"გვარი",
+  "email":"ელ.ფოსტა",
+  "role":"როლი",
+  "profile_image":"პროფილის სურათი",
+  "collections_length":"კოლექციები",
+  "created_at":"შექმნის დრო",
+  "followers":"გამომწერები",
+  "followings":"გამოწერილები",
+  "admin_area":"ადმინის სივრცე"
+},
+"errors":{
+  "something_went_wrong":"დაფიქსირდა შეცდომა",
+  "unique_email_error":"ელ.ფოსტა უნდა იყოს უნიკალური",
+    "missing_fields":"შეავსეთ სავალდებულო ველები",
+    "invalid_credentials":"არასწორი მონაცემები",
+    "unauthenticated":"არაავტორიზებული მოთხოვნა",
+    "token_expired_error":"სესიას გაუვიდა ვადა",
+    "not_found":"არ მოიძებნა",
+    "forbidden_operation":"მოქმედების შესრულება აკრძალულია",
+    "user_blocked":"მოხმარებელი დაბლოკილია",
+    "user_deleted":"მოხმარებელი წაშლილია",
+    "user_not_found":"მომხმარებელი არ მოიძებნა",
+    "email_already_sent":"მეილი უკვე გამოგზავნილია"
+}
 }

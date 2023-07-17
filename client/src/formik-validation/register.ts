@@ -32,7 +32,7 @@ const registerValidationSchema = (isEditVersion: boolean) => {
       .matches(/^[\w.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'valid_email'),
     phoneNumber: string()
       .required('phone_required').test({name:'phone',message:'invalid_phone',test:(value,context)=>validatePhoneNumber(value,context.parent.phoneCountryCode)}),
-    password: isEditVersion ? string() : string().required('password_required'),
+    password: isEditVersion ? string() : string().required('password_required').matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,'<ul><li>Minimum length of 6 characters</li><li>At least one uppercase letter</li><li>At least one lowercase letter</li><li>At least one digit</li><li>At least one special symbol (e.g., !@#$%^&*)</li></ul>'),
     confirmPassword: isEditVersion
       ? string()
       : string()

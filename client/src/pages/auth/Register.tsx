@@ -233,7 +233,7 @@ const Register = ({ admin, edit }: IRegisterProps) => {
                     mode={mode}
                   />
                   {errors.password && touched.password && (
-                    <ErrorMessage>{t(`auth.${errors.password}`)}</ErrorMessage>
+                    <ErrorMessage dangerouslySetInnerHTML={{__html:errors.password}}/>
                   )}
                 </FormGroup>
                 <FormGroup sx={{ marginBottom: 2 }}>

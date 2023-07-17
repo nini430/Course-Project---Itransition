@@ -1,24 +1,98 @@
 {
-    "auth":{
-        "register":"Register",
-        "login":"Login",
-        "not_account":"Don't you have an account?",
-        "email":"E-mail",
-        "password":"Password",
-        "firstName":"First Name",
-        "lastName":"Last Name",
-        "confirm_password":"Confirm Password",
-        "already_member":"Already have an account?",
-        "email_required":"Email field is required",
-        "password_required":"Password field is required",
-        "valid_email":"Email isn't valid",
-        "first_name_required":"First Name field is required",
-        "last_name_required":"Last Name field is required",
-        "confirm_password_required":"Confirm Password field is requried",
-        "passwords_must_match":"Passwords must match"
-    },
-    "lang":{
-        "en":"English",
-        "geo":"Georgian"
-    }
+  "common": {
+    "comments": "Comments",
+    "reactions": "Reactions",
+    "collection": "Collection",
+    "author": "Author",
+    "view_more": "View More",
+    "topic": "Topic",
+    "custom_fields": "Custom Fields",
+    "no_comments": "No Comments",
+    "show":"Show",
+    "follow":"Follow",
+    "unfollow":"Unfollow"
+  },
+  "home": {
+    "latest_items": "Latest Items",
+    "largest_collections": "Top 5 Largest Collections"
+  },
+  "item": {
+    "tags": "Tags",
+    "age": "Age",
+    "name": "Name",
+    "collection":"Collection",
+    "created_at":"Created At",
+    "author":"Author",
+    "comments":"Comments",
+    "reactions":"Reactions",
+    "custom_fields": "Custom Fields",
+    "action":"Actions"
+
+  },
+  "auth": {
+    "register": "Register",
+    "login": "Login",
+    "not_account": "Don't you have an account?",
+    "email": "E-mail",
+    "password": "Password",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "confirm_password": "Confirm Password",
+    "already_member": "Already have an account?",
+    "email_required": "Email field is required",
+    "password_required": "Password field is required",
+    "valid_email": "Email isn't valid",
+    "first_name_required": "First Name field is required",
+    "last_name_required": "Last Name field is required",
+    "confirm_password_required": "Confirm Password field is requried",
+    "passwords_must_match": "Passwords must match",
+    "sign_in": "Sign In",
+    "role":"Role",
+    "verify_email":"Verify E-mail"
+  },
+  "nav": {
+    "search": "Search...",
+    "parameters": "Settings",
+    "log_out": "Sign Out",
+    "profile": "Profile"
+  },
+  "lang": {
+    "en": "English",
+    "geo": "Georgian"
+  },
+  "breadcrumb": {
+    "home": "Home",
+    "item": "Item"
+  },
+  "collection":{
+    "details":"Collection Details",
+    "collections":"Collections"
+  },
+  "admin":{
+    "id":"Unique Id",
+    "first_name":"First Name",
+    "last_name":"Last Name",
+    "email":"Email",
+    "role":"Role",
+    "profile_image":"Profile Image",
+    "collections_length":"Collections",
+    "created_at":"Created At",
+    "followers":"Followers",
+    "followings":"Followings",
+    "admin_area":"Admin Area"
+  },
+  "errors":{
+    "something_went_wrong":"Something Went Wrong",
+    "unique_email_error":"Email must be unique",
+    "missing_fields":"Fill Required fields",
+    "invalid_credentials":"Invalid Credentials",
+    "unauthenticated":"Unauthenticated",
+    "token_expired_error":"Token Has Expired",
+    "not_found":"Not Found",
+    "forbidden_operation":"Action not Allowed",
+    "user_blocked":"User is blocked",
+    "user_deleted":"User is deleted",
+    "user_not_found":"User is not found",
+    "email_already_sent":"Email is Already sent"
+  }
 }

@@ -2,9 +2,9 @@ import { Typography, IconButton, ButtonGroup, Input } from '@mui/material';
 import { Save, Cancel } from '@mui/icons-material';
 import moment from 'moment';
 import ShowMore from 'react-show-more';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Accept, useDropzone } from 'react-dropzone';
-import {Toaster,toast} from 'react-hot-toast'
+import { Toaster, toast } from 'react-hot-toast';
 
 import styled from 'styled-components';
 import CommentAvatar from './shared/CommentAvatar';
@@ -37,8 +37,8 @@ interface ICommentProps {
 }
 
 const Comment = ({ comment }: ICommentProps) => {
-  const {t}=useTranslation();
-  const [currentComment,setCurrentComment]=useState(comment);
+  const { t } = useTranslation();
+  const [currentComment, setCurrentComment] = useState(comment);
   const [uploadImg, setUploadImg] = useState<File | null>(null);
   const [imageModal, setImageModal] = useState<string | null>(null);
   const { authedUser } = useAppSelector((state) => state.auth);
@@ -66,7 +66,7 @@ const Comment = ({ comment }: ICommentProps) => {
 
   return (
     <CommentContainer>
-      <Toaster/>
+      <Toaster />
       <LeftCommentSection>
         <Link
           style={{ textDecoration: 'none' }}
@@ -102,19 +102,23 @@ const Comment = ({ comment }: ICommentProps) => {
                     height={100}
                     style={{ objectFit: 'cover' }}
                     src={
-                      uploadImg ? URL.createObjectURL(uploadImg) : currentComment.image
+                      uploadImg
+                        ? URL.createObjectURL(uploadImg)
+                        : currentComment.image
                     }
                     alt=""
                   />
                   <CloseContainer
-                    onClick={() =>{
-                      if(currentComment.image) {
-                        setCurrentComment(prev=>({...prev,image:undefined}))
-                      }else{
+                    onClick={() => {
+                      if (currentComment.image) {
+                        setCurrentComment((prev) => ({
+                          ...prev,
+                          image: undefined,
+                        }));
+                      } else {
                         setUploadImg(null);
                       }
-                    }         
-                    }
+                    }}
                   >
                     X
                   </CloseContainer>
@@ -125,17 +129,31 @@ const Comment = ({ comment }: ICommentProps) => {
             <ButtonGroup>
               <LoadingButton
                 loading={editCommentLoading}
-                onClick={async() => {
+                onClick={async () => {
                   dispatch(
                     editCommentHandler({
                       commentId: comment.id,
-                      input: { text: editComment, image: uploadImg? {value:await fileToBase64(uploadImg) as string,name:'base64'}: currentComment.image? {name:'cloudinary',value:currentComment.image} : {name:'deleted',value:undefined}},
-                      onSuccess: (message:string) => {
+                      input: {
+                        text: editComment,
+                        image: uploadImg
+                          ? {
+                              value: (await fileToBase64(uploadImg)) as string,
+                              name: 'base64',
+                            }
+                          : currentComment.image
+                          ? { name: 'cloudinary', value: currentComment.image }
+                          : { name: 'deleted', value: undefined },
+                      },
+                      onSuccess: (message: string) => {
                         setIsInEditMode(false);
-                        toast.success(t(`messages.${message||'success'}`,toastOptions));
+                        toast.success(
+                          t(`messages.${message || 'success'}`, toastOptions)
+                        );
                         dispatch(setCommentEditMode(false));
                       },
-                    }))}}
+                    })
+                  );
+                }}
                 startIcon={<Save />}
                 sx={{ border: '1px solid gray' }}
               >
@@ -236,18 +254,26 @@ const Comment = ({ comment }: ICommentProps) => {
         )}
       </CenterCommentSection>
       <RightCommentSection>
-        {isMoreShown && (
-          <ActionButtons
-            setIsInEditMode={setIsInEditMode}
-            comment={comment}
-            setEditComment={setEditComment}
-            setConfirmDialog={setConfirmDialog}
-            setIsMoreShown={setIsMoreShown}
-          />
+        {isMoreShown &&
+          authedUser &&
+          authedUser.id ===
+            comment.author.id && (
+              <ActionButtons
+                setIsInEditMode={setIsInEditMode}
+                comment={comment}
+                setEditComment={setEditComment}
+                setConfirmDialog={setConfirmDialog}
+                setIsMoreShown={setIsMoreShown}
+              />
+            )}
+        {authedUser && authedUser.id === comment.author.id && (
+          <IconButton
+            id="more-vert"
+            onClick={() => setIsMoreShown((prev) => !prev)}
+          >
+            <MoreVert sx={{ pointerEvents: 'none' }} />
+          </IconButton>
         )}
-        <IconButton id="more-vert"  onClick={() => setIsMoreShown((prev) => !prev)}>
-          <MoreVert sx={{pointerEvents:'none'}} />
-        </IconButton>
 
         <Typography sx={{ color: 'gray', fontSize: 12 }}>
           {moment(comment?.updatedAt).format('HH:mm')}
@@ -262,10 +288,11 @@ const Comment = ({ comment }: ICommentProps) => {
             dispatch(
               removeComment({
                 commentId: comment.id,
-                onSuccess: (message:string) => {
+                onSuccess: (message: string) => {
                   setConfirmDialog(null);
-                  toast.success(t(`messages.${message||'success'}`,toastOptions));
-                  
+                  toast.success(
+                    t(`messages.${message || 'success'}`, toastOptions)
+                  );
                 },
               })
             );
