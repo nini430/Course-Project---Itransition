@@ -38,6 +38,7 @@ import useResponsive from '../../hooks/useResponsive';
 const AddCollection = () => {
   const { collectionTopics, topicsLoading, addCollectionLoading, draftCollection, updateCollectionLoading } =
   useAppSelector((state) => state.collection);
+  const {authedUser}=useAppSelector(state=>state.auth);
   const dispatch=useAppDispatch();
   const {collectionId}=useParams();
   const [accordionValues,setAccordionValues]=useState({});
@@ -100,6 +101,11 @@ const AddCollection = () => {
   const {lg,xs,sm,xl}=useResponsive();
   const { mode } = useAppSelector((state) => state.common);
   useEffect(()=>{
+    if(!authedUser) {
+      navigate('/login')
+    }
+  },[navigate,authedUser])
+  useEffect(()=>{
     if(!collectionId) {
       dispatch(removeDraftCollection())
       setAccordionValues({})
@@ -113,6 +119,7 @@ const AddCollection = () => {
       dispatch(getCollectionExtended({collectionId:collectionId as string}))
     }
   },[collectionId,dispatch])
+
   return (
     <Container>
       <Toaster />

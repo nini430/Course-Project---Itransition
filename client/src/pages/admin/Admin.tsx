@@ -10,13 +10,12 @@ import { useNavigate } from 'react-router-dom';
 const Admin = () => {
   const navigate=useNavigate();
   const {authedUser}=useAppSelector(state=>state.auth);
-  const auth=authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
   const dispatch=useAppDispatch();
   useEffect(()=>{
-    if(auth.role!=='ADMIN') {
+    if(!authedUser || authedUser.role!=='ADMIN') {
       navigate('/')
     }
-  },[auth.role,navigate])
+  },[authedUser,navigate])
   useEffect(()=>{
     dispatch(getUsers())
   },[dispatch])

@@ -38,9 +38,6 @@ const ProfileCard = () => {
   const { authedUser, profileUploadLoading, myFollowers, myFollowings } = useAppSelector(
     (state) => state.auth
   );
-  const authId =
-    authedUser?.id ||
-    JSON.parse(localStorage.getItem('authed_user') as string)?.id;
   const { myCollections } = useAppSelector((state) => state.collection);
   const { currentProfile, profileLoading,  currentFollowers, currentFollowings, toggleFollowLoading } = useAppSelector(
     (state) => state.user
@@ -64,9 +61,9 @@ const ProfileCard = () => {
         </Typography>
 
         <ImageUpload
-          getRootProps={authId === currentProfile.id ? getRootProps : null}
-          getInputProps={authId === currentProfile.id ? getInputProps : null}
-          isAllowedUpload={authId === currentProfile.id}
+          getRootProps={authedUser?.id === currentProfile.id ? getRootProps : null}
+          getInputProps={authedUser?.id === currentProfile.id ? getInputProps : null}
+          isAllowedUpload={authedUser?.id === currentProfile.id}
           uploadImage={async () => {
             dispatch(
               uploadProfileImage({
@@ -84,16 +81,16 @@ const ProfileCard = () => {
           mainImage={currentProfile?.profileImage}
           fallBackImage={Avatar}
         />
-        {authId !== userId && (
+        {authedUser && authedUser.id !== userId && (
           <LoadingButton
             loading={toggleFollowLoading}
             onClick={() =>
-              dispatch(toggleFollow({ followerId: authId, followedId: userId as string }))
+              dispatch(toggleFollow({ followerId: authedUser.id, followedId: userId as string }))
             }
             startIcon={<Add />}
             sx={{ border: '1px solid gray' }}
           >
-            {currentFollowers.find((item:any)=>item.followerId===authId)
+            {currentFollowers.find((item:any)=>item.followerId===authedUser.id)
               ? t('common.unfollow')
               : t('common.follow')}
           </LoadingButton>
@@ -115,11 +112,11 @@ const ProfileCard = () => {
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
           <Typography sx={{ color: 'gray' }}>Followers:</Typography>{' '}
-          <Typography onClick={()=>setFollowModal(currentFollowers.map((item:any)=>({...item.followed})))} sx={{textDecoration:'underline',cursor:'pointer'}}>{currentProfile.id===authId ? myFollowers.length:currentFollowers.length}</Typography>
+          <Typography onClick={()=>setFollowModal(currentFollowers.map((item:any)=>({...item.followed})))} sx={{textDecoration:'underline',cursor:'pointer'}}>{currentProfile.id===authedUser?.id ? myFollowers.length:currentFollowers.length}</Typography>
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
           <Typography sx={{ color: 'gray' }}>Followings:</Typography>{' '}
-          <Typography onClick={()=>setFollowModal(currentFollowings.map((item:any)=>({...item.follower})))} sx={{textDecoration:'underline',cursor:'pointer'}}>{currentProfile.id===authId ? myFollowings.length:currentFollowings.length}</Typography>
+          <Typography onClick={()=>setFollowModal(currentFollowings.map((item:any)=>({...item.follower})))} sx={{textDecoration:'underline',cursor:'pointer'}}>{currentProfile.id===authedUser?.id ? myFollowings.length:currentFollowings.length}</Typography>
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
           <Typography sx={{ color: 'gray' }}>Account Status:</Typography>{' '}

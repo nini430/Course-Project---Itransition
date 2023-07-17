@@ -8,7 +8,6 @@ import { useAppSelector } from '../../store/store'
 const AdminCard = () => {
   const {authedUser}=useAppSelector(state=>state.auth);
   const {users}=useAppSelector(state=>state.admin);
-  const auth = authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
   return (
     <Accordion>
       <AccordionSummary expandIcon={<KeyboardArrowDown/>}>
@@ -18,11 +17,11 @@ const AdminCard = () => {
           <Avatar width={70} height={70} src={AvatarImg}/>
           <Box sx={{display:'flex',alignItems:'center',gap:'3px'}}>
             <Typography sx={{color:'gray'}}>Name:</Typography>
-            <Typography>{auth.firstName} {auth.lastName}</Typography>
+            <Typography>{authedUser?.firstName} {authedUser?.lastName}</Typography>
           </Box>
           <Box sx={{display:'flex',alignItems:'center',gap:'3px'}}>
             <Typography sx={{color:'gray'}}>E-mail:</Typography>
-            <Typography>{auth.email}</Typography>
+            <Typography>{authedUser?.email}</Typography>
           </Box>
           <Box sx={{display:'flex',alignItems:'center',gap:'3px'}}>
             <Typography sx={{color:'gray'}}>User Amount:</Typography>

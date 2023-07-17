@@ -64,21 +64,6 @@ const Comment = ({ comment }: ICommentProps) => {
     },
   });
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as Element;
-      if (
-        !target.closest('.comment-action-btn') &&
-        !target.closest('.more-vert')
-      ) {
-        setIsMoreShown(false);
-      }
-    };
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
   return (
     <CommentContainer>
       <Toaster/>
@@ -260,8 +245,8 @@ const Comment = ({ comment }: ICommentProps) => {
             setIsMoreShown={setIsMoreShown}
           />
         )}
-        <IconButton onClick={() => setIsMoreShown((prev) => !prev)}>
-          <MoreVert className="more-vert" />
+        <IconButton id="more-vert"  onClick={() => setIsMoreShown((prev) => !prev)}>
+          <MoreVert sx={{pointerEvents:'none'}} />
         </IconButton>
 
         <Typography sx={{ color: 'gray', fontSize: 12 }}>

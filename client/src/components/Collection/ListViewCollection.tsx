@@ -17,6 +17,7 @@ import NoImage from '../../assets/no-image.png';
 import AvatarComp from '../Avatar/Avatar';
 import AvatarImg from '../../assets/avatar.png';
 import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '../../store/store';
 
 interface IListViewCollectionProps {
   collection: CollectionType;
@@ -30,6 +31,7 @@ const ListViewCollection = ({
   setIsConfirmDialogOpen,
 }: IListViewCollectionProps) => {
   const { t } = useTranslation();
+  const { authedUser } = useAppSelector((state) => state.auth);
   return (
     <StyledCard sx={{ minHeight: '330px' }}>
       <Link
@@ -60,19 +62,22 @@ const ListViewCollection = ({
                 }}
               />
             </Box>
-            <CrudBtnContainer>
-              <IconButton sx={{ alignItems: 'flex-start', height: '40px' }}>
-                <Edit />
-              </IconButton>
-              <IconButton
-                onClick={() => {
-                  setIsConfirmDialogOpen(true);
-                }}
-                sx={{ alignItems: 'flex-start', height: '40px' }}
-              >
-                <Delete />
-              </IconButton>
-            </CrudBtnContainer>
+        {authedUser && collection?.author?.id === authedUser?.id && (
+           <CrudBtnContainer>
+           <IconButton sx={{ alignItems: 'flex-start', height: '40px' }}>
+             <Edit />
+           </IconButton>
+           <IconButton
+             onClick={() => {
+               setIsConfirmDialogOpen(true);
+             }}
+             sx={{ alignItems: 'flex-start', height: '40px' }}
+           >
+             <Delete />
+           </IconButton>
+         </CrudBtnContainer>
+        )}
+            
           </RightContent>
         </CardContent>
       </Link>

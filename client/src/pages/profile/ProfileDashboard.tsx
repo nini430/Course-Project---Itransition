@@ -22,6 +22,7 @@ const ProfileDashboard = () => {
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('grid');
   const { myCollections, removeCollectionLoading } = useAppSelector((state) => state.collection);
   const {currentProfile}=useAppSelector(state=>state.user);
+  const {authedUser}=useAppSelector(state=>state.auth);
   return (
 
     <DashboardContainer>
@@ -36,8 +37,8 @@ const ProfileDashboard = () => {
         </Button>
         
       </DisplayContainer>
-      <Link to='/add-collection'>
-      <Button sx={{border:'1px solid gray',marginLeft:'5px'}} startIcon={<AddCircle/>}>Add Collection</Button></Link>
+    {(authedUser && currentProfile?.id===authedUser.id) || authedUser?.role==='ADMIN' && <Link to='/add-collection'>
+      <Button sx={{border:'1px solid gray',marginLeft:'5px'}} startIcon={<AddCircle/>}>Add Collection</Button></Link> }  
       
       </TopBarContainer>
       <Button startIcon={<Download/>} sx={{border:'1px solid gray',margin:'10px 0'}}>

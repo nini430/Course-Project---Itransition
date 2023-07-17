@@ -4,7 +4,7 @@ import axiosApiInstance from '../axios';
 import apiUrls from '../api/api';
 import { toast } from 'react-hot-toast';
 import toastOptions from '../utils/toastOptions';
-import { Comment, CommentInput } from '../types/comment';
+import { Comment, CommentInput, SimpleCommentInput } from '../types/comment';
 import { CommentReaction, ItemReaction } from '../types/reaction';
 import { SortDirection } from '@mui/material';
 import i18n from '../utils/i18next';
@@ -156,7 +156,7 @@ export const editItem = createAsyncThunk(
 export const addComment = createAsyncThunk(
   'comment/add',
   async (
-    { input, itemId }: { input: CommentInput; itemId: string },
+    { input, itemId }: { input: SimpleCommentInput; itemId: string },
     thunkApi
   ) => {
     try {

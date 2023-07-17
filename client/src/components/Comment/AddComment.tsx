@@ -32,21 +32,6 @@ const AddComment = () => {
   const [isEmojiPickerShown, setIsEmojiPickerShown] = useState(false);
   const [text, setText] = useState('');
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as Element;
-      if (
-        !target.closest('.EmojiPickerReact') &&
-        !target.closest('.basic-emoji')
-      ) {
-        setIsEmojiPickerShown(false);
-      }
-    };
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
   return (
     <AddCommentContainer>
       <LeftContainer>
@@ -87,6 +72,7 @@ const AddComment = () => {
           setIsEmojiPickerShown={setIsEmojiPickerShown}
           setText={setText}
           uploadImg={uploadImg}
+          add={true}
         />
         <LoadingButton
           loading={addCommentLoading}

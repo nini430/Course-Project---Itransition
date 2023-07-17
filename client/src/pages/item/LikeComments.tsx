@@ -1,17 +1,19 @@
 import styled from 'styled-components';
-import { Card, Divider, Typography } from '@mui/material';
+import { Box, Card, Divider, Typography } from '@mui/material';
 import Comment from '../../components/Comment/Comment';
 import AddComment from '../../components/Comment/AddComment';
 import { useAppSelector } from '../../store/store';
 import Loading from '../../components/Loading/Loading';
 import Empty from '../../components/Empty/Empty';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 const LikeComments = () => {
-  const {t}=useTranslation();
+  const { t } = useTranslation();
   const { getSingleItemLoading, currentItem } = useAppSelector(
     (state) => state.item
   );
+  const { authedUser } = useAppSelector((state) => state.auth);
   if (!currentItem || getSingleItemLoading) {
     return <Loading />;
   }
@@ -26,13 +28,19 @@ const LikeComments = () => {
         ) : (
           currentItem.comments.map((comment) => (
             <>
-              <Comment  comment={comment} />
+              <Comment comment={comment} />
               <Divider sx={{ color: 'gray' }} />
             </>
           ))
         )}
       </LikeCommentContainer>
-      <AddComment  />
+      {authedUser ? (
+       <AddComment />
+      
+      ):  <Box sx={{p:2,borderTop:'1px solid gray'}}>
+      <Typography sx={{textAlign:'center'}}>Please <Link to='/login'>login</Link> to post a comment</Typography>
+     </Box>}
+      
     </Wrapper>
   );
 };

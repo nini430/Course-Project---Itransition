@@ -9,7 +9,6 @@ import {
   Typography,
   FormLabel,
 } from '@mui/material';
-import moment from 'moment'
 import { createFilterOptions } from '@mui/material/Autocomplete';
 import { DatePicker } from '@mui/x-date-pickers';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
@@ -21,7 +20,7 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import FormInput from '../../components/FormInput/FormInput';
 import { AddCircle, Edit } from '@mui/icons-material';
 import Loading from '../../components/Loading/Loading';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef} from 'react';
 import {
   addItem,
   editItem,
@@ -42,6 +41,7 @@ const AddItem = () => {
   const validationSchema = useRef<any>(null);
  const {lg,sm,xl,xs}=useResponsive();
   const { mode } = useAppSelector((state) => state.common);
+  const {authedUser}=useAppSelector(state=>state.auth);
   const {
     initializeFormLoading,
     formCustomFields,
@@ -100,6 +100,11 @@ const AddItem = () => {
       
     },
   });
+  useEffect(()=>{
+    if(!authedUser) {
+      navigate('/login')
+    }
+  },[navigate,authedUser])
   useEffect(() => {
     dispatch(initializeItemConfig(collectionId as string));
     dispatch(getItemTags());
@@ -134,6 +139,7 @@ const AddItem = () => {
       <Loading/>
     )
   }
+ 
   return (
     <Container>
       <Toaster />

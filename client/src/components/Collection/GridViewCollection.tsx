@@ -12,7 +12,7 @@ import { Collection as CollectionType } from '../../types/collection';
 import NoImage from '../../assets/no-image.png';
 import { Delete, Edit } from '@mui/icons-material';
 import { Dispatch, SetStateAction } from 'react';
-import { useAppDispatch } from '../../store/store';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 import { Link } from 'react-router-dom';
 import Avatar from '../Avatar/Avatar';
 import AvatarImg from '../../assets/avatar.png';
@@ -32,6 +32,7 @@ const Collection = ({
   main,
 }: ICollectionProps) => {
   const dispatch = useAppDispatch();
+  const { authedUser } = useAppSelector((state) => state.auth);
   const { t } = useTranslation();
   return (
     <StyledCard>
@@ -51,33 +52,34 @@ const Collection = ({
             }}
             sx={{ wordWrap: 'break-word' }}
           ></Typography>
-          </CardContent>
-          </Link>
-          <Link
-            to={`/profile/${collection?.author?.id}`}
-            style={{ textDecoration: 'none' }}
-          >
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <Typography sx={{ color: 'gray' }}>
-                {t('common.author')}:
-              </Typography>
-              <Avatar
-                width={30}
-                height={30}
-                src={collection.author?.profileImage || AvatarImg}
-              />
-              <Typography>
-                {collection.author?.firstName} {collection.author?.lastName}
-              </Typography>
-            </Box>
-          </Link>
+        </CardContent>
+      </Link>
+      <Link
+        to={`/profile/${collection?.author?.id}`}
+        style={{ textDecoration: 'none' }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+          <Typography sx={{ color: 'gray' }}>{t('common.author')}:</Typography>
+          <Avatar
+            width={30}
+            height={30}
+            src={collection.author?.profileImage || AvatarImg}
+          />
+          <Typography>
+            {collection.author?.firstName} {collection.author?.lastName}
+          </Typography>
+        </Box>
+      </Link>
       <CardActions sx={{ gap: '10px' }}>
         <Button sx={{ border: '1px solid gray' }}>
           {t('common.view_more')}
         </Button>
-        {!main && setIsConfirmDialogOpen && (
+        {!main && setIsConfirmDialogOpen && authedUser && collection.author.id===authedUser.id && (
           <CrudBtnContainer>
-            <Link to={`/edit-collection/${collection.id}`} style={{textDecoration:'none'}}>
+            <Link
+              to={`/edit-collection/${collection.id}`}
+              style={{ textDecoration: 'none' }}
+            >
               <IconButton>
                 <Edit />
               </IconButton>

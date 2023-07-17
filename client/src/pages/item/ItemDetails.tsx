@@ -91,7 +91,7 @@ const ItemDetails = () => {
       </TopContainer>
       <LikeWrapper>
         <LikeContainer
-          onMouseOver={() => setIsEmojiShown(true)}
+          onMouseOver={() => { if(authedUser) setIsEmojiShown(true)}}
           onMouseOut={() => setIsEmojiShown(false)}
         >
           {liked ? (
@@ -106,6 +106,7 @@ const ItemDetails = () => {
             </Button>
           ) : (
             <IconButton
+            disabled={!authedUser}
               onClick={() => {
                 dispatch(
                   addItemReaction({

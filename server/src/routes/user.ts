@@ -4,9 +4,10 @@ import authProtect from '../middleware/authProtect';
 
 const router=express.Router();
 
+router.get('/:userId',getUserByIdHandler);
+
 router.use(authProtect);
 
-router.get('/:userId',getUserByIdHandler);
 router.put('/:followerId/:followedId',toggleFollowUser);
 
 export default router;

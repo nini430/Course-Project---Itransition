@@ -63,6 +63,7 @@ const CollectionDashboard = ({
   const { myItems, getMyItemsLoading, removeItemLoading } = useAppSelector(
     (state) => state.item
   );
+  const {authedUser}=useAppSelector(state=>state.auth);
 
   useEffect(() => {
     dispatch(getMyItems({ collectionId: currentCollection?.id as string }));
@@ -112,14 +113,16 @@ const CollectionDashboard = ({
         }}
       >
         <ToolbarSides>
+        {(authedUser && authedUser.id===currentCollection?.author.id) || authedUser?.role==='ADMIN' && (
           <Link to={`/add-item/${currentCollection?.id as string}`}>
-            <Button
-              startIcon={<AddCircle />}
-              sx={{ alignSelf: 'flex-start', border: '1px solid gray' }}
-            >
-              Add New Item
-            </Button>
-          </Link>
+          <Button
+            startIcon={<AddCircle />}
+            sx={{ alignSelf: 'flex-start', border: '1px solid gray' }}
+          >
+            Add New Item
+          </Button>
+        </Link>
+        )}  
           <TextField
             value={filterValue}
             onChange={(e) => setFilterValue(e.target.value)}
@@ -144,11 +147,13 @@ const CollectionDashboard = ({
           </Button>
         </ToolbarSides>
         <ToolbarSides>
+         {(authedUser && authedUser.id === currentCollection?.author.id) || authedUser?.role==='ADMIN' && (
           <Tooltip title="Delete">
-            <IconButton onClick={() => setConfirmDialog(selectedRowKeys)}>
-              <Delete />
-            </IconButton>
-          </Tooltip>
+          <IconButton onClick={() => setConfirmDialog(selectedRowKeys)}>
+            <Delete />
+          </IconButton>
+        </Tooltip>
+         )} 
         </ToolbarSides>
       </Box>
       <Table

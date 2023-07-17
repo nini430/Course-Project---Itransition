@@ -1,4 +1,4 @@
-import {ButtonGroup,Button} from '@mui/material'
+import {ButtonGroup,Button, ClickAwayListener} from '@mui/material'
 import {Dispatch, SetStateAction} from 'react'
 import { Comment } from '../../types/comment';
 import { useAppDispatch } from '../../store/store';
@@ -14,8 +14,16 @@ interface IActionButtonsProps {
 
 const ActionButtons = ({setConfirmDialog,comment,setIsInEditMode,setIsMoreShown,setEditComment}:IActionButtonsProps) => {
   const dispatch=useAppDispatch();
+  const moreVertElement=document.getElementById('more-vert');
+  const commentAction=document.getElementsByClassName('comment-action-btn');
   return (
-    <ButtonGroup className='comment-action-btn' sx={{position:'absolute',right:20,top:-10}}>
+    <ClickAwayListener onClickAway={(e)=>{
+      if(e.target && !moreVertElement?.contains(e.target as Node) && !commentAction[0].contains(e.target as Node)) {
+         setIsMoreShown(false);
+      }
+    }}>
+      <div>
+      <ButtonGroup className='comment-action-btn' sx={{position:'absolute',right:20,top:-10}}>
         <Button onClick={()=>{
           setIsInEditMode(true);
           setIsMoreShown(false);
@@ -28,6 +36,10 @@ const ActionButtons = ({setConfirmDialog,comment,setIsInEditMode,setIsMoreShown,
           setIsMoreShown(false);
         }} sx={{border:'1px solid gray'}}>Delete</Button>
     </ButtonGroup>
+      </div>
+       
+    </ClickAwayListener>
+   
   )
 }
 

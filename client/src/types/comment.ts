@@ -9,6 +9,11 @@ export interface CommentInput {
     };
 }
 
+export interface SimpleCommentInput {
+    text:string;
+    image?:string;
+}
+
 export interface Comment {
     id:string;
     text:string;
