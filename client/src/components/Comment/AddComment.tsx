@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Accept, useDropzone } from 'react-dropzone';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import CommentAvatar from './shared/CommentAvatar';
 import { InputBase } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
@@ -10,11 +10,16 @@ import { Link } from 'react-router-dom';
 import { fileToBase64 } from '../../utils/fileToBase64';
 import { Wrapper, ImageContainer, CloseContainer } from './shared/SharedStyles';
 import EmojiActions from './shared/EmojiActions';
+import { Socket } from 'socket.io-client';
+import { Comment } from '../../types/comment';
 
+interface IAddCommentProps {
+  socket: Socket | null;
+}
 
-const AddComment = () => {
-  const {isCommentEditMode}=useAppSelector(state=>state.item)
-    
+const AddComment = ({ socket }: IAddCommentProps) => {
+  const { isCommentEditMode } = useAppSelector((state) => state.item);
+
   const [uploadImg, setUploadImg] = useState<File | null>(null);
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*' as unknown as Accept,
@@ -87,7 +92,10 @@ const AddComment = () => {
                     : undefined,
                 },
                 itemId: currentItem?.id as string,
-              })
+                onSuccess:(data:Comment)=>{
+                  socket && socket.emit('add-comment',data);
+                }
+              })  
             );
             setText('');
             setUploadImg(null);

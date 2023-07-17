@@ -37,7 +37,7 @@ const ProfileDashboard = () => {
         </Button>
         
       </DisplayContainer>
-    {(authedUser && currentProfile?.id===authedUser.id) || authedUser?.role==='ADMIN' && <Link to='/add-collection'>
+    {((authedUser && currentProfile?.id===authedUser.id) || authedUser?.role==='ADMIN') && <Link to='/add-collection'>
       <Button sx={{border:'1px solid gray',marginLeft:'5px'}} startIcon={<AddCircle/>}>Add Collection</Button></Link> }  
       
       </TopBarContainer>

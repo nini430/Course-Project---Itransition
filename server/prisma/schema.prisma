@@ -57,18 +57,9 @@ model Message {
   receiverId String
   sender User @relation("sender",fields: [senderId],references: [id],onDelete: Cascade)
   receiver User @relation("receiver",fields: [receiverId],references: [id],onDelete: Cascade)
-  chatId String
-  chat Chat @relation(fields: [chatId],references: [id],onDelete: Cascade)
   type String @default("text")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
-}
-
-model Chat {
-  id String @id @default(uuid())
-  messages Message[]
-  memberOneId String
-  memberTwoId String
 }
 
 

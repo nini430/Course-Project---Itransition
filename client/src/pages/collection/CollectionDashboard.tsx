@@ -113,7 +113,7 @@ const CollectionDashboard = ({
         }}
       >
         <ToolbarSides>
-        {(authedUser && authedUser.id===currentCollection?.author.id) || authedUser?.role==='ADMIN' && (
+        {((authedUser && authedUser.id===currentCollection?.author.id) || authedUser?.role==='ADMIN') && (
           <Link to={`/add-item/${currentCollection?.id as string}`}>
           <Button
             startIcon={<AddCircle />}
@@ -147,7 +147,7 @@ const CollectionDashboard = ({
           </Button>
         </ToolbarSides>
         <ToolbarSides>
-         {(authedUser && authedUser.id === currentCollection?.author.id) || authedUser?.role==='ADMIN' && (
+         {((authedUser && authedUser.id === currentCollection?.author.id) || authedUser?.role==='ADMIN') && (
           <Tooltip title="Delete">
           <IconButton onClick={() => setConfirmDialog(selectedRowKeys)}>
             <Delete />

@@ -7,8 +7,13 @@ import Loading from '../../components/Loading/Loading';
 import Empty from '../../components/Empty/Empty';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { Socket } from 'socket.io-client';
 
-const LikeComments = () => {
+interface ILikeCommentProps {
+  socket: Socket | null;
+}
+
+const LikeComments = ({socket}:ILikeCommentProps) => {
   const { t } = useTranslation();
   const { getSingleItemLoading, currentItem } = useAppSelector(
     (state) => state.item
@@ -35,7 +40,7 @@ const LikeComments = () => {
         )}
       </LikeCommentContainer>
       {authedUser ? (
-       <AddComment />
+       <AddComment socket={socket} />
       
       ):  <Box sx={{p:2,borderTop:'1px solid gray'}}>
       <Typography sx={{textAlign:'center'}}>Please <Link to='/login'>login</Link> to post a comment</Typography>

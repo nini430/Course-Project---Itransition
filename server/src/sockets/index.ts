@@ -1,3 +1,4 @@
+import { Comment } from '@prisma/client';
 import { Server, DisconnectReason } from 'socket.io';
 
 const ioListen = (io: InstanceType<typeof Server>) => {
@@ -9,14 +10,10 @@ const ioListen = (io: InstanceType<typeof Server>) => {
       if(!connectedUsers.has(userId)) {
         connectedUsers.set(userId,socket);
       }
-    }
-    socket.on('send-message',(message:any)=>{
-          if(connectedUsers.has(message.receiverId)) {
-            socket.to(connectedUsers.get(message.receiverId).id).emit('receive-message',message);
-          }
-    })
-    socket.on('disconnect',(reason:DisconnectReason)=>{
-      connectedUsers.delete(userId);
+    };
+
+    socket.on('add-comment',(newComment:Comment)=>{
+        socket.broadcast.emit('receive-comment',newComment);
     })
   });
 };

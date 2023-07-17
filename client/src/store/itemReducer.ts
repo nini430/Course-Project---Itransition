@@ -156,7 +156,7 @@ export const editItem = createAsyncThunk(
 export const addComment = createAsyncThunk(
   'comment/add',
   async (
-    { input, itemId }: { input: SimpleCommentInput; itemId: string },
+    { input, itemId, onSuccess }: { input: SimpleCommentInput; itemId: string, onSuccess:(data:Comment)=>void },
     thunkApi
   ) => {
     try {
@@ -164,6 +164,7 @@ export const addComment = createAsyncThunk(
         `${apiUrls.comment.addComment}/${itemId}`,
         { input }
       );
+      onSuccess && onSuccess(response.data.data);
       return response.data.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
@@ -361,6 +362,11 @@ const itemSlice = createSlice({
   name: 'item',
   initialState,
   reducers: {
+    receiveComment:(state,action:PayloadAction<Comment>)=>{
+      if(state.currentItem) {
+        state.currentItem={...state.currentItem,comments:[action.payload,...state.currentItem.comments]}
+      }
+    },  
     setCommentEditMode:(state,action:PayloadAction<boolean>)=>{
         state.isCommentEditMode=action.payload;
     },
@@ -654,6 +660,6 @@ const itemSlice = createSlice({
   },
 });
 
-export const { toggleCommentImage, setCommentEditMode } = itemSlice.actions;
+export const { toggleCommentImage, setCommentEditMode, receiveComment } = itemSlice.actions;
 
 export default itemSlice.reducer;

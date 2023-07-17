@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {io,Socket} from 'socket.io-client';
 import {Toaster,toast} from 'react-hot-toast'
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -10,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import {
   addItemReaction,
   getSingleItem,
+  receiveComment,
   unreactItem,
 } from '../../store/itemReducer';
 import Loading from '../../components/Loading/Loading';
@@ -28,16 +30,16 @@ import {
 } from '../../types/reaction';
 import { useTranslation } from 'react-i18next';
 import toastOptions from '../../utils/toastOptions';
+import { Comment } from '../../types/comment';
 
 const ItemDetails = () => {
+  const [socket,setSocket]=useState<Socket | null>(null);
   const navigate = useNavigate();
   const { authedUser } = useAppSelector((state) => state.auth);
-  const auth =
-    authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
   const [confirmDialog, setConfirmDialog] = useState<Item | null>(null);
   const { getSingleItemLoading, currentItem, removeItemLoading } =
     useAppSelector((state) => state.item);
-  const liked = currentItem?.reactions.find((item) => item.userId === auth?.id);
+  const liked = currentItem?.reactions.find((item) => item.userId === authedUser?.id);
   const [isEmojiShown, setIsEmojiShown] = useState(false);
   const [animationPause, setAnimationPause] = useState(false);
   const [reactionMapper, setReactionMapper] = useState<
@@ -46,11 +48,30 @@ const ItemDetails = () => {
   const { itemId } = useParams();
   const dispatch = useAppDispatch();
   const {t}=useTranslation();
-
+  useEffect(()=>{
+    if(!socket) {
+      setSocket(io('http://localhost:7070',{
+        query:{
+          userId:authedUser?.id
+        }
+      }))
+    }
+  },[socket,authedUser?.id])
   useEffect(() => {
     dispatch(getSingleItem(itemId as string));
   }, [dispatch, itemId]);
 
+  useEffect(()=>{
+    const handleReceiveComment=(data:Comment)=>{
+      if(data.itemId===currentItem?.id) {
+         dispatch(receiveComment(data));
+      }
+    }
+    socket?.on('receive-comment',handleReceiveComment);
+    return ()=>{
+      socket?.off('receive-comment',handleReceiveComment);
+    }
+  },[dispatch,currentItem?.id,socket]);
  
   if (getSingleItemLoading || !currentItem) {
     return <Loading />;
@@ -66,7 +87,7 @@ const ItemDetails = () => {
       />
       <TopContainer>
         <ItemCard />
-        {auth?.id === currentItem?.collection.author?.id && (
+        {authedUser?.id === currentItem?.collection.author?.id && (
           <Box
             sx={{
               diaplay: 'flex',
@@ -154,7 +175,7 @@ const ItemDetails = () => {
         </Typography>
       </LikeWrapper>
 
-      <LikeComments />
+      <LikeComments socket={socket} />
       <ConfirmDialog
         onClose={() => setConfirmDialog(null)}
         open={confirmDialog}
