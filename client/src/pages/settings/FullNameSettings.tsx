@@ -44,7 +44,6 @@ const FullNameSettings = () => {
         handleSubmit();
         
       }}>
-      <FormGroup sx={{ mb: 2 }}>
         <FormInput
           mode={mode}
           onBlur={handleBlur}
@@ -54,12 +53,9 @@ const FullNameSettings = () => {
           error={!!(errors.firstName && touched.firstName)}
           type="text"
           placeholder={auth.firstName}
+          errorMessage={errors.firstName as string}
+          touched={touched.firstName as boolean}
         />
-        {errors.firstName && touched.firstName && (
-          <ErrorMessage>{errors.firstName}</ErrorMessage>
-        )}
-      </FormGroup>
-      <FormGroup sx={{ mb: 2 }}>
         <FormInput
           mode={mode}
           onBlur={handleBlur}
@@ -69,12 +65,9 @@ const FullNameSettings = () => {
           name="lastName"
           type="text"
           placeholder={auth.lastName}
+          errorMessage={errors.lastName as string}
+          touched={touched.lastName as boolean}
         />
-        {errors.lastName && touched.lastName && (
-          <ErrorMessage> {errors.lastName}</ErrorMessage>
-        )}
-      </FormGroup>
-
       <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
         <LoadingButton
           disabled={!dirty || Object.values(errors).length > 0 || updateProfileLoading}

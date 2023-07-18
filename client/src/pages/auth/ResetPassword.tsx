@@ -63,7 +63,6 @@ const ResetPassword = () => {
         <Typography sx={{ fontSize: 20, textAlign: 'center' }}>
           Reset Password
         </Typography>
-        <FormGroup sx={{ mb: 2 }}>
           <FormInput
             type="password"
             onChange={(value) => setFieldValue('newPassword', value)}
@@ -73,12 +72,10 @@ const ResetPassword = () => {
             onBlur={handleBlur}
             placeholder="new_password"
             mode={mode}
+            errorMessage={errors.newPassword as string}
+            touched={touched.newPassword as boolean}
+            
           />
-          {errors.newPassword && touched.newPassword && (
-            <ErrorMessage>{errors.newPassword}</ErrorMessage>
-          )}
-        </FormGroup>
-        <FormGroup sx={{ mb: 2 }}>
           <FormInput
             error={!!(errors.confirmNewPassword && touched.confirmNewPassword)}
             onBlur={handleBlur}
@@ -88,9 +85,9 @@ const ResetPassword = () => {
             type="password"
             placeholder="repeat_new_password"
             mode={mode}
+            errorMessage={errors.confirmNewPassword as string}
+            touched={touched.confirmNewPassword as boolean}
           />
-          {errors.confirmNewPassword && touched.confirmNewPassword && <ErrorMessage>{errors.confirmNewPassword}</ErrorMessage>}
-        </FormGroup>
         <LoadingButton
         type='submit'
           loading={resetPasswordLoading}

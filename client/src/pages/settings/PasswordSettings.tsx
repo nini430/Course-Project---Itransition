@@ -56,7 +56,6 @@ const PasswordSettings = () => {
         e.preventDefault();
         handleSubmit();
       }}>
-        <FormGroup sx={{ mb: 2 }}>
           <FormInput
             onBlur={handleBlur}
             onChange={handleChange}
@@ -68,12 +67,9 @@ const PasswordSettings = () => {
             toggleType={() =>
               setOldPasstype(oldPassType === 'password' ? 'text' : 'password')
             }
+            errorMessage={errors.oldPassword as string}
+            touched={touched.oldPassword as boolean}
           />
-          {touched.oldPassword && errors.oldPassword && (
-            <ErrorMessage>{errors.oldPassword}</ErrorMessage>
-          )}
-        </FormGroup>
-        <FormGroup sx={{ mb: 2 }}>
           <FormInput
             mode={mode}
             onBlur={handleBlur}
@@ -85,12 +81,9 @@ const PasswordSettings = () => {
               setPassType(passType === 'password' ? 'text' : 'password')
             }
             name="password"
+            errorMessage={errors.password as string}
+            touched={touched.password as boolean}
           />
-          {touched.password && errors.password && (
-            <ErrorMessage>{errors.password}</ErrorMessage>
-          )}
-        </FormGroup>
-        <FormGroup>
           <FormInput
             mode={mode}
             onBlur={handleBlur}
@@ -102,11 +95,9 @@ const PasswordSettings = () => {
               setNewPassType(newPassType === 'password' ? 'text' : 'password')
             }
             name="confirmPassword"
+            errorMessage={errors.confirmPassword as string}
+            touched={touched.confirmPassword as boolean}
           />
-          {touched.confirmPassword && errors.confirmPassword && (
-            <ErrorMessage>{errors.confirmPassword}</ErrorMessage>
-          )}
-        </FormGroup>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
           <LoadingButton

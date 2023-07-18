@@ -45,6 +45,7 @@ interface ICollectionDashboardProps {
 const CollectionDashboard = ({
   currentCollection,
 }: ICollectionDashboardProps) => {
+  const dispatch = useAppDispatch();
   const [confirmDialog, setConfirmDialog] = useState<any | null>(null);
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const [sortedColumn, setSortedColumn] = useState('');
@@ -54,7 +55,6 @@ const CollectionDashboard = ({
   const [customFieldsModal, setCustomFieldsModal] = useState(null);
   const [selectedItemId, setSelecteditemId] = useState('');
   const { t } = useTranslation();
-  const dispatch = useAppDispatch();
   const { sm, xs } = useResponsive();
   const [reactionModal, setReactionModal] = useState<
     ReactionMapperType[] | null

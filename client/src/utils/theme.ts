@@ -51,6 +51,13 @@ const lightTheme = createTheme({
           color:'black'
         }
       }
+    },
+    MuiInputLabel:{
+      styleOverrides:{
+        root:{
+          color:'#000'
+        }
+      }
     }
   }
   
@@ -107,6 +114,13 @@ const darkTheme = createTheme({
       styleOverrides:{
         root:{
           color:'#fff'
+        }
+      }
+    },
+    MuiInputLabel:{
+      styleOverrides:{
+        root:{
+          color:'white'
         }
       }
     }

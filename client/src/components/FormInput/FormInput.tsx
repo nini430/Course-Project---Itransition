@@ -1,7 +1,8 @@
-import { TextField, InputAdornment, IconButton } from '@mui/material';
+import { Input, FormGroup, InputAdornment, IconButton, FormControl, InputLabel } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import styled from 'styled-components';
 import { FocusEventHandler, ChangeEventHandler } from 'react';
+import { ErrorMessage } from '../../pages/auth/AuthStyles';
 
 interface IFormInputProps {
   type?: string;
@@ -14,6 +15,8 @@ interface IFormInputProps {
   mode: 'dark' | 'light';
   toggleType?: () => void;
   multiline?: any;
+  errorMessage:string;
+  touched:boolean;
 }
 
 const FormInput: React.FC<IFormInputProps> = ({
@@ -27,9 +30,14 @@ const FormInput: React.FC<IFormInputProps> = ({
   mode,
   toggleType,
   multiline,
+  errorMessage,
+  touched
 }) => {
   return (
-    <StyledInputEl
+    <FormGroup sx={{mb:2}}>
+      <FormControl>
+      <InputLabel>{placeholder}</InputLabel>
+      <StyledInputEl
       multiline={multiline}
       rows={multiline ? 4 : 1}
       InputProps={
@@ -55,14 +63,18 @@ const FormInput: React.FC<IFormInputProps> = ({
       onChange={(e: any) => onChange(e.target.value)}
       error={error}
       type={type}
-      placeholder={placeholder}
       name={name}
     />
+    </FormControl>
+    {error && touched && <ErrorMessage>{errorMessage}</ErrorMessage> }
+    </FormGroup>
+    
+    
   );
 };
 
 const StyledInputEl = styled(({ mode, ...props }: any) => (
-  <TextField {...props} />
+  <Input {...props} />
 ))`
   fieldset {
     border-color: ${({ mode }) =>

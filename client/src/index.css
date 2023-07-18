@@ -80,3 +80,15 @@ table {
   overflow-x: auto !important;
   white-space: nowrap !important;
 }
+
+.css-1jy569b-MuiFormLabel-root-MuiInputLabel-root {
+  top:15px !important;
+}
+
+.css-1661t0p-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+  color:white !important;
+}
+
+.css-hdweb5-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+  color:black !important;
+}

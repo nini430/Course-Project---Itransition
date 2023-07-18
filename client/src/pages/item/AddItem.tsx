@@ -20,7 +20,7 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import FormInput from '../../components/FormInput/FormInput';
 import { AddCircle, Edit } from '@mui/icons-material';
 import Loading from '../../components/Loading/Loading';
-import { useEffect, useRef} from 'react';
+import { Fragment, useEffect, useRef} from 'react';
 import {
   addItem,
   editItem,
@@ -53,7 +53,7 @@ const AddItem = () => {
   } = useAppSelector((state) => state.item);
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const {itemId,collectionId}=useParams();
+  const {itemId,collectionId }=useParams();
   const {
     validateForm,
     resetForm,
@@ -157,7 +157,6 @@ const AddItem = () => {
           }
         }}
       >
-        <FormGroup sx={{ mb: 2 }}>
           <FormInput
             name="name"
             value={values.name}
@@ -167,11 +166,9 @@ const AddItem = () => {
             type="text"
             placeholder="Name"
             mode={mode}
+            errorMessage={errors.name as string}
+            touched={touched.name as boolean}
           />
-          {touched.name && errors.name && (
-            <ErrorMessage>{errors.name as string}</ErrorMessage>
-          )}
-        </FormGroup>
         <FormGroup sx={{ mb: 2 }}>
           <Autocomplete
             value={values.tags}
@@ -212,9 +209,10 @@ const AddItem = () => {
           <CustomFieldContainer>
             {formCustomFields['integer'] &&
               formCustomFields['integer'].map((item: any) => (
-                <FormGroup sx={{ mb: 1 }} key={item.id}>
+                <Fragment>
                   <Typography sx={{ mb: 1 }}>{item.name}</Typography>
                   <FormInput
+                    key={item.id}
                     value={values[item.name]?.value}
                     error={!!(touched[item.name] && errors[item.name])}
                     name={item.name}
@@ -222,15 +220,14 @@ const AddItem = () => {
                     onBlur={handleBlur}
                     type="number"
                     mode={mode}
+                    errorMessage={(errors[item.name] as any)?.value as string}
+                    touched={touched[item.name] as boolean}
                   />
-                  {touched[item.name] && (errors[item.name] as any)?.value && (
-                    <ErrorMessage>{((errors[item.name] as any)?.value)}</ErrorMessage>
-                  )}
-                </FormGroup>
+                </Fragment>
               ))}
             {formCustomFields['string'] &&
               formCustomFields['string'].map((item: any) => (
-                <FormGroup sx={{ mb: 1 }} key={item.id}>
+                <Fragment  key={item.id}>
                   <Typography sx={{ mb: 1 }}>{item.name}</Typography>
                   <FormInput
                     name={item.name}
@@ -240,11 +237,10 @@ const AddItem = () => {
                     value={values[item.name]?.value}
                     type="text"
                     mode={mode}
+                    errorMessage={(errors[item.name] as any)?.value as string}
+                    touched={touched[item.name] as boolean}
                   />
-                  {touched[item.name] && (errors[item.name] as any)?.value && (
-                    <ErrorMessage>{(errors[item.name] as any)?.value}</ErrorMessage>
-                  )}
-                </FormGroup>
+                </Fragment>
               ))}
             {formCustomFields['multiline'] &&
               formCustomFields['multiline'].map((item: any) => (
@@ -259,10 +255,9 @@ const AddItem = () => {
                     multiline={true}
                     type="text"
                     mode={mode}
+                    errorMessage={(errors[item.name] as any)?.value as string}
+                    touched={touched[item.name] as boolean}
                   />
-                  {(errors[item.name] as any)?.value && touched[item.name] && (
-                    <ErrorMessage>{(errors[item.name]as any)?.value as string}</ErrorMessage>
-                  )}
                 </FormGroup>
               ))}
             {formCustomFields['date'] &&

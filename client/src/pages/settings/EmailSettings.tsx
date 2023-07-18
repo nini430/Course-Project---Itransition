@@ -55,7 +55,6 @@ const EmailSettings = () => {
           handleSubmit();
         }}
       >
-        <FormGroup sx={{ mb: 2 }}>
           <FormInput
             onBlur={handleBlur}
             onChange={handleChange}
@@ -65,11 +64,9 @@ const EmailSettings = () => {
             error={!!(touched.email && errors.email)}
             mode={mode}
             placeholder={auth.email}
+            errorMessage={errors.email as string}
+            touched={touched.email as boolean}
           />
-          {errors.email && touched.email && (
-            <ErrorMessage>{errors.email}</ErrorMessage>
-          )}
-        </FormGroup>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
         <LoadingButton
           disabled={

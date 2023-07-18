@@ -141,7 +141,6 @@ const AddCollection = () => {
           handleSubmit();
         }}
       >
-        <FormGroup sx={{ mb: 2 }}>
           <FormInput
             onChange={(value)=>setFieldValue('name',value)}
             onBlur={handleBlur}
@@ -151,11 +150,9 @@ const AddCollection = () => {
             placeholder="Name"
             type="text"
             mode={mode}
+            errorMessage={errors.name as string}
+            touched={touched.name as boolean}
           />
-          {touched.name && errors.name && (
-            <ErrorMessage>{(errors as any).name}</ErrorMessage>
-          )}
-        </FormGroup>
         <FormGroup sx={{ mb: 2 }}>
           <Typography>Description</Typography>
           <ReactQuill

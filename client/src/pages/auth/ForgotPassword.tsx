@@ -52,10 +52,9 @@ const ForgotPassword = () => {
           error={!(errors.email && touched.email)}
           placeholder="JohnDoe@gmail.com"
           mode={mode}
+          errorMessage={errors.email as string}
+          touched={touched.email as boolean}
         />
-        {touched.email && errors.email && (
-          <ErrorMessage>{errors.email}</ErrorMessage>
-        )}
         <LoadingButton
           loading={forgetPasswordLoading}
           disabled={!dirty || Object.keys(errors).length > 0}

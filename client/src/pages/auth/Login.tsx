@@ -89,7 +89,6 @@ const Login = () => {
             }}
           />
           <Divider sx={{ my: '20px' }} />
-          <FormGroup sx={{ marginBottom: 2 }}>
             <StyledInput
               value={values.email}
               onBlur={handleBlur}
@@ -99,12 +98,9 @@ const Login = () => {
               placeholder={t('auth.email') as string}
               type="email"
               mode={mode}
+              errorMessage={errors.email as string}
+              touched={touched.email as boolean}
             />
-            {touched.email && errors.email && (
-              <ErrorMessage>{t(`auth.${errors.email}`)}</ErrorMessage>
-            )}
-          </FormGroup>
-          <FormGroup sx={{ marginBottom: 2 }}>
             <StyledInput
               value={values.password}
               onBlur={handleBlur}
@@ -115,11 +111,9 @@ const Login = () => {
               type={passType}
               toggleType={()=>setPassType(passType==='password'?'text':'password')}
               mode={mode}
+              errorMessage={errors.password as string}
+              touched={touched.password as boolean}
             />
-            {touched.password && errors.password && (
-              <ErrorMessage>{t(`auth.${errors.password}`)}</ErrorMessage>
-            )}
-          </FormGroup>
           <SocialButton onClick={()=>window.open(`${SERVER_BASE_URL}/auth/google`,'_self')} form='login' social='google' src={GoogleImg} />
           <FormButton
             loading={loginLoading}

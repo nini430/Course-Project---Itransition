@@ -154,7 +154,6 @@ const Register = ({ admin, edit }: IRegisterProps) => {
           />
           <Divider sx={{ my: '20px' }} />
           <TwoGridContainer>
-            <FormGroup sx={{ marginBottom: 2 }}>
               <StyledInput
                 name="firstName"
                 placeholder={t('auth.firstName') as string}
@@ -164,12 +163,9 @@ const Register = ({ admin, edit }: IRegisterProps) => {
                 onBlur={handleBlur}
                 error={!!(errors.firstName && touched.firstName)}
                 mode={mode}
+                errorMessage={errors.firstName as string}
+                touched={touched.firstName as boolean}
               />
-              {errors.firstName && touched.firstName && (
-                <ErrorMessage>{t(`auth.${errors.firstName}`)}</ErrorMessage>
-              )}
-            </FormGroup>
-            <FormGroup sx={{ marginBottom: 2 }}>
               <StyledInput
                 name="lastName"
                 placeholder={t('auth.lastName') as string}
@@ -179,14 +175,10 @@ const Register = ({ admin, edit }: IRegisterProps) => {
                 onBlur={handleBlur}
                 error={!!(errors.lastName && touched.lastName)}
                 mode={mode}
+                errorMessage={errors.lastName as string}
+                touched={touched.lastName as boolean}
               />
-              {errors.lastName && touched.lastName && (
-                <ErrorMessage>{t(`auth.${errors.lastName}`)}</ErrorMessage>
-              )}
-            </FormGroup>
           </TwoGridContainer>
-
-          <FormGroup sx={{ marginBottom: 2 }}>
             <StyledInput
               name="email"
               placeholder={t('auth.email') as string}
@@ -196,11 +188,9 @@ const Register = ({ admin, edit }: IRegisterProps) => {
               onBlur={handleBlur}
               error={!!(errors.email && touched.email)}
               mode={mode}
+              errorMessage={errors.email as string}
+              touched={touched.email as boolean}
             />
-            {errors.email && touched.email && (
-              <ErrorMessage>{t(`auth.${errors.email}`)}</ErrorMessage>
-            )}
-          </FormGroup>
           <FormGroup sx={{ marginBottom: 2 }}>
             <PhoneInput
               inputStyle={{ width: '100%' }}
@@ -219,7 +209,6 @@ const Register = ({ admin, edit }: IRegisterProps) => {
           {!(admin && edit && !showPasswordArea) ? (
             <>
               <TwoGridContainer>
-                <FormGroup sx={{ marginBottom: 2 }}>
                   <StyledInput
                     name="password"
                     placeholder={t('auth.password') as string}
@@ -232,12 +221,10 @@ const Register = ({ admin, edit }: IRegisterProps) => {
                     onBlur={handleBlur}
                     error={!!(errors.password && touched.password)}
                     mode={mode}
+                    errorMessage={errors.password as string}
+                    touched={touched.password as boolean}
+
                   />
-                  {errors.password && touched.password && (
-                    <ErrorMessage dangerouslySetInnerHTML={{__html:errors.password}}/>
-                  )}
-                </FormGroup>
-                <FormGroup sx={{ marginBottom: 2 }}>
                   <StyledInput
                     name="confirmPassword"
                     placeholder={t('auth.confirm_password') as string}
@@ -256,13 +243,9 @@ const Register = ({ admin, edit }: IRegisterProps) => {
                       !!(errors.confirmPassword && touched.confirmPassword)
                     }
                     mode={mode}
+                    errorMessage={errors.confirmPassword as string}
+                    touched={touched.confirmPassword as boolean}
                   />
-                  {errors.confirmPassword && touched.confirmPassword && (
-                    <ErrorMessage>
-                      {t(`auth.${errors.confirmPassword}`)}
-                    </ErrorMessage>
-                  )}
-                </FormGroup>
               </TwoGridContainer>
             </>
           ) : (
