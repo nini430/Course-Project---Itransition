@@ -5,7 +5,7 @@ import {
   FormGroup,
   Button,
 } from '@mui/material';
-import { GitHub, Google, Home, PersonPin, Settings, WindPower } from '@mui/icons-material';
+import {  Home, PersonPin, Settings } from '@mui/icons-material';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';

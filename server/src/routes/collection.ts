@@ -11,6 +11,7 @@ import {
   updateCollectionImageHandler,
 } from '../controllers/collection';
 import authProtect from '../middleware/authProtect';
+import ownerPermission from '../middleware/ownerPermission';
 
 
 const router = express.Router();
@@ -24,7 +25,7 @@ router.get('/:collectionId',getCollectionById);
 router.use(authProtect);
 
 router.get('/extended/:collectionId',getCollectionExtendedHandler);
-router.post('/', addCollectionHandler);
+router.post('/', ownerPermission, addCollectionHandler);
 router.put('/upload/:collectionId',updateCollectionImageHandler);
 router.put('/:collectionId',updateCollectionHandler);
 router.delete('/:collectionId',removeCollectionHandler);

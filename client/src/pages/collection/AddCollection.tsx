@@ -34,13 +34,14 @@ import toastOptions from '../../utils/toastOptions';
 import { fileToBase64 } from '../../utils/fileToBase64';
 import { Form } from '../commonStyles';
 import useResponsive from '../../hooks/useResponsive';
+import Loading from '../../components/Loading/Loading';
 
 const AddCollection = () => {
-  const { collectionTopics, topicsLoading, addCollectionLoading, draftCollection, updateCollectionLoading } =
+  const { collectionTopics, topicsLoading, addCollectionLoading, draftCollection, updateCollectionLoading, getCollectionLoading } =
   useAppSelector((state) => state.collection);
   const {authedUser}=useAppSelector(state=>state.auth);
   const dispatch=useAppDispatch();
-  const {collectionId}=useParams();
+  const {collectionId,profileId}=useParams();
   const [accordionValues,setAccordionValues]=useState({});
   const [uploadImg, setUploadImg] = useState<File | null>(null);
   const {
@@ -75,6 +76,7 @@ const AddCollection = () => {
         dispatch(
           addCollection({
             input: { ...values, image: imgToUpload as string },
+            ownerId:profileId as string,
             configs:accordionValues,
             onSuccess: () => {
               toast.success(t('collection_created', toastOptions));
@@ -119,6 +121,10 @@ const AddCollection = () => {
       dispatch(getCollectionExtended({collectionId:collectionId as string}))
     }
   },[collectionId,dispatch])
+
+  if(getCollectionLoading) {
+    return <Loading/>
+  }
 
   return (
     <Container>

@@ -3,7 +3,7 @@ const routesPath={
     register:'/register',
     profile:'/profile/:userId',
     login:'/login',
-    addCollection:'/add-collection',
+    addCollection:'/add-collection/:profileId',
     addItem:'/add-item/:collectionId',
     editItem:'/edit-item/:itemId/:collectionId',
     collectionDetails:'/collection/:collectionId',

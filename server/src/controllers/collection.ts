@@ -28,16 +28,16 @@ const getCollectionTopics = asyncHandler(
 
 const addCollectionHandler = asyncHandler(
   async (
-    req: Request<{}, {}, { input: CollectionInput; configs: any }> & {
-      user: any;
+    req: Request<{}, {}, { input: CollectionInput; configs: any, ownerId:string }> & {
+      user: any, ownerId: string;
     },
     res: Response,
     next: NextFunction
   ) => {
-    const { name, description, topic, image } = req.body.input;
+    const { name, description, topic, image} = req.body.input;
     const newCollection = await addCollection(
       { name, description, topic, image },
-      req.user.id
+      req.ownerId 
     );
     await addItemConfigs(req.body.configs, newCollection?.id as string);
     return res

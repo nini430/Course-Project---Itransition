@@ -74,7 +74,7 @@ const Collection = ({
         <Button sx={{ border: '1px solid gray' }}>
           {t('common.view_more')}
         </Button>
-        {!main && setIsConfirmDialogOpen && authedUser && collection.author.id===authedUser.id && (
+        {!main && setIsConfirmDialogOpen && authedUser && (collection.author.id===authedUser.id || authedUser.role==='ADMIN') && (
           <CrudBtnContainer>
             <Link
               to={`/edit-collection/${collection.id}`}

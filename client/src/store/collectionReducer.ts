@@ -48,13 +48,15 @@ export const addCollection = createAsyncThunk(
       input,
       onSuccess,
       configs,
-    }: { input: CollectionValues; configs: any; onSuccess: VoidFunction },
+      ownerId,
+    }: { input: CollectionValues; configs: any; onSuccess: VoidFunction, ownerId:string },
     thunkApi
   ) => {
     try {
       const response = await axiosApiInstance.post(apiUrls.collection.add, {
         input,
         configs,
+        ownerId
       });
       console.log(response.data);
       onSuccess && onSuccess();
