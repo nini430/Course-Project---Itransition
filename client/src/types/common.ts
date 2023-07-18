@@ -12,6 +12,8 @@ export type Statuses= 'active' | 'blocked' | 'deleted';
 
 export type AccountStatuses = 'PUBLIC' | 'PRIVATE'
 
+export type AuthTypes= 'login'|'register';
+
 
 export interface BreadCrumbProps {
     icon:SvgIconComponent;

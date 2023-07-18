@@ -5,7 +5,7 @@ import {
   FormGroup,
   Button,
 } from '@mui/material';
-import { GitHub, Google, Home, PersonPin, Settings } from '@mui/icons-material';
+import { GitHub, Google, Home, PersonPin, Settings, WindPower } from '@mui/icons-material';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
@@ -30,9 +30,10 @@ import toastOptions from '../../utils/toastOptions';
 import BreadCrumb from '../../components/shared/BreadCrumb';
 import { getUserById } from '../../store/userReducer';
 import { addUser, editUser } from '../../store/adminReducer';
-import { LoadingButton } from '@mui/lab';
+import GoogleImg from '../../assets/google.webp'
 import { SERVER_BASE_URL } from '../../utils/constants';
 import useResponsive from '../../hooks/useResponsive';
+import SocialButton from '../../components/shared/SocialButton';
 
 interface IRegisterProps {
   admin?: boolean;
@@ -288,23 +289,9 @@ const Register = ({ admin, edit }: IRegisterProps) => {
             }
           />
           {!admin && (
-            <LoadingButton
-              onClick={() =>
-                window.open(`${SERVER_BASE_URL}/auth/google`, '_self')
-              }
-              sx={{ border: '1px solid gray' }}
-              startIcon={<Google />}
-            >
-              Sign Up With Google
-            </LoadingButton>
-          )}
-          {!admin && (
-            <LoadingButton
-              sx={{ border: '1px solid gray' }}
-              startIcon={<GitHub />}
-            >
-              Sign Up with Github
-            </LoadingButton>
+            <SocialButton src={GoogleImg} social='google' form='register' onClick={()=>{
+              window.open(`${SERVER_BASE_URL}/auth/google`,'_self');
+            }}/>
           )}
           {!admin && (
             <Typography sx={{ alignSelf: 'center', my: '10px' }}>

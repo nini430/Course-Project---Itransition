@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Divider, Typography, FormGroup } from '@mui/material';
-import { GitHub, Google, Home, LockClockRounded } from '@mui/icons-material';
+import { Home, LockClockRounded } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
@@ -16,9 +16,10 @@ import {
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { loginUser } from '../../store/authReducer';
 import BreadCrumb from '../../components/shared/BreadCrumb';
-import { LoadingButton } from '@mui/lab';
+import GoogleImg from '../../assets/google.webp'
 import { SERVER_BASE_URL } from '../../utils/constants';
 import useResponsive from '../../hooks/useResponsive';
+import SocialButton from '../../components/shared/SocialButton';
 
 const Login = () => {
   const [passType,setPassType]=useState<'text'|'password'>('password')
@@ -119,8 +120,7 @@ const Login = () => {
               <ErrorMessage>{t(`auth.${errors.password}`)}</ErrorMessage>
             )}
           </FormGroup>
-          <LoadingButton onClick={()=>window.open(`${SERVER_BASE_URL}/passport/auth/google`,"_self")} startIcon={<Google/>} sx={{border:'1px solid gray'}}>Sign In With Google</LoadingButton>
-          <LoadingButton  startIcon={<GitHub/>} sx={{border:'1px solid gray'}}>Sign In With Github</LoadingButton>
+          <SocialButton onClick={()=>window.open(`${SERVER_BASE_URL}/auth/google`,'_self')} form='login' social='google' src={GoogleImg} />
           <FormButton
             loading={loginLoading}
             type="submit"

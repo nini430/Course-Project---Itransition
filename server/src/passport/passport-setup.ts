@@ -1,6 +1,5 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-
 import client from '../utils/prismaClient';
 import { findUserById } from '../services/auth';
 
@@ -37,6 +36,8 @@ passport.use(
             googleId: id,
             profileImage: photos?.[0].value as string,
             isEmailVerified: true,
+            phoneNumber:'none',
+            phoneCountryCode:'none'
           },
         });
         done(null, user);
@@ -44,3 +45,4 @@ passport.use(
     }
   )
 );
+
