@@ -11,7 +11,6 @@ import {
   resetPasswordValidationSchema,
   resetPasswordValues,
 } from '../../formik-validation/resetPassword';
-import { ErrorMessage } from '../../components/shared/styles/FormStyles';
 import { useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { resetPassword, resetPasswordAction } from '../../store/authReducer';

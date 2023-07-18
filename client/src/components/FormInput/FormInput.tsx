@@ -40,22 +40,18 @@ const FormInput: React.FC<IFormInputProps> = ({
       <StyledInputEl
       multiline={multiline}
       rows={multiline ? 4 : 1}
-      InputProps={
-        name === 'password' ||
+      endAdornment={
+        (name === 'password' ||
         name === 'confirmPassword' ||
         name === 'oldPassword' ||
         name === 'newPassword' ||
-        name === 'confirmNewPassword'
-          ? {
-              endAdornment: (
-                <InputAdornment position="end">
+        name === 'confirmNewPassword')
+          &&  (
                   <IconButton onClick={toggleType}>
                     {type === 'password' ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
-                </InputAdornment>
-              ),
-            }  
-          : {}
+              )  
+          
       }
       mode={mode}
       onBlur={onBlur}
@@ -66,7 +62,7 @@ const FormInput: React.FC<IFormInputProps> = ({
       name={name}
     />
     </FormControl>
-    {error && touched && <ErrorMessage>{errorMessage}</ErrorMessage> }
+    {error && touched && <ErrorMessage dangerouslySetInnerHTML={{__html:errorMessage}}/> }
     </FormGroup>
     
     
