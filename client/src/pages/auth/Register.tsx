@@ -127,10 +127,10 @@ const Register = ({ admin, edit }: IRegisterProps) => {
         />
         <Toaster />
         <AuthForm
-          isXS={xs}
-          isX={xl}
-          isMob={sm}
-          isD={lg}
+          xs={xs}
+          xl={xl}
+          sm={sm}
+          lg={lg}
           mode={mode}
           onSubmit={(e: SubmitEvent) => {
             e.preventDefault();
@@ -153,7 +153,7 @@ const Register = ({ admin, edit }: IRegisterProps) => {
             }}
           />
           <Divider sx={{ my: '20px' }} />
-          <TwoGridContainer>
+          <TwoGridContainer sm={sm} xs={xs}>
               <StyledInput
                 name="firstName"
                 placeholder={t('auth.firstName') as string}
@@ -208,7 +208,7 @@ const Register = ({ admin, edit }: IRegisterProps) => {
           </FormGroup>
           {!(admin && edit && !showPasswordArea) ? (
             <>
-              <TwoGridContainer>
+              <TwoGridContainer sm={sm} xs={xs}>
                   <StyledInput
                     name="password"
                     placeholder={t('auth.password') as string}

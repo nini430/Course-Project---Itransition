@@ -9,11 +9,11 @@ const AuthContainer = styled.div`
   align-items: center;
   flex-direction:column;
 `;
-const AuthForm = styled(({ isX, isMob, isD, isXS, mode, ...props }: any) => (
+const AuthForm = styled(({ xs, sm, md, lg,xl, mode, ...props }: any) => (
   <form {...props} />
 ))`
-  width: ${({ isX, isMob, isD, isXS }) =>
-    isX ? '800px' : isMob ? '500px' : isXS ? '90%' : '700px'};
+  width: ${({ xs, sm, md, lg, xl  }) =>
+    xl ? '800px' : sm ? '500px' : xs ? '400px' : '700px'};
   height: auto;
   background-color:${({mode})=>mode==='dark'?'#252121':'white'}; 
   padding: 20px;
@@ -23,9 +23,9 @@ const AuthForm = styled(({ isX, isMob, isD, isXS, mode, ...props }: any) => (
   gap:5px;
 `;
 
-const TwoGridContainer=styled.div`
+const TwoGridContainer=styled(({sm,xs,...rest}:any)=><div {...rest} />)`
   display:grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: ${({sm,xs})=>(sm || xs)? '1fr':'1fr 1fr'};
   grid-gap:5px;
 `
 

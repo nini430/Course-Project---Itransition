@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Divider, Typography, FormGroup } from '@mui/material';
+import { Divider, Typography } from '@mui/material';
 import { Home, LockClockRounded } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import {Toaster} from 'react-hot-toast'
 
-import { AuthContainer, AuthForm, ErrorMessage } from './AuthStyles';
+import { AuthContainer, AuthForm } from './AuthStyles';
 import FormButton from '../../components/FormButton/FormButton';
 import StyledInput from '../../components/FormInput/FormInput';
 import {
@@ -38,7 +38,6 @@ const Login = () => {
     dirty,
     handleSubmit,
     touched,
-    handleChange,
     handleBlur,
     setFieldValue
   } = useFormik({
@@ -62,15 +61,14 @@ const Login = () => {
 
   return (
     <>
-   
       <AuthContainer>
       <BreadCrumb paths={[{path:'/',title:t('breadcrumb.home'),icon:Home},{path:'/login',title:t('auth.login'),icon:LockClockRounded}]}/>
         <Toaster/>
         <AuthForm
-          S={xs}
-          isX={xl}
-          isMob={sm}
-          isD={lg}
+          xs={xs}
+          xl={xl}
+          lg={lg}
+          sm={sm}
           mode={mode}
           onSubmit={(e: SubmitEvent) => {
             e.preventDefault();
