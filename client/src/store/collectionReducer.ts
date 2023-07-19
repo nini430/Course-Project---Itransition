@@ -58,7 +58,6 @@ export const addCollection = createAsyncThunk(
         configs,
         ownerId
       });
-      console.log(response.data);
       onSuccess && onSuccess();
       return response.data;
     } catch (err) {
@@ -87,7 +86,6 @@ export const getMyCollections = createAsyncThunk(
       const response = await axiosApiInstance.get<{
         data: { collections: Collection[] };
       }>(`${apiUrls.collection.myCollections}/${authorId}`);
-      console.log(response.data);
       return response.data.data.collections;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
@@ -123,7 +121,6 @@ export const getCollection = createAsyncThunk(
       const response = await axiosApiInstance.get<{ data: ExtendedCollection }>(
         `${apiUrls.collection.getCollection}/${collectionId}`
       );
-      console.log(response.data.data);
       return response.data.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
@@ -161,7 +158,6 @@ export const getCollectionExtended = createAsyncThunk(
       const response = await axiosApiInstance.get<{ data: any }>(
         `${apiUrls.collection.getCollectionExtended}/${collectionId}`
       );
-      console.log(response.data.data);
       return response.data.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
@@ -266,7 +262,6 @@ const collectionReducer = createSlice({
     });
     builder.addCase(getMyCollections.fulfilled, (state, action) => {
       state.getMyCollectionsLoading = false;
-      console.log(action.payload);
       state.myCollections = action.payload;
     });
     builder.addCase(getMyCollections.rejected, (state, action) => {

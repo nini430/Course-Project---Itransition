@@ -38,7 +38,6 @@ const CollectionAccordion = ({
   collectionId,
 }: ICollectionAccordionProps) => {
   const dispatch = useAppDispatch();
-console.log(accordionValues)
   return (
     <Accordion>
       <AccordionSummary expandIcon={<KeyboardArrowDown />}>

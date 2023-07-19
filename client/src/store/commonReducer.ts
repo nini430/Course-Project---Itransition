@@ -12,7 +12,6 @@ const initialState: CommonInitialState = {
 
 export const testAuthedRoute = createAsyncThunk('/test', async () => {
   const response = await axiosApiInstance.get(apiUrls.test.test);
-  console.log(response.data);
 });
 
 const commonReducer = createSlice({

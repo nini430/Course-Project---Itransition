@@ -174,7 +174,6 @@ const CollectionDashboard = ({
         selectedIds={selectedRowKeys}
         setSelectedIds={setSelectedRowKeys}
         viewComments={(data: any) => {
-          console.log(data);
           setFollowModal(data.map((item: any) => item.author));
         }}
         viewReacts={(data: any) => {

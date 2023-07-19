@@ -15,7 +15,6 @@ const addReactionHandler = asyncHandler(
     res: Response,
     next: NextFunction
   ) => {
-    console.log('lalala')
     let reaction;
     const { name } = req.body.input;
     const item = await getItemByIdExtended(req.params.itemId);

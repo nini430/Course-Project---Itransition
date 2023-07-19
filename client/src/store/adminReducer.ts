@@ -37,7 +37,6 @@ export const filterUsers = createAsyncThunk(
       const response = await axiosApiInstance.put<{
         data: AdminFormattedUser[];
       }>(apiUrls.admin.filterUsers, { filter });
-      console.log(response.data.data);
       return response.data.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);

@@ -10,7 +10,6 @@ import { findUserById } from '../services/auth';
 const authProtect = asyncHandler(
   async (req: Request & {user:any}, res: Response, next: NextFunction) => {
     const token = req.headers.authorization?.split(' ')[1];
-    console.log(req.user,'opa!!!!',req.isAuthenticated())
     if(req.isAuthenticated()) {
       return next();
     }
@@ -35,7 +34,6 @@ const authProtect = asyncHandler(
       (req as any).user=rest;
       next();
     } catch (err: any) {
-      console.log(err.name,'lalala')
       return next(
         new ErrorResponse(
           err.name === 'TokenExpiredError'

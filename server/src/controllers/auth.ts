@@ -138,7 +138,6 @@ const generateRefreshToken = asyncHandler(
         refreshToken,
         process.env.JWT_REFRESH_TOKEN_SECRET as string
       ) as { id: string };
-      console.log(tokenInfo);
       if (tokenInfo.id) {
         const accessToken = generateJwt(
           tokenInfo.id,
@@ -148,7 +147,6 @@ const generateRefreshToken = asyncHandler(
         return res.status(StatusCodes.OK).json({ success: true, accessToken });
       }
     } catch (err: any) {
-      console.log(err);
       return next(
         new ErrorResponse(
           err.name === 'TokenExpiredError'

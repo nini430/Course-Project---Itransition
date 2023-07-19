@@ -49,7 +49,6 @@ const addCollectionHandler = asyncHandler(
 const getTopLargestCollectionsHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const topLargestCollections = await getTopLargestCollections();
-    console.log(topLargestCollections);
     return res
       .status(StatusCodes.OK)
       .json({ success: true, data: topLargestCollections });

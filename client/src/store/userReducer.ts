@@ -24,7 +24,7 @@ export const getUserById = createAsyncThunk(
       const response = await axiosApiInstance.get<{
         data: User & { followerIds: any[]; followedIds: any[] };
       }>(`${apiUrls.user.getUser}/${userId}`);
-      console.log(response.data.data);
+
       return response.data.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);

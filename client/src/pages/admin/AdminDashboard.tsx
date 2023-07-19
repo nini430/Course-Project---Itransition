@@ -174,7 +174,6 @@ const AdminDashboard = () => {
         selectedIds={selectedIds}
         setSelectedIds={setSelectedIds}
         viewFollows={(follows: any) => {
-          console.log(follows);
           setFollowModal(follows);
         }}
         viewCollections={(item: any) => {

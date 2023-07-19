@@ -28,7 +28,6 @@ const EmailSettings = () => {
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      console.log('yes!')
       dispatch(
         updateUserInfo({
           input: values,

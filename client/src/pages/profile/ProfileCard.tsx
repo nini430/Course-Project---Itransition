@@ -42,7 +42,6 @@ const ProfileCard = () => {
   const { currentProfile, profileLoading,  currentFollowers, currentFollowings, toggleFollowLoading } = useAppSelector(
     (state) => state.user
   );
-  console.log(currentProfile);
   useEffect(() => {
     dispatch(getUserById(userId as string));
   }, [userId, dispatch]);

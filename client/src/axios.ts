@@ -68,12 +68,10 @@ axiosApiInstance.interceptors.response.use(
       store.getState().auth.authedUser&& !store.getState().auth.authedUser?.social
     ) {
       try {
-        console.log(originalRequest.url)
         originalRequest._isRetry = true;
         await axiosApiInstance.post(apiUrls.auth.refreshToken);
         return axiosApiInstance(originalRequest);
       } catch (err) {
-        console.log(err);
         store.dispatch(clearUser());
         localStorage.removeItem('authed_user');
         removeTokens();

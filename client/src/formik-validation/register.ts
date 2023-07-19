@@ -15,7 +15,6 @@ const registerValues: RegisterValues = {
 
 const validatePhoneNumber = (value: string, country: string) => {
   const phoneNumber = value.replace(/\D/g, '');
-  console.log(country);
   if (!isValidNumber(phoneNumber, country as CountryCode)) {
     return false;
   }

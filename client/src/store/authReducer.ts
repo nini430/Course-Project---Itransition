@@ -51,7 +51,6 @@ export const registerUser = createAsyncThunk(
       onSuccess && onSuccess();
       return response.data;
     } catch (err) {
-      console.log(err);
       return thunkApi.rejectWithValue(err);
     }
   }
@@ -138,7 +137,6 @@ export const updateUserInfo = createAsyncThunk(
         apiUrls.auth.userInfoUpdate,
         { update, input }
       );
-      console.log(response.data);
       onSuccess && onSuccess(update);
       return response.data.data;
     } catch (err) {
@@ -377,7 +375,6 @@ const authReducer = createSlice({
       );
     });
     builder.addCase(getFollows.fulfilled, (state, action) => {
-      console.log(action.payload);
       state.myFollowers = action.payload.followers;
       state.myFollowings = action.payload.followings;
     });

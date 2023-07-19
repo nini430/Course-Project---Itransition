@@ -36,7 +36,6 @@ export const initializeItemConfig = createAsyncThunk(
       const response = await axiosApiInstance.get<{ data: Item }>(
         `${apiUrls.item.initialize}/${collectionId}`
       );
-      console.log(response.data);
       return response.data.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
@@ -102,8 +101,6 @@ export const getSingleItem = createAsyncThunk(
       const response = await axiosApiInstance.get<{ data: ExtendedItem }>(
         `${apiUrls.item.getSingleItem}/${itemId}`
       );
-      console.log(itemId, 'lka!!');
-      console.log(response.data.data);
       return response.data.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
@@ -144,7 +141,6 @@ export const editItem = createAsyncThunk(
         `${apiUrls.item.editItem}/${itemId}`,
         { input }
       );
-      console.log(itemId, 'ka!!');
       onSuccess && onSuccess();
       return response.data.data;
     } catch (err) {
@@ -287,7 +283,6 @@ export const getMyItems = createAsyncThunk(
       const response = await axiosApiInstance.get<{ data: Item[] }>(
         `${apiUrls.item.getMyItems}/${collectionId}`
       );
-      console.log(response.data);
       return response.data.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
@@ -306,7 +301,6 @@ export const filterItems = createAsyncThunk(
         `${apiUrls.item.filter}/${collectionId}`,
         { filter }
       );
-      console.log(response.data.data);
       return response.data.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
@@ -406,7 +400,6 @@ const itemSlice = createSlice({
     });
     builder.addCase(initializeItemConfig.fulfilled, (state, action) => {
       state.initializeFormLoading = false;
-      console.log(action.payload, '!');
       state.formCustomFields = action.payload;
     });
     builder.addCase(initializeItemConfig.rejected, (state, action: any) => {

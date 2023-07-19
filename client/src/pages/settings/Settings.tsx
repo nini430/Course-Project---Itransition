@@ -20,7 +20,6 @@ const Settings = () => {
 
   const handleAccordionChange =(param:string)=> {
        setExpanded(expanded===param?'':param);
-       console.log(expanded);
   };
   return (
     <SettingsContainer>

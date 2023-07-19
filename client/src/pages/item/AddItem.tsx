@@ -109,7 +109,6 @@ const AddItem = () => {
     dispatch(initializeItemConfig(collectionId as string));
     dispatch(getItemTags());
     if(itemId) {
-      console.log(itemId);
       dispatch(getSingleItem(itemId))
     }
   }, [dispatch,itemId,collectionId]);
@@ -124,7 +123,6 @@ const AddItem = () => {
           formValues[item.name as string] =
             item.type === 'boolean' ? false : '';
         });
-      console.log(formValues);
       validationSchema.current = generateItemValidationSchema(formCustomFields);
       setValues({ ...formValues, name: '', tags: [] });
       }else{

@@ -12,7 +12,6 @@ const initialState:SearchInitialState={
 export const getFullTextSearch=createAsyncThunk('search',async({searchQuery}:{searchQuery:string},thunkApi)=>{
     try{
     const response=await axiosApiInstance.put<{data:any}>(apiUrls.search.getFullText,{searchQuery});
-    console.log(response.data.data);
     return response.data.data;
     }catch(err) {
         return thunkApi.rejectWithValue(err);
