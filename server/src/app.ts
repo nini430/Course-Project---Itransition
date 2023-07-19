@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import path from 'path';
-import { engine } from 'express-handlebars';
+import { create } from 'express-handlebars';
 import cors from 'cors';
 import morgan from 'morgan';
 import expressSession from 'express-session';
@@ -30,7 +30,9 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.engine('handlebars', engine());
+
+const hbs=create({})
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
 app.use('/api/v1', apiRouter);
