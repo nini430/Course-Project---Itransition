@@ -1,0 +1,21 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const collection_1 = require("../controllers/collection");
+const authProtect_1 = __importDefault(require("../middleware/authProtect"));
+const ownerPermission_1 = __importDefault(require("../middleware/ownerPermission"));
+const router = express_1.default.Router();
+router.get('/topics', collection_1.getCollectionTopics);
+router.get('/largest', collection_1.getTopLargestCollectionsHandler);
+router.get('/my-collections/:authorId', collection_1.getMyCollectionsHandlerHandler);
+router.get('/:collectionId', collection_1.getCollectionById);
+router.use(authProtect_1.default);
+router.get('/extended/:collectionId', collection_1.getCollectionExtendedHandler);
+router.post('/', ownerPermission_1.default, collection_1.addCollectionHandler);
+router.put('/upload/:collectionId', collection_1.updateCollectionImageHandler);
+router.put('/:collectionId', collection_1.updateCollectionHandler);
+router.delete('/:collectionId', collection_1.removeCollectionHandler);
+exports.default = router;

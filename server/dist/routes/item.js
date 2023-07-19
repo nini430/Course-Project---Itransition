@@ -1,0 +1,22 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const authProtect_1 = __importDefault(require("../middleware/authProtect"));
+const item_1 = require("../controllers/item");
+const router = express_1.default.Router();
+router.get('/my-items/:collectionId', item_1.getMyItemsHandler);
+router.get('/latest', item_1.getLatestItemsHandler);
+router.get('/single/:itemId', item_1.getItemByIdExtendedHandler);
+router.put('/filter/:collectionId', item_1.filterItemHandler);
+router.put('/sort/:collectionId', item_1.sortItemHandler);
+router.use(authProtect_1.default);
+router.put('/remove-items', item_1.removeItemsHandler);
+router.get('/tags', item_1.getUniqueItemTagsHandler);
+router.get('/:collectionId', item_1.initializeItemCreationHandler);
+router.post('/:collectionId', item_1.addItemHandler);
+router.put('/:itemId', item_1.editItemHandler);
+router.delete('/:itemId', item_1.removeItemHandler);
+exports.default = router;

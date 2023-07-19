@@ -9,6 +9,8 @@ const http_1 = __importDefault(require("http"));
 const socket_io_1 = __importDefault(require("socket.io"));
 const app_1 = __importDefault(require("./app"));
 const sockets_1 = __importDefault(require("./sockets"));
+require("./utils/cloudinaryConfig");
+require("./utils/dbConnect");
 const PORT = process.env.PORT;
 const NODE_ENV = process.env.NODE_ENV;
 const server = http_1.default.createServer(app_1.default);

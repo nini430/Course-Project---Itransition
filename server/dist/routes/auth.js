@@ -1,0 +1,27 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const passport_1 = __importDefault(require("passport"));
+const auth_1 = require("../controllers/auth");
+const authProtect_1 = __importDefault(require("../middleware/authProtect"));
+const router = express_1.default.Router();
+router.get('/google', passport_1.default.authenticate('google', { scope: ['profile', 'email'] }));
+router.get('/google/callback', passport_1.default.authenticate('google'), auth_1.passportSuccessRedirect);
+router.post('/register', auth_1.registerUser);
+router.post('/login', auth_1.loginUser);
+router.post('/refresh-token', auth_1.generateRefreshToken);
+router.put('/forgot-password', auth_1.forgotPasswordHandler);
+router.put('/reset-password/:userId', auth_1.resetPasswordHandler);
+router.put('/reset-password-action/:userId', auth_1.resetPasswordActionHandler);
+router.use(authProtect_1.default);
+router.get('/logout', auth_1.logoutUser);
+router.get('/my-passport-user', auth_1.getMyPassportUser);
+router.get('/profile/follows', auth_1.getMyFollowsHandler);
+router.put('/profile/update', auth_1.updateUserInfoHandler);
+router.put('/profile/upload', auth_1.uploadProfileImageHandler);
+router.put('/verify-email/:userId', auth_1.verifyEmailHandler);
+router.put('/verify-email-action/:userId', auth_1.verifyEmailActionHandler);
+exports.default = router;
