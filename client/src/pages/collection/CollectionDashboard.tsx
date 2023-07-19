@@ -31,7 +31,7 @@ import useTableFilter from '../../hooks/useTableFilter';
 import { SortedDir } from '../../types/table';
 import { Item } from '../../types/item';
 import Table from '../../components/Comment/shared/Table';
-import { SimpleUser } from '../../types/auth';
+import { SimpleUser, User } from '../../types/auth';
 import FollowModal from '../../components/shared/FollowModal';
 import ConfirmDialog from '../../components/shared/ConfirmDialog';
 import { toast, Toaster } from 'react-hot-toast';
@@ -126,7 +126,7 @@ const CollectionDashboard = ({
           <TextField
             value={filterValue}
             onChange={(e) => setFilterValue(e.target.value)}
-            placeholder="Search..."
+            placeholder={t('common.search') as string}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -142,7 +142,7 @@ const CollectionDashboard = ({
               filename={`items-${currentCollection?.id as string}`}
               data={myItems as Item[]}
             >
-              Export Items to CSV
+              {t('common.export_csv')}
             </CSVLink>
           </Button>
         </ToolbarSides>
@@ -199,6 +199,7 @@ const CollectionDashboard = ({
         onClose={() => setReactionModal(null)}
       />
       <CustomFieldsModal
+        collectionAuthor={currentCollection?.author as User}
         itemId={selectedItemId}
         collectionId={currentCollection?.id as string}
         open={customFieldsModal}

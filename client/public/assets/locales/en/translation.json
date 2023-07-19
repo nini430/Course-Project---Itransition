@@ -10,7 +10,12 @@
     "no_comments": "No Comments",
     "show":"Show",
     "follow":"Follow",
-    "unfollow":"Unfollow"
+    "unfollow":"Unfollow",
+    "please":"Please",
+    "search":"Search...",
+    "export_csv":"Export to CSV",
+    "edit":"Edit",
+    "close":"Close"
   },
   "home": {
     "latest_items": "Latest Items",
@@ -26,7 +31,8 @@
     "comments":"Comments",
     "reactions":"Reactions",
     "custom_fields": "Custom Fields",
-    "action":"Actions"
+    "action":"Actions",
+    "id":"Unique Id"
 
   },
   "auth": {
@@ -48,7 +54,11 @@
     "passwords_must_match": "Passwords must match",
     "sign_in": "Sign In",
     "role":"Role",
-    "verify_email":"Verify E-mail"
+    "verify_email":"Verify E-mail",
+    "enter":"Login in with your account"
+  },
+  "action":{
+    "to_post_comment":"To post Comment"
   },
   "nav": {
     "search": "Search...",

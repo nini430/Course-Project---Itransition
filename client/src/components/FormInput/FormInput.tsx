@@ -1,4 +1,4 @@
-import { Input, FormGroup, InputAdornment, IconButton, FormControl, InputLabel } from '@mui/material';
+import { Input, FormGroup, IconButton, FormControl, InputLabel } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import styled from 'styled-components';
 import { FocusEventHandler, ChangeEventHandler } from 'react';

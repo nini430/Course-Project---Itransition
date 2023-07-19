@@ -25,7 +25,7 @@ const LikeComments = ({socket}:ILikeCommentProps) => {
   return (
     <Wrapper>
       <Typography sx={{ mb: 2 }}>
-        {currentItem.comments.length} Comments
+        {currentItem.comments.length} {t('item.comments')}
       </Typography>
       <LikeCommentContainer>
         {currentItem.comments.length === 0 ? (
@@ -43,7 +43,7 @@ const LikeComments = ({socket}:ILikeCommentProps) => {
        <AddComment socket={socket} />
       
       ):  <Box sx={{p:2,borderTop:'1px solid gray'}}>
-      <Typography sx={{textAlign:'center'}}>Please <Link to='/login'>login</Link> to post a comment</Typography>
+      <Typography sx={{textAlign:'center'}}>{t('common.please')} <Link to='/login'>{t('auth.enter')}</Link> {t('action.to_post_comment')}</Typography>
      </Box>}
       
     </Wrapper>

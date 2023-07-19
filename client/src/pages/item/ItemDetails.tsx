@@ -171,7 +171,7 @@ const ItemDetails = () => {
           >
             {currentItem.reactions.length}
           </span>{' '}
-          Reaction(s)
+         {t('item.reactions')}
         </Typography>
       </LikeWrapper>
 

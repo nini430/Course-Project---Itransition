@@ -14,19 +14,16 @@ interface IFollowModalProps {
 }
 
 const FollowModal = ({ open, onClose }: IFollowModalProps) => {
-  console.log(open);
   const dispatch = useAppDispatch();
   const { authedUser, myFollowings } = useAppSelector((state) => state.auth);
   const { toggleFollowLoading } = useAppSelector((state) => state.user);
-  const auth =
-    authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
   useEffect(() => {
     dispatch(getFollows());
   }, [dispatch]);
 
   return (
     <Dialog open={!!open} onClose={onClose}>
-      <DialogContent sx={{ minWidth: 400 }}>
+      <DialogContent sx={{ minWidth: 400, display:'flex', flexDirection:'column', gap:'15px' }}>
         {open && open.length === 0 && <Typography>No Records yet</Typography>}
         {open &&
           open.map((item) => (
@@ -47,7 +44,7 @@ const FollowModal = ({ open, onClose }: IFollowModalProps) => {
                   {item?.firstName} {item?.lastName}
                 </Typography>
               </Box>
-              {auth.id !== item?.id && (
+              {authedUser && authedUser?.id !== item?.id && (
                 <LoadingButton
                   loading={toggleFollowLoading}
                   sx={{ border: '1px solid gray' }}
