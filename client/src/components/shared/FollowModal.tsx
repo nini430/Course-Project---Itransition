@@ -50,7 +50,7 @@ const FollowModal = ({ open, onClose }: IFollowModalProps) => {
                   sx={{ border: '1px solid gray' }}
                   onClick={() => {
                     dispatch(
-                      toggleFollow({ followedId: item.id, followerId: auth.id })
+                      toggleFollow({ followedId: item.id, followerId: authedUser?.id })
                     );
                   }}
                 >

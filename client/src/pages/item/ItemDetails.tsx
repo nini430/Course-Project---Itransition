@@ -50,7 +50,7 @@ const ItemDetails = () => {
   const {t}=useTranslation();
   useEffect(()=>{
     if(!socket) {
-      setSocket(io('http://localhost:7070',{
+      setSocket(io('https://course-project-itransition.onrender.com',{
         query:{
           userId:authedUser?.id
         }

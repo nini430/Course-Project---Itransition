@@ -12,7 +12,7 @@ declare module 'axios' {
 }
 
 const axiosApiInstance = axios.create({
-  baseURL: 'http://localhost:7070/api/v1',
+  baseURL: 'https://course-project-itransition.onrender.com/api/v1',
   _isRetry: false,
   withCredentials:true
 });

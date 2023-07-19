@@ -1,1 +1,1 @@
-export const SERVER_BASE_URL='http://localhost:7070/api/v1'
+export const SERVER_BASE_URL='https://course-project-itransition.onrender.com/api/v1'
