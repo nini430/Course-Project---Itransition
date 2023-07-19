@@ -457,7 +457,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
   align-items: center;
   flex-direction:column;
 `,Gv=xe(({xs:e,sm:t,md:n,lg:r,xl:o,mode:a,...i})=>y.jsx("form",{...i}))`
-  width: ${({xs:e,sm:t,md:n,lg:r,xl:o})=>o?"800px":t?"500px":e?"400px":"700px"};
+  width: ${({xs:e,sm:t,md:n,lg:r,xl:o})=>o?"800px":t?"500px":e?"300px":"700px"};
   height: auto;
   background-color:${({mode:e})=>e==="dark"?"#252121":"white"}; 
   padding: 20px;

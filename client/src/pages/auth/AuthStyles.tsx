@@ -13,7 +13,7 @@ const AuthForm = styled(({ xs, sm, md, lg,xl, mode, ...props }: any) => (
   <form {...props} />
 ))`
   width: ${({ xs, sm, md, lg, xl  }) =>
-    xl ? '800px' : sm ? '500px' : xs ? '400px' : '700px'};
+    xl ? '800px' : sm ? '500px' : xs ? '300px' : '700px'};
   height: auto;
   background-color:${({mode})=>mode==='dark'?'#252121':'white'}; 
   padding: 20px;
