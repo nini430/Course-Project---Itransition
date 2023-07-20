@@ -26,7 +26,7 @@ passport_1.default.deserializeUser((userId, done) => __awaiter(void 0, void 0, v
 passport_1.default.use(new passport_google_oauth20_1.Strategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: '/api/v1/auth/google/callback',
+    callbackURL: 'https://course-project-itransition.onrender.com/api/v1/auth/google/callback',
 }, (accessToken, refreshToken, profile, done) => __awaiter(void 0, void 0, void 0, function* () {
     const { displayName, photos, emails, id } = profile;
     const user = yield prismaClient_1.default.user.findFirst({
