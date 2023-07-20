@@ -17,7 +17,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-      callbackURL: '/api/v1/auth/google/callback',
+      callbackURL: 'https://course-project-itransition.onrender.com/api/v1/auth/google/callback',
     },
     async (accessToken, refreshToken, profile, done) => {
       const { displayName, photos, emails, id } = profile;
