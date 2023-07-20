@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import http from 'https';
+import http from 'http';
 import io from 'socket.io'
 
 import app from './app'
