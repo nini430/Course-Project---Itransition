@@ -9,10 +9,10 @@ const collectionValues: CollectionValues = {
 
 const collectionValidationSchema = (topics: string[]) =>
   object({
-    name: string().required('name_required'),
-    description: string().required('description_required'),
+    name: string().required('field_required'),
+    description: string().required('field_required'),
     topic: string()
-      .required('topic_required')
+      .required('field_required')
       .oneOf(topics, 'only_those_values'),
   });
 

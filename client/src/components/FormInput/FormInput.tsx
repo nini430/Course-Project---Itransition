@@ -3,6 +3,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import styled from 'styled-components';
 import { FocusEventHandler, ChangeEventHandler } from 'react';
 import { ErrorMessage } from '../../pages/auth/AuthStyles';
+import { useTranslation } from 'react-i18next';
 
 interface IFormInputProps {
   type?: string;
@@ -33,6 +34,7 @@ const FormInput: React.FC<IFormInputProps> = ({
   errorMessage,
   touched
 }) => {
+  const {t}=useTranslation();
   return (
     <FormGroup sx={{mb:2}}>
       <FormControl>
@@ -62,7 +64,7 @@ const FormInput: React.FC<IFormInputProps> = ({
       name={name}
     />
     </FormControl>
-    {error && touched && <ErrorMessage dangerouslySetInnerHTML={{__html:errorMessage}}/> }
+    {error && touched && <ErrorMessage dangerouslySetInnerHTML={{__html:t(`formik.${errorMessage}`) as string}}/> }
     </FormGroup>
     
     

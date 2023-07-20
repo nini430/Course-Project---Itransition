@@ -14,7 +14,6 @@ model User {
   id           String       @id @default(uuid())
   firstName    String
   lastName     String
-  phoneNumber String
   email        String       @unique
   password     String?
   role         Role         @default(BASIC)
@@ -35,7 +34,6 @@ model User {
   social Socials?
   googleId String?
   githubId String?
-  phoneCountryCode String
 }
 
 

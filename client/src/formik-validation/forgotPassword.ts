@@ -11,7 +11,7 @@ const forgetPasswordValues: ForgetPasswordValues = {
 const forgetPasswordValidationSchema: ObjectSchema<ForgetPasswordValues> =
   object({
     email: string()
-      .required('email_required')
+      .required('field_required')
       .matches(/^[\w.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'valid_email'),
   });
 

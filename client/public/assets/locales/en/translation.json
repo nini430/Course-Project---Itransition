@@ -114,5 +114,12 @@
     "user_deleted":"User is deleted",
     "user_not_found":"User is not found",
     "email_already_sent":"Email is Already sent"
+  },
+  "formik":{
+    "field_required":"Required Field",
+    "only_those_values":"Only those values allowed",
+    "valid_email":"E-mail format is invalid",
+    "password_must_match":"Password must match",
+    "pass_val":"'<ul><li>Minimum length of 6 characters</li><li>At least one uppercase letter</li><li>At least one lowercase letter</li><li>At least one digit</li><li>At least one special symbol (e.g., !@#$%^&*)</li></ul>'"
   }
 }

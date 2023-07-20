@@ -125,9 +125,10 @@ const SearchContainer = styled.div`
 const StyledTabsList=styled(({sm,xs,...rest}:any)=><TabList {...rest} />)`
   display:flex;
   gap:10px;
+  flex-direction:${({sm,xs})=>(sm || xs)? 'column':'row'} !important;
 
   .css-heg063-MuiTabs-flexContainer {
-    flex-direction:${({sm,xs})=>(sm || xs)? 'column':'row'};
+    flex-direction:${({sm,xs})=>(sm || xs)? 'column':'row'} !important;
   }
   
 `

@@ -86,8 +86,6 @@ const createUser = async (input: RegisterInput) => {
       lastName: input.lastName,
       email: input.email,
       password: hashedPassword,
-      phoneNumber:input.phoneNumber,
-      phoneCountryCode:input.phoneCountryCode
     },
   });
   return user;

@@ -10,7 +10,6 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { Toaster, toast } from 'react-hot-toast';
-import PhoneInput from 'react-phone-input-2';
 
 import {
   AuthContainer,
@@ -70,7 +69,6 @@ const Register = ({ admin, edit }: IRegisterProps) => {
         firstName: currentProfile?.firstName as string,
         lastName: currentProfile?.lastName as string,
         email: currentProfile?.email as string,
-        phoneNumber: currentProfile?.phoneNumber as string,
         phoneCountryCode: currentProfile?.phoneCountryCode as string,
         password: '',
         confirmPassword: '',
@@ -191,21 +189,6 @@ const Register = ({ admin, edit }: IRegisterProps) => {
               errorMessage={errors.email as string}
               touched={touched.email as boolean}
             />
-          <FormGroup sx={{ marginBottom: 2 }}>
-            <PhoneInput
-              inputStyle={{ width: '100%' }}
-              onBlur={() => setFieldTouched('phoneNumber', true)}
-              value={values.phoneNumber}
-              onChange={(value: string, country: { countryCode: string }) => {
-                setFieldValue('phoneNumber', value);
-                setFieldValue('phoneCountryCode',country.countryCode.toUpperCase())
-              }}
-              isValid={!(touched.phoneNumber && errors.phoneNumber)}
-            />
-            {touched.phoneNumber && errors.phoneNumber && (
-              <ErrorMessage>{errors.phoneNumber}</ErrorMessage>
-            )}
-          </FormGroup>
           {!(admin && edit && !showPasswordArea) ? (
             <>
               <TwoGridContainer sm={sm} xs={xs}>

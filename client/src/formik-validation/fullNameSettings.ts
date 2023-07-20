@@ -7,8 +7,8 @@ const initialValues: FullNameSettings = {
 };
 
 const validationSchema: ObjectSchema<FullNameSettings> = object({
-  firstName: string().required('firstName_required'),
-  lastName: string().required('lastName_required'),
+  firstName: string().required('field_required'),
+  lastName: string().required('field_required'),
 });
 
 export { initialValues, validationSchema };

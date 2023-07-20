@@ -8,9 +8,9 @@ const initialValues: PasswordSettings = {
 };
 
 const validationSchema: ObjectSchema<PasswordSettings> = object({
-  oldPassword: string().required('old_password_required'),
-  password: string().required('password_required'),
-  confirmPassword: string().required('confirm_password_required').oneOf([ref('password')],'password_must_match')
+  oldPassword: string().required('field_required'),
+  password: string().required('field_required'),
+  confirmPassword: string().required('field_required').oneOf([ref('password')],'password_must_match')
 });
 
 export { initialValues, validationSchema };
