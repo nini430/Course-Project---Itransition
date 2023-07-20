@@ -34,7 +34,7 @@ const errorMessages_1 = __importDefault(require("../utils/errorMessages"));
 const sendEmail_1 = __importDefault(require("../utils/sendEmail"));
 const mailConstructor_1 = require("../utils/mailConstructor");
 const registerUser = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { firstName, lastName, email, password, phoneNumber, phoneCountryCode } = req.body;
+    const { firstName, lastName, email, password } = req.body;
     if (!firstName || !lastName || !email || !password) {
         return next(new errorResponse_1.default(errorMessages_1.default.missingFields, http_status_codes_1.StatusCodes.BAD_REQUEST));
     }
@@ -43,8 +43,6 @@ const registerUser = (0, express_async_handler_1.default)((req, res, next) => __
         lastName,
         email,
         password,
-        phoneCountryCode,
-        phoneNumber
     }), { password: pass } = _a, rest = __rest(_a, ["password"]);
     return res.status(http_status_codes_1.StatusCodes.CREATED).json({ success: true, user: rest });
 }));
@@ -87,14 +85,12 @@ const generateRefreshToken = (0, express_async_handler_1.default)((req, res, nex
     }
     try {
         const tokenInfo = jsonwebtoken_1.default.verify(refreshToken, process.env.JWT_REFRESH_TOKEN_SECRET);
-        console.log(tokenInfo);
         if (tokenInfo.id) {
             const accessToken = (0, auth_1.generateJwt)(tokenInfo.id, process.env.JWT_ACCESS_TOKEN_SECRET, process.env.JWT_ACCESS_TOKEN_EXPIRE_MIN);
             return res.status(http_status_codes_1.StatusCodes.OK).json({ success: true, accessToken });
         }
     }
     catch (err) {
-        console.log(err);
         return next(new errorResponse_1.default(err.name === 'TokenExpiredError'
             ? errorMessages_1.default.tokenExpired
             : errorMessages_1.default.unauthenticated, http_status_codes_1.StatusCodes.UNAUTHORIZED));

@@ -20,7 +20,6 @@ const errorMessages_1 = __importDefault(require("../utils/errorMessages"));
 const http_status_codes_1 = require("http-status-codes");
 const itemReaction_1 = require("../services/itemReaction");
 const addReactionHandler = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('lalala');
     let reaction;
     const { name } = req.body.input;
     const item = yield (0, item_1.getItemByIdExtended)(req.params.itemId);

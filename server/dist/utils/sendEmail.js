@@ -24,13 +24,6 @@ const sendEmail = (mailOptions) => {
         extName: '.handlebars',
     };
     transporter.use('compile', (0, nodemailer_express_handlebars_1.default)(hbsOptions));
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log(`Error sending the email : ${error}`);
-        }
-        else {
-            console.log('Email sent!', info.response);
-        }
-    });
+    transporter.sendMail(mailOptions);
 };
 exports.default = sendEmail;

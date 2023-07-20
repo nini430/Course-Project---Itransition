@@ -32,7 +32,6 @@ const auth_1 = require("../services/auth");
 const authProtect = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
-    console.log(req.user, 'opa!!!!', req.isAuthenticated());
     if (req.isAuthenticated()) {
         return next();
     }
@@ -50,7 +49,6 @@ const authProtect = (0, express_async_handler_1.default)((req, res, next) => __a
         next();
     }
     catch (err) {
-        console.log(err.name, 'lalala');
         return next(new errorResponse_1.default(err.name === 'TokenExpiredError'
             ? errorMessages_1.default.tokenExpired
             : errorMessages_1.default.unauthenticated, http_status_codes_1.StatusCodes.UNAUTHORIZED));

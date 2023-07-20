@@ -7,7 +7,6 @@ const http_status_codes_1 = require("http-status-codes");
 const errorResponse_1 = __importDefault(require("../utils/errorResponse"));
 const errorMessages_1 = __importDefault(require("../utils/errorMessages"));
 const errorHandler = (err, req, res, next) => {
-    console.log(err);
     let errors = Object.assign({}, err);
     errors.message = err.message;
     if (err.code === 'P2002') {

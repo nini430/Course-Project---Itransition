@@ -36,8 +36,6 @@ passport.use(
             googleId: id,
             profileImage: photos?.[0].value as string,
             isEmailVerified: true,
-            phoneNumber:'none',
-            phoneCountryCode:'none'
           },
         });
         done(null, user);

@@ -44,7 +44,6 @@ const findUserByEmail = (email) => __awaiter(void 0, void 0, void 0, function* (
         where: { email },
         include: { followedIds: true, followerIds: true },
     });
-    console.log(user);
     return user;
 });
 exports.findUserByEmail = findUserByEmail;
@@ -104,8 +103,6 @@ const createUser = (input) => __awaiter(void 0, void 0, void 0, function* () {
             lastName: input.lastName,
             email: input.email,
             password: hashedPassword,
-            phoneNumber: input.phoneNumber,
-            phoneCountryCode: input.phoneCountryCode
         },
     });
     return user;
@@ -153,7 +150,6 @@ const getMyFollows = (userId) => __awaiter(void 0, void 0, void 0, function* () 
     const followings = yield prismaClient_1.default.follow.findMany({
         where: { followerId: userId },
     });
-    console.log(followers, followings, userId);
     return { followers, followings };
 });
 exports.getMyFollows = getMyFollows;

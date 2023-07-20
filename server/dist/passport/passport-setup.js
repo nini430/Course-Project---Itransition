@@ -45,8 +45,6 @@ passport_1.default.use(new passport_google_oauth20_1.Strategy({
                 googleId: id,
                 profileImage: photos === null || photos === void 0 ? void 0 : photos[0].value,
                 isEmailVerified: true,
-                phoneNumber: 'none',
-                phoneCountryCode: 'none'
             },
         });
         done(null, user);

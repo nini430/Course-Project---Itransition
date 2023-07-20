@@ -17,7 +17,6 @@ const uploadImage = (base64String) => __awaiter(void 0, void 0, void 0, function
         return image.url;
     }
     catch (err) {
-        console.log(err);
         throw err;
     }
 });

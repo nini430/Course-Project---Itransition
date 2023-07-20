@@ -20,15 +20,10 @@ const addCollection = (input, authorId) => __awaiter(void 0, void 0, void 0, fun
     if (image) {
         image = yield (0, common_1.uploadImage)(image);
     }
-    try {
-        const newCollection = yield prismaClient_1.default.collection.create({
-            data: { name, description, topic, image, authorId },
-        });
-        return newCollection;
-    }
-    catch (err) {
-        console.log(err);
-    }
+    const newCollection = yield prismaClient_1.default.collection.create({
+        data: { name, description, topic, image, authorId },
+    });
+    return newCollection;
 });
 exports.addCollection = addCollection;
 const addItemConfigs = (itemConfigs, collectionId) => __awaiter(void 0, void 0, void 0, function* () {
