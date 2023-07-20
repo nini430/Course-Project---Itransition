@@ -19,7 +19,7 @@ const ReactionMapper = ({ open, onClose }: IReactionMapperProps) => {
     <Dialog onClose={onClose} open={!!open}>
       <DialogContent sx={{ minWidth: 500, maxHeight:'300px', overflowY:'auto' }}>
         <TabContext value={selectedTab}>
-          <TabList TabIndicatorProps={{style:{borderColor:'gray !important'}}} onChange={(e, value) => setSelectedTab(value)}>
+          <TabList TabIndicatorProps={{style:{borderColor:'gray !important'}}} onChange={(_, value) => setSelectedTab(value)}>
             <StyledTab
               sx={{ minWidth: '30px !important' }}
               value="all"

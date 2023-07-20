@@ -4,7 +4,6 @@ import { Button, IconButton } from '@mui/material';
 import {
   Menu,
   MenuOpen,
-  Message,
   AdminPanelSettings,
   Email
 } from '@mui/icons-material';
@@ -27,9 +26,6 @@ const NavBar = () => {
   const navigate=useNavigate();
   const dispatch=useAppDispatch();
   const { authedUser } = useAppSelector((state) => state.auth);
-  const auth =
-    authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
-  const userExists = authedUser || localStorage.getItem('authed_user');
   const {sm,xs}=useResponsive();
   
   if (sm || xs) {
@@ -57,7 +53,7 @@ const NavBar = () => {
         <Logo />
         <SearchInput />
         <RightContainer>
-          {auth?.role === 'ADMIN' && (
+          {authedUser?.role === 'ADMIN' && (
             <Link to="/admin">
               <Button
                 sx={{ textTransform: 'capitalize', border: '1px solid gray' }}
@@ -69,9 +65,9 @@ const NavBar = () => {
             </Link>
           )}
 
-          {auth && !auth?.isEmailVerified && (
+          {authedUser && !authedUser?.isEmailVerified && (
             <Button onClick={()=>{
-              dispatch(verifyEmail({userId:auth.id,onSuccess:()=>{
+              dispatch(verifyEmail({userId:authedUser.id,onSuccess:()=>{
                 navigate('/verify-email')
               }}))
             }} startIcon={<Email/>} sx={{border:'1px solid gray'}}>{t('auth.verify_email')}</Button>
@@ -79,7 +75,7 @@ const NavBar = () => {
 
           <ModeSwitch />
           <LanguageDropDown />
-          {userExists ? (
+          {authedUser ? (
             <NavUser />
           ) : (
             <Link to="/login">

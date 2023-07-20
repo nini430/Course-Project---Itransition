@@ -2,21 +2,16 @@ import client from '../utils/prismaClient';
 import { CollectionInput } from '../types/collection';
 import { uploadImage } from './common';
 import { CustomTableConfigNames } from '../types/common';
-import { Collection } from '@prisma/client';
 
 const addCollection = async (input: CollectionInput, authorId: string) => {
   let { name, description, topic, image } = input;
   if (image) {
     image = await uploadImage(image);
   }
-  try {
-    const newCollection = await client.collection.create({
-      data: { name, description, topic, image, authorId },
-    });
-    return newCollection;
-  } catch (err) {
-    console.log(err);
-  }
+  const newCollection = await client.collection.create({
+    data: { name, description, topic, image, authorId },
+  });
+  return newCollection;
 };
 
 const addItemConfigs = async (

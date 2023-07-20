@@ -5,7 +5,6 @@ const uploadImage=async(base64String:string)=>{
     const image=await cloudinary.uploader.upload(base64String);
     return image.url;
     }catch(err) {
-        console.log(err);
         throw err;
     }
 }

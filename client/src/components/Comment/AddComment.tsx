@@ -12,6 +12,7 @@ import { Wrapper, ImageContainer, CloseContainer } from './shared/SharedStyles';
 import EmojiActions from './shared/EmojiActions';
 import { Socket } from 'socket.io-client';
 import { Comment } from '../../types/comment';
+import { useTranslation } from 'react-i18next';
 
 interface IAddCommentProps {
   socket: Socket | null;
@@ -31,20 +32,19 @@ const AddComment = ({ socket }: IAddCommentProps) => {
     (state) => state.item
   );
   const { authedUser } = useAppSelector((state) => state.auth);
-  const auth =
-    authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
   const dispatch = useAppDispatch();
   const [isEmojiPickerShown, setIsEmojiPickerShown] = useState(false);
   const [text, setText] = useState('');
+  const {t}=useTranslation();
 
   return (
     <AddCommentContainer>
       <LeftContainer>
-        <Link style={{ textDecoration: 'none' }} to={`/profile/${auth?.id}`}>
+        <Link style={{ textDecoration: 'none' }} to={`/profile/${authedUser?.id}`}>
           <CommentAvatar
             isAdd
-            fullName={`${auth?.firstName} ${auth?.lastName}`}
-            src={auth?.profileImage}
+            fullName={`${authedUser?.firstName} ${authedUser?.lastName}`}
+            src={authedUser?.profileImage}
           />
         </Link>
       </LeftContainer>
@@ -53,7 +53,7 @@ const AddComment = ({ socket }: IAddCommentProps) => {
           <StyledInput
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Type Your comment here..."
+            placeholder={t('item.type_comment') as string}
           />
           {uploadImg && (
             <ImageContainer>
@@ -102,7 +102,7 @@ const AddComment = ({ socket }: IAddCommentProps) => {
           }}
           sx={{ border: '1px solid gray' }}
         >
-          Post
+         {t('item.post')}
         </LoadingButton>
       </RightContainer>
     </AddCommentContainer>

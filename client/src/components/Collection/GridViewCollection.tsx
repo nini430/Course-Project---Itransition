@@ -12,7 +12,7 @@ import { Collection as CollectionType } from '../../types/collection';
 import NoImage from '../../assets/no-image.png';
 import { Delete, Edit } from '@mui/icons-material';
 import { Dispatch, SetStateAction } from 'react';
-import { useAppDispatch, useAppSelector } from '../../store/store';
+import { useAppSelector } from '../../store/store';
 import { Link } from 'react-router-dom';
 import Avatar from '../Avatar/Avatar';
 import AvatarImg from '../../assets/avatar.png';
@@ -20,18 +20,15 @@ import { useTranslation } from 'react-i18next';
 
 interface ICollectionProps {
   collection: CollectionType;
-  isConfirmDialogOpen?: boolean;
-  setIsConfirmDialogOpen?: Dispatch<SetStateAction<any>>;
+  setIsConfirmDialogOpen?: Dispatch<SetStateAction<CollectionType>>;
   main?: boolean;
 }
 
 const Collection = ({
   collection,
-  isConfirmDialogOpen,
   setIsConfirmDialogOpen,
   main,
 }: ICollectionProps) => {
-  const dispatch = useAppDispatch();
   const { authedUser } = useAppSelector((state) => state.auth);
   const { t } = useTranslation();
   return (
@@ -71,38 +68,42 @@ const Collection = ({
         </Box>
       </Link>
       <CardActions sx={{ gap: '10px' }}>
-        <Button sx={{ border: '1px solid gray' }}>
-          {t('common.view_more')}
-        </Button>
-        {!main && setIsConfirmDialogOpen && authedUser && (collection.author.id===authedUser.id || authedUser.role==='ADMIN') && (
-          <CrudBtnContainer>
-            <Link
-              to={`/edit-collection/${collection.id}`}
-              style={{ textDecoration: 'none' }}
-            >
-              <IconButton>
-                <Edit />
-              </IconButton>
-            </Link>
+        <Link
+          style={{ textDecoration: 'none' }}
+          to={`/collection/${collection.id}`}
+        >
+          <Button sx={{ border: '1px solid gray' }}>
+            {t('common.view_more')}
+          </Button>
+        </Link>
+        {!main &&
+          setIsConfirmDialogOpen &&
+          authedUser &&
+          (collection.author.id === authedUser.id ||
+            authedUser.role === 'ADMIN') && (
+            <CrudBtnContainer>
+              <Link
+                to={`/edit-collection/${collection.id}`}
+                style={{ textDecoration: 'none' }}
+              >
+                <IconButton>
+                  <Edit />
+                </IconButton>
+              </Link>
 
-            <IconButton
-              onClick={() => {
-                setIsConfirmDialogOpen(collection);
-              }}
-            >
-              <Delete />
-            </IconButton>
-          </CrudBtnContainer>
-        )}
+              <IconButton
+                onClick={() => {
+                  setIsConfirmDialogOpen(collection);
+                }}
+              >
+                <Delete />
+              </IconButton>
+            </CrudBtnContainer>
+          )}
       </CardActions>
     </StyledCard>
   );
 };
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
 
 const StyledCard = styled(Card)`
   width: 300px;

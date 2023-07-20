@@ -18,7 +18,6 @@ import {
   reactComment,
   removeComment,
   setCommentEditMode,
-  toggleCommentImage,
   unreactComment,
 } from '../../store/itemReducer';
 import { LoadingButton } from '@mui/lab';
@@ -31,6 +30,8 @@ import EmojiActions from './shared/EmojiActions';
 import { useTranslation } from 'react-i18next';
 import toastOptions from '../../utils/toastOptions';
 import { fileToBase64 } from '../../utils/fileToBase64';
+import ReactionMapper from '../shared/ReactionMapper';
+import { ReactionMapper as ReactionMapperType } from '../../types/reaction';
 
 interface ICommentProps {
   comment: CommentType;
@@ -38,25 +39,23 @@ interface ICommentProps {
 
 const Comment = ({ comment }: ICommentProps) => {
   const { t } = useTranslation();
+  const [commentReactions,setCommentReactions]=useState<null | ReactionMapperType[]>(null);
+  const { authedUser } = useAppSelector((state) => state.auth);
+  const { editCommentLoading,removeCommentLoading } = useAppSelector((state) => state.item);
   const [currentComment, setCurrentComment] = useState(comment);
   const [uploadImg, setUploadImg] = useState<File | null>(null);
   const [imageModal, setImageModal] = useState<string | null>(null);
-  const { authedUser } = useAppSelector((state) => state.auth);
-  const auth =
-    authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
-  const liked = comment.reactions?.find(
-    (reaction) => reaction.userId === auth?.id
-  );
-  const { editCommentLoading } = useAppSelector((state) => state.item);
   const [editComment, setEditComment] = useState(comment.text);
   const [isInEditMode, setIsInEditMode] = useState(false);
   const dispatch = useAppDispatch();
-  const { removeCommentLoading } = useAppSelector((state) => state.item);
   const [isEmojiShown, setIsEmojiShown] = useState(false);
   const [animationPause, setAnimationPause] = useState(false);
   const [isMoreShown, setIsMoreShown] = useState(false);
   const [confirmDialog, setConfirmDialog] = useState<CommentType | null>(null);
-
+  const liked = comment.reactions?.find(
+    (reaction) => reaction.userId === authedUser?.id
+  );
+ 
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*' as unknown as Accept,
     onDrop: (acceptedFiles) => {
@@ -157,7 +156,7 @@ const Comment = ({ comment }: ICommentProps) => {
                 startIcon={<Save />}
                 sx={{ border: '1px solid gray' }}
               >
-                Save
+                {t('common.save')}
               </LoadingButton>
               <LoadingButton
                 startIcon={<Cancel />}
@@ -170,7 +169,7 @@ const Comment = ({ comment }: ICommentProps) => {
                 }}
                 sx={{ border: '1px solid gray' }}
               >
-                Cancel
+                {t('common.cancel')}
               </LoadingButton>
             </ButtonGroup>
           </EditCommentWrapper>
@@ -240,14 +239,20 @@ const Comment = ({ comment }: ICommentProps) => {
                           );
                         }}
                       >
-                        Like
+                       {t('common.like')}
                       </span>
                     )}
                   </Typography>
                 </TypoWrapper>
               </ReactionContainer>
               {comment.reactions.length > 0 && (
-                <Typography>{comment.reactions.length} reaction(s)</Typography>
+                <Typography onClick={()=>{
+                  setCommentReactions(comment.reactions.map(react=>({
+                    id:react.id,
+                    emoji: react.name,
+                    user: react.user
+                  })))
+                }} sx={{textDecoration:'underline',cursor:'pointer'}}>{comment.reactions.length} {t('item.reactions')}</Typography>
               )}
             </TypoWrapper>
           </>
@@ -300,6 +305,7 @@ const Comment = ({ comment }: ICommentProps) => {
         />
       )}
       <ImageModal image={imageModal} onClose={() => setImageModal(null)} />
+      <ReactionMapper open={commentReactions} onClose={()=>setCommentReactions(null)} />
     </CommentContainer>
   );
 };

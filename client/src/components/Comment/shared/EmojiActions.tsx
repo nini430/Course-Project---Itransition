@@ -46,7 +46,7 @@ const EmojiActions = ({
                   !basicEmoji?.contains(e.target as Node) &&
                   !EmojiPickerReact[0].contains(e.target as Node)
                 ) {
-                setIsEmojiPickerShown &&  setIsEmojiPickerShown(false);
+                  setIsEmojiPickerShown && setIsEmojiPickerShown(false);
                 }
               }}
             >

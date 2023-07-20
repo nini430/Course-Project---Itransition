@@ -18,13 +18,18 @@ import {
   Search,
   Undo,
 } from '@mui/icons-material';
-import {useTranslation} from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 import { toast, Toaster } from 'react-hot-toast';
 
-import Table from '../../components/Comment/shared/Table';
+import Table from '../../components/shared/Table';
 import { adminColumns } from '../../utils/adminColumns';
 import { useAppDispatch, useAppSelector } from '../../store/store';
-import { changeRole, changeStatus, filterUsers, sortUser } from '../../store/adminReducer';
+import {
+  changeRole,
+  changeStatus,
+  filterUsers,
+  sortUser,
+} from '../../store/adminReducer';
 import useTableFilter from '../../hooks/useTableFilter';
 import Loading from '../../components/Loading/Loading';
 import CollectionModal from '../../components/shared/CollectionModal';
@@ -36,7 +41,7 @@ import { SortedDir } from '../../types/table';
 import useResponsive from '../../hooks/useResponsive';
 
 const AdminDashboard = () => {
-  const {t}=useTranslation();
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { users, getUsersLoading, changeStatusLoading } = useAppSelector(
     (state) => state.admin
@@ -68,7 +73,7 @@ const AdminDashboard = () => {
   }
   return (
     <DashboardContainer>
-      <Toaster/>
+      <Toaster />
       <Box
         sx={{
           display: 'flex',
@@ -202,15 +207,19 @@ const AdminDashboard = () => {
             confirmDialog.name === 'add-admin' ||
             confirmDialog.name === 'remove-admin'
           ) {
-            dispatch(changeRole({
-              userIds:selectedIds,
-              role: confirmDialog.name==='add-admin'?'ADMIN':'BASIC',
-              onSuccess:(message:string)=>{
-                toast.success(t(`errors.${message||'success'}`,toastOptions));
-                setSelectedIds([]);
-                setConfirmDialog(null);
-              }
-            }))
+            dispatch(
+              changeRole({
+                userIds: selectedIds,
+                role: confirmDialog.name === 'add-admin' ? 'ADMIN' : 'BASIC',
+                onSuccess: (message: string) => {
+                  toast.success(
+                    t(`errors.${message || 'success'}`, toastOptions)
+                  );
+                  setSelectedIds([]);
+                  setConfirmDialog(null);
+                },
+              })
+            );
           } else {
             dispatch(
               changeStatus({

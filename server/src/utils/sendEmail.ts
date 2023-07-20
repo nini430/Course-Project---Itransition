@@ -25,13 +25,7 @@ const sendEmail=(mailOptions:MailOptions)=>{
 
     transporter.use('compile',hbs(hbsOptions as any))
 
-    transporter.sendMail(mailOptions,(error,info)=>{
-        if(error) {
-            console.log(`Error sending the email : ${error}`);
-        }else{
-            console.log('Email sent!',info.response);
-        }
-    })
+    transporter.sendMail(mailOptions);
 }
 
 export default sendEmail;

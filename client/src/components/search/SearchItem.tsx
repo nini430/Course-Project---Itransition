@@ -19,18 +19,23 @@ const SearchItem = ({item}:ISearchItemProps) => {
     const {searchQuery}=useAppSelector(state=>state.search);
    const commentSection=item.commentText?.replace(new RegExp(`${searchQuery}`,'gi'),`<b>${searchQuery}</b>`)
   return (
-    <Link to={item.link} style={{textDecoration:'none'}}>
+    
     <Card sx={{minWidth:300}}>
+        <Link to={item.link} style={{textDecoration:'none'}}>
         <CardContent sx={{display:'flex',flexDirection:'column',gap:'10px',alignItems:'center'}}>
             <Typography>{item?.name}</Typography>
             {item?.tags && <Typography>{item.tags}</Typography>}
             {item?.image && <Avatar width={50} height={50} src={item.image as string} />}
             <div dangerouslySetInnerHTML={{__html:commentSection as string}}/> 
         </CardContent>
+        </Link>
         <CardActions sx={{display:'flex',justifyContent:'center'}}>
+            <Link to={item.link} style={{textDecoration:'none'}}>
             <Button sx={{border:'1px solid gray'}}>{t('common.view_more')}</Button>
+            </Link>
+           
         </CardActions>
-        </Card></Link>
+        </Card>
         
   )
 }

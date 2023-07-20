@@ -3,7 +3,6 @@ import { Dispatch, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import {
-  Avatar,
   Box,
   Button,
   Card,
@@ -12,7 +11,10 @@ import {
   IconButton,
   Typography,
 } from '@mui/material';
-import { Collection as CollectionType } from '../../types/collection';
+import {
+  Collection,
+  Collection as CollectionType,
+} from '../../types/collection';
 import NoImage from '../../assets/no-image.png';
 import AvatarComp from '../Avatar/Avatar';
 import AvatarImg from '../../assets/avatar.png';
@@ -21,13 +23,11 @@ import { useAppSelector } from '../../store/store';
 
 interface IListViewCollectionProps {
   collection: CollectionType;
-  isConfirmDialogOpen: boolean;
-  setIsConfirmDialogOpen: Dispatch<SetStateAction<boolean>>;
+  setIsConfirmDialogOpen: Dispatch<SetStateAction<Collection>>;
 }
 
 const ListViewCollection = ({
   collection,
-  isConfirmDialogOpen,
   setIsConfirmDialogOpen,
 }: IListViewCollectionProps) => {
   const { t } = useTranslation();
@@ -62,22 +62,21 @@ const ListViewCollection = ({
                 }}
               />
             </Box>
-        {authedUser && collection?.author?.id === authedUser?.id && (
-           <CrudBtnContainer>
-           <IconButton sx={{ alignItems: 'flex-start', height: '40px' }}>
-             <Edit />
-           </IconButton>
-           <IconButton
-             onClick={() => {
-               setIsConfirmDialogOpen(true);
-             }}
-             sx={{ alignItems: 'flex-start', height: '40px' }}
-           >
-             <Delete />
-           </IconButton>
-         </CrudBtnContainer>
-        )}
-            
+            {authedUser && collection?.author?.id === authedUser?.id && (
+              <CrudBtnContainer>
+                <IconButton sx={{ alignItems: 'flex-start', height: '40px' }}>
+                  <Edit />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    setIsConfirmDialogOpen(collection);
+                  }}
+                  sx={{ alignItems: 'flex-start', height: '40px' }}
+                >
+                  <Delete />
+                </IconButton>
+              </CrudBtnContainer>
+            )}
           </RightContent>
         </CardContent>
       </Link>
@@ -85,7 +84,14 @@ const ListViewCollection = ({
         to={`/profile/${collection.author.id}`}
         style={{ textDecoration: 'none' }}
       >
-        <Box sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: '10px',
+            alignItems: 'center',
+            padding: '10px',
+          }}
+        >
           <Typography sx={{ color: 'gray' }}>Author: </Typography>
           <Box sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <AvatarComp
@@ -100,17 +106,22 @@ const ListViewCollection = ({
         </Box>
       </Link>
 
-      <CardActions>
-        <Button fullWidth sx={{ border: '1px solid gray' }}>
-          {t('common.view_more')}
-        </Button>
+      <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Link
+          to={`/collection/${collection.id}`}
+          style={{ textDecoration: 'none' }}
+        >
+          <Button fullWidth sx={{ border: '1px solid gray' }}>
+            {t('common.view_more')}
+          </Button>
+        </Link>
       </CardActions>
     </StyledCard>
   );
 };
 
 const StyledCard = styled(Card)`
-  min-height: 330px !important;
+  min-height: 400px !important;
 `;
 
 const CollectionImg = styled.img`

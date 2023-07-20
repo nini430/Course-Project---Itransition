@@ -30,7 +30,7 @@ import CustomFieldsModal from '../item/CustomFieldsModal';
 import useTableFilter from '../../hooks/useTableFilter';
 import { SortedDir } from '../../types/table';
 import { Item } from '../../types/item';
-import Table from '../../components/Comment/shared/Table';
+import Table from '../../components/shared/Table';
 import { SimpleUser, User } from '../../types/auth';
 import FollowModal from '../../components/shared/FollowModal';
 import ConfirmDialog from '../../components/shared/ConfirmDialog';
@@ -63,7 +63,7 @@ const CollectionDashboard = ({
   const { myItems, getMyItemsLoading, removeItemLoading } = useAppSelector(
     (state) => state.item
   );
-  const {authedUser}=useAppSelector(state=>state.auth);
+  const { authedUser } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(getMyItems({ collectionId: currentCollection?.id as string }));
@@ -113,16 +113,17 @@ const CollectionDashboard = ({
         }}
       >
         <ToolbarSides>
-        {((authedUser && authedUser.id===currentCollection?.author.id) || authedUser?.role==='ADMIN') && (
-          <Link to={`/add-item/${currentCollection?.id as string}`}>
-          <Button
-            startIcon={<AddCircle />}
-            sx={{ alignSelf: 'flex-start', border: '1px solid gray' }}
-          >
-            Add New Item
-          </Button>
-        </Link>
-        )}  
+          {((authedUser && authedUser.id === currentCollection?.author.id) ||
+            authedUser?.role === 'ADMIN') && (
+            <Link to={`/add-item/${currentCollection?.id as string}`}>
+              <Button
+                startIcon={<AddCircle />}
+                sx={{ alignSelf: 'flex-start', border: '1px solid gray' }}
+              >
+                Add New Item
+              </Button>
+            </Link>
+          )}
           <TextField
             value={filterValue}
             onChange={(e) => setFilterValue(e.target.value)}
@@ -147,17 +148,18 @@ const CollectionDashboard = ({
           </Button>
         </ToolbarSides>
         <ToolbarSides>
-         {((authedUser && authedUser.id === currentCollection?.author.id) || authedUser?.role==='ADMIN') && (
-          <Tooltip title="Delete">
-          <IconButton onClick={() => setConfirmDialog(selectedRowKeys)}>
-            <Delete />
-          </IconButton>
-        </Tooltip>
-         )} 
+          {((authedUser && authedUser.id === currentCollection?.author.id) ||
+            authedUser?.role === 'ADMIN') && (
+            <Tooltip title="Delete">
+              <IconButton onClick={() => setConfirmDialog(selectedRowKeys)}>
+                <Delete />
+              </IconButton>
+            </Tooltip>
+          )}
         </ToolbarSides>
       </Box>
       <Table
-      loading={getMyItemsLoading}
+        loading={getMyItemsLoading}
         sortItem={(sortedCol: string, sortedDir: SortedDir) => {
           setSortedColumn(sortedCol);
           setSortedDir(sortedDir);

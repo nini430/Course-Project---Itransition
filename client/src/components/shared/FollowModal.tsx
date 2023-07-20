@@ -7,14 +7,17 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import { FollowInstance } from '../../types/follow';
 import { toggleFollow } from '../../store/userReducer';
 import { getFollows } from '../../store/authReducer';
+import { useTranslation } from 'react-i18next';
+import { User } from '../../types/auth';
 
 interface IFollowModalProps {
-  open: any[] | null;
+  open: User[] | null;
   onClose: () => void;
 }
 
 const FollowModal = ({ open, onClose }: IFollowModalProps) => {
   const dispatch = useAppDispatch();
+  const {t}=useTranslation();
   const { authedUser, myFollowings } = useAppSelector((state) => state.auth);
   const { toggleFollowLoading } = useAppSelector((state) => state.user);
   useEffect(() => {
@@ -24,7 +27,7 @@ const FollowModal = ({ open, onClose }: IFollowModalProps) => {
   return (
     <Dialog open={!!open} onClose={onClose}>
       <DialogContent sx={{ minWidth: 400, display:'flex', flexDirection:'column', gap:'15px' }}>
-        {open && open.length === 0 && <Typography>No Records yet</Typography>}
+        {open && open.length === 0 && <Typography>{t('common.no_records_yet')}</Typography>}
         {open &&
           open.map((item) => (
             <Box

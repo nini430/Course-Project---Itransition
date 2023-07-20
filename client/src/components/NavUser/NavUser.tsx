@@ -60,12 +60,6 @@ const NavUserContainer = styled.div`
   justify-content: center;
 `;
 
-const UserImg = styled.img`
-  border-radius: 50%;
-  width: 40px;
-  height:40px;
-  object-fit:cover;
-`;
 
 const StyledMenu = styled(Menu)`
   margin-top: 15px;

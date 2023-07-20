@@ -25,7 +25,6 @@ const findUserByEmail = async (email: string) => {
     
     include: { followedIds: true, followerIds: true },
   });
-  console.log(user);
   return user;
 };
 
@@ -140,7 +139,6 @@ const getMyFollows = async (userId: string) => {
   const followings = await client.follow.findMany({
     where: { followerId: userId },
   });
-  console.log(followers, followings, userId);
   return { followers, followings };
 };
 

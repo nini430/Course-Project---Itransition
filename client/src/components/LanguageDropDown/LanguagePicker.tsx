@@ -1,7 +1,5 @@
-import {useState} from 'react'
 import { Switch } from '@mui/material';
 import styled from 'styled-components';
-import jsCookie from 'js-cookie';
 import i18n from 'i18next';
 
 import Eng from '../../assets/uk.png';
@@ -25,7 +23,7 @@ const LanguagePicker = () => {
   );
 };
 
-const LanguageWrapper = styled(({ isXs, ...props }: any) => <div {...props} />)`
+const LanguageWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 5px;

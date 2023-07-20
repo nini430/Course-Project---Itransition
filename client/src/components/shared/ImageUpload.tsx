@@ -3,7 +3,6 @@ import { Dispatch, SetStateAction, useState, useEffect } from 'react';
 import { IconButton, Button } from '@mui/material';
 import { PhotoCamera, Save, Cancel } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import { DropzoneRootProps, DropzoneInputProps } from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
 import Loading from '../../assets/loading.gif';
 import Avatar from '../Avatar/Avatar';
@@ -13,7 +12,7 @@ interface IImageUploadProps {
   setUploadImg: Dispatch<SetStateAction<File | null>>;
   photoUploadLoading: boolean;
   mainImage: string | undefined;
-  fallBackImage: any;
+  fallBackImage: string;
   uploadImage: any;
   isAllowedUpload: boolean;
   getRootProps: any;
@@ -89,14 +88,14 @@ const ImageUpload = ({
             sx={{ border: '1px solid gray' }}
             startIcon={<Save />}
           >
-            Save
+            {t('common.save')}
           </LoadingButton>
           <Button
             onClick={() => setUploadImg(null)}
             sx={{ border: '1px solid gray' }}
             startIcon={<Cancel />}
           >
-            Cancel
+            {t('common.cancel')}
           </Button>
         </SaveContainer>
       )}

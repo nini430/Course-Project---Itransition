@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import path from 'path';
+import helmet from 'helmet';
 import { create } from 'express-handlebars';
 import cors from 'cors';
 import morgan from 'morgan';
@@ -14,6 +15,7 @@ import passport from 'passport';
 
 const app = express();
 
+app.use(helmet());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 const corsOptions={ origin: true, credentials: true}

@@ -1,27 +1,27 @@
-import { Typography } from "@mui/material"
-import styled from 'styled-components'
-import Avatar from "../../Avatar/Avatar"
-import AvatarImg from '../../../assets/avatar.png'
+import { Typography } from '@mui/material';
+import styled from 'styled-components';
+import Avatar from '../../Avatar/Avatar';
+import AvatarImg from '../../../assets/avatar.png';
 
 interface ICommentAvatarProps {
-  src?:string;
+  src?: string;
   fullName?: string;
-  isAdd?:boolean;
+  isAdd?: boolean;
 }
 
-const CommentAvatar = ({src,fullName,isAdd}:ICommentAvatarProps) => {
+const CommentAvatar = ({ src, fullName, isAdd }: ICommentAvatarProps) => {
   return (
-   <CommentAvatarWrapper>
+    <CommentAvatarWrapper>
       <Avatar width={30} height={30} src={src || AvatarImg} />
-      {!isAdd && <Typography>{fullName}</Typography> }
-   </CommentAvatarWrapper>
-  )
-}
+      {!isAdd && <Typography>{fullName}</Typography>}
+    </CommentAvatarWrapper>
+  );
+};
 
-const CommentAvatarWrapper=styled.div`
-  display:flex;
-  gap:3px;
-  align-items:center;
-`
+const CommentAvatarWrapper = styled.div`
+  display: flex;
+  gap: 3px;
+  align-items: center;
+`;
 
-export default CommentAvatar
+export default CommentAvatar;

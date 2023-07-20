@@ -11,10 +11,10 @@ import {
 } from '@mui/material';
 import styled from 'styled-components';
 import { Dispatch, SetStateAction } from 'react';
-import { Column, SortedDir } from '../../../types/table';
+import { Column, SortedDir } from '../../types/table';
 import { useTranslation } from 'react-i18next';
-import { customizeCells } from '../../../utils/tableFormatterFns';
-import { Item } from '../../../types/item';
+import { customizeCells } from '../../utils/tableFormatterFns';
+import { Item } from '../../types/item';
 import { ArrowDownward, ArrowUpward, Sort } from '@mui/icons-material';
 
 interface ITableProps {
@@ -31,7 +31,7 @@ interface ITableProps {
   sortedColumn: string;
   sortedDir: SortedDir;
   sortItem: (sortedCol: string, sortedDir: SortedDir) => void;
-  loading:boolean;
+  loading: boolean;
 }
 
 const Table = ({
@@ -48,7 +48,7 @@ const Table = ({
   sortedColumn,
   sortedDir,
   sortItem,
-  loading
+  loading,
 }: ITableProps) => {
   const { t } = useTranslation();
   return (
@@ -69,7 +69,12 @@ const Table = ({
           </TableCell>
           {columns.map((column) => (
             <TableCell
-              sx={{ cursor: 'pointer', position: 'relative', width: 150, maxWidth:150 }}
+              sx={{
+                cursor: 'pointer',
+                position: 'relative',
+                width: 150,
+                maxWidth: 150,
+              }}
               key={column.id}
             >
               {t(`${tableName}.${column.label}`)}
@@ -94,7 +99,7 @@ const Table = ({
                         <ArrowDownward />
                       )
                     ) : (
-                      <Sort/>
+                      <Sort />
                     )}
                   </IconButton>
                 ) : (
@@ -106,40 +111,41 @@ const Table = ({
         </TableRow>
       </TableHead>
       <TableBody>
-        {loading ? <Box sx={{display:'flex',justifyContent:'center'}}>
-                <CircularProgress size={75} />
-        </Box>:
-        data.map((item: any) => (
-          <TableRow key={item.id}>
-            <TableCell>
-              <Checkbox
-                onChange={() =>
-                  setSelectedIds((prev) =>
-                    prev.includes(item.id)
-                      ? prev.filter((elem) => elem !== item.id)
-                      : [...prev, item.id]
-                  )
-                }
-                checked={selectedIds?.includes(item.id)}
-              />
-            </TableCell>
-            {Object.entries(item).map(([key, value]) => (
+        {loading ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <CircularProgress size={75} />
+          </Box>
+        ) : (
+          data.map((item: any) => (
+            <TableRow key={item.id}>
               <TableCell>
-                {customizeCells(
-                  value,
-                  viewCustom,
-                  item,
-                  viewReacts,
-                  viewComments,
-                  viewCollections,
-                  viewFollows
-                )}
+                <Checkbox
+                  onChange={() =>
+                    setSelectedIds((prev) =>
+                      prev.includes(item.id)
+                        ? prev.filter((elem) => elem !== item.id)
+                        : [...prev, item.id]
+                    )
+                  }
+                  checked={selectedIds?.includes(item.id)}
+                />
               </TableCell>
-            ))}
-          </TableRow>
-        ))
-        }
-
+              {Object.entries(item).map(([key, value]) => (
+                <TableCell>
+                  {customizeCells(
+                    value,
+                    viewCustom,
+                    item,
+                    viewReacts,
+                    viewComments,
+                    viewCollections,
+                    viewFollows
+                  )}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))
+        )}
       </TableBody>
     </TableElement>
   );
