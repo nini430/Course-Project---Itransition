@@ -3,7 +3,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import {LocalizationProvider} from '@mui/x-date-pickers'
 import {AdapterMoment} from '@mui/x-date-pickers/AdapterMoment'
-import 'react-phone-input-2/lib/style.css'
 
 
 import App from './App.tsx';

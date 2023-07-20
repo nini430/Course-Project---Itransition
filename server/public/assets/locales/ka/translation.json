@@ -1,38 +1,46 @@
 {
-  "common":{
-    "comments":"კომენტარები",
-    "reactions":"რეაქციები",
-    "collection":"კოლექცია",
-    "author":"ავტორი",
-    "view_more":"იხილეთ მეტი",
-    "topic":"თემა",
-    "custom_fields":"სპეციფიკური ველები",
-    "no_comments":"კომენტარები არ არის",
-    "show":"ნახვა",
-    "follow":"გამოწერა",
-    "unfollow":"ამოწერა",
-    "please":"გთხოვთ",
-    "search":"ძიება...",
-    "export_csv":"გადმოწერეთ  CSV ფორმატი",
-    "close":"დახურვა",
-    "edit":"რედაქტირება"
-},
-  "home":{
-    "latest_items":"უახლესი ჩანაწერები",
-    "largest_collections":"ტოპ 5 კოლექცია"
+  "common": {
+    "comments": "კომენტარები",
+    "reactions": "რეაქციები",
+    "collection": "კოლექცია",
+    "author": "ავტორი",
+    "view_more": "იხილეთ მეტი",
+    "topic": "თემა",
+    "custom_fields": "სპეციფიკური ველები",
+    "no_comments": "კომენტარები არ არის",
+    "show": "ნახვა",
+    "follow": "გამოწერა",
+    "unfollow": "ამოწერა",
+    "please": "გთხოვთ",
+    "search": "ძიება...",
+    "export_csv": "გადმოწერეთ  CSV ფორმატი",
+    "close": "დახურვა",
+    "edit": "რედაქტირება",
+    "like": "მომწონს",
+    "view": "ნახვა",
+    "no_records_yet": "ჩანაწერები არ არის",
+    "save": "შენახვა",
+    "cancel": "გაუქმება",
+    "sure": "დარწმუნებული ხართ?"
   },
-  "item":{
-    "tags":"ტეგები",
-    "age":"ასაკი",
-    "name":"სახელი",
-    "collection":"კოლექცია",
-    "created_at":"შექმნის დრო",
-    "author":"ავტორი",
-    "comments":"კომენტარები",
-    "reactions":"რეაქციები",
-    "custom_fields":"სპეციფიკური ველები",
-    "action":"მოქმედებები",
-    "id":"უნიკალური აიდი"
+  "home": {
+    "latest_items": "უახლესი ჩანაწერები",
+    "largest_collections": "ტოპ 5 კოლექცია"
+  },
+  "item": {
+    "tags": "ტეგები",
+    "age": "ასაკი",
+    "name": "სახელი",
+    "collection": "კოლექცია",
+    "created_at": "შექმნის დრო",
+    "author": "ავტორი",
+    "comments": "კომენტარები",
+    "reactions": "რეაქციები",
+    "custom_fields": "სპეციფიკური ველები",
+    "action": "მოქმედებები",
+    "id": "უნიკალური აიდი",
+    "post": "დამატება",
+    "type_comment": "დაწერეთ კომენტარი..."
   },
   "auth": {
     "register": "რეგისტრაცია",
@@ -51,60 +59,69 @@
     "last_name_required": "შეიყვანეთ გვარი-ს ველი",
     "confirm_password_required": "გაიმეორეთ პაროლი",
     "passwords_must_match": "პაროლი არ ემთხვევა",
-    "sign_in":"ავტორიზაცია",
-    "role":"როლი",
-    "verify_email":"დაადასტურეთ ელ.ფოსტა",
-    "enter":"შეხვიდეთ ექაუნში"
+    "sign_in": "ავტორიზაცია",
+    "sign_up": "რეგისტრაცია",
+    "role": "როლი",
+    "verify_email": "დაადასტურეთ ელ.ფოსტა",
+    "enter": "შეხვიდეთ ექაუნში"
   },
-  "action":{
-    "to_post_comment":"რათა დაწეროთ კომენტარი"
+  "action": {
+    "to_post_comment": "რათა დაწეროთ კომენტარი"
   },
   "nav": {
     "search": "ძიება...",
-    "parameters":"პარამეტრები",
-     "log_out":"გამოსვლა",
-     "profile":"პროფილი"
+    "parameters": "პარამეტრები",
+    "log_out": "გამოსვლა",
+    "profile": "პროფილი"
   },
   "lang": {
     "en": "ინგლისური",
     "geo": "ქართული"
   },
-  "breadcrumb":{
-    "home":"მთავარი",
-    "item":"ჩანაწერი"
-},
-"collection":{
-  "details":"კოლექციის დეტალები",
-  "collections":"კოლექცია"
-},
-"admin":{
-  "id":"უნიკალური აიდი",
-  "first_name":"სახელი",
-  "last_name":"გვარი",
-  "email":"ელ.ფოსტა",
-  "role":"როლი",
-  "profile_image":"პროფილის სურათი",
-  "collections_length":"კოლექციები",
-  "created_at":"შექმნის დრო",
-  "followers":"გამომწერები",
-  "followings":"გამოწერილები",
-  "admin_area":"ადმინის სივრცე"
-},
-"errors":{
-  "something_went_wrong":"დაფიქსირდა შეცდომა",
-  "unique_email_error":"ელ.ფოსტა უნდა იყოს უნიკალური",
-    "missing_fields":"შეავსეთ სავალდებულო ველები",
-    "invalid_credentials":"არასწორი მონაცემები",
-    "unauthenticated":"არაავტორიზებული მოთხოვნა",
-    "token_expired_error":"სესიას გაუვიდა ვადა",
-    "not_found":"არ მოიძებნა",
-    "forbidden_operation":"მოქმედების შესრულება აკრძალულია",
-    "user_blocked":"მოხმარებელი დაბლოკილია",
-    "user_deleted":"მოხმარებელი წაშლილია",
-    "user_not_found":"მომხმარებელი არ მოიძებნა",
-    "email_already_sent":"მეილი უკვე გამოგზავნილია"
-},
-"comment":{
-  "comments":"კომენტარ(ები)"
-}
+  "breadcrumb": {
+    "home": "მთავარი",
+    "item": "ჩანაწერი"
+  },
+  "collection": {
+    "details": "კოლექციის დეტალები",
+    "collections": "კოლექცია"
+  },
+  "admin": {
+    "id": "უნიკალური აიდი",
+    "first_name": "სახელი",
+    "last_name": "გვარი",
+    "email": "ელ.ფოსტა",
+    "role": "როლი",
+    "profile_image": "პროფილის სურათი",
+    "collections_length": "კოლექციები",
+    "created_at": "შექმნის დრო",
+    "followers": "გამომწერები",
+    "followings": "გამოწერილები",
+    "admin_area": "ადმინის სივრცე"
+  },
+  "errors": {
+    "something_went_wrong": "დაფიქსირდა შეცდომა",
+    "unique_email_error": "ელ.ფოსტა უნდა იყოს უნიკალური",
+    "missing_fields": "შეავსეთ სავალდებულო ველები",
+    "invalid_credentials": "არასწორი მონაცემები",
+    "unauthenticated": "არაავტორიზებული მოთხოვნა",
+    "token_expired_error": "სესიას გაუვიდა ვადა",
+    "not_found": "არ მოიძებნა",
+    "forbidden_operation": "მოქმედების შესრულება აკრძალულია",
+    "user_blocked": "მოხმარებელი დაბლოკილია",
+    "user_deleted": "მოხმარებელი წაშლილია",
+    "user_not_found": "მომხმარებელი არ მოიძებნა",
+    "email_already_sent": "მეილი უკვე გამოგზავნილია"
+  },
+  "comment": {
+    "comments": "კომენტარ(ები)"
+  },
+  "formik": {
+    "field_required": "სავალდებულო ველი",
+    "only_those_values": "მხოლოდ სპეციფიკური მნიშვნელობები",
+    "valid_email":"ელ-ფოსტის ფორმატი არასწორია",
+    "password_must_match":"პაროლები არ ემთხვევა",
+    "pass_val":"'<ul><li>მინიმუმ ექვსი სიმბოლო</li><li>მინიმუმ 1 დიდი ასო</li><li>მინიმუმ 1 პატარა ასო</li><li>მინიმუმ ერთი ციფრი</li><li>მინიმუმ ერთი სიმბოლო (მაგ., !@#$%^&*)</li></ul>'"
+
+  }
 }
