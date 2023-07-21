@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -89,14 +89,14 @@ const AdminDashboard = () => {
               sx={{ border: '1px solid gray' }}
               startIcon={<AddCircle />}
             >
-              Add New User
+              {t('admin.add_new_user')}
             </Button>
           </Link>
 
           <TextField
             value={filterValue}
             onChange={(e) => setFilterValue(e.target.value)}
-            placeholder="Search..."
+            placeholder={t('common.search') as string}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -114,14 +114,14 @@ const AdminDashboard = () => {
               setSelectedFilter(e.target.value as 'all' | Statuses)
             }
           >
-            <MenuItem value="all">All</MenuItem>
-            <MenuItem value="active">Active</MenuItem>
-            <MenuItem value="blocked">Blocked</MenuItem>
-            <MenuItem value="deleted">Deleted</MenuItem>
+            <MenuItem value="all">{t('common.all')}</MenuItem>
+            <MenuItem value="active">{t('common.active')}</MenuItem>
+            <MenuItem value="blocked">{t('common.blocked')}</MenuItem>
+            <MenuItem value="deleted">{t('common.deleted')}</MenuItem>
           </Select>
         </LeftContainer>
         <RightContainer>
-          <Tooltip placement="top" title="Block User(s)">
+          <Tooltip placement="top" title={t('admin.block_user')}>
             <IconButton
               onClick={() => setConfirmDialog({ name: 'block', topic: 'user' })}
               disabled={selectedIds.length === 0}
@@ -129,7 +129,7 @@ const AdminDashboard = () => {
               <Block />
             </IconButton>
           </Tooltip>
-          <Tooltip placement="top" title="Remove User(s)">
+          <Tooltip placement="top" title={t('admin.remove_user')}>
             <IconButton
               onClick={() =>
                 setConfirmDialog({ name: 'remove', topic: 'user' })
@@ -139,7 +139,7 @@ const AdminDashboard = () => {
               <DeleteTwoTone />
             </IconButton>
           </Tooltip>
-          <Tooltip placement="top" title="Unblock User(s)">
+          <Tooltip placement="top" title="admin.unblock_user">
             <IconButton
               onClick={() =>
                 setConfirmDialog({ name: 'unblock', topic: 'user' })
@@ -155,7 +155,7 @@ const AdminDashboard = () => {
             }}
             sx={{ border: '1px solid gray' }}
           >
-            Add as Admin
+            {t('admin.add_as_admin')}
           </Button>
           <Button
             onClick={() => {
@@ -163,7 +163,7 @@ const AdminDashboard = () => {
             }}
             sx={{ border: '1px solid gray' }}
           >
-            Remove as Admin
+            {t('admin.remove_as_admin')}
           </Button>
         </RightContainer>
       </Box>
@@ -233,7 +233,10 @@ const AdminDashboard = () => {
                 onSuccess: () => {
                   setConfirmDialog(null);
                   setSelectedIds([]);
-                  toast.success('status_changed_success', toastOptions);
+                  toast.success(
+                    t('messages.status_changed_success'),
+                    toastOptions
+                  );
                 },
               })
             );
