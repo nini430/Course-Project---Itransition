@@ -6,6 +6,7 @@ import {
   Email,
   Person2,
   Settings,
+  Logout,
 } from '@mui/icons-material';
 import { Button, ClickAwayListener, IconButton } from '@mui/material';
 
@@ -16,6 +17,7 @@ import LanguagePicker from '../LanguageDropDown/LanguagePicker';
 import { toggleSidebar } from '../../store/commonReducer';
 import SearchInput from '../SearchInput/SearchInput';
 import { useTranslation } from 'react-i18next';
+import { logoutUser } from '../../store/authReducer';
 
 const Sidebar = () => {
   const dispatch = useAppDispatch();
@@ -60,7 +62,7 @@ const Sidebar = () => {
                   to="/settings"
                 >
                   <Settings />
-                  Settings
+                  {t('nav.parameters')}
                 </Link>
                 <Link
                   onClick={() => dispatch(toggleSidebar())}
@@ -73,7 +75,7 @@ const Sidebar = () => {
                   to={`/profile/${authedUser?.id}`}
                 >
                   <Person2 />
-                  Profile
+                  {t('nav.profile')}
                 </Link>
               </>
             )}
@@ -117,6 +119,15 @@ const Sidebar = () => {
               </Link>
             )}
           </MenuContainer>
+          {authedUser && (
+            <Button
+              startIcon={<Logout />}
+              onClick={() => dispatch(logoutUser())}
+              sx={{ border: '1px solid #c4c4c4' }}
+            >
+              {t('nav.log_out')}
+            </Button>
+          )}
         </Container>
       </div>
     </ClickAwayListener>

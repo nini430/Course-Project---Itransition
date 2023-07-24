@@ -36,7 +36,7 @@ const ListViewCollection = ({
     <StyledCard sx={{ minHeight: '330px' }}>
       <Link
         style={{ textDecoration: 'none' }}
-        to={`/collections/${collection.id}`}
+        to={`/collection/${collection.id}`}
       >
         <CardContent
           sx={{
@@ -51,32 +51,47 @@ const ListViewCollection = ({
           </LeftContent>
           <RightContent>
             <Box sx={{ display: 'flex', gap: '10px' }}>
-              <Typography sx={{ color: 'gray' }}>Topic: </Typography>
+              <Typography sx={{ color: 'gray' }}>
+                {t('common.topic')}:{' '}
+              </Typography>
               <Typography>{collection.topic}</Typography>
             </Box>
             <Box sx={{ display: 'flex', gap: '10px' }}>
-              <Typography sx={{ color: 'gray' }}>Description: </Typography>
+              <Typography sx={{ color: 'gray' }}>
+                {t('common.description')}
+              </Typography>
               <Typography
                 dangerouslySetInnerHTML={{
                   __html: collection.description.slice(0, 800),
                 }}
               />
             </Box>
-            {authedUser && collection?.author?.id === authedUser?.id && (
-              <CrudBtnContainer>
-                <IconButton sx={{ alignItems: 'flex-start', height: '40px' }}>
-                  <Edit />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    setIsConfirmDialogOpen(collection);
-                  }}
-                  sx={{ alignItems: 'flex-start', height: '40px' }}
-                >
-                  <Delete />
-                </IconButton>
-              </CrudBtnContainer>
-            )}
+            {authedUser &&
+              (collection?.author?.id === authedUser?.id ||
+                authedUser?.role === 'ADMIN') && (
+                <CrudBtnContainer>
+                  <Link
+                    to={`/edit-collection/${collection?.id}`}
+                    style={{ textDecoration: 'none' }}
+                  >
+                    <IconButton
+                      sx={{ alignItems: 'flex-start', height: '40px' }}
+                    >
+                      <Edit />
+                    </IconButton>
+                  </Link>
+
+                  <IconButton
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsConfirmDialogOpen(collection);
+                    }}
+                    sx={{ alignItems: 'flex-start', height: '40px' }}
+                  >
+                    <Delete />
+                  </IconButton>
+                </CrudBtnContainer>
+              )}
           </RightContent>
         </CardContent>
       </Link>
@@ -92,7 +107,7 @@ const ListViewCollection = ({
             padding: '10px',
           }}
         >
-          <Typography sx={{ color: 'gray' }}>Author: </Typography>
+          <Typography sx={{ color: 'gray' }}>{t('common.author')}: </Typography>
           <Box sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <AvatarComp
               width={40}

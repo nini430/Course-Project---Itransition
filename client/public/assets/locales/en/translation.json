@@ -26,7 +26,8 @@
     "active":"Active",
     "all":"All",
     "blocked":"Blocked",
-    "deleted":"Deleted"
+    "deleted":"Deleted",
+    "description":"Description"
   },
   "home": {
     "latest_items": "Latest Items",

@@ -20,17 +20,20 @@ const ActionButtons = ({
   setIsMoreShown,
   setEditComment,
 }: IActionButtonsProps) => {
-  const {t}=useTranslation();
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const moreVertElement = document.getElementById('more-vert');
-  const commentAction = document.getElementsByClassName('comment-action-btn');
+  const commentAction =
+    document.getElementsByClassName('comment-action-btn')[0];
   return (
     <ClickAwayListener
       onClickAway={(e) => {
         if (
           e.target &&
+          moreVertElement &&
           !moreVertElement?.contains(e.target as Node) &&
-          !commentAction[0].contains(e.target as Node)
+          commentAction &&
+          !commentAction.contains(e.target as Node)
         ) {
           setIsMoreShown(false);
         }
@@ -50,7 +53,7 @@ const ActionButtons = ({
             }}
             sx={{ border: '1px solid gray' }}
           >
-           {t('common.edit')}
+            {t('common.edit')}
           </Button>
           <Button
             onClick={() => {

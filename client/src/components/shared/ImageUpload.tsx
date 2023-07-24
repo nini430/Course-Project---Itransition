@@ -13,7 +13,7 @@ interface IImageUploadProps {
   photoUploadLoading: boolean;
   mainImage: string | undefined;
   fallBackImage: string;
-  uploadImage: any;
+  uploadImage: ()=>void;
   isAllowedUpload: boolean;
   getRootProps: any;
   getInputProps: any;

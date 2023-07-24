@@ -43,7 +43,6 @@ const AddComment = ({ socket }: IAddCommentProps) => {
         <Link style={{ textDecoration: 'none' }} to={`/profile/${authedUser?.id}`}>
           <CommentAvatar
             isAdd
-            fullName={`${authedUser?.firstName} ${authedUser?.lastName}`}
             src={authedUser?.profileImage}
           />
         </Link>

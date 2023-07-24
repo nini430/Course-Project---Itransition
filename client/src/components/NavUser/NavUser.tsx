@@ -15,31 +15,36 @@ const NavUser = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const { authedUser } = useAppSelector((state) => state.auth);
-  const auth= authedUser || JSON.parse(localStorage.getItem('authed_user') as string);
-  const [anchorEl, setAnchorEl] = useState<any>(null);
+  const [anchorEl, setAnchorEl] = useState<any | null>(null);
   const handleAnchorClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget);
   };
   return (
     <NavUserContainer>
       <IconButton onClick={handleAnchorClick}>
-        <Avatar width='40px' height='40px' src={auth?.profileImage || AvatarImg} />
+        <Avatar
+          width="40px"
+          height="40px"
+          src={authedUser?.profileImage || AvatarImg}
+        />
       </IconButton>
       <StyledMenu
         anchorEl={anchorEl}
         open={!!anchorEl}
         onClose={() => setAnchorEl(null)}
       >
-        <Link style={{textDecoration:'none'}} to={routesPath.settings}>
-        <MenuItem onClick={()=>setAnchorEl(null)}>
-          <Settings />
-          {t('nav.parameters')}
-        </MenuItem>
+        <Link style={{ textDecoration: 'none' }} to={routesPath.settings}>
+          <MenuItem onClick={() => setAnchorEl(null)}>
+            <Settings />
+            {t('nav.parameters')}
+          </MenuItem>
         </Link>
-        
 
-        <Link style={{textDecoration:'none'}} to={`/profile/${auth?.id}`}>
-          <MenuItem onClick={()=>setAnchorEl(null)}>
+        <Link
+          style={{ textDecoration: 'none' }}
+          to={`/profile/${authedUser?.id}`}
+        >
+          <MenuItem onClick={() => setAnchorEl(null)}>
             <Person2 />
             {t('nav.profile')}
           </MenuItem>
@@ -59,7 +64,6 @@ const NavUserContainer = styled.div`
   display: flex;
   justify-content: center;
 `;
-
 
 const StyledMenu = styled(Menu)`
   margin-top: 15px;

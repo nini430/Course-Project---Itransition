@@ -39,9 +39,13 @@ interface ICommentProps {
 
 const Comment = ({ comment }: ICommentProps) => {
   const { t } = useTranslation();
-  const [commentReactions,setCommentReactions]=useState<null | ReactionMapperType[]>(null);
+  const [commentReactions, setCommentReactions] = useState<
+    null | ReactionMapperType[]
+  >(null);
   const { authedUser } = useAppSelector((state) => state.auth);
-  const { editCommentLoading,removeCommentLoading } = useAppSelector((state) => state.item);
+  const { editCommentLoading, removeCommentLoading } = useAppSelector(
+    (state) => state.item
+  );
   const [currentComment, setCurrentComment] = useState(comment);
   const [uploadImg, setUploadImg] = useState<File | null>(null);
   const [imageModal, setImageModal] = useState<string | null>(null);
@@ -55,7 +59,7 @@ const Comment = ({ comment }: ICommentProps) => {
   const liked = comment.reactions?.find(
     (reaction) => reaction.userId === authedUser?.id
   );
- 
+
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*' as unknown as Accept,
     onDrop: (acceptedFiles) => {
@@ -115,6 +119,7 @@ const Comment = ({ comment }: ICommentProps) => {
                           image: undefined,
                         }));
                       } else {
+                        setCurrentComment(comment);
                         setUploadImg(null);
                       }
                     }}
@@ -239,20 +244,27 @@ const Comment = ({ comment }: ICommentProps) => {
                           );
                         }}
                       >
-                       {t('common.like')}
+                        {t('common.like')}
                       </span>
                     )}
                   </Typography>
                 </TypoWrapper>
               </ReactionContainer>
               {comment.reactions.length > 0 && (
-                <Typography onClick={()=>{
-                  setCommentReactions(comment.reactions.map(react=>({
-                    id:react.id,
-                    emoji: react.name,
-                    user: react.user
-                  })))
-                }} sx={{textDecoration:'underline',cursor:'pointer'}}>{comment.reactions.length} {t('item.reactions')}</Typography>
+                <Typography
+                  onClick={() => {
+                    setCommentReactions(
+                      comment.reactions.map((react) => ({
+                        id: react.id,
+                        emoji: react.name,
+                        user: react.user,
+                      }))
+                    );
+                  }}
+                  sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                >
+                  {comment.reactions.length} {t('item.reactions')}
+                </Typography>
               )}
             </TypoWrapper>
           </>
@@ -261,24 +273,26 @@ const Comment = ({ comment }: ICommentProps) => {
       <RightCommentSection>
         {isMoreShown &&
           authedUser &&
-          authedUser.id ===
-            comment.author.id && (
-              <ActionButtons
-                setIsInEditMode={setIsInEditMode}
-                comment={comment}
-                setEditComment={setEditComment}
-                setConfirmDialog={setConfirmDialog}
-                setIsMoreShown={setIsMoreShown}
-              />
-            )}
-        {authedUser && authedUser.id === comment.author.id && (
-          <IconButton
-            id="more-vert"
-            onClick={() => setIsMoreShown((prev) => !prev)}
-          >
-            <MoreVert sx={{ pointerEvents: 'none' }} />
-          </IconButton>
-        )}
+          (authedUser.id === comment.author.id ||
+            authedUser.role === 'ADMIN') && (
+            <ActionButtons
+              setIsInEditMode={setIsInEditMode}
+              comment={comment}
+              setEditComment={setEditComment}
+              setConfirmDialog={setConfirmDialog}
+              setIsMoreShown={setIsMoreShown}
+            />
+          )}
+        {authedUser &&
+          (authedUser.id === comment.author.id ||
+            authedUser.role === 'ADMIN') && (
+            <IconButton
+              id="more-vert"
+              onClick={() => setIsMoreShown((prev) => !prev)}
+            >
+              <MoreVert sx={{ pointerEvents: 'none' }} />
+            </IconButton>
+          )}
 
         <Typography sx={{ color: 'gray', fontSize: 12 }}>
           {moment(comment?.updatedAt).format('HH:mm')}
@@ -305,7 +319,10 @@ const Comment = ({ comment }: ICommentProps) => {
         />
       )}
       <ImageModal image={imageModal} onClose={() => setImageModal(null)} />
-      <ReactionMapper open={commentReactions} onClose={()=>setCommentReactions(null)} />
+      <ReactionMapper
+        open={commentReactions}
+        onClose={() => setCommentReactions(null)}
+      />
     </CommentContainer>
   );
 };
