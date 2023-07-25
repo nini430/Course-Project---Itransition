@@ -2,12 +2,7 @@ import styled from 'styled-components';
 import { toast, Toaster } from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
-import {
-  FormGroup,
-  Typography,
-  Autocomplete,
-  TextField,
-} from '@mui/material';
+import { FormGroup, Typography, Autocomplete, TextField } from '@mui/material';
 import { AddCircle, CloudUpload, Close } from '@mui/icons-material';
 import { useFormik } from 'formik';
 import { Accept, useDropzone } from 'react-dropzone';
@@ -37,12 +32,18 @@ import useResponsive from '../../hooks/useResponsive';
 import Loading from '../../components/Loading/Loading';
 
 const AddCollection = () => {
-  const { collectionTopics, topicsLoading, addCollectionLoading, draftCollection, updateCollectionLoading, getCollectionLoading } =
-  useAppSelector((state) => state.collection);
-  const {authedUser}=useAppSelector(state=>state.auth);
-  const dispatch=useAppDispatch();
-  const {collectionId,profileId}=useParams();
-  const [accordionValues,setAccordionValues]=useState({});
+  const {
+    collectionTopics,
+    topicsLoading,
+    addCollectionLoading,
+    draftCollection,
+    updateCollectionLoading,
+    getCollectionLoading,
+  } = useAppSelector((state) => state.collection);
+  const { authedUser } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+  const { collectionId, profileId } = useParams();
+  const [accordionValues, setAccordionValues] = useState({});
   const [uploadImg, setUploadImg] = useState<File | null>(null);
   const {
     handleSubmit,
@@ -53,31 +54,37 @@ const AddCollection = () => {
     setFieldValue,
     setFieldTouched,
   } = useFormik({
-    initialValues:  draftCollection?.collection || collectionValues,
+    initialValues: draftCollection?.collection || collectionValues,
     validationSchema: collectionValidationSchema(collectionTopics),
     onSubmit: async (values) => {
       let imgToUpload = null;
       if (uploadImg) {
         imgToUpload = await fileToBase64(uploadImg as File);
       }
-      if(collectionId) {
-        dispatch(updateCollection({
-          input:{...values,image:imgToUpload as string},
-          configs:accordionValues,
-          collectionId:collectionId as string,
-          onSuccess:(message:string)=>{
-            toast.success(t(`messages.${message||'success'}`),toastOptions); 
-            setTimeout(()=>{
-              navigate(-1);
-            },2000)
-          }
-        }))
-      }else{
+      if (collectionId) {
+        dispatch(
+          updateCollection({
+            input: { ...values, image: imgToUpload as string },
+            ownerId: profileId as string,
+            configs: accordionValues,
+            collectionId: collectionId as string,
+            onSuccess: (message: string) => {
+              toast.success(
+                t(`messages.${message || 'success'}`),
+                toastOptions
+              );
+              setTimeout(() => {
+                navigate(-1);
+              }, 2000);
+            },
+          })
+        );
+      } else {
         dispatch(
           addCollection({
             input: { ...values, image: imgToUpload as string },
-            ownerId:profileId as string,
-            configs:accordionValues,
+            ownerId: profileId as string,
+            configs: accordionValues,
             onSuccess: () => {
               toast.success(t('collection_created', toastOptions));
               setTimeout(() => {
@@ -87,9 +94,8 @@ const AddCollection = () => {
           })
         );
       }
-      
     },
-    enableReinitialize:true
+    enableReinitialize: true,
   });
   const { getInputProps, getRootProps, isDragActive } = useDropzone({
     accept: 'image/*' as unknown as Accept,
@@ -100,36 +106,38 @@ const AddCollection = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const {lg,xs,sm,xl}=useResponsive();
+  const { lg, xs, sm, xl } = useResponsive();
   const { mode } = useAppSelector((state) => state.common);
-  useEffect(()=>{
-    if(!authedUser) {
-      navigate('/login')
+  useEffect(() => {
+    if (!authedUser) {
+      navigate('/login');
     }
-  },[navigate,authedUser])
-  useEffect(()=>{
-    if(!collectionId) {
-      dispatch(removeDraftCollection())
-      setAccordionValues({})
+  }, [navigate, authedUser]);
+  useEffect(() => {
+    if (!collectionId) {
+      dispatch(removeDraftCollection());
+      setAccordionValues({});
     }
-  },[collectionId,dispatch])
+  }, [collectionId, dispatch]);
   useEffect(() => {
     dispatch(getCollectionTopics());
   }, [dispatch]);
-  useEffect(()=>{
-    if(collectionId) {
-      dispatch(getCollectionExtended({collectionId:collectionId as string}))
+  useEffect(() => {
+    if (collectionId) {
+      dispatch(getCollectionExtended({ collectionId: collectionId as string }));
     }
-  },[collectionId,dispatch])
+  }, [collectionId, dispatch]);
 
-  if(getCollectionLoading) {
-    return <Loading/>
+  if (getCollectionLoading) {
+    return <Loading />;
   }
 
   return (
     <Container>
       <Toaster />
-      <Typography sx={{ fontSize: 40 }}>{collectionId?'Update':'Add'} Collection</Typography>
+      <Typography sx={{ fontSize: 40 }}>
+        {collectionId ? 'Update' : 'Add'} Collection
+      </Typography>
       <Form
         isXS={xs}
         isX={xl}
@@ -141,18 +149,18 @@ const AddCollection = () => {
           handleSubmit();
         }}
       >
-          <FormInput
-            onChange={(value)=>setFieldValue('name',value)}
-            onBlur={handleBlur}
-            error={!!errors.name}
-            value={values.name}
-            name="name"
-            placeholder="Name"
-            type="text"
-            mode={mode}
-            errorMessage={errors.name as string}
-            touched={touched.name as boolean}
-          />
+        <FormInput
+          onChange={(value) => setFieldValue('name', value)}
+          onBlur={handleBlur}
+          error={!!errors.name}
+          value={values.name}
+          name="name"
+          placeholder="Name"
+          type="text"
+          mode={mode}
+          errorMessage={errors.name as string}
+          touched={touched.name as boolean}
+        />
         <FormGroup sx={{ mb: 2 }}>
           <Typography>Description</Typography>
           <ReactQuill
@@ -188,26 +196,32 @@ const AddCollection = () => {
         </FormGroup>
         <FormGroup sx={{ mb: 2 }}>
           <Typography>Image (optional)</Typography>
-          <ImageUploadContainer isDragActive={isDragActive} {...getRootProps()} mode={mode}>
-            {(uploadImg || draftCollection?.collection?.image) ? (
+          <ImageUploadContainer
+            isDragActive={isDragActive}
+            {...getRootProps()}
+            mode={mode}
+          >
+            {uploadImg || draftCollection?.collection?.image ? (
               <ImageContainer>
                 <img
                   width={150}
                   height={200}
-                  style={{objectFit:'cover'}}
-                  src={draftCollection?.collection?.image || URL.createObjectURL(uploadImg as File)}
+                  style={{ objectFit: 'cover' }}
+                  src={
+                    uploadImg
+                      ? URL.createObjectURL(uploadImg)
+                      : draftCollection?.collection?.image
+                  }
                   alt=""
                 />
                 <DeleteCircle
                   onClick={(e) => {
                     e.stopPropagation();
-                    if(uploadImg) {
+                    if (uploadImg) {
                       setUploadImg(null);
-                    }else if(draftCollection?.collection?.image) {
-                      dispatch(removeCollectionPic({otherParams:values}));
+                    } else if (draftCollection?.collection?.image) {
+                      dispatch(removeCollectionPic({ otherParams: values }));
                     }
-                    
-
                   }}
                 >
                   <Close />
@@ -223,30 +237,26 @@ const AddCollection = () => {
             <input type="file" className="none" {...getInputProps()} />
           </ImageUploadContainer>
         </FormGroup>
-        <Typography
-        >
-          Configure Item Fields
-        </Typography>
-        <Typography sx={{ fontSize: 12, marginTop: 0.5, mb:1 }}>
+        <Typography>Configure Item Fields</Typography>
+        <Typography sx={{ fontSize: 12, marginTop: 0.5, mb: 1 }}>
           if not, it will be set as default (id,name,tags)
         </Typography>
         <CollectionDialog
-        accordionValues={accordionValues}
-        setAccordionValues={setAccordionValues}
-        collectionId={collectionId}
-      />
-              <LoadingButton
+          accordionValues={accordionValues}
+          setAccordionValues={setAccordionValues}
+          collectionId={collectionId}
+        />
+        <LoadingButton
           loading={addCollectionLoading || updateCollectionLoading}
-          disabled={(Object.values(errors).length > 0) }
+          disabled={Object.values(errors).length > 0}
           type="submit"
           startIcon={<AddCircle />}
           sx={{ border: '1px solid gray', marginTop: 1 }}
           fullWidth
         >
-          {collectionId?'Update':'Add'} Collection
+          {collectionId ? 'Update' : 'Add'} Collection
         </LoadingButton>
       </Form>
-     
     </Container>
   );
 };
@@ -260,8 +270,6 @@ const Container = styled.div`
   align-items: center;
   gap: 20px;
 `;
-
-
 
 const ImageUploadContainer = styled(({ mode, isDragActive, ...props }: any) => (
   <div {...props} />

@@ -83,7 +83,7 @@ const AdminDashboard = () => {
         }}
       >
         <LeftContainer>
-          <Link to={`/add-user`} style={{ textDecoration: 'none' }}>
+          <Link to='/add-user' style={{ textDecoration: 'none' }}>
             <Button
               size="small"
               sx={{ border: '1px solid gray' }}

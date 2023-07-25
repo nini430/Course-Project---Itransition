@@ -25,7 +25,8 @@
     "active":"აქტიური",
     "all":"ყველა",
     "blocked":"დაბლოკილი",
-    "deleted":"წაშლილი"
+    "deleted":"წაშლილი",
+    "description":"აღწერა"
   },
   "home": {
     "latest_items": "უახლესი ჩანაწერები",

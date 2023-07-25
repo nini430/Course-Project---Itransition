@@ -1,4 +1,4 @@
-import { KeyboardArrowDown, AddCircle, Close } from '@mui/icons-material';
+import { KeyboardArrowDown, AddCircle } from '@mui/icons-material';
 import styled from 'styled-components';
 import {
   Accordion,
@@ -6,14 +6,9 @@ import {
   AccordionDetails,
   Input,
   Button,
-  IconButton,
-  Typography,
 } from '@mui/material';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../store/store';
-import { removeCustomField } from '../../store/collectionReducer';
-import { collectionValues } from '../../formik-validation/collection';
-import Loading from '../../components/Loading/Loading';
+import { Dispatch, SetStateAction} from 'react';
+import Empty from '../../components/Empty/Empty';
 
 interface ICollectionAccordionProps {
   summaryMessage: string;
@@ -37,7 +32,6 @@ const CollectionAccordion = ({
   name,
   collectionId,
 }: ICollectionAccordionProps) => {
-  const dispatch = useAppDispatch();
   return (
     <Accordion>
       <AccordionSummary expandIcon={<KeyboardArrowDown />}>
@@ -47,7 +41,7 @@ const CollectionAccordion = ({
         {
         collectionId &&
           (accordionValues?.[name] && accordionValues?.[name].length === 0
-            ? <Typography>Empty</Typography>
+            ? <Empty message='No Records'/>
             : accordionValues?.[name]?.map(
                 (item: any) => (
                   <InputWrapper key={item?.id}>

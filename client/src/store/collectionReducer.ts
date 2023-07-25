@@ -173,8 +173,10 @@ export const updateCollection = createAsyncThunk(
       configs,
       collectionId,
       onSuccess,
+      ownerId
     }: {
       input: CollectionValues;
+      ownerId:string;
       configs: any;
       collectionId: string;
       onSuccess: (message: string) => void;
@@ -184,7 +186,7 @@ export const updateCollection = createAsyncThunk(
     try {
       const response = await axiosApiInstance.put<{ data: string }>(
         `${apiUrls.collection.updateCollection}/${collectionId}`,
-        { configs, input }
+        { configs, input, ownerId }
       );
       onSuccess && onSuccess(response.data.data);
       return response.data.data;

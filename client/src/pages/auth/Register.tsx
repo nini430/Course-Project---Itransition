@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import {
   Divider,
   Typography,
-  FormGroup,
   Button,
 } from '@mui/material';
 import {  Home, PersonPin, Settings } from '@mui/icons-material';
@@ -14,7 +13,6 @@ import { Toaster, toast } from 'react-hot-toast';
 import {
   AuthContainer,
   AuthForm,
-  ErrorMessage,
   TwoGridContainer,
 } from './AuthStyles';
 import StyledInput from '../../components/FormInput/FormInput';
@@ -62,7 +60,6 @@ const Register = ({ admin, edit }: IRegisterProps) => {
     dirty,
     touched,
     setFieldValue,
-    setFieldTouched,
   } = useFormik({
     initialValues:
       {

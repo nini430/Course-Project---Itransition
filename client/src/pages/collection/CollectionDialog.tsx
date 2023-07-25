@@ -26,12 +26,11 @@ const CollectionDialog = ({
       setAccordionValues(rest);
     }
   }, [draftCollection, setAccordionValues]);
-
   return (
     <ConfigurationContainer>
       <CollectionAccordion
         collectionId={collectionId}
-        setField={() => setIntegerFieldCount((prev: any) => prev + 1)}
+        setField={() => setIntegerFieldCount((prev) => prev + 1)}
         field={integerFieldCount}
         placeholderText="Integer Text Field"
         summaryMessage="Integer Fields"
@@ -41,7 +40,7 @@ const CollectionDialog = ({
       />
       <CollectionAccordion
         collectionId={collectionId}
-        setField={() => setStringFieldCount((prev: any) => prev + 1)}
+        setField={() => setStringFieldCount((prev) => prev + 1)}
         field={stringFieldCount}
         placeholderText="String Text Field"
         summaryMessage="String Text Fields"
@@ -51,7 +50,7 @@ const CollectionDialog = ({
       />
       <CollectionAccordion
         collectionId={collectionId}
-        setField={() => setMultilineFieldCount((prev: any) => prev + 1)}
+        setField={() => setMultilineFieldCount((prev) => prev + 1)}
         field={multilineFieldCount}
         placeholderText="Multiline Text Field"
         summaryMessage="Multiline Text Fields"
@@ -61,7 +60,7 @@ const CollectionDialog = ({
       />
       <CollectionAccordion
         collectionId={collectionId}
-        setField={() => setCheckboxFieldCount((prev: any) => prev + 1)}
+        setField={() => setCheckboxFieldCount((prev) => prev + 1)}
         field={checkboxFieldCount}
         placeholderText="Checkbox  Field"
         summaryMessage="Checkbox Fields"
@@ -71,7 +70,7 @@ const CollectionDialog = ({
       />
       <CollectionAccordion
         collectionId={collectionId}
-        setField={() => setDateFieldCount((prev: any) => prev + 1)}
+        setField={() => setDateFieldCount((prev) => prev + 1)}
         field={dateFieldCount}
         placeholderText="Date Text Field"
         summaryMessage="Date Fields"

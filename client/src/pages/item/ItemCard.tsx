@@ -1,24 +1,19 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { Box, IconButton, Card, Typography } from '@mui/material';
+import { Box, Card, Typography } from '@mui/material';
 import ShowMore from 'react-show-more';
 import { Toaster } from 'react-hot-toast';
 
-import { useAppDispatch, useAppSelector } from '../../store/store';
+import { useAppSelector } from '../../store/store';
 import Avatar from '../../components/Avatar/Avatar';
 import NoPhoto from '../../assets/no-image.png';
 import AvatarImg from '../../assets/avatar.png';
 import Loading from '../../components/Loading/Loading';
-import { removeItem } from '../../store/itemReducer';
-import { useNavigate } from 'react-router-dom';
-import ConfirmDialog from '../../components/shared/ConfirmDialog';
 import { useTranslation } from 'react-i18next';
 
 const ItemCard = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   const { currentItem } = useAppSelector((state) => state.item);
   return (
     <StyledCard>

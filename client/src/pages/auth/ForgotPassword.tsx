@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Typography } from '@mui/material';
 import { useFormik } from 'formik';
 
-import { AuthForm, ErrorMessage } from './AuthStyles';
+import { AuthForm } from './AuthStyles';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import FormInput from '../../components/FormInput/FormInput';
 import { LoadingButton } from '@mui/lab';

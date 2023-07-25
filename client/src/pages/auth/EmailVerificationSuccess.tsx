@@ -3,15 +3,23 @@ import { Box, Button, Paper, Typography } from '@mui/material';
 import EmailSuccessImg from '../../assets/email_success.png';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useAppDispatch } from '../../store/store';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 import { verifyEmailAction } from '../../store/authReducer';
 
 const EmailVerificationSuccess = () => {
   const { token } = useParams();
   const { search } = useLocation();
+  const { authedUser } = useAppSelector((state) => state.auth);
   const userId = search.split('=')[1];
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!authedUser) {
+      navigate('/login');
+    }
+  }, [authedUser, navigate]);
+
   useEffect(() => {
     dispatch(
       verifyEmailAction({

@@ -8,10 +8,10 @@ import { FollowInstance } from '../../types/follow';
 import { toggleFollow } from '../../store/userReducer';
 import { getFollows } from '../../store/authReducer';
 import { useTranslation } from 'react-i18next';
-import { User } from '../../types/auth';
+import { SimpleUser } from '../../types/auth';
 
 interface IFollowModalProps {
-  open: User[] | null;
+  open: SimpleUser[] | null;
   onClose: () => void;
 }
 

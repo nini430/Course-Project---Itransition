@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   AdminPanelSettings,
   Close,
@@ -17,9 +17,10 @@ import LanguagePicker from '../LanguageDropDown/LanguagePicker';
 import { toggleSidebar } from '../../store/commonReducer';
 import SearchInput from '../SearchInput/SearchInput';
 import { useTranslation } from 'react-i18next';
-import { logoutUser } from '../../store/authReducer';
+import { logoutUser, verifyEmail } from '../../store/authReducer';
 
 const Sidebar = () => {
+  const navigate=useNavigate();
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const menuElement = document.getElementById('nav-dropdown-button');
@@ -80,17 +81,18 @@ const Sidebar = () => {
               </>
             )}
             {authedUser && !authedUser.isEmailVerified && (
-              <Link to="/verify-email" style={{ textDecoration: 'none' }}>
                 <Button
                   onClick={() => {
-                    dispatch(toggleSidebar());
+                    dispatch(verifyEmail({userId:authedUser?.id as string,onSuccess:()=>{
+                        dispatch(toggleSidebar());
+                        navigate('/verify-email');
+                    }}))
                   }}
                   sx={{ border: '1px solid gray' }}
                   startIcon={<Email />}
                 >
                   {t('auth.verify_email')}
                 </Button>
-              </Link>
             )}
             {authedUser && authedUser.role === 'ADMIN' && (
               <Link style={{ textDecoration: 'none' }} to="/admin">
