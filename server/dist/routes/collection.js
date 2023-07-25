@@ -16,6 +16,6 @@ router.use(authProtect_1.default);
 router.get('/extended/:collectionId', collection_1.getCollectionExtendedHandler);
 router.post('/', ownerPermission_1.default, collection_1.addCollectionHandler);
 router.put('/upload/:collectionId', collection_1.updateCollectionImageHandler);
-router.put('/:collectionId', collection_1.updateCollectionHandler);
+router.put('/:collectionId', ownerPermission_1.default, collection_1.updateCollectionHandler);
 router.delete('/:collectionId', collection_1.removeCollectionHandler);
 exports.default = router;
